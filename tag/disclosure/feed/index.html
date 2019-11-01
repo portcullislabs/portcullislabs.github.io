@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; disclosure</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/disclosure/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>A year in the world of security advisories</title>
+		<link>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/</link>
+		<comments>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/#comments</comments>
+		<pubDate>Thu, 18 Dec 2014 10:57:11 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[advisory]]></category>
+		<category><![CDATA[disclosure]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4498</guid>
+		<description><![CDATA[<p>Security researchers find vulnerabilities in products; it’s an important and almost inevitable part of the job. One of the side effects of these discoveries is that often new, unfixed zero day vulnerabilities are identified which the affected vendor may not be aware of. This can present a somewhat difficult situation: What should be done with [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/">A year in the world of security advisories</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Security researchers find vulnerabilities in products; it’s an important and almost inevitable part of the job. One of the side effects of these discoveries is that often new, unfixed zero day vulnerabilities are identified which the affected vendor may not be aware of. This can present a somewhat difficult situation: What should be done with a new vulnerability that nobody else knows about yet?<span id="more-4498"></span></p>
+<p>This year I was tasked with helping to revitalise Portcullis vulnerability disclosure processes and then manage the day-to-day affairs of the resulting security advisory process.</p>
+<p>This article focuses on what it is like to deal with advisories and vendors on a regular basis. My hope is that this post sheds some light on our industry’s attitude towards advisories while including some (hopefully) interesting statistics correlated from my own experiences.</p>
+<h2>Portcullis disclosure policy</h2>
+<p>While every individual and organization differs, if discovering new security vulnerabilities is a frequent occurrence, it is a good idea to have some sort of disclosure policy.</p>
+<p>Here at Portcullis we follow what is generally labelled as a co-ordinated disclosure policy.</p>
+<p>In brief, a co-ordinated disclosure policy is based around attempting to co-operate with the vendor of the affected product to help ensure that a patch, or at least some mitigation of the vulnerability, can be implemented prior to public disclosure &#8211; which is usually a mutually agreed date.</p>
+<p>Our policy is fully documented and is always sent along with initial contact to a vendor, it can be read online here:</p>
+<p><a href="https://www.portcullis-security.com/co-ordinated-disclosure-policy/">https://www.portcullis-security.com/co-ordinated-disclosure-policy/</a>.</p>
+<h2>Inside the process</h2>
+<h3>Establishing contact</h3>
+<p>As you can imagine, responses to security advisories are far from uniform. They range from communicating with an automated CMS (and no surprise that you would usually be dealing with a CMS vendor when that happens) through to the overly hostile, or incredibly friendly individuals.</p>
+<p>In most situations, Portcullis would initiate contact by sending a simple initial contact e-mail after checking that the vulnerability has not already been disclosed. This message does not include any details of the vulnerability, it primarily serves to ensure we’re talking to the right person and to establish whether the vendor would like to use PGP.</p>
+<p>Many larger vendors have a procedure in place and, if we’re lucky, there is even a dedicated e-mail address and PGP key. However, when looking at reporting a vulnerability for a small project, finding an appropriate contact address can sometimes be difficult. If no other avenues were available to us we would resort to contacting RFC-2142 designated e-mail addresses such as security@, support@ and admin@.</p>
+<p>The good news is, approximately 70% of the time we, at minimum, manage to open a dialogue with vendors and in the majority of these cases we do manage to co-ordinate the disclosure.</p>
+<p>Initial response times from vendors are typically fairly prompt too; on average we get a response within 2 days and the vendor working on the fix within a week of initial contact.</p>
+<h3>The patching process</h3>
+<p>Most advisories spend a significant amount of time in this stage of the process, as patch turnaround times vary massively. We ask that vendors keep us appraised of their progress so that we can ensure that they are still committed to attempting to fix the issue.</p>
+<p>Many larger vendors have scheduled release cycles (think patch Tuesday equivalent) which means that it can be months before any publication co-ordination can take place.</p>
+<p>What I have personally found is that, unsurprisingly, the smallest vendors are often the quickest to deal with at this point in the process. This is because you are usually talking directly to the person in control of many or all aspects of the affected product, so they can create the fix and push it live with minimal time and few complications. There is the added benefit that smaller companies generally do not have a formalised policy so the conversations can feel less sterile.</p>
+<p>The average turnaround time (from initial contact to publication) of our advisories is calculated at 45 days. This number drops by 6 days if we calculate from when the vendor begins working on a patch and it falls to just over 30 days if we remove some of the atypical, extreme examples of turnaround times, for a more accurate average.</p>
+<p>In the extreme examples, we have had vendor contact last for over half a year while vendors attempt to coordinate fixes across multiple development teams for varying platforms or products and then add them to a release cycle. On the other end of the spectrum we have had the process from initial contact to patch released completed within a single working week on multiple occasions when dealing with smaller teams (or even individuals).</p>
+<p>There are a few other interesting points worth mentioning regarding contact which are not specifically related to the process:</p>
+<p>In about half of the cases, larger companies use the &lt;firstname&gt;.&lt;lastname&gt;@ convention for employee e-mail addresses. If you combine some simple social media searching with this knowledge, you can potentially avoid several extraneous steps and talk directly to the relevant person straight away. Smaller vendors are more likely to use varied e-mail naming conventions. In the majority of cases, vendors sign their e-mails with their full name.</p>
+<p>On multiple occasions we have been asked to provide Proof-of-Concept (PoC) exploits for the vulnerabilities we report. We have even been asked for compiled exe’s&#8230; (To be clear, we don’t provide compiled exploit code to vendors under any circumstance &#8211; primarily to prevent any potential legal ramifications and secondly, if a vendor needs a compiled exploit in order to replicate the issue then this is probably indicates a deeper cause for concern.)</p>
+<h3>Forced disclosure</h3>
+<p>Forced disclosure is triggered when a vendor does not co-operate for one reason or another.</p>
+<p>It is a fine line balancing the difference between us giving a vendor reasonable opportunity to address a vulnerability and disclosing without making sufficient effort to open a dialogue.</p>
+<p>We always attempt to contact a vendor on at least two occasions using different methods and giving around a two week gap between each attempt. Other reasons why we may end up forcing disclosure include if we believe a vendor is making no progress towards a fix after a reasonable amount of time, if a vendor has no interest in patching or actively dismisses our vulnerability.</p>
+<p>While forced disclosure does mean that an unpatched vulnerability becomes public; we do ultimately believe that this is a good thing for the security of the products and their users overall.</p>
+<p>The longer a vulnerability remains unpatched, the more likely someone else is to find it and eventually many individuals could be actively exploiting it. Without a platform to make this vulnerability as public as possible there is a good chance that systems administrators never become aware that a product is vulnerable and therefore no appropriate mitigations are put in place.</p>
+<p>Disclosure also helps to highlight which vendors take their security seriously. A product with a large quantity of unpatched exploits is something to seriously consider avoiding. That is not to say that a vendor with no disclosed vulnerabilities is the safest option, it could merely mean that nobody has taken an interest!</p>
+<p>Sometimes forced publication of a vulnerability can cause a vendor to suddenly take action and quickly produce a fix too (yes, we’ve had that happen).</p>
+<h2>Summary</h2>
+<p>While most larger vendors have a good procedure in place (at least in theory) for handling security advisories, many vendors we encounter leave much to be desired.</p>
+<p>In my opinion, one of the most helpful things a vendor can do is have a web page dedicated to product security which outlines the company’s policy, lists relevant contact details and, ideally, a PGP key to help secure privacy and simultaneously promote good e-mail security practices.</p>
+<p>The individual responsible for that e-mail address should know what security advisories are and how to handle them.</p>
+<p>It is not too much effort to create a static page with a rough procedure for dealing with vulnerabilities and it does demonstrate that the vendor takes the security of their products seriously.</p>
+<p>Editor’s note: Since this post was written, Portcullis have updated their disclosure process to require a suggested remediation step from the reporting researcher. We believe this is particularly critical in the case of uncoordinated disclosures.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/">A year in the world of security advisories</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

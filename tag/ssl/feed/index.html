@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; SSL</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/ssl/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Playback: A TLS 1.3 story</title>
+		<link>https://labs.portcullis.co.uk/presentations/playback-a-tls-1-3-story-2/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/playback-a-tls-1-3-story-2/#comments</comments>
+		<pubDate>Mon, 13 Aug 2018 06:28:32 +0000</pubDate>
+		<dc:creator><![CDATA[AGA]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[Black Hat USA]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[DEF CON]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6781</guid>
+		<description><![CDATA[<p>Presentation on 0-RTT in TLS 1.3 (as given at DEF CON 26 and Black Hat 2018). TLS 1.3 is the new secure communication protocol that should be already with us. One of its new features is 0-RTT (Zero Round Trip Time Resumption) that could potentially allow replay attacks. This is a known issue acknowledged by [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/playback-a-tls-1-3-story-2/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on 0-RTT in TLS 1.3 (as given at DEF CON 26 and Black Hat 2018).<span id="more-6781"></span></p>
+<p>TLS 1.3 is the new secure communication protocol that should be already with us. One of its new features is 0-RTT (Zero Round Trip Time Resumption) that could potentially allow replay attacks. This is a known issue acknowledged by the TLS 1.3 specification, as the protocol does not provide replay protections for 0-RTT data, but proposed countermeasures that would need to be implemented on other layers, not at the protocol level. Therefore, the applications deployed with TLS 1.3 support could end up exposed to replay attacks depending on the implementation of those protections.</p>
+<p>This talk will describe the technical details regarding the TLS 1.3 0-RTT feature and its associated risks. It will include Proof of Concepts (PoC) showing real-world replay attacks against TLS 1.3 libraries and browsers. Finally, potential solutions or mitigation controls would be discussed that will help to prevent those attacks when deploying software using a library with TLS 1.3 support.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a title="TLS Playback" href="https://github.com/portcullislabs/tlsplayback">TLS Playback</a></li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/us-18-GarciaAlguacil_MurilloMoya-Playback_A_TLS_1.3_Story__v6.pdf" target="_blank" title="Download Us-18-GarciaAlguacil MurilloMoya-Playback A TLS 1.3 Story  V6"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Us-18-GarciaAlguacil MurilloMoya-Playback A TLS 1.3 Story  V6" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/us-18-GarciaAlguacil_MurilloMoya-Playback_A_TLS_1.3_Story__v6.pdf" title="Download us-18-GarciaAlguacil_MurilloMoya-Playback_A_TLS_1.3_Story__v6.pdf" target="_blank" id="wpfb-file-link-1">us-18-GarciaAlguacil_MurilloMoya-Playback_A_TLS_1.3_Story__v6.pdf</a>
+    
+    <br />
+    August 13, 2018<br />
+    
+  </div>
+  <div class="info">
+    2.6 MiB<br />
+    MD5 hash: c56f49adfbda571c9c32f5860d6f9319 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>August 13, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/playback-a-tls-1-3-story-2/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/playback-a-tls-1-3-story-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Playback: A TLS 1.3 story</title>
+		<link>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/</link>
+		<comments>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/#comments</comments>
+		<pubDate>Wed, 08 Aug 2018 14:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[AGA]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Black Hat USA]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[DEF CON]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6776</guid>
+		<description><![CDATA[<p>Secure communications are one of the most important topics in information security and the Transport Layer Security (TLS) protocol is currently the most used protocol to provide secure communications on Internet. For example, when you are connecting to your online banking application, your favorite instant message application or social networks, all those communications are being [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Secure communications are one of the most important topics in information security and the Transport Layer Security (TLS) protocol is currently the most used protocol to provide secure communications on Internet. For example, when you are connecting to your online banking application, your favorite instant message application or social networks, all those communications are being transmitted using TLS. With TLS the information sent by the browser and the service is secured and encrypted, meaning that the information cannot be modified or tampered with by an attacker. Moreover the communications are verified to ensure that the browser is connected to the right endpoint (e.g. Wikipedia).<span id="more-6776"></span></p>
+<p>TLS was born as a substitute of the ancient Secure Sockets Layer (SSL) protocol, which was showing its age and being susceptible to multiple attacks. The first version of TLS, 1.0, was created in 1999 and it was based on SSLv3. Since then TLS 1.1 (2006) and TLS 1.2 (2008) were created to improve previous versions of the protocol, solving some of the security weaknesses that security researchers discovered in the last two decades. </p>
+<p>TLS 1.3 is the new protocol version. It is not officially released yet, but it is in the final stage, just waiting for the final approval. In any case, some important vendors and open source projects are currently supporting it. The TLS 1.3 Working Group released multiple iterations (drafts) that refined and improved the protocol in the last four years. One of the outcomes of that hard work is that TLS 1.3 has been simplified compared to previous versions of the protocol and it is not vulnerable to previous known attacks that were affecting previous versions. For example, in TLS 1.2 the number of ciphers supported was high, maybe there were too many, and the Working Group has decided to limit this new version to support only five ciphers. Another example is that with TLS 1.3, forward secrecy is not optional, so, in the case that an attacker manages to steal the private keys of one server, he will not be able to decrypt previous communications as he would not be able to obtain the session keys used to encrypt previous messages.</p>
+<p>TLS 1.3 has also introduced a new feature to improve the performance for new connections. The name of this feature is 0-RTT (Zero Round Trip Time Resumption) and it allows to have a fast session resumption that can push data to the server without needing to wait for a server confirmation. This is possible as 0-RTT reuses cryptographic information obtained in the first connection to the server. The following diagram shows how TLS 1.3 0-RTT resumption works:</p>
+<div id="attachment_6778" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6777"><div class="lb-album"><a href="#image-6777"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/08/0rtt_handshake_99_full_white_background-300x202.png" alt="0RTT handshake state diagram" class="size-medium wp-image-6778"><span></span></a></div>              
+<a href="#imageclose-6777" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6777">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/08/0rtt_handshake_99_full_white_background.png" alt="image-6777">
+                   </div></a><p class="wp-caption-text">0RTT handshake state diagram</p></div>
+<p>This is an interesting functionality from the point of view of the performance, but it has some known security implications.  </p>
+<p>Cisco security consultants <a title="Alfonso Garcia Alguacil" href="https://labs.portcullis.co.uk/author/aga/">Alfonso Garcia Alguacil</a> and <a title="Alejo Murillo Moya" href="https://labs.portcullis.co.uk/author/amm/">Alejo Murillo Moya</a> will deliver a presentation about some of the known security implications of using 0-RTT and will show Proof of Concepts (PoCs) of some attacks in real world environments. The intent is to raise awareness across the security community about that new feature. The presentation is named &#8220;Playback: A TLS 1.3 story&#8221; and it will be presented at <a title="Black Hat USA 18" href="https://www.blackhat.com/us-18/briefings.html#playback-a-tls-1.3-story">Black Hat USA 18</a> and <a href="https://www.defcon.org/html/defcon-26/dc-26-speakers.html#García">DEF CON 26</a>. Attendees will learn about TLS 1.3 0-RTT, see some examples about how an attacker could take advantage of that new feature and finally get an understanding of the security implications of enabling the featu</re and how it could be used safely minimizing any potential security impacts.</p>
+<p>You can find the slides and tool from this presentation here:</p>
+<ul>
+<li><a title="Playback: A TLS 1.3 story" href="/presentations/playback-a-tls-1-3-story-2/">Playback: A TLS 1.3 story</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL/TLS Hipsterism</title>
+		<link>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/#comments</comments>
+		<pubDate>Fri, 17 Nov 2017 10:44:40 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[Securi-Tay]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6147</guid>
+		<description><![CDATA[<p>Presentation on finding implementation* bugs outside the mainstream (as given at Securi-Tay 2017). A lot of fantastic work has gone into the discovery, analysis, and (on occasion) marketing of SSL/TLS vulnerabilities. Some, such as BEAST and LUCKY13, are issues in the protocol itself. Other bugs, however, affect individual implementations of this complicated and nuanced protocol. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/">SSL/TLS Hipsterism</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on finding implementation* bugs outside the mainstream (as given at Securi-Tay 2017).<span id="more-6147"></span></p>
+<p>A lot of fantastic work has gone into the discovery, analysis, and (on occasion) marketing of SSL/TLS vulnerabilities. Some, such as BEAST and LUCKY13, are issues in the protocol itself. Other bugs, however, affect individual implementations of this complicated and nuanced protocol. This talk will discuss an approach for identifying security bugs in SSL/TLS server implementations, outside the mainstream well-publicised issues that we all know so well.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a title="sslxray" href="https://github.com/portcullislabs/sslxray">sslxray</a></li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/STHST.pptx" target="_blank" title="Download STHST"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/interactive.png" alt="STHST" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/STHST.pptx" title="Download STHST.pptx" target="_blank" id="wpfb-file-link-2">STHST.pptx</a>
+    
+    <br />
+    November 16, 2017<br />
+    
+  </div>
+  <div class="info">
+    1.0 MiB<br />
+    MD5 hash: 503a77150111d59a0352c27a62195c4c <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 16, 2017</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/">SSL/TLS Hipsterism</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL and Export Ciphers: Logjam and FREAK</title>
+		<link>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/#comments</comments>
+		<pubDate>Thu, 28 May 2015 15:35:39 +0000</pubDate>
+		<dc:creator><![CDATA[AGD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5162</guid>
+		<description><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed. During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed.<span id="more-5162"></span></p>
+<p>During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers which would comply with the American export laws. All these ciphers are tagged as EXPORT ciphers or export-grade cryptography, which nowadays is considered obsolete. Solutions exist at the moment to provide higher confidentiality and integrity levels for messages, and these export regulations are no longer present.</p>
+<p>Two attacks on SSL export ciphers will be discussed: Logjam and FREAK.</p>
+<h2>Logjam Attack</h2>
+<h3>What is it?</h3>
+<p>The <a title="Logjam attack" href="https://weakdh.org/imperfect-forward-secrecy.pdf">Logjam attack</a> exploits the acceptance on both clients and servers of export-grade ciphers using Diffie-Hellman as their key exchange protocol.</p>
+<p>To exploit this vulnerability, the attacker performs a downgrade attack on the victim, forcing them to use a weak key exchange protocol. A man-in-the-middle can force TLS clients to use export strength DH with any server that allows DHE_EXPORT ciphers. Then, by computing the discrete log using techniques such as precomputation attacks against known primes, the attacker can learn the session key and arbitrarily read or modify the contents of the data transmitted between both parties.</p>
+<h3>What does it expose?</h3>
+<p>The successful exploitation of Logjam would allow an attacker to completely compromise the confidentiality and integrity of any TLS session on a client or server which accepts export-grade Diffie-Hellman key exchange.</p>
+<p>It should be noted that, although it is expected to take a week or so to precompute logs for each prime, Diffie-Hellman implementations on different TLS clients and servers often use the same small set of primes, so only a few primes need to be precomputed against in order to enable the decryption of a significant portion of global TLS traffic.</p>
+<h2>FREAK Attack</h2>
+<h3>What is it?</h3>
+<p>The <a title="FREAK attack" href="http://blog.cryptographyengineering.com/2015/03/attack-of-week-freak-or-factoring-nsa.html">FREAK attack</a> exploits the presence of export-grade cryptography with RSA key exchange. As with the Logjam attack, the target connection is deliberately weakened by forcing the use of an export-grade key exchange.</p>
+<p>To exploit this vulnerability, an attacker downgrades a regular RSA key exchange to one that uses export-grade ephemeral RSA keys, relying on a bug in several TLS client implementations. The attacker then factors the ephemeral key to hijack future connections that use the same key. At the time the vulnerability was first published, it cost around $100 (USD) to factor the weak RSA key in 8 hours on a cluster of systems running GPUs. Once the RSA key has been factored, an attacker would be able to decrypt the RSA-protected key-exchange, recover the symmetric encryption key and decrypt all SSL traffic captured.</p>
+<h3>What does it expose?</h3>
+<p>The successful exploitation of FREAK would allow an attacker to completely compromise the confidentiality and integrity of any TLS session between a client or server which accepts export-grade RSA as key exchange protocol.</p>
+<h2>Who/What is affected?</h2>
+<p>Any service which runs over TLS and accepts EXPORT_DH or EXPORT_RSA ciphers is vulnerable to these attacks. Although these attacks target specifically these export ciphers, all export ciphers are considered to be obsolete and hence should be disabled. An example of common services which could be affected by this attack are the following:</p>
+<ul>
+<li>HTTPS</li>
+<li>SSH</li>
+<li>SMTP</li>
+</ul>
+<h2>What should we do?</h2>
+<p>Both attacks exploit the possibility of downgrading a connection initialization to use a legacy key exchange protocol. In order to defend against the Logjam and FREAK attacks, Portcullis recommends to have an up-to-date client and to disable all export-grade ciphers on both clients and servers. In addition to this, it is recommended to transition towards Elliptic Curve Diffie-Hellman as key exchange protocol.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that old protocols and ciphers be disabled for some time now, which prevents this attack. You can use the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>POODLE: Padding Oracle On Downgraded Legacy Encryption</title>
+		<link>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/</link>
+		<comments>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/#comments</comments>
+		<pubDate>Wed, 15 Oct 2014 16:35:06 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4767</guid>
+		<description><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566. The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566.</p>
+<p>The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or encryption are applied. This gives rise to a padding oracle bug, which is how BEAST worked too. <span id="more-4767"></span></p>
+<p>Block ciphers require plain-texts to be of a length divisible into fixed-size blocks, e.g. 128 bits in the case of AES. As normal messages don&#8217;t adhere to this (i.e. can be arbitrary in size) we use padding to ensure that the message is expanded to fit that requirement. Padding usually adds a minimum of 1 byte, and a maximum of one entire block. Its value is usually tied to the length of the padding, for example in PKCS#7 padding we would add 01 01 for two bytes, 02 02 02 for 3 bytes, 03 03 03 03 for 4 bytes, etc. However, instead of checking that all the bytes match, the SSLv3 specification states that only the last byte is to be validated. In some cases, in fact, client libraries mistakenly set the first padding bytes improperly &#8211; Oracle&#8217;s implementation has, in the past, used zeroes for all bytes but the last.</p>
+<p>Another requirement that block ciphers don&#8217;t provide on their own is securely encrypting more than a single block with the same key. This is important, because simply transforming each block independently with a cipher (this is known as Electronic Codebook, or ECB mode) results in equal blocks encrypting to equal cipher-texts, which is bad news because this leaks information! Instead, we use different constructions to ensure safety when encrypting multiple blocks &#8211; Cipher Block Chaining (CBC) is a very common one.</p>
+<p>In CBC, we take each previous cipher-text block and xor it with the current plaintext block before encryption. So for block 4, you take the encrypted block 3, xor it with the block 4 plaintext, then encrypt that value. The first block (block 0) has no previous cipher-text block, so we use an Initialisation Vector (IV). The IV is important, because it allows us to securely send the same full messages with the same key without their entire resulting cipher-texts being equal, as long as we don&#8217;t ever re-use an IV with the same key. Anyway, that detail isn&#8217;t important for this bug.</p>
+<p>To decrypt a CBC message, we decrypt a block, then xor the output with the previous block&#8217;s cipher-text, i.e:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub>, where M is the message, D<sub>k</sub> is a block decryption with a key k, C is the ciphertext, and ⊕ denotes an xor.</p>
+<p>It turns out that this construction is malleable, meaning that an attacker can modify the cipher-text in a way that causes meaningful things to happen to the plaintext when it gets decrypted. This has been known about for a long time, and underpins many modern SSL/TLS bugs, as well as bugs in other crypto-systems.</p>
+<p>Essentially, if you modify a block by xor&#8217;ing it with some value, the next block&#8217;s plaintext gets xor&#8217;ed with that value at the cost of the tweaked block being completely garbled. So if we want to attack block 4, we&#8217;d xor C<sub>3</sub> with a value t, so that the decryption becomes:</p>
+<p>D<sub>k</sub>(C<sub>4</sub>) ⊕ (C<sub>3</sub> ⊕ t) = M<sub>4</sub> ⊕ t</p>
+<p>This is really useful if you know any of the values of M<sub>4</sub>, because you can use xor to arbitrarily alter any value you know. This has a side-effect, though. Because C<sub>3</sub> is now C<sub>3</sub> ⊕ t, when decrypting C<sub>3</sub> it gets utterly garbled, destroying it entirely. This is fine in some cases, for example if your target application doesn&#8217;t check block authenticity and doesn&#8217;t read (or doesn&#8217;t care about) the data in the garbled block. Another trick in this avenue is to change the IV instead, so that:</p>
+<p>M<sub>0</sub> = D<sub>k</sub>(C<sub>0</sub>) ⊕ IV</p>
+<p>becomes</p>
+<p>D<sub>k</sub>(C<sub>0</sub>) ⊕ (IV ⊕ t) = M<sub>0</sub> ⊕ t</p>
+<p>This doesn&#8217;t have the block-garbling side effect, but you can only do it on the first block. This is particularly useful in systems where cipher-text blocks are authenticated but the IV isn&#8217;t.</p>
+<p>Anyway, you&#8217;re probably wondering what this has to do with POODLE. Remember all that padding stuff? Turns out that you can use that to work out the values of cookies.</p>
+<p>An attacker gets the victim to visit a page controlled by them. That page includes JavaScript that repeatedly requests a target site for which we want to steal cookies from. The request body will look something like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody
+</pre>
+<p>Which after padding and MAC looks like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
+</pre>
+<p>The attacker controls the URL and the request body. This allows them to force the cookie into a particular position in the request. Specifically, the attacker sends requests with different length URLs and body data until the observed encrypted message grows by one block, with an earlier block having its last byte as one unknown byte of cookie. This sounds hard, but it&#8217;s as simple as knowing that the Cookie header is in a certain position and tweaking the URL to block-align it, then sending a maximum of 16 requests with incrementing POST body sizes until the output grows by one block.</p>
+<p>The attacker knows that the final byte in the padding block will have a decimal value of 15 (i.e. 0x0F) because of the known padding size. He can then utilise the CBC malleability issue discussed above to replace the padding block with the target block (containing 1 byte of cookie at the end). Most of the time this will be rejected as invalid padding, but 1 in 256 times (on average) this will be accepted because the decrypted last byte will happen to be 15. This probability is due to the different key / IV used each time, so the cipher-text will be different (randomly) each time, so when the last block is decrypted it xors with the previous cipher-text block and has a chance of randomly producing 15 as the last byte.</p>
+<p>That&#8217;s a bit of a challenge to follow, so let&#8217;s look at it specifically in terms of the decryption:</p>
+<p>Mn = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub></p>
+<p>where C<sub>n</sub>, the final block, containing padding, is replaced with C<sub>i</sub>:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>i</sub>) ⊕ C<sub>n-1</sub></p>
+<p>Because C<sub>i</sub> wasn&#8217;t intended to be xor&#8217;ed with C<sub>n-1</sub> the output is garbage. However, because C<sub>n-1</sub> is random, in roughly 1/256 cases the last byte of output will be 15, leading the padding to be falsely accepted as valid. When this occurs, the attacker can deduce that:</p>
+<p>D<sub>k</sub>(C<sub>i</sub>)[15] ⊕ C<sub>n-1</sub>[15] = 15</p>
+<p>Which, by doing a bit of bitwise algebra, gets us some plaintext:</p>
+<p>M<sub>i</sub>[15] = 15 ⊕ C<sub>n-1</sub>[15] ⊕ C<sub>i-1</sub>[15]
+<p>The above arises because C<sub>i</sub> was xor&#8217;ed with C<sub>i-1</sub> when the CBC encryption occurred.</p>
+<p>The C<sub>n-1</sub> and C<sub>i-1</sub> values are known to the attacker, so they just decrypted a single byte of the message, without knowing the key!</p>
+<p>The attack requirements are:</p>
+<ul>
+<li>Attacker can get the client to send HTTPS requests (easy via JS)</li>
+<li>Attacker is in a position to modify client traffic (&#8220;Man-In-The-Middle&#8221;)</li>
+<li>Connection uses a block cipher suite from SSLv3</li>
+</ul>
+<p>Now that last one is interesting. SSLv3 is still very widely supported by servers, but TLS is usually there too and clients should prefer it. However, due to all sorts of issues with client/server compatibility, it turns out that if a connection fails to properly negotiate TLS then in many clients it&#8217;ll downgrade to SSLv3. All an attacker needs to do, is sit in the middle and interfere with the handshake such that the client assumes there&#8217;s an incompatibility and renegotiates down to SSLv3.</p>
+<p>There are two fixes. The first is to just turn off SSLv3, or at least disable CBC cipher suites in SSLv3 (but that leads to other problems so isn&#8217;t recommended). There is also a client-side fix for the downgrade, which is to enable the TLS_FALLBACK_SCSV flag in the client hello &#8211; this is recommended within the original Google article. However, organisations should not rely upon all clients having this patch, or that some clients will not downgrade to SSLv3 for other reasons.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Heartbleed</title>
+		<link>https://labs.portcullis.co.uk/blog/heartbleed/</link>
+		<comments>https://labs.portcullis.co.uk/blog/heartbleed/#comments</comments>
+		<pubDate>Fri, 11 Apr 2014 05:49:49 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4359</guid>
+		<description><![CDATA[<p>The Team has updated its SSL Good Practice Guide to incorporate the recent Heartbleed attack. In case you&#8217;ve been out of the loop, here&#8217;s a brief summary of the vulnerability: What is it? Heartbleed (AKA CVE-2014-0160) is an implementation flaw in TLS heartbeats for OpenSSL versions 1.0.1 through to 1.0.1f. It exposes an unpredictably addressed [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/heartbleed/">Heartbleed</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The Team has updated its <a title="SSL Good Practice Guide" href="https://labs.portcullis.co.uk/download/SSLGPG-1.2.pdf">SSL Good Practice Guide</a> to incorporate the recent Heartbleed attack.<span id="more-4359"></span></p>
+<p>In case you&#8217;ve been out of the loop, here&#8217;s a brief summary of the vulnerability:</p>
+<h2>What is it?</h2>
+<p>Heartbleed (AKA CVE-2014-0160) is an implementation flaw in TLS heartbeats for OpenSSL versions 1.0.1 through to 1.0.1f. It exposes an unpredictably addressed 64KB chunk of server process memory for each malformed heartbeat received. By performing multiple heartbeats, you can recover almost all of the server process&#8217; memory. Basically, the heartbeat acts as an echo request, with the payload size and payload contents determined by the requester. Typically these are filled with a few bytes of data. However by putting in a payload of say, 1KB with a payload size of up to 64KB, the server will return 63KB of its own memory due to a lack of bounds checking.</p>
+<h2>What does it expose?</h2>
+<p>Heartbleed can expose anything stored in the server process&#8217; memory, which may contain but is not limited to:</p>
+<ul>
+<li>Session tokens</li>
+<li>Form submissions</li>
+<li>Email addresses</li>
+<li>Usernames</li>
+<li>Passwords</li>
+<li>Private keys</li>
+</ul>
+<p>Once the server&#8217;s private key is exposed, then all future traffic encrypted by this key can be intercepted and manipulated by anyone holding the key.</p>
+<h2>Who/What is affected?</h2>
+<p>Any application using OpenSSL/libssl version 1.0.1 through to version 1.0.1.f. This means both <strong>server</strong> and <strong>client</strong> are susceptible to this attack. The scope of this extends beyond just HTTPS- <strong>any service using TLS can be affected</strong>. This bug has existed in OpenSSL&#8217;s code for two years, and at this time there is evidence to suggest that this weakness has been exploited as far back as November 2013.</p>
+<h2>What should we do?</h2>
+<p>The remediation for this vulnerability is fairly straightforward, as shown below:</p>
+<ul>
+<li>Update OpenSSL to version 1.0.1g, or recompile with
+<pre class="brush: bash; gutter: false; title: ; notranslate">-DOPENSSL_NO_HEARTBEATS</pre>
+</li>
+<li>Revoke the certificates for any services which have ever been vulnerable. This is important, otherwise the potentially compromised certificates and keys will continue to work</li>
+<li>Get new certificates</li>
+</ul>
+<p>If you have reason to suspect that your service may have been attacked then it would be prudent to suggest that all users change their passwords, as they may have been compromised.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/heartbleed/">Heartbleed</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/heartbleed/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL Good Practice Guide</title>
+		<link>https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/</link>
+		<comments>https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/#comments</comments>
+		<pubDate>Fri, 11 Apr 2014 05:00:53 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Whitepapers]]></category>
+		<category><![CDATA[GPG]]></category>
+		<category><![CDATA[SSL]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1842</guid>
+		<description><![CDATA[<p>This document discusses a number of attack vectors for SSL and TLS, offering real world examples where it can. It also offers advice on how to protect and correctly configure, with the goal of helping ensure that SSL services have a minimised attack surface.</p><p>The post <a href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This document discusses a number of attack vectors for SSL and TLS, offering real world examples where it can.<span id="more-1842"></span></p>
+<p>It also offers advice on how to protect and correctly configure, with the goal of helping ensure that SSL services have a minimised attack surface.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/SSLGPG-1.4.pdf" target="_blank" title="Download SSLGPG"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="SSLGPG" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/SSLGPG-1.4.pdf" title="Download SSLGPG-1.4.pdf" target="_blank" id="wpfb-file-link-3">SSLGPG-1.4.pdf</a>
+    
+    <br />
+    September 23, 2015<br />
+    Version: 1.4<br />
+  </div>
+  <div class="info">
+    578.6 KiB<br />
+    MD5 hash: f1d0976053e839a85dd19259ba26b0c0 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>September 23, 2015</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-4').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/SSLGPG-1.2.pdf" target="_blank" title="Download SSLGPG"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="SSLGPG" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/SSLGPG-1.2.pdf" title="Download SSLGPG-1.2.pdf" target="_blank" id="wpfb-file-link-4">SSLGPG-1.2.pdf</a>
+    
+    <br />
+    April 10, 2014<br />
+    Version: 1.2<br />
+  </div>
+  <div class="info">
+    584.5 KiB<br />
+    MD5 hash: 1c660fa51cb46805ee76a515aa330005 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(4);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails4" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 10, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-5').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/SSLGPG-1.1.pdf" target="_blank" title="Download SSLGPG"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="SSLGPG" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/SSLGPG-1.1.pdf" title="Download SSLGPG-1.1.pdf" target="_blank" id="wpfb-file-link-5">SSLGPG-1.1.pdf</a>
+    
+    <br />
+    April 1, 2014<br />
+    Version: 1.1<br />
+  </div>
+  <div class="info">
+    578.0 KiB<br />
+    MD5 hash: 47029e16f8d2ccf5f041d368722c40b7 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(5);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails5" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 1, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-6').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/SSLGPG.pdf" target="_blank" title="Download SSLGPG"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="SSLGPG" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/SSLGPG.pdf" title="Download SSLGPG.pdf" target="_blank" id="wpfb-file-link-6">SSLGPG.pdf</a>
+    
+    <br />
+    September 20, 2013<br />
+    
+  </div>
+  <div class="info">
+    576.1 KiB<br />
+    MD5 hash: eb0599b73eb8f3ef5110d30e14acb32e <br />
+    <a href="#" onclick="return wpfilebase_filedetails(6);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails6" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>September 20, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>New SSL recommendations</title>
+		<link>https://labs.portcullis.co.uk/blog/new-ssl-recommendations/</link>
+		<comments>https://labs.portcullis.co.uk/blog/new-ssl-recommendations/#comments</comments>
+		<pubDate>Tue, 01 Apr 2014 12:38:59 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[GPG]]></category>
+		<category><![CDATA[SSL]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3444</guid>
+		<description><![CDATA[<p>As previously mentioned in SSL: Light at the end of the tunnel, today is the day that our SSL recommendations officially change. From today onwards the Team recommend only TLS versions 1.1 and 1.2. Up until now the Team have accepted the need for SSLv3 and TLSv1 for compatibility reasons, however the time has come [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/new-ssl-recommendations/">New SSL recommendations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>As previously mentioned in <a title="SSL: Light at the end of the tunnel" href="https://labs.portcullis.co.uk/blog/ssl-light-at-the-end-of-the-tunnel/">SSL: Light at the end of the tunnel</a>, today is the day that our SSL recommendations officially change. From today onwards the Team recommend only TLS versions 1.1 and 1.2. Up until now the Team have accepted the need for SSLv3 and TLSv1 for compatibility reasons, however the time has come to cut the cord. The loss of compatibility should only affect legacy systems. If these systems cannot be updated to support the newer protocols, then weak SSL is likely to be the least of your security concerns!<span id="more-3444"></span></p>
+<p>The Team will continue to update the guide going forwards, and will highlight major changes on the blog. Whilst you&#8217;re checking out our <a href="/whitepapers/ssl-good-practice-guide/" title="updated recommendations">updated recommendations</a>, why not take a few extra minutes and look at our <a href="/whitepapers/ssl-certificate-good-practice-guide/" title="SSL Certificate Good Practise Guide">SSL Certificate Good Practise Guide</a>?</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/new-ssl-recommendations/">New SSL recommendations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/new-ssl-recommendations/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Retrospective decryption of SSL-encrypted RDP sessions</title>
+		<link>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/</link>
+		<comments>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/#comments</comments>
+		<pubDate>Thu, 13 Mar 2014 06:39:51 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1520</guid>
+		<description><![CDATA[<p>This post describes how network eavesdroppers might record encrypted RDP sessions and at some later time (after a server compromise) be able to decrypt them. This could expose any data sent over the RDP connection including keystrokes, usernames and passwords. Put in more technical language: This post is about Perfect Forward Secrecy, how SSL connections often lack [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/">Retrospective decryption of SSL-encrypted RDP sessions</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post describes how network eavesdroppers might record encrypted RDP sessions and at some later time (after a server compromise) be able to decrypt them. This could expose any data sent over the RDP connection including keystrokes, usernames and passwords.<span id="more-1520"></span></p>
+<p>Put in more technical language: This post is about <a title="Perfect Forward Secrecy" href="http://en.wikipedia.org/wiki/Perfect_forward_secrecy">Perfect Forward Secrecy</a>, how SSL connections often lack this desirable security property, that RDP uses SSL and therefore could also be vulnerable to retrospective decryption.</p>
+<h2>Recording encrypted RDP connections with Wireshark</h2>
+<p>I simply started recorded all traffic on my ethernet interface, then connected to an RDP server using mstsc and entered a password. I stopped the capture straight after entering a password.</p>
+<h2>How to tell if your RDP session is vulnerable</h2>
+<p>If you first &#8220;Analyze | Follow TCP Stream&#8221; for the TCP port 3389 traffic, then &#8220;Analyze | Decode As&#8230; | SSL&#8221;, Wireshark will show you the SSL Server Hello message. Check if it&#8217;s an RSA-based cipher suite.  If it is, this post applies to your RDP session and will show you how to decrypt it.</p>
+<div id="attachment_1521" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/attachment/serverhello-showing-the-ssl-cipher-suite/" rel="attachment wp-att-1521"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rsa-300x116.jpg" alt="ServerHello showing the SSL cipher suite" width="300" height="116" class="size-medium wp-image-1521" /></a><p class="wp-caption-text">ServerHello showing the SSL cipher suite</p></div>
+<p>Note that I&#8217;ve only tried this for plain SSL-based RDP connection &#8211; as opposed to CredSSP (SSL+NLA) connections, so YMMV.</p>
+<p>On with the decryption&#8230;</p>
+<h2>Extracting private SSL keys for service certificates</h2>
+<p>Following a compromise of a server, an attacker with administrator level privileges could simply extract the private keys used for server authentication from the certificate store.</p>
+<p>The <a title="geocerts site" href="https://www.geocerts.com/support/migrate_iis">geocerts site</a> provides as good a walkthrough of how to do this as any other. The certificate used by the Terminal Server are in the &#8220;Personal&#8221; or &#8220;Remote Desktop&#8221; certificate store for the &#8220;Computer Account&#8221;. Simply use MMC&#8217;s &#8220;Certificates&#8221; plugin to export the private key for the SSL certificate. I exported in .pfx format, which requires you to set a password.</p>
+<p>I&#8217;m using Windows 2003 Server for this demo. I&#8217;m aware that extracting the required certificates from later versions of Windows is harder. This is left as an exercise for the reader. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<h2>Converting from .pfc to .pem</h2>
+<p>In order to decrypt the SSL traffic we&#8217;ll use Wireshark which requires the private key to be in PEM format (.cer here). Simply convert using this OpenSSL one-liner:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ openssl pkcs12 -in server-cert.pfx -out server-cert.cer -nodes
+</pre>
+<h2>Decrypting traffic with Wireshark</h2>
+<p>Although Wireshark is slightly awkward to use for the decryption of SSL traffic, it worked first time for me using this <a title="tutorial" href="http://support.citrix.com/article/ctx116557">tutorial</a>.</p>
+<p>I specified the RSA key list as:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+192.168.2.96,3389,rdp,/tmp/server-cert.cer
+</pre>
+<p>It was then possible to see all the cleartext traffic in Wireshark.  In the &#8220;Follow TCP Stream&#8221; dialogue, I selected hexdump and scrolled down quite a long way. I was looking for a lot of short messages that corresponded to the keystrokes of the password I entered.</p>
+<div id="attachment_1522" style="width: 263px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/attachment/keystrokes-on-the-wire/" rel="attachment wp-att-1522"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/keystrokes-253x300.jpg" alt="Keystrokes on the wire" width="253" height="300" class="size-medium wp-image-1522" /></a><p class="wp-caption-text">Keystrokes on the wire</p></div>
+<p>Shown in red are the messages from the RDP client. We&#8217;ll inspect each of the 4-byte message starting &#8220;44 04 00&#8243;. These correspond to keys being pressed down &#8211; as opposed to &#8220;44 04 01&#8243; which are keys being released.</p>
+<p>The first message of interest is:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 2a
+</pre>
+<p>Then (omitting a few that aren&#8217;t interesting):</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 19
+44 04 01 2a
+44 04 00 1e
+44 04 00 1f
+44 04 00 1f
+44 04 00 11
+44 04 00 18
+44 04 00 13
+44 04 00 20
+44 04 00 02
+</pre>
+<p>In each case the last of the 4 bytes in the key scan code.  If we <a title="look up" href="http://msdn.microsoft.com/en us/library/aa299374(v=vs.60).aspx">look up</a> each in turn we find:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 2a is Left-Shift-Down
+44 04 00 19 is P
+44 04 01 2a is Left-Shift-Up
+44 04 00 1e is A
+44 04 00 1f is S
+44 04 00 1f is S
+44 04 00 11 is W
+44 04 00 18 is O
+44 04 00 13 is R
+44 04 00 20 is D
+44 04 00 02 is 1
+</pre>
+<p>Making the password `Password1&#8242; when we take account of the position of the SHIFT key.</p>
+<h2>Conclusions</h2>
+<p>The ability for an attacker to retrospectively decrypt SSL traffic can be undesirable in some (fairly unlikely) circumstances. This is not an unusual or isolated example. A great many HTTPS web sites are prone to the same issue.</p>
+<p>This is not a vulnerability in the traditional sense. It rather raises the impact any vulnerability that allows an attacker to steal the private SSL key &#8211; at which point all security claims are naturally null and void anyway.</p>
+<p>Actually, it&#8217;s interesting to review the lack of perfect forward secrecy against <a title="Microsoft's definition of a security vulnerability" href="http://technet.microsoft.com/en-us/library/cc751383.aspx">Microsoft&#8217;s definition of a security vulnerability</a>. It does not seem to fit the definition. If lack of forward secrecy does indeed present a problem, the problem results &#8221;from adhering to imperfect but widely accepted standards&#8221;.</p>
+<p>Disabling support for RSA as the Key Exchange Algorithm is the usual remedy for this SSL issue. However, I haven&#8217;t been able to find a working solution on Windows 2003. I did experiment with setting this registry key:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\PKCS\Enabled = 0  (don't do this)
+</pre>
+<p>after reading <a title="KB245030" href="http://support.microsoft.com/kb/245030">KB245030</a>. However, I only succeeded in preventing RDP connections entirely!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/">Retrospective decryption of SSL-encrypted RDP sessions</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</title>
+		<link>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/#comments</comments>
+		<pubDate>Tue, 04 Mar 2014 09:30:49 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1510</guid>
+		<description><![CDATA[<p>This post seeks to demonstrate why users learning to ignore those certificate warnings for SSL-based RDP connection could leave them open to &#8220;Man-In-The-Middle&#8221; attacks. The MiTM attack demonstrated displays keystrokes sent during an RDP session. We conclude with some advice on how to avoid being the victim of such an attack. Types of RDP connections [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/">SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post seeks to demonstrate why users learning to ignore those certificate warnings for SSL-based RDP connection could leave them open to &#8220;Man-In-The-Middle&#8221; attacks. The MiTM attack demonstrated displays keystrokes sent during an RDP session. We conclude with some advice on how to avoid being the victim of such an attack.<span id="more-1510"></span></p>
+<h2>Types of RDP connections</h2>
+<p>Before we start, let&#8217;s first clarify which of the various RDP connection types this post is about. There are 3 types of connection:</p>
+<ul>
+<li>RDP Security Layer</li>
+<li>SSL (TLS 1.0)</li>
+<li>CredSSP (SSL with NLA)</li>
+</ul>
+<p>It&#8217;s the middle one we&#8217;ll demonstrate an attack on in this post. On the Terminal Server, SSL is configured like this (with any NLA checkboxes unticked):</p>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/?attachment_id=1492" rel="attachment wp-att-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="RDP configuration used" width="300" height="233" class="size-medium wp-image-1492" /></a><p class="wp-caption-text">RDP configuration used</p></div>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1511"><div class="lb-album"><a href="#image-1511"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="2003-rdp-setting-not-vulnerable" class="size-medium wp-image-1492"><span></span></a></div>              
+<a href="#imageclose-1511" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1511">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable.png" alt="image-1511">
+                   </div></a><p class="wp-caption-text">RDP configuration used</p></div>
+<p>Some connections may also be vulnerable if the server is set to &#8220;Negotiate&#8221; its Security Layer to &#8211; as that could result in SSL being used.</p>
+<h2>SSL certificate warning</h2>
+<p>If users are used to dismissing a warnings like this one each time they connect, then this post is relevant to them:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1512"><div class="lb-album"><a href="#image-1512"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1512" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1512">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1512">
+                   </div></a><p class="wp-caption-text">SSL warning that should not be routinely ignored</p></div>
+<h2>Attack overview</h2>
+<p>At a high level, the attack will proceed in a similar way to any SSL MiTM attack:</p>
+<ol>
+<li>Have the victim connect to a PoC tool (rdp-ssl-mitm.py) on our system instead of the RDP server they&#8217;re trying to reach</li>
+<li>Using the RDP protocol, our tool will negotiate the use of SSL</li>
+<li>At the point the connection is upgraded to SSL, our tool will negotiate an SSL connection with the RDP client using its own (untrusted) SSL certificate. This will give our tool access to data sent by the RDP client in cleartext</li>
+<li>Our tool also needs to create an SSL connection with the legitimate RDP server down which it will send data from the RDP client</li>
+</ol>
+<p>The only complication to this attack is that our tool has to talk the RDP protocol briefly before creating the required SSL connections.</p>
+<h3>1. Having the victim connect to us</h3>
+<p>In a real attack, we&#8217;d need to have the RDP client connect to our system instead of the target server. This could be achieved using ARP spoofing, DNS spoofing or some other method. Rather than cloud the demonstration with such details, we&#8217;ll assume this is step is possible and just type the IP address of the attacker system into the victim RDP client.</p>
+<p>On our attacker system (192.168.190.170), we start our PoC tool. We tell it forward connections to the legitimate RDP server 192.168.2.96:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389
+[+] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>And we simply enter the IP address of the attacker system into the RDP client (the client connects from 192.168.190.1):</p>
+<div id="attachment_1495" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1513"><div class="lb-album"><a href="#image-1513"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" class="size-medium wp-image-1495"><span></span></a></div>              
+<a href="#imageclose-1513" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1513">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1513">
+                   </div></a><p class="wp-caption-text">We enter the attacker IP address to avoid the complexity of ARP spoofing</p></div>
+<h3>2. Talk RDP to the client to negotiate the use of SSL</h3>
+<p>The negotiation of SSL is quite short within the RDP protocol:</p>
+<p>Message #1: Client > MiTM > Server</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03*
+00 00 00
+</pre>
+<p>This message is fairly static and our tool just passes it through to the server unaltered. The *03* means that the client supports RDP Security Layer, SSL and CredSSP.</p>
+<p>Message #2: Server > MiTM > Client</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+03 00 00 13 0e d0 00 00 12 34 00 02 00 08 00 *01*
+00 00 00
+</pre>
+<p>In the next message the server chooses the protocol to use. The *01* in this case means the the server has chosen SSL (not CredSSP which would be *02*). Again, we pass this message back to the client unaltered.</p>
+<p>Note that if the server were to select CredSSP (*02*), then the demonstration would fail. We&#8217;re attacking SSL, not CredSSP.</p>
+<h3>3. Create SSL connection with RDP client</h3>
+<p>Message #3: Client > MiTM</p>
+<p>The 3rd message is the start of an SSL connection. Here is the SSL Client Hello message beginning *16 03 01*&#8230; (03 01 being the version of SSL used: SSL 3.1 AKA TLS 1.0).</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+*16 03 01* 00 5a 01 00 00 56 03 01 52 21 ac be 63
+20 ce de 4b a5 90 18 f0 66 97 ee 9d 54 14 e3 1c
+... snip ...
+</pre>
+<p>Our tool does not forward this data directly to the server. Instead it responds with a &#8220;SSL Server Hello&#8221; message and proceeds to complete the SSL connection with the client.</p>
+<p>The SSL certificate we present to the RDP client is issued to fred and this is displayed in the mstsc SSL warning shown to the user:</p>
+<div id="attachment_1517" style="width: 265px" class="wp-caption alignnone"><a name="imageclose-1514"><div class="lb-album"><a href="#image-1514"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred-255x300.jpg" alt="fred" class="size-medium wp-image-1517"><span></span></a></div>              
+<a href="#imageclose-1514" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1514">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred.jpg" alt="image-1514">
+                   </div></a><p class="wp-caption-text">The certificate presented by our PoC tool causes this security warning</p></div>
+<p>The details of the SSL certificate differ to those the user would normally see &#8211; if the user were to check. To refine the attack we could make the certificate details match more closely, but we&#8217;d never get the signature to be the same as the normal certificate, so there&#8217;d always be a difference.</p>
+<h3>4. Create SSL connection with RDP server</h3>
+<p>Simultaneously, our tool also sends and SSL Client Hello to the RDP server and creates a second SSL connection.</p>
+<h2>Displaying key strokes</h2>
+<p>Our tool is now in a position to display the cleartext messages about keystrokes (for example) sent by the RDP client. It is relatively easy to determine what sort of message is sent when a key is pressed. The following two 4-byte messages are sent when the &#8216;p&#8217; key is pressed:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 19
+44 04 01 19
+</pre>
+<p>The 3rd byte is the direction of key (00 means key-down, 01 means key-up).  The 4th byte is the key scan code.  If we <a title="look up" href="http://msdn.microsoft.com/en-us/library/aa299374%28v=vs.60%29.aspx">look up</a> 0&#215;19 we find it corresponds to the p key.</p>
+<p>In the general case, the scan-code to character mapping depends which keyboard you&#8217;re using. In the PoC tool I implemented the mapping for for QWERTY keyboards, so if you have a UK/US keyboard, it should translate the majority of scan-codes to the correct characters. Note that we don&#8217;t get know whether characters are uppercase or lowercase. We&#8217;d have to manually track the status of CAPS Lock and SHIFT keys.</p>
+<p>Without getting too bogged down in the details, here&#8217;s some sample output from the PoC tool that shows keystrokes being logged &#8211; in particular an administrator logging in with username Administrator, password Password:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389 
+[+] Listening for connections on 0.0.0.0:3389
+[+] Incoming connection from 192.168.190.1:60370
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+[+] Incoming connection from 192.168.190.1:60374
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+&lt;LShift-down&gt;A&lt;LShift-up&gt;DMINISTRATOR&lt;Tab&gt;&lt;LShift-down&gt;P&lt;LShift-up&gt;ASSWORD&lt;Enter&gt;
+</pre>
+<h2>Conclusions</h2>
+<p>Learning to ignore SSL certificate warnings is as bad for RDP connection as it is for HTTPS web sites. The results are similar: users quickly become vulnerable to &#8220;Man-In-The-Middle&#8221; attacks. Such attacks can harvest usernames, passwords, keystrokes and other sensitive data.</p>
+<p>Using SSL certificates that are signed by a Certificate Authority the RDP client trusts will result in no warning under normal operation, so is highly recommended.</p>
+<p>This attack doesn&#8217;t work if the server mandates NLA, so using NLA is also highly recommended.</p>
+<p>It&#8217;s important to note that this isn&#8217;t a vulnerability in the RDP Client or Server software. Nor is this a  new discovery. It&#8217;s a weakness in way RDP is sometimes used which stems from users ignoring security warnings. At a technical level, this is a fairly vanilla SSL MiTM attack.</p>
+<p>It might be interesting to extend this work by recording screen captures; or by injecting images of login boxes to encourage users to part of with other credentials. There would also be an opportunity to attack any drives that the RDP client has mapped for drive redirection &#8211; see <a title="Attacking the RDP client" href="http://tombstone-bbs.co.uk/reverse-rdp/reverse-rdp.html">Attacking the RDP Clients</a> for inspiration. These would be pretty demanding coding challenges, though!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/">SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

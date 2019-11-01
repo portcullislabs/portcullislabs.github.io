@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; ADS</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/ads/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>NTFS Alternate Data Streams for pentesters (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/#comments</comments>
+		<pubDate>Thu, 27 Feb 2014 11:23:17 +0000</pubDate>
+		<dc:creator><![CDATA[AMM]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[ADS]]></category>
+		<category><![CDATA[NTFS]]></category>
+		<category><![CDATA[web]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3677</guid>
+		<description><![CDATA[<p>Alternate Data Streams (ADS) have been present in modern versions of Windows for a long time. If you are using a NTFS filesystem, you can bet that you are using them. As penetration testers, we can use that OS-specific feature in our advantage. In the following posts information required to understand and identify potential ADS-related issues [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/">NTFS Alternate Data Streams for pentesters (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Alternate Data Streams (ADS) have been present in modern versions of Windows for a long time. If you are using a NTFS filesystem, you can bet that you are using them. As penetration testers, we can use that OS-specific feature in our advantage. In the following posts information required to understand and identify potential ADS-related issues will be provided. This post will provide the required background to understand some common scenarios that could be useful during the penetration testing engagements.<span id="more-3677"></span></p>
+<h2>What are Alternate Data Streams?</h2>
+<p>Alternate Data Streams is a feature supported by NTFS (New Technology File System) Windows-proprietary filesystem. With NTFS, all files contain at least one stream, but it is possible to associate alternate streams or contents to that file. When you open a file, you are accessing the main stream of the file, but using a specific syntax, you can access an alternate stream. ADS are also known as NTFS streams.</p>
+<p>If it helps you to understand this concept, try to think of the NTFS file as a container with multiple compartments. The container will be the file name, and each of the compartments will be a stream. Unless stated otherwise, when accessing the container, you&#8217;ll open the default compartment which is the standard behavior when you open a file on Windows.</p>
+<h2>Why should I care about ADS?</h2>
+<p>As penetration testers, using ADS could allow us to bypass the expected behavior of the applications. Take in account that NTFS streams are fully integrated by Windows, which also imply that most of the web components build on top of it supports it (e.g. PHP/Java), even if the developers are not aware of that.</p>
+<p>Therefore, using the ADS format could help us during our penetration testing activities, as the input validation controls might not be expecting a filename using the NTFS stream format.</p>
+<p>Moreover, over the years multiple vulnerabilities have been identified on different products. For example, IIS has had a couple of vulnerabilities relating to ADS (see <a title="CVE-1999-0278" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-1999-0278">CVE-1999-0278</a> and <a title="CVE-2010-2731" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-2731">CVE-2010-2731</a>), but what makes things interesting is that the previous vulnerabilities were reported over 10 years apart!. So in short, this feature has been abused by attackers and security researchers over a period of 10 years(!).</p>
+<h2>Which are the internal details of ADS?</h2>
+<p>It seems that NTFS streams were added by Microsoft in order to support the Macintosh <a title="Hierarchical File System" href="https://en.wikipedia.org/wiki/Hierarchical_File_System">Hierarchical File System</a> and the ReFS and Universal Disk Format (UDF) file systems also supports this feature. </p>
+<p>You should note that NTFS streams will be lost if you copy files to a file system that doesn&#8217;t support them (e.g. FAT). If you need more details, feel free to read the Microsoft documentation <a title="here" href="http://msdn.microsoft.com/en-us/library/dn393272.aspx">here</a>.</p>
+<p>As you will see below, NTFS streams are also present on directories, which are a special case. However, as far as I know, its main limitation is that custom streams cannot be created within directories, so we will be limited to reading or deleting directories using the default system stream name.</p>
+<p>Basically, the syntax required to access a NTFS stream is the following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+&lt;name&gt;:&lt;stream_name&gt;:&lt;stream_type&gt;
+</pre>
+<ul>
+<li>name refers the the resource, it can be a file (e.g. document.txt) or a folder (e.g. <em>Windows</em>)</li>
+<li>stream_name is the name of our compartment, when working with files, an empty stream name indicates the default stream, when dealing with folders, the default stream name will be &#8220;$I30&#8243;</li>
+<li>stream_type will be always $DATA when dealing with files or $INDEX_ALLOCATION for folders</li>
+</ul>
+<p>When the stream_name is omitted, you are accessing the main stream. For example, the following NTFS streams are equivalent:</p>
+<ul>
+<li>myfile.txt</li>
+<li>myfile.txt:</li>
+<li>myfile.txt::$DATA</li>
+</ul>
+<p>In the case of directories, the following NTFS streams are equivalent:</p>
+<ul>
+<li>mydir</li>
+<li>mydir:$I30:$INDEX_ALLOCATION</li>
+<li>mydir::$INDEX_ALLOCATION</li>
+</ul>
+<h2>How to create ADS</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+echo &quot;test&quot; &gt; myfile:stream
+mkdir &quot;myfolder:$I30:$INDEX_ALLOCATION&quot;
+</pre>
+<h2>How to read ADS</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+more &lt; myfile:stream
+more &lt; myfile:stream:$DATA
+dir C:\Windows:$I30:$INDEX_ALLOCATION
+</pre>
+<h2>How can I enumerate NTFS data streams on Windows?</h2>
+<h3>Powershell</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+get-item -Path d:\* -Stream *
+</pre>
+<h3>Vista and above</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+dir /r
+</pre>
+<h3>Sysinternals</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+streams -s c:
+</pre>
+<h2>Which ADS should I focus while doing penetration test?</h2>
+<p>In short, focus should be put in the following elements:</p>
+<h3>Files</h3>
+<p>The following NTFS streams might help us to bypass the input validation routines when writing/reading files:</p>
+<ul>
+<li>myfile.txt::$DATA (Contains the data stored on myfile.txt)</li>
+<li>myfile.txt:stream:$DATA (Contains the data stored on the ADS called &#8220;stream&#8221;, which is located on myfile.txt)</li>
+</ul>
+<h3>Directory</h3>
+<p>The following attack vectors might allow us to enumerate folders in the remote server or, depending on the implemented input validation routines, perform a more dangerous attacks:</p>
+<ul>
+<li>directory::$DATA</li>
+<li>directory:$I30:$INDEX_ALLOCATION</li>
+<li>directory::$INDEX_ALLOCATION</li>
+</ul>
+<h2>Summary</h2>
+<p>This post explained what NTFS streams are, providing the necessary background to understand attacks using this NTFS feature. In the next post we&#8217;ll see some examples of potential vulnerabilities that we might expect to see in real-life applications.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/">NTFS Alternate Data Streams for pentesters (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

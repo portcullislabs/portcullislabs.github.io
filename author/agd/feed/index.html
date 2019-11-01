@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; AGD</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/agd/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>SSL and Export Ciphers: Logjam and FREAK</title>
+		<link>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/#comments</comments>
+		<pubDate>Thu, 28 May 2015 15:35:39 +0000</pubDate>
+		<dc:creator><![CDATA[AGD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5162</guid>
+		<description><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed. During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed.<span id="more-5162"></span></p>
+<p>During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers which would comply with the American export laws. All these ciphers are tagged as EXPORT ciphers or export-grade cryptography, which nowadays is considered obsolete. Solutions exist at the moment to provide higher confidentiality and integrity levels for messages, and these export regulations are no longer present.</p>
+<p>Two attacks on SSL export ciphers will be discussed: Logjam and FREAK.</p>
+<h2>Logjam Attack</h2>
+<h3>What is it?</h3>
+<p>The <a title="Logjam attack" href="https://weakdh.org/imperfect-forward-secrecy.pdf">Logjam attack</a> exploits the acceptance on both clients and servers of export-grade ciphers using Diffie-Hellman as their key exchange protocol.</p>
+<p>To exploit this vulnerability, the attacker performs a downgrade attack on the victim, forcing them to use a weak key exchange protocol. A man-in-the-middle can force TLS clients to use export strength DH with any server that allows DHE_EXPORT ciphers. Then, by computing the discrete log using techniques such as precomputation attacks against known primes, the attacker can learn the session key and arbitrarily read or modify the contents of the data transmitted between both parties.</p>
+<h3>What does it expose?</h3>
+<p>The successful exploitation of Logjam would allow an attacker to completely compromise the confidentiality and integrity of any TLS session on a client or server which accepts export-grade Diffie-Hellman key exchange.</p>
+<p>It should be noted that, although it is expected to take a week or so to precompute logs for each prime, Diffie-Hellman implementations on different TLS clients and servers often use the same small set of primes, so only a few primes need to be precomputed against in order to enable the decryption of a significant portion of global TLS traffic.</p>
+<h2>FREAK Attack</h2>
+<h3>What is it?</h3>
+<p>The <a title="FREAK attack" href="http://blog.cryptographyengineering.com/2015/03/attack-of-week-freak-or-factoring-nsa.html">FREAK attack</a> exploits the presence of export-grade cryptography with RSA key exchange. As with the Logjam attack, the target connection is deliberately weakened by forcing the use of an export-grade key exchange.</p>
+<p>To exploit this vulnerability, an attacker downgrades a regular RSA key exchange to one that uses export-grade ephemeral RSA keys, relying on a bug in several TLS client implementations. The attacker then factors the ephemeral key to hijack future connections that use the same key. At the time the vulnerability was first published, it cost around $100 (USD) to factor the weak RSA key in 8 hours on a cluster of systems running GPUs. Once the RSA key has been factored, an attacker would be able to decrypt the RSA-protected key-exchange, recover the symmetric encryption key and decrypt all SSL traffic captured.</p>
+<h3>What does it expose?</h3>
+<p>The successful exploitation of FREAK would allow an attacker to completely compromise the confidentiality and integrity of any TLS session between a client or server which accepts export-grade RSA as key exchange protocol.</p>
+<h2>Who/What is affected?</h2>
+<p>Any service which runs over TLS and accepts EXPORT_DH or EXPORT_RSA ciphers is vulnerable to these attacks. Although these attacks target specifically these export ciphers, all export ciphers are considered to be obsolete and hence should be disabled. An example of common services which could be affected by this attack are the following:</p>
+<ul>
+<li>HTTPS</li>
+<li>SSH</li>
+<li>SMTP</li>
+</ul>
+<h2>What should we do?</h2>
+<p>Both attacks exploit the possibility of downgrading a connection initialization to use a legacy key exchange protocol. In order to defend against the Logjam and FREAK attacks, Portcullis recommends to have an up-to-date client and to disable all export-grade ciphers on both clients and servers. In addition to this, it is recommended to transition towards Elliptic Curve Diffie-Hellman as key exchange protocol.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that old protocols and ciphers be disabled for some time now, which prevents this attack. You can use the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

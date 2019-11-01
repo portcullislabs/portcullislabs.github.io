@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; IVW</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/ivw/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Banner Grab</title>
+		<link>https://labs.portcullis.co.uk/tools/bannergrab/</link>
+		<comments>https://labs.portcullis.co.uk/tools/bannergrab/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:59:54 +0000</pubDate>
+		<dc:creator><![CDATA[IVW]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=258</guid>
+		<description><![CDATA[<p>BannerGrab is a tool that performs connection, trigger-based and basic information collection from network services. The program has two modes of operation; simple connection banner grabbing and the default mode which makes use of service triggers to enumerate additional information. Requirements BannerGrab requires the GNU C compiler and has been tested on Linux, but should [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/bannergrab/">Banner Grab</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>BannerGrab is a tool that performs connection, trigger-based and basic information collection from network services.<span id="more-258"></span></p>
+<p>The program has two modes of operation; simple connection banner grabbing and the default mode which makes use of service triggers to enumerate additional information.</p>
+<h2>Requirements</h2>
+<p>BannerGrab requires the GNU C compiler and has been tested on Linux, but should work on other UNIX type systems. It has even been known to run from an iPhone.</p>
+<p>BannerGrab has an optional requirement of the OpenSSL library to perform SSL-based grabs. However, SSL support can be disabled.</p>
+<h2>Download</h2>
+<p>BannerGrab can be downloaded from the Source Forge project site at<a href="http://sourceforge.net/projects/bannergrab">sourceforge.net/projects/bannergrab</a>.</p>
+<h2>Compiling</h2>
+<p>BannerGrab includes a Makefile, so it can be built in the usual way:</p>
+<ul>
+<li><code>make</code></li>
+<li><code>make install </code>(as root)</li>
+</ul>
+<p>However, it can be manually compiled as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -lssl -o bannergrab bannergrab.c
+</pre>
+<p>On Mac OS-X systems it can be compiled as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -lssl -lcrypto -o bannergrab bannergrab.c
+</pre>
+<p>It can be compiled without OpenSSL support as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -DNOSSL -o bannergrab bannergrab.c
+</pre>
+<h2>Running</h2>
+<p>BannerGrab can be run in its simplest form by specifying a host and port as the parameters. For example:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bannergrab 127.0.0.1 80
+</pre>
+<p>More advanced options can be shown using the online help with the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bannergrab --help
+</pre>
+<h2>License</h2>
+<p>BannerGrab is covered by the GPL v3 license with the following exception:</p>
+<p><em>In addition, as a special exception, the copyright holders give<br />
+permission to link the code of portions of this program with the<br />
+OpenSSL library under certain conditions as described in each<br />
+individual source file, and distribute linked combinations<br />
+including the two.<br />
+You must obey the GNU General Public License in all respects<br />
+for all of the code used other than OpenSSL. If you modify<br />
+file(s) with this exception, you may extend this exception to your<br />
+version of the file(s), but you are not obligated to do so. If you<br />
+do not wish to do so, delete this exception statement from your<br />
+version. If you delete this exception statement from all source<br />
+files in the program, then also delete it here.</em></p>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/bannergrab/">Banner Grab</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/bannergrab/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>viewstate</title>
+		<link>https://labs.portcullis.co.uk/tools/viewstate/</link>
+		<comments>https://labs.portcullis.co.uk/tools/viewstate/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:14:44 +0000</pubDate>
+		<dc:creator><![CDATA[IVW]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=168</guid>
+		<description><![CDATA[<p>Viewstate is an ASP.Net viewstate decoder, checker, parser and encoder. It supports both old and new types of viewstate and the data can be extracted directly from the web. Requirements Viewstate is platform independent and can be downloaded in source code or Windows binary formats. If you are building viewstate from source you will need [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/viewstate/">viewstate</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Viewstate is an ASP.Net viewstate decoder, checker, parser and encoder.<span id="more-168"></span></p>
+<p>It supports both old and new types of viewstate and the data can be extracted directly from the web.</p>
+<h2>Requirements</h2>
+<p>Viewstate is platform independent and can be downloaded in source code or Windows binary formats. If you are building viewstate from source you will need the GNU C compiler (under Windows you can use MinGW).</p>
+<h2>Downloads</h2>
+<p>Viewstate can be downloaded from the Source Forge project page <a href="http://sourceforge.net/projects/viewstate">sourceforge.net/projects/viewstate</a>.</p>
+<h2>Compiling</h2>
+<p>A Makefile is provided to provide the usual compilation process of:</p>
+<ul>
+<li>make</li>
+<li>make install (as root)</li>
+</ul>
+<p>However, you can compile it manually with the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -o viewstate viewstate.c
+</pre>
+<h2>Running</h2>
+<p>If viewstate is run with no options, the online help is displayed. But a simple decode of the viewstate data held by the Acme company web site would be:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+viewstate --decode --url=http://www.acme.fake/main.asp
+</pre>
+<h2>License</h2>
+<p>Viewstate is covered by the GPL v3 license.</p>
+<p>Link to project: <a href="http://sourceforge.net/projects/viewstate">http://sourceforge.net/projects/viewstate</a></p>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/viewstate/">viewstate</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/viewstate/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Sun Patch Check</title>
+		<link>https://labs.portcullis.co.uk/tools/sun-patch-check/</link>
+		<comments>https://labs.portcullis.co.uk/tools/sun-patch-check/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:19:08 +0000</pubDate>
+		<dc:creator><![CDATA[IVW]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=177</guid>
+		<description><![CDATA[<p>Sun Patch Check lists missing security patches by comparing the output from the Sun Solaris &#8220;showrev&#8221; command to that from the Sun recommended patch list. Sun Patch Check is a tool that does exactly what it says on the tin. Sun Patch Check compares the output from the Sun Solaris showrev command to that from the Sun [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/sun-patch-check/">Sun Patch Check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Sun Patch Check lists missing security patches by comparing the output from the Sun Solaris &#8220;showrev&#8221; command to that from the Sun recommended patch list.<span id="more-177"></span></p>
+<p>Sun Patch Check is a tool that does exactly what it says on the tin. Sun Patch Check compares the output from the Sun Solaris <code>showrev</code> command to that from the Sun recommended patch list.</p>
+<h2>Requirements</h2>
+<p>Sun Patch Check only requires the GNU C compiler.</p>
+<h2>Download</h2>
+<p>The latest version of Sun Patch Check can be downloaded from <a href="http://www.titania.co.uk/sunpatchcheck.php">here</a>.</p>
+<h2>Compiling</h2>
+<p>Sun Patch Check can be compiled from source using the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -o sunpatchcheck sunpatchcheck.c
+</pre>
+<h2>Running</h2>
+<p>Before you can use Sun Patch Check to check the patches of any Sun Solaris system you will need to update the patch list from the Sun web site. This can be done with the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sunpatchcheck --update
+</pre>
+<p>You may want to update the patch list on a regular basis otherwise there may be more recent patches missing from the database.</p>
+<p>You will need to collect a patch list from a Sun Solaris system you want to check. This can be done with the following Solaris command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+showrev -p &amp;gt;patchlist.txt
+</pre>
+<p>Sun Patch Check needs to know what version of Solaris you are comparing the patches from, this is specified on the command line when running Sun Patch Check. To check the patches from a Solaris 10 Sparc system using the file extracted in the previous example:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sunpatchcheck --check=patchlist.txt --solaris=10
+</pre>
+<p>Online help for all options is available using:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sunpatchcheck --help
+</pre>
+<h2>License</h2>
+<p>Sun Patch Check is covered by the GPL v3 license, but you will also need to agree to the <a href="http://sunsolve.sun.com/show.do?target=tous">Sun Solve license</a>.</p>
+<p>Link: <a href="http://www.titania.co.uk/sunpatchcheck.php">http://www.titania.co.uk/sunpatchcheck.php</a></p>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/sun-patch-check/">Sun Patch Check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/sun-patch-check/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>ssl-cipher-suite-enum | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='ssl-cipher-suite-enum - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-182 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-182"  class="portcullis-post portcullis-article  post-182 post type-post status-publish format-standard hentry category-tools">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">ssl-cipher-suite-enum</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="12:11">13/02/2013</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>ssl-cipher-suite-enum is a perl script to enumerate supported SSL cipher suites supported by network services (principally HTTPS).<span id="more-182"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Support for legacy and newer versions of SSL/TLS: SSLv2.0, TLSv1.0/SSLv3.0, TLSv1.1, TLSv1.2</li>
+<li>Support for SSL testing over SMTP (STARTTLS), RDP and FTP (AUTH SSL)</li>
+<li>Flagging of common security issues on a per-host and per-cipher-suite basis (see below for list)</li>
+<li>Works even when the service requires a client SSL certificate</li>
+<li>Bruteforces SSLv3+ cipher suites &#8211; rather than relying on a fixed list of cipher suites that were known at the time of writing</li>
+<li>No reliance on SSL libraries &#8211; which can cause false negatives</li>
+<li>Human readable and greppable output &#8211; to support reporting and automation</li>
+<li>Fast scan rate &#8211; 1000 connections/second over the LAN</li>
+<li>Option to throttle connection speed</li>
+<li>Optimised scanning &#8211; group unpopular cipher sites into a single handshake to reduce the number of required connections</li>
+<li>Option to logging all output to a file</li>
+<li>Support for scanning a list of hosts</li>
+<li>Handling of servers that accept cipher suites the client didn&#8217;t offer &#8211; rare but it does happen!</li>
+</ul>
+<h2>Security issues identified</h2>
+<p>ssl-cipher-suite-enum identifies the following common security issues relating to SSL:</p>
+<ul>
+<li>SSLv2 being supported &#8211; being vulnerable to a downgrade attack and other problems inherent to this version of the protocol.</li>
+<li>Cipher suites that use symmetric encryption where the key length is less than 128-bits.</li>
+<li>Support of key exchange algorithms that don&#8217;t support forward secrecy &#8211; or equivalently, cipher suites that allow sniffed traffic to be retrospectively decrypted if the private SSL key were to be compromised.</li>
+<li>Anonymous Diffie Hellman key exchanges &#8211; which allow &#8220;Man-In-The-Middle&#8221; attacks</li>
+<li>Cipher suites / protocol combinations that are vulnerable to the BEAST attack &#8211; i.e. combinations that would leave the client-&gt;server stream open to the BEAST attack</li>
+<li>Cipher suites that are vulnerable to the POODLE attack &#8211; i.e. cipher suites that would leave the client-&gt;server stream open to the POODLE attack</li>
+<li>Cipher suites that are vulnerable to issues relating to legacy export ciphers (FREAK and Logjam)</li>
+</ul>
+<h2>Overview</h2>
+<p>The tool performs a similar function to sslscan, <a title="THCSSLCheck" href="http://www.thc.org/root/tools/">THCSSLCheck</a> and sslyze, but differs by crafting part of the SSL handshake instead of using an SSL library to establish a full connection. For SSLv3.0 and above, cipher suites are bruteforced (each cipher suite is represented as a 2 byte field: generally 0&#215;00?? or 0xC0?? &#8211; yielding 512 possible values). For SSLv2 only known cipher suites are tried &#8211; the search space seems much larger v2 cipher suites and precludes timely bruteforcing.</p>
+<p>The handshake-crafting approach provides some significant advantages over library-based tools. Libraries either become outdated and therefore incapable of testing for new protocols such as TLSv1.2 or exotic cipher suites; or they are updated and lose support for older protocols &#8211; namely SSLv2.  This can be a significant cause of false negative results when performing vulnerability assessments.</p>
+<p>ssl-cipher-suite-enum therefore aims to ensure that you can always identify all support cipher suites and that you never miss the fact that SSLv2 is supported. There is, of course an increased risk of false positive results, though: failing to use an SSL library means that the connection is never fully established.  ssl-cipher-suit-enum will not detect that an application refuses to talk over weaker cipher suites or that full connection fails for some other reason &#8211; such as a client certificate being required.</p>
+<p>Also see the <a title="FAQ" href="https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/faq/">FAQ</a> page.</p>
+<h2>Example output 1: Old host supporting SSLv2</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ssl-cipher-suite-enum.pl 127.0.0.1
+Starting ssl-cipher-enum v0.4-beta ( https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/ ) at Tue Jul  3 14:48:21 2012
+
+[+] Scanning 1 hosts
+
+=== Scan Info ===
+
+Target:    127.0.0.1
+IP:        127.0.0.1
+Port:      443
+Protocols: SSLv2.0,SSLv3.0,TLSv1.0,TLSv1.1,TLSv1.2
+Scan Rate: unlimited
+
+=== Testing protocol SSLv2.0 ===
+
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 RC4_128_WITH_MD5[010080] SSL2_INSEC,NO_PFS
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 RC4_128_EXPORT40_WITH_MD5[020080] SSL2_INSEC,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 RC2_128_CBC_WITH_MD5[030080] SSL2_INSEC,BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 RC2_128_CBC_EXPORT40_WITH_MD5[040080] SSL2_INSEC,BEAST,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 DES_64_CBC_WITH_MD5[060040] SSL2_INSEC,BEAST,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 127.0.0.1:443: SSLv2.0 DES_192_EDE3_CBC_WITH_MD5[0700c0] SSL2_INSEC,BEAST,NO_PFS
+[+] 6 SSLv2.0 cipher suites supported
+
+[V] 127.0.0.1:443 - Some clients could be vulnerable to BEAST attack - if HTTPS service
+[V] 127.0.0.1:443 - Some connections might be protected with a weak (&lt;128-bit) symmetric encryption key
+
+=== Testing protocol SSLv3.0 ===
+
+[+] 0 SSLv3.0 cipher suites supported
+
+=== Testing protocol TLSv1.0 ===
+
+[+] 0 TLSv1.0 cipher suites supported
+
+=== Testing protocol TLSv1.1 ===
+
+[+] 0 TLSv1.1 cipher suites supported
+
+=== Testing protocol TLSv1.2 ===
+
+[+] 0 TLSv1.2 cipher suites supported
+
+[+] Summary of support cipher suites for 127.0.0.1:443
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+[+] Summary of weakness &quot;BEAST&quot; for 127.0.0.1:443
+
+SSLv2.0:
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+[+] Summary of weakness &quot;NO_PFS&quot; for 127.0.0.1:443
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+[+] Summary of weakness &quot;SSL2_INSEC&quot; for 127.0.0.1:443
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+[+] Summary of weakness &quot;WEAK_ENC&quot; for 127.0.0.1:443
+
+SSLv2.0:
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+
+=== Scan Complete ===
+
+[+] ssl-cipher-enum v0.4-beta completed at Tue Jul  3 14:48:22 2012.  918 connections in 1 secs.
+</pre>
+<h2>Example output 2: Average modern SSL service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ssl-cipher-suite-enum.pl localhost:443
+Starting ssl-cipher-enum v0.4-beta ( https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/ ) at Tue Jul  3 14:48:41 2012
+
+[+] Scanning 1 hosts
+
+=== Scan Info ===
+
+Target:    localhost
+IP:        127.0.0.2
+Port:      443
+Protocols: SSLv2.0,SSLv3.0,TLSv1.0,TLSv1.1,TLSv1.2
+Scan Rate: unlimited
+
+=== Testing protocol SSLv2.0 ===
+
+[+] 0 SSLv2.0 cipher suites supported
+
+=== Testing protocol SSLv3.0 ===
+
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 RSA_DES_192_CBC3_SHA[000a] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 EDH_RSA_DES_192_CBC3_SHA[0016] BEAST
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 RSA_WITH_AES_128_SHA[002f] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 DHE_RSA_WITH_AES_128_SHA[0033] BEAST
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 RSA_WITH_AES_256_SHA[0035] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: SSLv3.0 DHE_RSA_WITH_AES_256_SHA[0039] BEAST
+
+[+] Preferred SSLv3.0 cipher suite on 127.0.0.2:443: RSA_RC4_128_SHA[0005]
+
+[+] 7 SSLv3.0 cipher suites supported
+
+[V] 127.0.0.2:443 - Some clients could be vulnerable to BEAST attack - if HTTPS service
+[V] 127.0.0.2:443 - Most encrypted connections will not use forward secrecy
+
+=== Testing protocol TLSv1.0 ===
+
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 RSA_DES_192_CBC3_SHA[000a] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 EDH_RSA_DES_192_CBC3_SHA[0016] BEAST
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 RSA_WITH_AES_128_SHA[002f] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 DHE_RSA_WITH_AES_128_SHA[0033] BEAST
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 RSA_WITH_AES_256_SHA[0035] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.2:443: TLSv1.0 DHE_RSA_WITH_AES_256_SHA[0039] BEAST
+
+[+] Preferred TLSv1.0 cipher suite on 127.0.0.2:443: RSA_RC4_128_SHA[0005]
+
+[+] 7 TLSv1.0 cipher suites supported
+
+[V] 127.0.0.2:443 - Some clients could be vulnerable to BEAST attack - if HTTPS service
+[V] 127.0.0.2:443 - Most encrypted connections will not use forward secrecy
+
+=== Testing protocol TLSv1.1 ===
+
+[+] Protocol TLSv1.1 is not supported.  Skipping.
+[+] 0 TLSv1.1 cipher suites supported
+
+=== Testing protocol TLSv1.2 ===
+
+[+] Protocol TLSv1.2 is not supported.  Skipping.
+[+] 0 TLSv1.2 cipher suites supported
+
+[+] Summary of support cipher suites for 127.0.0.2:443
+
+SSLv3.0:
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+[+] Summary of weakness &quot;BEAST&quot; for 127.0.0.2:443
+
+SSLv3.0:
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+[+] Summary of weakness &quot;NO_PFS&quot; for 127.0.0.2:443
+
+SSLv3.0:
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+=== Scan Complete ===
+
+[+] ssl-cipher-enum v0.4-beta completed at Tue Jul  3 14:48:41 2012.  470 connections in 0 secs.
+</pre>
+<h2>Example output 3: Well secured service supporting TLSv1.2</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ssl-cipher-suite-enum.pl www.example.com
+Starting ssl-cipher-enum v0.4-beta ( https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/ ) at Tue Jul  3 14:48:52 2012
+
+[+] Scanning 1 hosts
+
+=== Scan Info ===
+
+Target:    www.example.com
+IP:        127.0.0.3
+Port:      443
+Protocols: SSLv2.0,SSLv3.0,TLSv1.0,TLSv1.1,TLSv1.2
+Scan Rate: unlimited
+
+=== Testing protocol SSLv2.0 ===
+
+[+] 0 SSLv2.0 cipher suites supported
+
+=== Testing protocol SSLv3.0 ===
+
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 RSA_DES_192_CBC3_SHA[000a] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 ECDHE_RSA_WITH_RC4_128_SHA[c011]
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 ECDHE_RSA_WITH_DES_192_CBC3_SHA[c012] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 ECDHE_RSA_WITH_AES_128_CBC_SHA[c013] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 ECDHE_RSA_WITH_AES_256_CBC_SHA[c014] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 RSA_WITH_AES_128_SHA[002f] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: SSLv3.0 RSA_WITH_AES_256_SHA[0035] BEAST,NO_PFS
+
+[+] Preferred SSLv3.0 cipher suite on 127.0.0.3:443: ECDHE_RSA_WITH_RC4_128_SHA[c011]
+
+[+] 9 SSLv3.0 cipher suites supported
+
+[V] 127.0.0.3:443 - Some clients could be vulnerable to BEAST attack - if HTTPS service
+[V] 127.0.0.3:443 - Some encrypted connections may not have forward secrecy
+
+=== Testing protocol TLSv1.0 ===
+
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 RSA_DES_192_CBC3_SHA[000a] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 ECDHE_RSA_WITH_RC4_128_SHA[c011]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 ECDHE_RSA_WITH_DES_192_CBC3_SHA[c012] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 ECDHE_RSA_WITH_AES_128_CBC_SHA[c013] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 ECDHE_RSA_WITH_AES_256_CBC_SHA[c014] BEAST
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 RSA_WITH_AES_128_SHA[002f] BEAST,NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.0 RSA_WITH_AES_256_SHA[0035] BEAST,NO_PFS
+
+[+] Preferred TLSv1.0 cipher suite on 127.0.0.3:443: ECDHE_RSA_WITH_RC4_128_SHA[c011]
+
+[+] 9 TLSv1.0 cipher suites supported
+
+[V] 127.0.0.3:443 - Some clients could be vulnerable to BEAST attack - if HTTPS service
+[V] 127.0.0.3:443 - Some encrypted connections may not have forward secrecy
+
+=== Testing protocol TLSv1.1 ===
+
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 RSA_DES_192_CBC3_SHA[000a] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 ECDHE_RSA_WITH_RC4_128_SHA[c011]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 ECDHE_RSA_WITH_DES_192_CBC3_SHA[c012]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 ECDHE_RSA_WITH_AES_128_CBC_SHA[c013]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 ECDHE_RSA_WITH_AES_256_CBC_SHA[c014]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 RSA_WITH_AES_128_SHA[002f] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.1 RSA_WITH_AES_256_SHA[0035] NO_PFS
+
+[+] Preferred TLSv1.1 cipher suite on 127.0.0.3:443: ECDHE_RSA_WITH_RC4_128_SHA[c011]
+
+[+] 9 TLSv1.1 cipher suites supported
+
+[V] 127.0.0.3:443 - Some encrypted connections may not have forward secrecy
+
+=== Testing protocol TLSv1.2 ===
+
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_DES_192_CBC3_SHA[000a] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_RC4_128_SHA[c011]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_DES_192_CBC3_SHA[c012]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_128_CBC_SHA[c013]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_256_CBC_SHA[c014]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_128_CBC_SHA256[c027]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_256_CBC_SHA384[c028]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_128_SHA[002f] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_128_GCM_SHA256[c02f]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 ECDHE_RSA_WITH_AES_256_GCM_SHA384[c030]
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_256_SHA[0035] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_128_CBC_SHA256[003c] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_256_CBC_SHA256[003d] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_128_GCM_SHA256[009c] NO_PFS
+[+] Cipher suite supported on 127.0.0.3:443: TLSv1.2 RSA_WITH_AES_256_GCM_SHA384[009d] NO_PFS
+
+[+] Preferred TLSv1.2 cipher suite on 127.0.0.3:443: ECDHE_RSA_WITH_RC4_128_SHA[c011]
+
+[+] 17 TLSv1.2 cipher suites supported
+
+[V] 127.0.0.3:443 - Some encrypted connections may not have forward secrecy
+[+] Summary of support cipher suites for 127.0.0.3:443
+
+SSLv3.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_RC4_128_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+TLSv1.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_RC4_128_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+TLSv1.1:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_RC4_128_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+TLSv1.2:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* RSA_WITH_AES_128_CBC_SHA256
+* RSA_WITH_AES_256_CBC_SHA256
+* RSA_WITH_AES_128_GCM_SHA256
+* RSA_WITH_AES_256_GCM_SHA384
+* ECDHE_RSA_WITH_RC4_128_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA256
+* ECDHE_RSA_WITH_AES_256_CBC_SHA384
+* ECDHE_RSA_WITH_AES_128_GCM_SHA256
+* ECDHE_RSA_WITH_AES_256_GCM_SHA384
+
+[+] Summary of weakness &quot;BEAST&quot; for 127.0.0.3:443
+
+SSLv3.0:
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+TLSv1.0:
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_DES_192_CBC3_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+[+] Summary of weakness &quot;NO_PFS&quot; for 127.0.0.3:443
+
+SSLv3.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+TLSv1.1:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+TLSv1.2:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* RSA_WITH_AES_128_CBC_SHA256
+* RSA_WITH_AES_256_CBC_SHA256
+* RSA_WITH_AES_128_GCM_SHA256
+* RSA_WITH_AES_256_GCM_SHA384
+
+=== Scan Complete ===
+
+[+] ssl-cipher-enum v0.4-beta completed at Tue Jul  3 14:49:39 2012.  922 connections in 47 secs.
+</pre>
+<h2>Output example #4: Scanning SMTP service that supports STARTTLS</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ./ssl-cipher-suite-enum.pl --smtp 10.0.0.4:25
+Starting ssl-cipher-suite-enum v0.9 ( https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/ ) at Thu Jul 12 07:02:20 2012
+
+[+] Scanning 1 hosts
+
+=== Scan Info ===
+
+Target:    10.0.0.4
+IP:        10.0.0.4
+Port:      25
+Protocols: SSLv2.0,SSLv3.0,TLSv1.0,TLSv1.1,TLSv1.2
+Preamble:  SMTP
+Scan Rate: unlimited
+
+=== Testing protocol SSLv2.0 ===
+
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 RC4_128_WITH_MD5[010080] SSL2_INSEC,NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 RC4_128_EXPORT40_WITH_MD5[020080] SSL2_INSEC,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 RC2_128_CBC_WITH_MD5[030080] SSL2_INSEC,NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 RC2_128_CBC_EXPORT40_WITH_MD5[040080] SSL2_INSEC,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 DES_64_CBC_WITH_MD5[060040] SSL2_INSEC,NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv2.0 DES_192_EDE3_CBC_WITH_MD5[0700c0] SSL2_INSEC,NO_PFS
+[+] 6 SSLv2.0 cipher suites supported
+
+[V] 10.0.0.4:25 - Some connections might be protected with a weak (&lt;128-bit) symmetric encryption key
+
+=== Testing protocol SSLv3.0 ===
+
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_RC4_40_MD5[0003] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_RC2_40_MD5[0006] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_DES_40_CBC_SHA[0008] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_DES_64_CBC_SHA[0009] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_DES_192_CBC3_SHA[000a] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 EDH_RSA_DES_40_CBC_SHA[0014] WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 EDH_RSA_DES_64_CBC_SHA[0015] WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 EDH_RSA_DES_192_CBC3_SHA[0016]
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_WITH_AES_128_SHA[002f] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 DHE_RSA_WITH_AES_128_SHA[0033]
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 RSA_WITH_AES_256_SHA[0035] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: SSLv3.0 DHE_RSA_WITH_AES_256_SHA[0039]
+
+[+] Preferred SSLv3.0 cipher suite on 10.0.0.4:25: RSA_RC4_40_MD5[0003] NO_PFS,WEAK_ENC
+
+[+] 14 SSLv3.0 cipher suites supported
+
+[V] 10.0.0.4:25 - Some connections might be protected with a weak (&lt;128-bit) symmetric encryption key
+[V] 10.0.0.4:25 - Most encrypted connections will not use forward secrecy
+
+=== Testing protocol TLSv1.0 ===
+
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_RC4_40_MD5[0003] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_RC2_40_MD5[0006] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_DES_40_CBC_SHA[0008] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_DES_64_CBC_SHA[0009] NO_PFS,WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_DES_192_CBC3_SHA[000a] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 EDH_RSA_DES_40_CBC_SHA[0014] WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 EDH_RSA_DES_64_CBC_SHA[0015] WEAK_ENC
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 EDH_RSA_DES_192_CBC3_SHA[0016]
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_WITH_AES_128_SHA[002f] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 DHE_RSA_WITH_AES_128_SHA[0033]
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 RSA_WITH_AES_256_SHA[0035] NO_PFS
+[+] Cipher suite supported on 10.0.0.4:25: TLSv1.0 DHE_RSA_WITH_AES_256_SHA[0039]
+
+[+] Preferred TLSv1.0 cipher suite on 10.0.0.4:25: RSA_RC4_40_MD5[0003] NO_PFS,WEAK_ENC
+
+[+] 14 TLSv1.0 cipher suites supported
+
+[V] 10.0.0.4:25 - Some connections might be protected with a weak (&lt;128-bit) symmetric encryption key
+[V] 10.0.0.4:25 - Most encrypted connections will not use forward secrecy
+
+=== Testing protocol TLSv1.1 ===
+
+[+] Protocol TLSv1.1 is not supported.  Skipping.
+[+] 0 TLSv1.1 cipher suites supported
+
+=== Testing protocol TLSv1.2 ===
+
+[+] Protocol TLSv1.2 is not supported.  Skipping.
+[+] 0 TLSv1.2 cipher suites supported
+
+[+] Summary of support cipher suites for 10.0.0.4:25
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+SSLv3.0:
+* RSA_RC4_40_MD5
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_40_CBC_SHA
+* EDH_RSA_DES_64_CBC_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_RC4_40_MD5
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* RSA_DES_192_CBC3_SHA
+* EDH_RSA_DES_40_CBC_SHA
+* EDH_RSA_DES_64_CBC_SHA
+* EDH_RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* DHE_RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* DHE_RSA_WITH_AES_256_SHA
+
+[+] Summary of weakness &quot;NO_PFS&quot; for 10.0.0.4:25
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+SSLv3.0:
+* RSA_RC4_40_MD5
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+TLSv1.0:
+* RSA_RC4_40_MD5
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+[+] Summary of weakness &quot;SSL2_INSEC&quot; for 10.0.0.4:25
+
+SSLv2.0:
+* RC4_128_WITH_MD5
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+* DES_192_EDE3_CBC_WITH_MD5
+
+[+] Summary of weakness &quot;WEAK_ENC&quot; for 10.0.0.4:25
+
+SSLv2.0:
+* RC4_128_EXPORT40_WITH_MD5
+* RC2_128_CBC_EXPORT40_WITH_MD5
+* DES_64_CBC_WITH_MD5
+
+SSLv3.0:
+* RSA_RC4_40_MD5
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* EDH_RSA_DES_40_CBC_SHA
+* EDH_RSA_DES_64_CBC_SHA
+
+TLSv1.0:
+* RSA_RC4_40_MD5
+* RSA_RC2_40_MD5
+* RSA_DES_40_CBC_SHA
+* RSA_DES_64_CBC_SHA
+* EDH_RSA_DES_40_CBC_SHA
+* EDH_RSA_DES_64_CBC_SHA
+
+=== Scan Complete ===
+
+[+] ssl-cipher-suite-enum v0.9 completed at Thu Jul 12 07:03:37 2012.  470 connections in 77 secs.
+</pre>
+<h2>Output example #5: Scanning an RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ./ssl-cipher-suite-enum.pl --rdp --tlsv1 10.0.0.5:3389
+Starting ssl-cipher-suite-enum v0.9 ( https://labs.portcullis.co.uk/application/ssl-cipher-suite-enum/ ) at Thu Jul 12 07:07:59 2012
+
+[+] Scanning 1 hosts
+
+=== Scan Info ===
+
+Target:    10.0.0.5
+IP:        10.0.0.5
+Port:      3389
+Protocols: TLSv1.0
+Preamble:  RDP
+Scan Rate: unlimited
+
+=== Testing protocol TLSv1.0 ===
+
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 RSA_RC4_128_MD5[0004] NO_PFS
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 RSA_RC4_128_SHA[0005] NO_PFS
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 RSA_DES_192_CBC3_SHA[000a] NO_PFS
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 ECDHE_RSA_WITH_AES_128_CBC_SHA[c013]
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 ECDHE_RSA_WITH_AES_256_CBC_SHA[c014]
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 RSA_WITH_AES_128_SHA[002f] NO_PFS
+[+] Cipher suite supported on 10.0.0.5:3389: TLSv1.0 RSA_WITH_AES_256_SHA[0035] NO_PFS
+
+[+] Preferred TLSv1.0 cipher suite on 10.0.0.5:3389: RSA_WITH_AES_128_SHA[002f] NO_PFS
+
+[+] 7 TLSv1.0 cipher suites supported
+
+[V] 10.0.0.5:3389 - Most encrypted connections will not use forward secrecy
+[+] Summary of support cipher suites for 10.0.0.5:3389
+
+TLSv1.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+* ECDHE_RSA_WITH_AES_128_CBC_SHA
+* ECDHE_RSA_WITH_AES_256_CBC_SHA
+
+[+] Summary of weakness &quot;NO_PFS&quot; for 10.0.0.5:3389
+
+TLSv1.0:
+* RSA_RC4_128_MD5
+* RSA_RC4_128_SHA
+* RSA_DES_192_CBC3_SHA
+* RSA_WITH_AES_128_SHA
+* RSA_WITH_AES_256_SHA
+
+=== Scan Complete ===
+
+[+] ssl-cipher-suite-enum v0.9 completed at Thu Jul 12 07:08:21 2012.  227 connections in 22 secs.
+</pre>
+<p>The latest version of the code will be maintained on <a href="https://github.com/portcullislabs/ssl-cipher-suite-enum">github</a>. Older versions are available below.<br />
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v1.0.2.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v1.0.2 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v1.0.2 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v1.0.2.tar.gz" title="Download ssl-cipher-suite-enum-v1.0.2.tar.gz" target="_blank" id="wpfb-file-link-1">ssl-cipher-suite-enum-v1.0.2.tar.gz</a>
+    
+    <br />
+    October 30, 2015<br />
+    
+  </div>
+  <div class="info">
+    20.8 KiB<br />
+    MD5 hash: 9418aeaeab80eda076b8b4318f7a9657 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>October 30, 2015</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v1.0.0.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v1.0.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v1.0.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v1.0.0.tar.gz" title="Download ssl-cipher-suite-enum-v1.0.0.tar.gz" target="_blank" id="wpfb-file-link-2">ssl-cipher-suite-enum-v1.0.0.tar.gz</a>
+    
+    <br />
+    October 15, 2014<br />
+    
+  </div>
+  <div class="info">
+    20.9 KiB<br />
+    MD5 hash: d9c099c038f43aa03f0a3fe0320a6241 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>October 15, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.9.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9.9 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9.9 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.9.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.9.tar.gz" target="_blank" id="wpfb-file-link-3">ssl-cipher-suite-enum-v0.9.9.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    20.3 KiB<br />
+    MD5 hash: a7229b76ed7106892a4a5e2b7557b650 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-4').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.4.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9.4 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9.4 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.4.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.4.tar.gz" target="_blank" id="wpfb-file-link-4">ssl-cipher-suite-enum-v0.9.4.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    19.8 KiB<br />
+    MD5 hash: e0d5d957e01bbbb415bacdc2fd48fa80 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(4);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails4" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-5').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.3.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9.3 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9.3 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.3.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.3.tar.gz" target="_blank" id="wpfb-file-link-5">ssl-cipher-suite-enum-v0.9.3.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    19.7 KiB<br />
+    MD5 hash: f26728633665823faa671bc0df4dbe13 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(5);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails5" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-6').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.2.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9.2 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9.2 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.2.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.2.tar.gz" target="_blank" id="wpfb-file-link-6">ssl-cipher-suite-enum-v0.9.2.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    19.6 KiB<br />
+    MD5 hash: cb2581084fe4fd9162947d2732677384 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(6);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails6" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-7').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.1.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9.1 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9.1 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.1.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.1.tar.gz" target="_blank" id="wpfb-file-link-7">ssl-cipher-suite-enum-v0.9.1.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    19.6 KiB<br />
+    MD5 hash: e39508128eb129b0c201257adf3a384c <br />
+    <a href="#" onclick="return wpfilebase_filedetails(7);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails7" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-8').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.9 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.9 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.9.tar.gz" title="Download ssl-cipher-suite-enum-v0.9.tar.gz" target="_blank" id="wpfb-file-link-8">ssl-cipher-suite-enum-v0.9.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    19.1 KiB<br />
+    MD5 hash: ad86e3774aa49cdf6fed9ba7501c1eae <br />
+    <a href="#" onclick="return wpfilebase_filedetails(8);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails8" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-9').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.4.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.4 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.4 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.4.tar.gz" title="Download ssl-cipher-suite-enum-v0.4.tar.gz" target="_blank" id="wpfb-file-link-9">ssl-cipher-suite-enum-v0.4.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    18.4 KiB<br />
+    MD5 hash: 6678cfb0319766c28d5563481aade24e <br />
+    <a href="#" onclick="return wpfilebase_filedetails(9);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails9" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-10').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.2.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.2 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.2 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.2.tar.gz" title="Download ssl-cipher-suite-enum-v0.2.tar.gz" target="_blank" id="wpfb-file-link-10">ssl-cipher-suite-enum-v0.2.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    14.6 KiB<br />
+    MD5 hash: 6db43b6f39c86e6b633643eda52116f3 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(10);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails10" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-11').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.1.tar.gz" target="_blank" title="Download Ssl-cipher-suite-enum-v0.1 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ssl-cipher-suite-enum-v0.1 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ssl-cipher-suite-enum-v0.1.tar.gz" title="Download ssl-cipher-suite-enum-v0.1.tar.gz" target="_blank" id="wpfb-file-link-11">ssl-cipher-suite-enum-v0.1.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    13.6 KiB<br />
+    MD5 hash: 19cd03b65da1bbc5592e55907d156734 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(11);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails11" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-LfUDDyZi0ucI3SE" class="g-recaptcha-explicit-id"><div id="g-recaptcha-LfUDDyZi0ucI3SE"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/wp-filebase/js/common.js?ver=3.4.4'></script>
+<script type="text/javascript">
+//<![CDATA[
+wpfbConf={"ql":true,"hl":0,"pl":1,"hu":"https:\/\/labs.portcullis.co.uk\/","db":"download","fb":false,"cm":0,"ajurl":"https:\/\/labs.portcullis.co.uk\/wp-admin\/admin-ajax.php?action=wpfilebase","ajurlpub":"\/\/labs.portcullis.co.uk\/?wpfilebase_ajax=1"};function wpfb_ondl(file_id,file_url,file_path){ if(typeof pageTracker == 'object') {
+	pageTracker._trackPageview(file_url); // new google analytics tracker
+} else if(typeof urchinTracker == 'function') {	
+	urchinTracker(file_url); // old google analytics tracker
+} }
+//]]>
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 75 queries. 0.103 seconds. -->
+</div>
+</body>
+</html>
+

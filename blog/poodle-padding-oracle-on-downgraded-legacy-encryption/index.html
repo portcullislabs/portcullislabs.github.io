@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>POODLE: Padding Oracle On Downgraded Legacy Encryption | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='POODLE: Padding Oracle On Downgraded Legacy Encryption - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-4767 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-4767"  class="portcullis-post portcullis-article  post-4767 post type-post status-publish format-standard hentry category-blog tag-analysis tag-cryptography tag-ssl">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">POODLE: Padding Oracle On Downgraded Legacy Encryption</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="17:35">15/10/2014</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/gcs/" title="View all posts by GCS">GCS</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566.</p>
+<p>The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or encryption are applied. This gives rise to a padding oracle bug, which is how BEAST worked too. <span id="more-4767"></span></p>
+<p>Block ciphers require plain-texts to be of a length divisible into fixed-size blocks, e.g. 128 bits in the case of AES. As normal messages don&#8217;t adhere to this (i.e. can be arbitrary in size) we use padding to ensure that the message is expanded to fit that requirement. Padding usually adds a minimum of 1 byte, and a maximum of one entire block. Its value is usually tied to the length of the padding, for example in PKCS#7 padding we would add 01 01 for two bytes, 02 02 02 for 3 bytes, 03 03 03 03 for 4 bytes, etc. However, instead of checking that all the bytes match, the SSLv3 specification states that only the last byte is to be validated. In some cases, in fact, client libraries mistakenly set the first padding bytes improperly &#8211; Oracle&#8217;s implementation has, in the past, used zeroes for all bytes but the last.</p>
+<p>Another requirement that block ciphers don&#8217;t provide on their own is securely encrypting more than a single block with the same key. This is important, because simply transforming each block independently with a cipher (this is known as Electronic Codebook, or ECB mode) results in equal blocks encrypting to equal cipher-texts, which is bad news because this leaks information! Instead, we use different constructions to ensure safety when encrypting multiple blocks &#8211; Cipher Block Chaining (CBC) is a very common one.</p>
+<p>In CBC, we take each previous cipher-text block and xor it with the current plaintext block before encryption. So for block 4, you take the encrypted block 3, xor it with the block 4 plaintext, then encrypt that value. The first block (block 0) has no previous cipher-text block, so we use an Initialisation Vector (IV). The IV is important, because it allows us to securely send the same full messages with the same key without their entire resulting cipher-texts being equal, as long as we don&#8217;t ever re-use an IV with the same key. Anyway, that detail isn&#8217;t important for this bug.</p>
+<p>To decrypt a CBC message, we decrypt a block, then xor the output with the previous block&#8217;s cipher-text, i.e:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub>, where M is the message, D<sub>k</sub> is a block decryption with a key k, C is the ciphertext, and ⊕ denotes an xor.</p>
+<p>It turns out that this construction is malleable, meaning that an attacker can modify the cipher-text in a way that causes meaningful things to happen to the plaintext when it gets decrypted. This has been known about for a long time, and underpins many modern SSL/TLS bugs, as well as bugs in other crypto-systems.</p>
+<p>Essentially, if you modify a block by xor&#8217;ing it with some value, the next block&#8217;s plaintext gets xor&#8217;ed with that value at the cost of the tweaked block being completely garbled. So if we want to attack block 4, we&#8217;d xor C<sub>3</sub> with a value t, so that the decryption becomes:</p>
+<p>D<sub>k</sub>(C<sub>4</sub>) ⊕ (C<sub>3</sub> ⊕ t) = M<sub>4</sub> ⊕ t</p>
+<p>This is really useful if you know any of the values of M<sub>4</sub>, because you can use xor to arbitrarily alter any value you know. This has a side-effect, though. Because C<sub>3</sub> is now C<sub>3</sub> ⊕ t, when decrypting C<sub>3</sub> it gets utterly garbled, destroying it entirely. This is fine in some cases, for example if your target application doesn&#8217;t check block authenticity and doesn&#8217;t read (or doesn&#8217;t care about) the data in the garbled block. Another trick in this avenue is to change the IV instead, so that:</p>
+<p>M<sub>0</sub> = D<sub>k</sub>(C<sub>0</sub>) ⊕ IV</p>
+<p>becomes</p>
+<p>D<sub>k</sub>(C<sub>0</sub>) ⊕ (IV ⊕ t) = M<sub>0</sub> ⊕ t</p>
+<p>This doesn&#8217;t have the block-garbling side effect, but you can only do it on the first block. This is particularly useful in systems where cipher-text blocks are authenticated but the IV isn&#8217;t.</p>
+<p>Anyway, you&#8217;re probably wondering what this has to do with POODLE. Remember all that padding stuff? Turns out that you can use that to work out the values of cookies.</p>
+<p>An attacker gets the victim to visit a page controlled by them. That page includes JavaScript that repeatedly requests a target site for which we want to steal cookies from. The request body will look something like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate" title="">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody
+</pre>
+<p>Which after padding and MAC looks like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate" title="">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
+</pre>
+<p>The attacker controls the URL and the request body. This allows them to force the cookie into a particular position in the request. Specifically, the attacker sends requests with different length URLs and body data until the observed encrypted message grows by one block, with an earlier block having its last byte as one unknown byte of cookie. This sounds hard, but it&#8217;s as simple as knowing that the Cookie header is in a certain position and tweaking the URL to block-align it, then sending a maximum of 16 requests with incrementing POST body sizes until the output grows by one block.</p>
+<p>The attacker knows that the final byte in the padding block will have a decimal value of 15 (i.e. 0x0F) because of the known padding size. He can then utilise the CBC malleability issue discussed above to replace the padding block with the target block (containing 1 byte of cookie at the end). Most of the time this will be rejected as invalid padding, but 1 in 256 times (on average) this will be accepted because the decrypted last byte will happen to be 15. This probability is due to the different key / IV used each time, so the cipher-text will be different (randomly) each time, so when the last block is decrypted it xors with the previous cipher-text block and has a chance of randomly producing 15 as the last byte.</p>
+<p>That&#8217;s a bit of a challenge to follow, so let&#8217;s look at it specifically in terms of the decryption:</p>
+<p>Mn = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub></p>
+<p>where C<sub>n</sub>, the final block, containing padding, is replaced with C<sub>i</sub>:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>i</sub>) ⊕ C<sub>n-1</sub></p>
+<p>Because C<sub>i</sub> wasn&#8217;t intended to be xor&#8217;ed with C<sub>n-1</sub> the output is garbage. However, because C<sub>n-1</sub> is random, in roughly 1/256 cases the last byte of output will be 15, leading the padding to be falsely accepted as valid. When this occurs, the attacker can deduce that:</p>
+<p>D<sub>k</sub>(C<sub>i</sub>)[15] ⊕ C<sub>n-1</sub>[15] = 15</p>
+<p>Which, by doing a bit of bitwise algebra, gets us some plaintext:</p>
+<p>M<sub>i</sub>[15] = 15 ⊕ C<sub>n-1</sub>[15] ⊕ C<sub>i-1</sub>[15]
+<p>The above arises because C<sub>i</sub> was xor&#8217;ed with C<sub>i-1</sub> when the CBC encryption occurred.</p>
+<p>The C<sub>n-1</sub> and C<sub>i-1</sub> values are known to the attacker, so they just decrypted a single byte of the message, without knowing the key!</p>
+<p>The attack requirements are:</p>
+<ul>
+<li>Attacker can get the client to send HTTPS requests (easy via JS)</li>
+<li>Attacker is in a position to modify client traffic (&#8220;Man-In-The-Middle&#8221;)</li>
+<li>Connection uses a block cipher suite from SSLv3</li>
+</ul>
+<p>Now that last one is interesting. SSLv3 is still very widely supported by servers, but TLS is usually there too and clients should prefer it. However, due to all sorts of issues with client/server compatibility, it turns out that if a connection fails to properly negotiate TLS then in many clients it&#8217;ll downgrade to SSLv3. All an attacker needs to do, is sit in the middle and interfere with the handshake such that the client assumes there&#8217;s an incompatibility and renegotiates down to SSLv3.</p>
+<p>There are two fixes. The first is to just turn off SSLv3, or at least disable CBC cipher suites in SSLv3 (but that leads to other problems so isn&#8217;t recommended). There is also a client-side fix for the downgrade, which is to enable the TLS_FALLBACK_SCSV flag in the client hello &#8211; this is recommended within the original Google article. However, organisations should not rely upon all clients having this patch, or that some clients will not downgrade to SSLv3 for other reasons.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-AWmcnQtvjSmgmTi" class="g-recaptcha-explicit-id"><div id="g-recaptcha-AWmcnQtvjSmgmTi"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.084 seconds. -->
+</div>
+</body>
+</html>
+

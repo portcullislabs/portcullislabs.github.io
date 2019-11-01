@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Windows 10’s &quot;Controlled Folder Access&quot; feature | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Windows 10’s &quot;Controlled Folder Access&quot; feature - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-6110 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-6110"  class="portcullis-post portcullis-article  post-6110 post type-post status-publish format-standard hentry category-blog tag-auditing tag-blue-team tag-red-team tag-training tag-windows">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="09:44">16/11/2017</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/rgh/" title="View all posts by RGH">RGH</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks.<span id="more-6110"></span></p>
+<p>Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable files, DLLs, and scripts from writing to (or encrypting) files within certain folders.</p>
+<h2>What folders are protected?</h2>
+<p>While additional folders can be added, the following locations will always be monitored when Controlled Folder Access is enabled:</p>
+<ul>
+<li>User: Documents, Pictures, Videos, Music, Desktop, Favorites</li>
+<li>Public: Documents, Pictures, Videos, Music, Desktop</li>
+</ul>
+<h2>How does Windows determine what `suspicious&#8217; code is?</h2>
+<p>It’s what Windows Defender Anti-Virus identifies. As such Controlled Folder Access relies on Windows Defender Anti-Virus to be running.</p>
+<h2>What about application false positives?</h2>
+<p>It may be the case that legitimate applications are incorrectly flagged by Windows Defender Anti-Virus as being `suspicious&#8217; preventing or hindering legitimate use. Such applications can be white-listed.</p>
+<p>To facilitate this, Controlled Folder Access supports an `audit&#8217; mode, where an event is generated when the application would normally be prevented from writing to a protected folder. Those events can be reviewed to identify legitimate applications that can be added to the white-list.</p>
+<h2>Is Controlled Folder Access enabled by default? How do I configure it?</h2>
+<p>Controlled Folder Access is not enabled by default and can be configured via:</p>
+<ul>
+<li>The User Interface</li>
+<li>Group Policy (a Group Policy would need to be configured on a system that contains the correct administrative templates for the options to be available for selection): Computer Configuration > Administrative Templates > Windows Components > Windows Defender Anti-Virus > Windows Defender Exploit Guard > Controlled Folder Access</li>
+<li>Manual Registry modification (i.e. via a script)</li>
+<li>PowerShell cmdlets:</li>
+</ul>
+<pre class="brush: powershell; gutter: false; title: ; notranslate" title="">
+Set-MpPreference -EnableControlledFolderAccess [Enable | Disable | Audit]
+Add-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\protect,c:\other\path
+Remove-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\no\longer\protect
+</pre>
+<p>Note: Set-MpPreference can also be used to specify folder items but will clear the list first, whereas Add-MpPreference adds to the list.</p>
+<h2>What Registry keys are used by Controlled Folder Access?</h2>
+<h3>Is Controlled Folder Access enabled?</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access
+Registry Key: GuardMyFolders
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>Protected Folders</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: audit
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>To specify protected folders:</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: Full path to protect, i.e. c:\test
+Key Type: REG_DWORD
+Key Value: 0&lt;/code&gt;
+</pre>
+<h2>What can be protected? Any limitations?</h2>
+<p>Network shares and mapped drives can be protected, but Controlled Folder Access does not support the use of:</p>
+<ul>
+<li>Environment Variables</li>
+<li>Wildcards</li>
+<li>The Windows drive (typically C:\)</li>
+</ul>
+<p>Seriously, don’t protect the entire Windows drive as Windows will be unable to function correctly and strange behaviour will result.</p>
+<h3>What happens when write access is blocked?</h3>
+<p>A notification is displayed that provides the path of the executable that was blocked, and the path of protected folder that the write attempt was for. This information is also recorded in the event log, using the following event values:</p>
+<ul>
+<li>Event ID: 5007: Event when settings are changed</li>
+<li>Event ID: 1124: Audited Controlled folder access event</li>
+<li>Event ID: 1123: Blocked Controlled folder access event</li>
+</ul>
+<p>The following image shows the notification of a write action being blocked:</p>
+<p><a name="imageclose-6111"><div class="lb-album"><a href="#image-6111"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png" alt="Blocked write access notification" class="size-medium wp-image-6121"><span></span></a></div>              
+<a href="#imageclose-6111" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6111">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19.png" alt="image-6111">
+                   </div></a></p>
+<h3>Can the blocked write notification message be customised?</h3>
+<p>Yes, at least for Enterprise environments. Providing details of who to contact (service desk, IT Security, etc.) can be included in the notification message via the following Group Policy settings:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+Computer Configuration &gt; Policies &gt; Adminstrative Templates &gt; Windows Components &gt; Windows Defender Security Center &gt; Enterprise Customization
+</pre>
+<ul>
+<li> Set &#8220;Configure customized contact information&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Configure customized notifications&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Specify contact compant name&#8221; to &#8220;Enabled&#8221; and add the company details</li>
+<li> Enable and set at least one of the following:
+<ul>
+<li>&#8220;Specify contact email address or EmailID&#8221;</li>
+<li>&#8220;Specify contact phone number or Skype ID&#8221;</li>
+<li>&#8220;Specify contact web site&#8221;</li>
+</ul>
+</li>
+</ul>
+<h3>Does Controlled Folder Access work with third-party Anti-Virus applications?</h3>
+<p>No, or at least not in the tests performed when writing this post. Controlled Folder Access requires the use of Windows Defender Anti-Virus to be active.</p>
+<p>Most third-party Anti-Virus solutions replace existing products, and attempting to run multiple Anti-Virus solutions at the same time can significantly hinder system performance, or even lead to each one preventing the other from being able to scan files or removable drives which could lower protections. One Anti-Virus program might flag others as being infected (i.e. triggering on the detection patterns) or malicious, and quarantine key files – potentially breaking that product.</p>
+<h3>How can I tell Controlled Folder Access and Notifications are configured and working?</h3>
+<p>Microsoft have produced an ExploitGuard CFA File Creator tool to trigger Controlled Folder Access actions, which causes notifications to be displayed.</p>
+<p>Details on the <a href="https://docs.microsoft.com/en-us/windows/threat-protection/windows-defender-exploit-guard/evaluate-controlled-folder-access#use-the-demo-tool-to-see-how-controlled-folder-access-works" title="ExploitGuard CFA Demo Tool">ExploitGuard CFA Demo Tool</a>, and a link to download it, can be found on Microsoft&#8217;s web site.</p>
+<h2>Conclusion</h2>
+<p>For home users or business that do not have a corporate Anti-Virus solution, Windows Defender Anti-Virus and Controlled Folder Access will be better than nothing.<br />
+However, larger businesses typically have existing enterprise-wide Anti-Virus solutions in which significant time and effort (and money) has been invested. It would be difficult to convince the IT Security teams of such companies to throw out that investment, so I don’t expect Controlled Folder Access to be used much in large businesses.</p>
+<p>Controlled Folder Access is a new feature, and it may be that Microsoft modify it to work with third-party Anti-Virus products in the future.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-IPZnZRgZVoddkZ0" class="g-recaptcha-explicit-id"><div id="g-recaptcha-IPZnZRgZVoddkZ0"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPowerShell.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.082 seconds. -->
+</div>
+</body>
+</html>
+

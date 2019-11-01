@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; OSX</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/osx/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Crash</title>
+		<link>https://labs.portcullis.co.uk/tools/crash/</link>
+		<comments>https://labs.portcullis.co.uk/tools/crash/#comments</comments>
+		<pubDate>Tue, 17 Dec 2013 16:08:23 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[fuzzing]]></category>
+		<category><![CDATA[OSX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2672</guid>
+		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer.<span id="more-2672"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Catch OS X application&#8217;s crashes</li>
+<li>Display CPU registers</li>
+<li>Display disassembled code at the instruction that produced the crash</li>
+<li>Display a part of the stack</li>
+<li>Works transparently wether the application is 32 or 64 bits</li>
+</ul>
+<h2>Overview</h2>
+<p>The crash tool is a similar tool than the crash.exe tool from <a title="FileFuzz" href="http://packetstormsecurity.com/files/39626/FileFuzz.zip.html">FileFuzz</a> but for OS X. Used with an application fuzzer, it monitors the target application for exceptions.</p>
+<p>It is written in C and it works on both x86 and x86_64 architectures. It uses the excellent <a title="BeaEngine" href="http://www.beaengine.org/">BeaEngine</a> to disassemble the code.</p>
+<h2>Installation</h2>
+<p>In order to install the tool, you&#8217;ll need to generate a developer certificate.</p>
+<p>It can be done following those simple steps:</p>
+<ol>
+<li>Open Keychain Access.app</li>
+<li>Open menu Keychain Access/Certificate Assistant/Create a Certificate&#8230;</li>
+<li>Choose a name (codesigning-cert in the example).</li>
+<li>Set Identity Type to Self Signed Root.</li>
+<li>Set Certificate Type to Code Signing.</li>
+<li>Select the Let me override defaults.</li>
+<li>Click several times on Continue until you get to the Specify a Location For The Certificate screen, then set Keychain to System.</li>
+<li>Finally, using the contextual menu for the certificate, select Get Info, open the Trust item, and set Code Signing to Always Trust.</li>
+<li>You must quit Keychain Access application in order to use the certificate.</li>
+</ol>
+<p>Then run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ make
+gcc -Iinclude/ -Wall -pedantic -framework Security -sectcreate __TEXT __info_plist ./Info.plist BeaEngine.o crash.c -o crash
+$ sudo make install
+Password:
+cp crash /usr/local/bin
+chgrp procmod /usr/local/bin/crash
+chmod 2755 /usr/local/bin/crash
+codesign -s codesigning-cert /usr/local/bin/crash
+$
+</pre>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./crash
+Usage: crash [options] target arguments
+  -t seconds        timeout (default: 5).
+
+Using BeaEngine version 4.1-175.
+</pre>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# Define the amount of time the target program is allowed to live.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64
+[+] PID: 31273. Executing: /usr/local/bin/dummy64
+PID: 31273 (0x7a29)
+[+] Timeout exceeded, exiting.
+$
+
+# Catching a crash from a 64 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64 1 0
+[+] PID: 31282. Executing: /usr/local/bin/dummy64 1 0
+[+] Exception: unknown exception code 0xd.
+----------------------------------------------------------------------------------------------
+[ RAX: 4141414141414141  RBX: 0000000000000000  RCX: 4242424242424242  RDX: ffffffffffffffff ]
+[ RSI: 0000000000000000  RDI: 000000000000003c  RBP: 00007fff52359ef0  RSP: 00007fff52359eb0 ]
+[ R08: 0000000000000000  R09: 0000000000000000  R10: 0000000000000001  R11: 00007fff76360250 ]
+[ R12: 0000000000000000  R13: 0000000000000000  R14: 0000000000000000  R15: 0000000000000000 ]
+[     CS: 002b      FS: 0000      GS: 0000      RIP: 000000010d8a6ed4    o d I t s Z a p C   ]
+
+000000010d8a6ed4: mov        qword [rax], rcx
+000000010d8a6ed7: mov         [rbp-0x18], 0x00000000
+000000010d8a6ede: mov        eax,  [rbp-0x18]
+000000010d8a6ee1: mov         [rbp-0x14], eax
+000000010d8a6ee4: mov        eax,  [rbp-0x14]
+000000010d8a6ee7: add        rsp, 0x40
+
+Stack:
+00007fff52359eb0: 00007fff52359f38  8.5R....
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 4141414141414141  AAAAAAAA
+00007fff52359eb0: 0000000000000001  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 00007fff52359f10  ..5R....
+00007fff52359eb0: 000000036d4a705e  ^pJm....
+----------------------------------------------------------------------------------------------
+
+# Catching a crash from a 32 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy32 1 0
+[+] PID: 31285. Executing: /usr/local/bin/dummy32 1 0
+[+] Exception: KERN_INVALID_ADDRESS.
+--------------------------------------------------------------
+[ EAX: 00000000  EBX: bff6df54  ECX: bff6de4c  EDX: 99ce68e6 ]
+[ ESI: 00000000  EDI: 00000000  EBP: bff6df08  ESP: bff6ded0 ]
+[ ES: 0023  CS: 001b  SS: 0023  DS: 0023  FS: 0000  GS: 000f ]
+[ EIP: 00093f23                            o d I t S Z a P C ]
+
+00093f23: mov         [0x41414141], 0x42424242
+00093f2d: mov         [ebp-0x10], 0x00000000
+00093f34: mov        eax,  [ebp-0x10]
+00093f37: mov         [ebp-0x0C], eax
+00093f3a: mov        eax,  [ebp-0x0C]
+00093f3d: add        esp, 0x38
+
+Stack:
+bff6ded0: 00000000  ....
+bff6ded0: 0000000a  ....
+bff6ded0: 8fe925ec  .%..
+bff6ded0: 00093e5b  [&gt;..
+bff6ded0: 00000001  ....
+bff6ded0: bff6df50  P...
+bff6ded0: bff6df40  @...
+bff6ded0: bff6df38  8...
+--------------------------------------------------------------
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
+    
+    <br />
+    December 17, 2013<br />
+    
+  </div>
+  <div class="info">
+    253.3 KiB<br />
+    MD5 hash: 53f1eb77dc8d1eeee38bc5da6cca25be <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 17, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/crash/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>UNIX and Linux setUID advice and guidance | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='UNIX and Linux setUID advice and guidance - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-5793 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-5793"  class="portcullis-post portcullis-article  post-5793 post type-post status-publish format-standard hentry category-blog tag-aix tag-analysis tag-auditing tag-blue-team tag-freebsd tag-linux tag-root tag-solaris">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">UNIX and Linux setUID advice and guidance</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="15:41">16/06/2017</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/afc/" title="View all posts by AFC">AFC</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
+<p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
+<p>One good approach would be:</p>
+<p>&#8220;The only good setUID is a chmod -s setuid&#8221; i.e. deactivate this particular functionality.</p>
+<p>However, sysadmins may (understandably) get a bit wobbly when we suggest this and come up with a number of fairly valid reasons why this is tricky. They have a point to some extent, but this is 2017 and we should be biting some of these bullets.</p>
+<p>Yes, reducing the risk in this area is tough, but it is in fact a good start in defining least privilege security controls. You can learn how little or how much power individual users require and manage this accordingly. You can also test your changes before rolling them out and sanity check the advice given.</p>
+<p>At the very least we need a list of files that should not be setUID that we can give to sysadmins and, with confidence, recommend removing or changing the permissions. A pragmatic strategy for mitigating the risks incurred would also be good.</p>
+<h2>So what are they?</h2>
+<p>SetUID/setGID bits are file permissions set on binary files when we need them to run with the permissions of the owner (setUID) or the group (setGID) that owns the file, usually a root or equivalent user. Historically this functionality was entrenched in UNIX and Linux and was necessary, up to a point, for a system to function as intended.</p>
+<p>Many vendors are now working toward eliminating the requirement for these permissions and UNIX based systems can be configured, with some care, not to use them.</p>
+<p>We potentially have 3 categories of setUID and setGID files:</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>May have become setUID by accident, installation of third-party software, malicious activity or sloppy coding and should almost certainly not be allowed</li>
+<li>tar, find, vi, etc</li>
+<li>Likely high risk to get root easily</li>
+<li>Epic fail -rwsrw-rw- More common than you would think</li>
+<li>Vendor supplied software often a culprit</li>
+</ul>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>Redundant, legacy or not really required to be setUID</li>
+<li>rcp, arping, etc</li>
+<li>Likely low risk but should be easy to remove</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>OS may fail to function as expected if setUID is removed without care</li>
+<li>For example passwd, sudo</li>
+<li>Should be mitigated to minimise risks</li>
+<li>Many can be reclassified as 2 above and have the setUID bit removed</li>
+</ul>
+<p>We report on categories 1 (naughty) and 2 (remove) scoring appropriate to the risk and ease of exploitation. We report on 3 (allowed) with recommendations to mitigate.</p>
+<p>For example, a setUID on the find command (or any shell command with abilities to run other programs or shells) would be a high risk vulnerability allowing regular users to become root fairly easily.</p>
+<h2>How to deal with these issues?</h2>
+<p>The approach to recommend to customers:</p>
+<ol>
+<li>Audit &#8211; find all setUID and setGID files on the system locally and on all filesystems not mounted nosetuid</li>
+<li>Validate &#8211; elfsign and cross checks against vendor checksums</li>
+<li>Eliminate where possible &#8211; uninstall, chmod -s or rm</li>
+<li>Mitigate where necessary &#8211; FIM, auditing, remote logging, mount NAS nosetuid</li>
+</ol>
+<p>This applies primarily to common Linux distributions. Solaris and AIX for example may have slightly different filenames and locations, but similar principles apply.</p>
+<p>The ubiquitous sudo or other equivalent tools can be used to configure fine grained privilege management without the requirement for setUID permissions. Your version of sudo must be up to date, the sudoers configuration files must be secure and have a strictly limited set of commands allowed per user or group.</p>
+<p>Customers need to consider how the remediation and mitigation steps fit within their overall strategies for user and privilege management alongside local and remote file permissions.</p>
+<p>For example:</p>
+<p>Do they have a good FIM solution and can they utilise remote logging as a mitigation? Do they wish to work at the standard build level and have a hardened standard build? If so, then maybe they&#8217;re in the right place to look at removing these permissions?</p>
+<p>In particular File Integrity Monitoring, which should focus on the most vulnerable files on a system, should track any changes to the files with the setUID/setGID bit set. Any changes should be audited and remotely logged to ensure that an attacker cannot cover their tracks.</p>
+<p>Other mitigation techniques include SELinux and other RBAC mechanisms on Linux, Trusted Execution and Trusted Computing Base on AIX and RBAC on Solaris.</p>
+<p>More recent Linux kernels (starting 2.6.26) can make use of capabilities which provide fine-grained control over superuser permissions, allowing use of the root user to be avoided.</p>
+<p>Sysadmins need some encouragement and support in both remediation and mitigation. If something unexpected does not work upon removing a setUID file permission, it is important to try to use that as a learning experience and a consequence of taking least privilege as far as possible.</p>
+<p>At the very least tighten up your sudo configuration and remove as many setUIDs as you can.</p>
+<h3>Finding setUID and setGID files</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+# find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \;
+</pre>
+<p>Example output:</p>
+<p>Here is a setUID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+-rws--x--x. 1 root root 23960 Sep 23  2016 /usr/bin/chfn
+</pre>
+<p>And here is a setGID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+-r-xr-sr-x. 1 root tty 15392 May  4  2014 /usr/bin/wall
+</pre>
+<h3>Just for fun</h3>
+<p>Snapshot a VM of your favourite Linux distro and run the following command (<b>this will break your system in odd ways, so never do it to a production system</b>) and run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+# find / -type f -perm -u+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setUID.lst
+# find / -type f -perm -g+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setGID.lst
+# for a in `cat /var/tmp/setUID.lst`; do chmod u-s $a; done
+# for a in `cat /var/tmp/setGID.lst`; do chmod g-s $a; done
+</pre>
+<p>See what breaks.</p>
+<p>You can revert to the snapshot if your nerve does not hold.</p>
+<p>You should be able to reboot the machine and log in as a normal user. After that you will discover the limitations you have imposed upon yourself and the operating system.</p>
+<h3>The lists (mid 2017) which are not exhaustive</h3>
+<p>N.B. PATHs to the files may vary&#8230;</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>/usr/bin/awk</li>
+<li>/bin/tar</li>
+<li>/usr/bin/python</li>
+<li>/usr/bin/script</li>
+<li>/usr/bin/man</li>
+<li>/usr/bin/ssh</li>
+<li>/usr/bin/scp</li>
+<li>/usr/bin/git</li>
+<li>/usr/bin/find</li>
+<li>/usr/bin/gdb</li>
+<li>/usr/bin/pico</li>
+<li>/usr/bin/nano</li>
+<li>/usr/bin/zip</li>
+<li>/usr/bin/vi</li>
+<li>/usr/sbin/lsof</li>
+<li>/bin/cat</li>
+<li>/usr/bin/vim</li>
+<li>/usr/bin/gvim</li>
+</ul>
+<p>The point with this list is that they should not really be setUID or setGID and they all have command options that could spawn a shell or otherwise engage in mischief.</p>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>/usr/bin/rcp</li>
+<li>/usr/bin/rlogin</li>
+<li>/usr/bin/rsh</li>
+<li>/usr/libexec/openssh/ssh-keysign</li>
+<li>/usr/lib/openssh/ssh-keysign</li>
+<li>/sbin/netreport</li>
+<li>/usr/sbin/usernetctl</li>
+<li>/usr/sbin/userisdnctl</li>
+<li>/usr/sbin/pppd</li>
+<li>/usr/bin/lockfile</li>
+<li>/usr/bin/mail-lock</li>
+<li>/usr/bin/mail-unlock</li>
+<li>/usr/bin/mail-touchlock</li>
+<li>/usr/bin/dotlockfile</li>
+<li>/usr/bin/arping</li>
+<li>/usr/sbin/uuidd</li>
+<li>/usr/bin/mtr</li>
+<li>/usr/lib/evolution/camel-lock-helper-1.2</li>
+<li>/usr/lib/pt_chown</li>
+<li>/usr/lib/eject/dmcrypt-get-device</li>
+<li>/usr/lib/mc/cons.saver</li>
+</ul>
+<p>Consider removing as a good mitigation strategy.</p>
+<p>Here&#8217;s some others that are usually installed setUID, however, on a hardened system they can usually have their setUID/setGID bits removed:</p>
+<ul>
+<li>/bin/mount</li>
+<li>/bin/umount</li>
+<li>/usr/bin/at</li>
+<li>/usr/bin/newgrp</li>
+<li>/usr/bin/ssh-agent</li>
+<li>/sbin/mount.nfs</li>
+<li>/sbin/umount.nfs</li>
+<li>/sbin/mount.nfs4</li>
+<li>/sbin/umount.nfs4</li>
+<li>/usr/bin/crontab</li>
+<li>/usr/bin/wall</li>
+<li>/usr/bin/write</li>
+<li>/usr/bin/screen</li>
+<li>/usr/bin/mlocate</li>
+<li>/usr/bin/chage</li>
+<li>/usr/bin/chfn</li>
+<li>/usr/bin/chsh</li>
+<li>/bin/fusermount</li>
+<li>/usr/bin/Xorg</li>
+<li>/usr/bin/X</li>
+<li>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</li>
+<li>/usr/lib/vte/gnome-pty-helper</li>
+<li>/usr/lib/libvte9/gnome-pty-helper</li>
+<li>/usr/lib/libvte-2.90-9/gnome-pty-helper</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>/bin/ping</li>
+<li>/bin/su</li>
+<li>/sbin/pam_timestamp_check</li>
+<li>/sbin/unix_chkpwd</li>
+<li>/usr/bin/gpasswd</li>
+<li>/usr/bin/locate</li>
+<li>/usr/bin/passwd</li>
+<li>/usr/libexec/utempter/utempter</li>
+<li>/usr/sbin/lockdev</li>
+<li>/usr/sbin/sendmail.sendmail</li>
+<li>/usr/bin/expiry</li>
+<li>/bin/ping6</li>
+<li>/usr/bin/traceroute6.iputils</li>
+<li>/usr/bin/pkexec</li>
+<li>/usr/bin/sudo</li>
+<li>/usr/bin/sudoedit</li>
+<li>/usr/sbin/postdrop</li>
+<li>/usr/sbin/postqueue</li>
+<li>/usr/sbin/suexec</li>
+<li>/usr/lib/squid/ncsa_auth</li>
+<li>/usr/lib/squid/pam_auth</li>
+<li>/usr/kerberos/bin/ksu</li>
+<li>/usr/sbin/ccreds_validate</li>
+</ul>
+<h2>Final words</h2>
+<p>It&#8217;s worth noting that we know these lists won&#8217;t work for everyone; systems are complex and behaviour is intertwined. That said, no matter what your opinion on the necessity or otherwise of a setUID/setGID bit on a given file, we&#8217;d like to think the approach of knowing which files have the setUID/setGID bit and why is something we can all get on board with.</p>
+<h3>Some good references</h3>
+<ul>
+<li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
+<li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
+</ul>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-XmWzaKS5HmE0RmL" class="g-recaptcha-explicit-id"><div id="g-recaptcha-XmWzaKS5HmE0RmL"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.088 seconds. -->
+</div>
+</body>
+</html>
+

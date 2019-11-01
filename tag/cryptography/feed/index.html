@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; cryptography</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/cryptography/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Downgrading RDP connections and how to avoid it</title>
+		<link>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
+		<comments>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
+		<pubDate>Fri, 22 Apr 2016 15:18:17 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1488</guid>
+		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely.<span id="more-1488"></span></p>
+<p>We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here.  We suspect that it&#8217;s a known limitation of the protocol.  But it&#8217;s one that we though would be interesting to post about.</p>
+<p>In this post we provide a demonstration of such a downgrade attack using the aptly named PoC tool rdp-downgrade.py.</p>
+<h2>RDP Security Layer</h2>
+<p>Before discussing the downgrade attack, we should outline what we&#8217;ll be downgrading from and to.</p>
+<p>The following Security Layers are available in the RDP protocol. Support for each can be configured on the Terminal Server:</p>
+<ul>
+<li>Classic RDP Protocol - this is known as &#8220;RDP Security Layer&#8221; in the tscc.msc configuration tool and PROTOCOL_RDP in the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a> (see page 40 of PDF)</li>
+<li>SSL - this is labelled &#8220;SSL&#8221; or &#8220;SSL (TLS 1.0)&#8221; in the GUI and called PROTOCOL_SSL in the protocol specification</li>
+<li>CredSSP - this is what you get when you check the &#8221;Network Layer Authentication&#8221; box. It also uses uses SSL. It is called PROTOCOL_HYBRID in protocol specification</li>
+</ul>
+<p>The first option is the insecure one. If this protocol were to be negotiated, the connection would be vulnerable to a <a title="well known &quot;Man-In-The-Middle&quot; attack" href="http://www.oxid.it/ca_um/topics/apr-rdp.htm">well known &#8220;Man-In-The-Middle&#8221; attack</a>.  Essentially, someone carrying out this attack would be able to see all your key strokes and any other data passed between client and server. This will therefore be the protocol we&#8217;ll be downgrading to.</p>
+<p>The last two options are both SSL-wrapped and are more secure.  It will be these protocols that we&#8217;ll be downgrading from.</p>
+<h2>How to tell which security layer you connected with</h2>
+<p>The various warnings displayed by the Terminal Services client, mstsc.exe can be used as a crude way to identify which protocol is being used.</p>
+<h3>Classic RDP</h3>
+<p>Note that the warning message about not being able to authenticate the server tallies with the MiTM attack described above.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning For Classic RDP Connections</p></div>
+<h3>SSL</h3>
+<p>Unless you&#8217;ve configured your host to trust the SSL certificate of the RDP server, you&#8217;ll see a certificate warning like this one:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1490" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1490">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
+                   </div></a><p class="wp-caption-text">Warning for (Non-CredSSP) SSL Connections</p></div>
+<h3>CredSSP (NLA + SSL)</h3>
+<p>You get prompted for your username and password by a pop-up window &#8211; whereas Classic RDP and SSL both use a full Windows Desktop for password entry.</p>
+<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
+<a href="#imageclose-1491" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1491">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
+                   </div></a><p class="wp-caption-text">Dialogue Box For NLA Connections</p></div>
+<h2>Vulnerable configuration</h2>
+<p>Terminal Servers set to negotiate their Security Layer are potentially vulnerable to a downgrade attack. Here we view the settings on a Windows 2003 server, but this also holds for newer versions of Windows:</p>
+<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
+<a href="#imageclose-1492" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1492">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
+                   </div></a></p>
+<h2>The downgrade attack</h2>
+<p>We will connect to a Windows 2003 RDP server configured to &#8220;Negotiate&#8221; its Security Layer.  We&#8217;ll connect from a modern windows system that supports Classic RDP, SSL and NLA. This server only supports Classic RDP and SSL. As we&#8217;d hope, the two will normally negotiate the most secure option supported by both: SSL.</p>
+<p>During this attack we will modify network traffic to make the server believe the client only supports Classic RDP. We could intercept traffic using ARP-poisoning or DNS spoofing or some other method.</p>
+<p>After connecting to TCP port 3389, the client (mstsc) sends data similar to the following (shown in hex):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03* 00 00 00
+</pre>
+<p>The 03 is the protocols supported by the client. Several values are possible in this position:</p>
+<ul>
+<li>00 &#8211; Only Classic RDP is supported</li>
+<li>01 &#8211; SSL is supported in addition to Classic RDP.</li>
+<li>03 &#8211; CredSSP is supported in addition to the other two protocols.</li>
+</ul>
+<p>This is described on page 37 of the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a>.</p>
+<p>So our proof-of-concept simply replaces the 03 with 00 to cause the client and server to negotiate Classic RDP instead of SSL.</p>
+<p>We set our tool listening on 192.168.190.170 on TCP port 3389. We instruct it to forward traffic to 192.168.2.96.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python rdp-downgrade.py 192.168.2.96
+[Proxy] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>Rather than actually doing ARP-spoofing, I just connect directly to the &#8220;Man-In-The-Middle&#8221; in this demo:</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
+<a href="#imageclose-1493" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1493">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
+                   </div></a><p class="wp-caption-text">Attacker IP Address Is Entered</p></div>
+<p>Back in our PoC tool, we then see an incoming connection from the RDP client (192.168.190.1) and the proxy making an outgoing connection to the target server:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[Proxy] Incoming connection from 192.168.190.1:58715
+[Proxy] New outgoing request to 192.168.2.96:3389
+[Proxy] Connected
+</pre>
+<p>Next we see 19 bytes from the client &#8211; note the 03 near the end of the data from the client. This is recognised by our PoC tool and it prints a message to inform us the 03 has been changed to 00:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.190.1] Received 19 bytes
+0000 03 00 00 13 0E E0 00 00 00 00 00 01 00 08 00 03 ................
+0010 00 00 00 ...
+[From 192.168.190.1] Modified data to downgrade connection
+</pre>
+<p>Then we see traffic flow freely without further modification:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.2.96] Received 19 bytes
+0000 03 00 00 13 0E D0 00 00 12 34 00 02 00 08 00 00 .........4......
+0010 00 00 00 ...
+...snip...
+</pre>
+<p>mstsc shows us the warning message corresponding to a Classic RDP connection, proving that the downgrade has been successful &#8211; remember that we would normally expect a certificate warning for the SSL-wrapped RDP connection.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning Message For Classic RDP Connection</p></div>
+<h2>Conclusion</h2>
+<p>Configuring the Terminal Server to use SSL for it security layer instead of &#8220;Negotiate&#8221; prevents such a downgrade attack.</p>
+<h2>Vendor contact</h2>
+<p>We were not sure if Microsoft would consider this worthy of a security advisory. We didn&#8217;t think so, but sent them a preview of this post before publishing and asked.</p>
+<p>Microsoft who responded swiftly to confirm that &#8220;After researching the issue, we consider this behavior to be By Design&#8221;. They thanked us for our commitment to co-ordinated disclosure and gave their blessing to proceed with publication.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>RPDscan</title>
+		<link>https://labs.portcullis.co.uk/tools/rpdscan/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rpdscan/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 19:46:13 +0000</pubDate>
+		<dc:creator><![CDATA[FC]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4408</guid>
+		<description><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations. Key features Finds every Remmina configuration file and preferences Decrypts every saved password for every user it finds Python based for easy access and speed Overview Remmina is a well used Linux based RDP connection software, as many people [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations.<span id="more-4408"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Finds every Remmina configuration file and preferences</li>
+<li>Decrypts every saved password for every user it finds</li>
+<li>Python based for easy access and speed</li>
+</ul>
+<h2>Overview</h2>
+<p>Remmina is a well used Linux based RDP connection software, as many people who use Linux use Remmina for connecting to multiple machines they often save the password for each connection, Remmina stores this password in an encrypted manner using a private key hidden in a seperate preference file for each user on the Linux machine. RPDscan actively finds these preference files and extracts the private key then uses this key to decrypt all of the saved passwords and then displays to the user the username the password and computer details.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Python</li>
+<li>Linux target</li>
+</ul>
+<h2>Installation</h2>
+<p>Download the script onto your target machine and run, there is no installation required for this tool.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+</pre>
+<p>RPDscan is initially set to search only the /home directory as 99% of all files will be in that location, however the python file can easily be edited to include the entire / tree.</p>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+found this pref file /home/fc/.remmina/remmina.pref========
+Found a conf file: /home/fc/.remmina/1366367609312.remmina
+Saved password:
+^**D!sEx@mpl3ssh_username=ssh_server=
+
+username=fc
+
+domain=
+
+server=172.16.0.266
+
+========
+Found a conf file: /home/fc/.remmina/1366641829516.remmina
+
+server=10.256.0.1
+
+Saved password:
+@n0ther3Xamp!e
+
+ssh_username=
+
+ssh_server=
+
+username=ExampleDomain\\Administrator
+
+domain=
+</pre>
+<p>Here you can see that RPDscan has found two saved password files and extracted all the data you need to connect.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" target="_blank" title="Download RPDscan Py"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RPDscan Py" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" title="Download RPDscan.py.tgz" target="_blank" id="wpfb-file-link-1">RPDscan.py.tgz</a>
+    
+    <br />
+    April 16, 2014<br />
+    
+  </div>
+  <div class="info">
+    1.1 KiB<br />
+    MD5 hash: 935738ab08748ff5ef09c2346ffc4755 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 16, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rpdscan/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>POODLE: Padding Oracle On Downgraded Legacy Encryption</title>
+		<link>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/</link>
+		<comments>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/#comments</comments>
+		<pubDate>Wed, 15 Oct 2014 16:35:06 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4767</guid>
+		<description><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566. The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566.</p>
+<p>The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or encryption are applied. This gives rise to a padding oracle bug, which is how BEAST worked too. <span id="more-4767"></span></p>
+<p>Block ciphers require plain-texts to be of a length divisible into fixed-size blocks, e.g. 128 bits in the case of AES. As normal messages don&#8217;t adhere to this (i.e. can be arbitrary in size) we use padding to ensure that the message is expanded to fit that requirement. Padding usually adds a minimum of 1 byte, and a maximum of one entire block. Its value is usually tied to the length of the padding, for example in PKCS#7 padding we would add 01 01 for two bytes, 02 02 02 for 3 bytes, 03 03 03 03 for 4 bytes, etc. However, instead of checking that all the bytes match, the SSLv3 specification states that only the last byte is to be validated. In some cases, in fact, client libraries mistakenly set the first padding bytes improperly &#8211; Oracle&#8217;s implementation has, in the past, used zeroes for all bytes but the last.</p>
+<p>Another requirement that block ciphers don&#8217;t provide on their own is securely encrypting more than a single block with the same key. This is important, because simply transforming each block independently with a cipher (this is known as Electronic Codebook, or ECB mode) results in equal blocks encrypting to equal cipher-texts, which is bad news because this leaks information! Instead, we use different constructions to ensure safety when encrypting multiple blocks &#8211; Cipher Block Chaining (CBC) is a very common one.</p>
+<p>In CBC, we take each previous cipher-text block and xor it with the current plaintext block before encryption. So for block 4, you take the encrypted block 3, xor it with the block 4 plaintext, then encrypt that value. The first block (block 0) has no previous cipher-text block, so we use an Initialisation Vector (IV). The IV is important, because it allows us to securely send the same full messages with the same key without their entire resulting cipher-texts being equal, as long as we don&#8217;t ever re-use an IV with the same key. Anyway, that detail isn&#8217;t important for this bug.</p>
+<p>To decrypt a CBC message, we decrypt a block, then xor the output with the previous block&#8217;s cipher-text, i.e:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub>, where M is the message, D<sub>k</sub> is a block decryption with a key k, C is the ciphertext, and ⊕ denotes an xor.</p>
+<p>It turns out that this construction is malleable, meaning that an attacker can modify the cipher-text in a way that causes meaningful things to happen to the plaintext when it gets decrypted. This has been known about for a long time, and underpins many modern SSL/TLS bugs, as well as bugs in other crypto-systems.</p>
+<p>Essentially, if you modify a block by xor&#8217;ing it with some value, the next block&#8217;s plaintext gets xor&#8217;ed with that value at the cost of the tweaked block being completely garbled. So if we want to attack block 4, we&#8217;d xor C<sub>3</sub> with a value t, so that the decryption becomes:</p>
+<p>D<sub>k</sub>(C<sub>4</sub>) ⊕ (C<sub>3</sub> ⊕ t) = M<sub>4</sub> ⊕ t</p>
+<p>This is really useful if you know any of the values of M<sub>4</sub>, because you can use xor to arbitrarily alter any value you know. This has a side-effect, though. Because C<sub>3</sub> is now C<sub>3</sub> ⊕ t, when decrypting C<sub>3</sub> it gets utterly garbled, destroying it entirely. This is fine in some cases, for example if your target application doesn&#8217;t check block authenticity and doesn&#8217;t read (or doesn&#8217;t care about) the data in the garbled block. Another trick in this avenue is to change the IV instead, so that:</p>
+<p>M<sub>0</sub> = D<sub>k</sub>(C<sub>0</sub>) ⊕ IV</p>
+<p>becomes</p>
+<p>D<sub>k</sub>(C<sub>0</sub>) ⊕ (IV ⊕ t) = M<sub>0</sub> ⊕ t</p>
+<p>This doesn&#8217;t have the block-garbling side effect, but you can only do it on the first block. This is particularly useful in systems where cipher-text blocks are authenticated but the IV isn&#8217;t.</p>
+<p>Anyway, you&#8217;re probably wondering what this has to do with POODLE. Remember all that padding stuff? Turns out that you can use that to work out the values of cookies.</p>
+<p>An attacker gets the victim to visit a page controlled by them. That page includes JavaScript that repeatedly requests a target site for which we want to steal cookies from. The request body will look something like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody
+</pre>
+<p>Which after padding and MAC looks like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
+</pre>
+<p>The attacker controls the URL and the request body. This allows them to force the cookie into a particular position in the request. Specifically, the attacker sends requests with different length URLs and body data until the observed encrypted message grows by one block, with an earlier block having its last byte as one unknown byte of cookie. This sounds hard, but it&#8217;s as simple as knowing that the Cookie header is in a certain position and tweaking the URL to block-align it, then sending a maximum of 16 requests with incrementing POST body sizes until the output grows by one block.</p>
+<p>The attacker knows that the final byte in the padding block will have a decimal value of 15 (i.e. 0x0F) because of the known padding size. He can then utilise the CBC malleability issue discussed above to replace the padding block with the target block (containing 1 byte of cookie at the end). Most of the time this will be rejected as invalid padding, but 1 in 256 times (on average) this will be accepted because the decrypted last byte will happen to be 15. This probability is due to the different key / IV used each time, so the cipher-text will be different (randomly) each time, so when the last block is decrypted it xors with the previous cipher-text block and has a chance of randomly producing 15 as the last byte.</p>
+<p>That&#8217;s a bit of a challenge to follow, so let&#8217;s look at it specifically in terms of the decryption:</p>
+<p>Mn = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub></p>
+<p>where C<sub>n</sub>, the final block, containing padding, is replaced with C<sub>i</sub>:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>i</sub>) ⊕ C<sub>n-1</sub></p>
+<p>Because C<sub>i</sub> wasn&#8217;t intended to be xor&#8217;ed with C<sub>n-1</sub> the output is garbage. However, because C<sub>n-1</sub> is random, in roughly 1/256 cases the last byte of output will be 15, leading the padding to be falsely accepted as valid. When this occurs, the attacker can deduce that:</p>
+<p>D<sub>k</sub>(C<sub>i</sub>)[15] ⊕ C<sub>n-1</sub>[15] = 15</p>
+<p>Which, by doing a bit of bitwise algebra, gets us some plaintext:</p>
+<p>M<sub>i</sub>[15] = 15 ⊕ C<sub>n-1</sub>[15] ⊕ C<sub>i-1</sub>[15]
+<p>The above arises because C<sub>i</sub> was xor&#8217;ed with C<sub>i-1</sub> when the CBC encryption occurred.</p>
+<p>The C<sub>n-1</sub> and C<sub>i-1</sub> values are known to the attacker, so they just decrypted a single byte of the message, without knowing the key!</p>
+<p>The attack requirements are:</p>
+<ul>
+<li>Attacker can get the client to send HTTPS requests (easy via JS)</li>
+<li>Attacker is in a position to modify client traffic (&#8220;Man-In-The-Middle&#8221;)</li>
+<li>Connection uses a block cipher suite from SSLv3</li>
+</ul>
+<p>Now that last one is interesting. SSLv3 is still very widely supported by servers, but TLS is usually there too and clients should prefer it. However, due to all sorts of issues with client/server compatibility, it turns out that if a connection fails to properly negotiate TLS then in many clients it&#8217;ll downgrade to SSLv3. All an attacker needs to do, is sit in the middle and interfere with the handshake such that the client assumes there&#8217;s an incompatibility and renegotiates down to SSLv3.</p>
+<p>There are two fixes. The first is to just turn off SSLv3, or at least disable CBC cipher suites in SSLv3 (but that leads to other problems so isn&#8217;t recommended). There is also a client-side fix for the downgrade, which is to enable the TLS_FALLBACK_SCSV flag in the client hello &#8211; this is recommended within the original Google article. However, organisations should not rely upon all clients having this patch, or that some clients will not downgrade to SSLv3 for other reasons.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>EMF Camp 2014 USB scavenger hunt</title>
+		<link>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/</link>
+		<comments>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/#comments</comments>
+		<pubDate>Tue, 26 Aug 2014 14:52:27 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[emfcamp2014]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4620</guid>
+		<description><![CDATA[<p>This year, Portcullis are running a USB Scavenger Hunt at EMF Camp. For those of you attending, we&#8217;ve written this post to give you all the instructions and rules you need to get underway. Good luck! Instructions This is a cross between a scavenger hunt and a CTF event. Each USB key will contain a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This year, Portcullis are running a USB Scavenger Hunt at <a title="EMF Camp" href="https://www.emfcamp.org/">EMF Camp</a>. For those of you attending, we&#8217;ve written this post to give you all the instructions and rules you need to get underway. Good luck!<span id="more-4620"></span></p>
+<h2>Instructions</h2>
+<p>This is a cross between a scavenger hunt and a CTF event. Each USB key will contain a puzzle which has to be solved, giving the location of the next USB key. These puzzles aren&#8217;t security specific, so anyone technically minded should be able to take part. If you&#8217;d like to participate, come along to the <a title="Portcullis Village" href="https://wiki.emfcamp.org/wiki/Villages:Portcullis">Portcullis Village</a> and we&#8217;ll point you towards the first location.</p>
+<p>Please note: These USB keys are not guaranteed to be safe! The team before you may have left all sorts of nasties on there. Please use sensible precautions, as you would when plugging any unknown device into your computer.</p>
+<h2>Rules</h2>
+<ul>
+<li>Please don&#8217;t remove the USB keys from their locations, or move them from where you found them. This will ruin the fun for others!</li>
+<li>Once you find a USB key, copy the contents off before you start working on the challenge.</li>
+<li>Please don&#8217;t alter the contents of the USB keys.</li>
+<li>Have Fun!</li>
+</ul>
+<h2>Problems?</h2>
+<p>If you have any issues, think something is wrong, or just need some help, please come and find us at the village!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Portcullis security consultants to present at BSides London</title>
+		<link>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/</link>
+		<comments>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/#comments</comments>
+		<pubDate>Fri, 25 Apr 2014 16:48:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Android]]></category>
+		<category><![CDATA[BSidesLondon]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4438</guid>
+		<description><![CDATA[<p>We are pleased to announce that two of our security consultants, Graham Sutherland and Tim Brown, will be presenting at the upcoming BSides London security conference on the 29th of April. BSides London is an annual community-driven security conference which, this year, will be taking place at the Kensington and Chelsea Town Hall in London. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We are pleased to announce that two of our security consultants, Graham Sutherland and Tim Brown, will be presenting at the upcoming BSides London security conference on the 29th of April. </p>
+<p>BSides London is an annual community-driven security conference which, this year, will be taking place at the Kensington and Chelsea Town Hall in London.</p>
+<p>Graham’s talk coincides with the disclosure of a set of vulnerabilities in the administration features of the Citrix NetScaler appliance, which will be discussed in the talk.<span id="more-4438"></span></p>
+<p>Graham has provided the following abstract for his talk:</p>
+<h2>&#8220;Breaking binary protocols and bad crypto&#8221;</h2>
+<p>This talk is a running account of a few weeks spent attacking and reverse-engineering a widely deployed network device. Graham went from having little knowledge of the system, to producing some powerful and interesting exploits. The focus of this talk is more towards how the issues were found, rather than the issues themselves. To that end, a generic set of hints and tips will be proposed for analysing and attacking binary protocols, including a method for classifying and identifying unknown cryptography used on data.</p>
+<p>While Tim will be presenting &#8220;Mobile application testing considerations&#8221; and has provided the following abstract for his workshop:</p>
+<h2>&#8220;Mobile Application testing considerations&#8221;</h2>
+<p>This workshop represents a quick dive into the world of mobile application testing, focusing on Android but with consideration for Windows Mobile, BB10 and iOS. It will be based on Portcullis’ mobile application testing methodology although it will cover much of the equivalent OWASP methodology of which I am a contributor. It will cover testing from a network perspective as well as how you assess the attack surface an application presents locally.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Securi-Tay 3 wrap-up</title>
+		<link>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/</link>
+		<comments>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/#comments</comments>
+		<pubDate>Fri, 24 Jan 2014 01:01:35 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[Securi-Tay]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3120</guid>
+		<description><![CDATA[<p>Of all the conferences I&#8217;ve been to, Securi-Tay has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Of all the conferences I&#8217;ve been to, <a title="Securi-Tay" href="http://securi-tay.co.uk/">Securi-Tay</a> has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student organised and lead conference, held annually by the Abertay Ethical Hacking Society at the University of Abertay, Dundee. This year&#8217;s event, held on January 15th (last week, at time of writing), marked the third instance of the conference.<span id="more-3120"></span></p>
+<p>I spoke at Securi-Tay last year (<a title="video" href="http://www.youtube.com/watch?v=ID5RxZc9EAk">video</a>), before I joined Portcullis, on the security threats posed by common office and datacenter devices such as photocopiers, printers, and UPSs. This year I decided to tackle a much more foreboding and monolithic topic: cryptography. I feel that one of the major obstacles to learning about cryptography is the stigma around it &#8211; it is often seen as obscenely complex, studied only by mathematicians with foot-long beards and a slew of three-letter acronyms trailing their surnames, detailing their accomplishments. Another obstacle is the lack of reputable, high quality, entry-level education in the subject outside of university courses and paid workshops. This aspect has improved somewhat, especially with the introduction of free online courses like Stanford&#8217;s, but free materials are certainly nowhere near the breadth and ubiquity we come to expect in other areas of security education. As such, I felt that I should do my part in rectifying this.</p>
+<p>My talk, entitled &#8220;Breaking crypto without breaking your brain&#8221;, aimed to give people a basic understanding of the common types of cryptography that I see in practical use as part of my day job, without needing an advanced degree in mathematics. In contrast to many introductions to the topic, I skipped the classic ciphers such as the Caesar cipher, simple alphabetic transposition and substitution ciphers, and other algorithms of that ilk, as I rarely find knowledge of them useful in the context of real security assessments. Instead, I focused upon one-time pads, modern stream and block ciphers, padding, block cipher modes, and demonstrated how seemingly strong encryption can often be broken trivially.</p>
+<p>The talk was recorded and should be available on YouTube within the next few weeks, via the <a title="AbertayHackers YouTube account" href="http://www.youtube.com/user/AbertayHackers">AbertayHackers YouTube account</a>. In the meantime, you can download the slides and both demo applications:</p>
+<ul>
+<li><a href="https://labs.portcullis.co.uk/download/BreakingCrypto.odp" >Slides - Breaking crypto without breaking your brain</a></li>
+<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo1.exe" >Demo 1 - OTP key re-use</a></li>
+<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo2.exe" >Demo 2 - ECB block-cipher mode weakness</a></li>
+</ul>
+<p>Aside from my own, there were a number of very good quality talks from both industry professionals and students. I thought it would be nice to write a short description of each that I saw, with some take-away points for each talk.</p>
+<p>Olly Whitehouse &#8211; &#8220;Real world threat modelling&#8221;</p>
+<p>This talk covered a range of topics around the concept of assessing a black-box appliance, with a view to building a threat model. Olly proposed that by building a threat model, pentesters can obtain greater coverage of targets during tests, primarily by answering simple questions that help us understand the system. He highlighted the need to understand underlying technologies, especially the operating system, in order to minimise the risk of missing key issues. Finally, he went on to discuss ways of building threat models, visualising them, and utilising feedback from security tests to improve upon existing models.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Go for the simplest attacks to reach your goal &#8211; elabourate and sexy tricks aren&#8217;t important</li>
+<li>Threat modelling can help both pentesters and the organisations that hire them</li>
+<li>Threat model discussions with security engineers, developers, and other technical staff can lead to real improvements in security posture</li>
+</ul>
+<p>Panagiotis Gkatziroulis &#8211; &#8220;Physical attacks: Walking past the egg shell perimeter&#8221;</p>
+<p>This talk gave a broad overview of the technological, structural, procedural, and human challenges that are involved in physical security. First, a range of security measures were discussed that fall into the building design and security technology category, including entry choke points, placement of receptionists and guards, use of CCTV cameras and electronic doors, as well as the training of the personnel involved. Panagiotis noted that reception staff are often not trained to act as security guards, despite the fact that fooling them may get you the &#8220;keys to the kingdom&#8221;. He went on to discuss four avenues of exploitation when dealing with human opponents: misrepresentation, obligation, authority, and emergency. Five key reasons why humans fail to act were proposed: a sense of obligation to business goals (not wanting to hinder productivity), employees feeling that they aren&#8217;t targets, anxiety of punishment if they mistakenly report something, a lack of confidence in challenging people, and a belief that security is someone else&#8217;s problem.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Physical security is meaningless if humans can be subverted into giving you access</li>
+<li>Often a lack of proactive security &#8211; changes are reactive, after the damage is done</li>
+<li>Once you get a pass from reception, you win. These people should be trained in security procedures</li>
+</ul>
+<p>Oren Benshabat &#8211; &#8220;DNS distress&#8221;</p>
+<p>Oren&#8217;s talk focused on the problems of DNS cache poisoning and DNS amplification attacks from the ground up, explaining the subject in detail. He began with cache poisoning &#8211; an attack that tricks a system into accepting a spoofed DNS response. He described bailiwick checking, a series of checks designed to enforce correct responses, and how this process can be subverted by flooding the target with reply packets containing different query IDs until one is accepted. He went on to cover Dan Kaminsky&#8217;s BIND attack, which spoofs an entire domain rather than just one hostname, by spoofing the nameserver of a domain to point at an authoritative DNS server under the attacker&#8217;s control. He proposed several fixes, including BIND patches, randomised source ports, DNSSEC, and pinning of nameserver IP addresses. He went on to discuss DNS amplification DoS attacks, which involve tricking open DNS servers into sending large reply packets to a target system. A range of DNS features that increase response packet size were discussed, including EDNS0, DNSSEC, as well as proprietary and custom DNS extensions. Finally, countermeasures such as IP source validation (mainly at the ISP level) and restriction of open recursion were suggested, with the caveat that there is no bullet-proof solution against DNS amplification attacks at the current time.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>There are multiple ways in which DNS can be abused, even when properly configured</li>
+<li>Some DNS security features (e.g. DNSSEC) help to fix one problem but also contribute to other problems</li>
+<li>There is no current practical solution to DNS amplification attacks</li>
+</ul>
+<p>Dom Cashley &#8211; &#8220;Security in SCADA&#8221;</p>
+<p>SCADA is a topic that I am personally interested in, but have very little knowledge of. As such, I was very happy to see someone approaching the subject at an entry level. Dom started the talk by explaining the traditional SCADA network design, including Human-Machine Interface, Master Terminal Unit, and Remote Terminal Unit devices, and how they are usually deployed in production facilities. Whilst the original design was focused on an air-gapped network, Dom noted that many modern SCADA devices are in fact no longer air-gapped, and are commonly available from the internet for remote access purposes. He went on to explain how off-the-shelf hardware was often used to network these devices and link them to IP networks, making an attacker&#8217;s job easier. Additional security issues were also noted, such as a lack of security training for engineers that are deploying equipment, general purpose computing platforms being used in field devices (including BYOD-style policies), and &#8220;SCADA in the cloud&#8221; management systems. Dom noted several problems with patching and updates, including long-standing hardware life spans, a reluctance to take down critical devices for patching, and use of old insecure protocols. A demo was also shown, using a special demo board and an exploit that causes the MTU to alter pump motor parameters without alerting the HMI user.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>SCADA is usually controlled by software on regular PCs, often running Windows</li>
+<li>Patching bugs is paradoxically problematic due to the critical nature of systems</li>
+<li>Systems are often not air-gapped and regularly appear on the internet, and may be found on SHODAN</li>
+</ul>
+<p>Paco Hope &amp; Ritesh Sinha &#8211; &#8220;The Colour of your box: The art and science of security testing&#8221;</p>
+<p>Along with Paco, Ritesh, and the usual exuberance we&#8217;ve come to expect, the stage was occupied with two rollercoasters built from k&#8217;nex, wrapped almost entirely in large cardboard boxes, exposing only the starting and finishing sections of track. These contraptions formed a metaphor for the core concept of their talk: black-box vs. white-box testing. A toy car was placed into each, which could be heard traversing the track, but the car did not appear at the other side. Two teams were invited from the audience to diagnose the fault, each given access to one rollercoaster each. This was described as the black-box test, where only inputs and outputs could be seen, functionality could be deduced, and some vision of the internal technologies was available. Each team reported that the system utilised k&#8217;nex, was meant to take a car in one side and send it through to the other, but did not work.</p>
+<p>The teams were then allowed to open flaps on the sides of the boxes to see inside, and propose one single fix that would solve the problem &#8211; essentially a white-box test. The &#8220;one issue&#8221; restriction was designed to emulate a true penetration test, where the customer receives a report and cannot be guaranteed to fix anything but the highlighted issues. Paco noted that reports needed to be clear, concise, and free of unnecessary technical jargon, stating that far too many reports end up reading somewhere along the lines of &#8220;bla bla bla owned you bla bla bla root shell bla bla bla Cross-site Scripting bla bla bla disaster!&#8221;. Now that the Teams had access to the internals, both began identifying potential problems with the design, and tried to come to a conclusion on what should be fixed. After some pointers from the presenters, the solution was eventually found: a piece was blocking the passage of the car and needed to be moved.</p>
+<p>The conclusion given was that both black-box and white-box approaches are necessary, as they both promote different types of thinking and analysis. Black-box tests tend to focus on the external attack surface that most attackers would see, whereas white-box tests tend to focus more on implementation details that may lead to potential issues. By combining the two methods, the presenters propose that a strong coverage of the target can be obtained.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Black-box makes you focus on external attack surface, white-box makes you focus on implementation details</li>
+<li>Reports need to be clear, concise, and explain the full spectrum of problems in order to facilitate improvements</li>
+<li>Combining both types of testing helps increase coverage during assessments</li>
+</ul>
+<p>The conclusion of Paco and Ritesh&#8217;s talk marked the end of the conference day, after which we all congregated in the student union bar for after-party drinks. I&#8217;d like to issue personal thanks to all involved with organising and running the conference, including all the speakers and sponsors.</p>
+<p>As I noted above, all talks were recorded and should hopefully be available on YouTube within the next few weeks.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

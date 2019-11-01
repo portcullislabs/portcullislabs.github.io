@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>An introduction to binary dynamic analysis | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='An introduction to binary dynamic analysis - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-3001 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-3001"  class="portcullis-post portcullis-article  post-3001 post type-post status-publish format-standard hentry category-blog tag-analysis tag-debugging tag-fuzzing">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">An introduction to binary dynamic analysis</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="14:29">13/05/2014</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/brc/" title="View all posts by BRC">BRC</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>The term <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs.<br />
+<span id="more-3001"></span></p>
+<h2>Tools</h2>
+<p>Several software solutions exists to help the developers and researchers to commit this task of inspecting a program runtime behaviour, being some of the prominent the following ones:</p>
+<ul>
+<li><a title="mtrace" href="http://man7.org/linux/man-pages/man3/mtrace.3.html">mtrace</a></li>
+<li><a title="Valgrind" href="http://valgrind.org/">Valgrind</a></li>
+<li><a title="Intel PIN tool" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel PIN tool</a></li>
+<li><a title="DynamoRIO" href="http://code.google.com/p/dynamorio/">DynamoRIO</a></li>
+<li><a title="DynInst" href="http://www.dyninst.org/">DynInst</a></li>
+</ul>
+<p>Two of the the most widely used tool dynamic binary instrumentation tools are PIN and DynamoRIO. PIN is developed by Intel and provided by the University of Virginia whereas DynamoRIO is a collaboration between Hewlett-Packard and MIT. Both are free to use but only DynamoRIO is open source. PIN and DynamoRIO are both equally useful and usually the election is the result of personal taste.</p>
+<h3>mtrace</h3>
+<p><a title="mtrace" href="http://man7.org/linux/man-pages/man3/mtrace.3.html">mtrace</a> is the memory debugger included in the GNU C Library. The usage of mtrace(3) can be summarised as follows:</p>
+<ol>
+<li>Export the variable MALLOC_TRACE to point to the result logfile</li>
+<li>Include the header mcheck.h in the code</li>
+<li>Call to mtrace() before allocating memory</li>
+<li>Call untrace() at the end of the code (usually the main() function)</li>
+<li>Compile the program with debugging symbols (gcc prog.c -g)</li>
+<li>Read output using mtrace exec_file mtrace_output filename</li>
+</ol>
+<p>Following a example extracted from the mtrace(3) man page to clarify the usage:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">
+#include &lt;mcheck.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+int main()
+{
+   int j;
+
+   mtrace();
+
+   for (j = 0; j &lt; 2; j++)
+       malloc(100);            /* Never freed--a memory leak */
+
+   calloc(16, 16);             /* Never freed--a memory leak */
+   exit(EXIT_SUCCESS);
+}
+</pre>
+<p>A little script could be created in order to automate the compilation the analysis:</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+#!/bin/sh
+export MALLOC_TRACE=mtrace.log
+bin=prog
+src=mtrace.c
+gcc -g $src -o $bin
+./$bin
+mtrace $bin $MALLOC_TRACE
+</pre>
+<p>The execution will result in the following excerpt:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ./mtrace.sh 
+
+Memory not freed:
+-----------------
+           Address     Size     Caller
+0x0000000002054460     0x64  at /home/user/mtrace.c:11 (discriminator 2)
+0x00000000020544d0     0x64  at /home/user/mtrace.c:11 (discriminator 2)
+0x0000000002054540    0x100  at /home/user/mtrace.c:15
+</pre>
+<p>As can be seen, mtrace(3) has detected the error absence of free(), resulting in a memory leak error.</p>
+<h3>Intel PIN tool</h3>
+<p>PIN is a framework for creating dynamic binary analysis tools for the i386 and x86-64 architectures that can be used to perform program analysis on user space applications in Linux and Windows at run time on the compiled binary files. Pin provides an API that abstracts the instruction set and the binary schema and allows to inspect register contents, program code and symbol and debug information.</p>
+<p>PIN performs instrumentation by taking control of the program just after it loads into memory and recompiling just-in-time sections of binary code just before they are run. Regarding the performance, PIN&#8217;s overhead is about 30 percent.PIN was originally created as a tool for computer architecture analysis, but its flexible API and an active community (called &quot;Pinheads&quot;) have created a diverse set of tools for security, emulation and parallel program analysis.</p>
+<p>A pin tool comprises of three types of routines: </p>
+<ol>
+<li>Instrumentation routines that enable the insertion of analysis routines</li>
+<li>Analysis routines which are called when the code they are associated is run</li>
+<li>Callback routines that called when specific conditions are met or when a certain event has occurred such as library loads, system calls, signals/exceptions and thread creation events</li>
+</ol>
+<p>PIN includes in the directories <strong>source/tools/ManualExamples</strong> and <strong>source/tools/SimpleExamples</strong>  several examples. Below can be seen the execution of the instruction counter and opcode mix profiler PIN tools:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ cd pin-2.12-58423-gcc.4.4.7-linux
+$ ./pin -appdebug -t source/tools/ManualExamples/obj-ia32/inscount0.so -- `which evolution`
+</pre>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ cd pin-2.12-58423-gcc.4.4.7-linux
+$ ./pin -t source/tools/SimpleExamples/obj-intel64/opcodemix.so -- /bin/ls
+</pre>
+<p>Another interesting example can be found on the imageload.cpp file. This example demonstrates the use of the API functions IMG_AddInstrumentFunction and IMG_AddUnloadFunction which are called when the binary images are loaded by the operating system:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ cd source/tools/ManualExamples
+$ make -f makefile obj-intel64/imageload.so
+$ ../../../pin -t obj-intel64/imageload.so -- /bin/ls
+$ cat imageload.out
+	Loading /bin/ls, Image id = 1
+	Loading /lib64/ld-linux-x86-64.so.2, Image id = 2
+	Loading /lib/x86_64-linux-gnu/libselinux.so.1, Image id = 3
+	Loading /lib/x86_64-linux-gnu/librt.so.1, Image id = 4
+	Loading /lib/x86_64-linux-gnu/libacl.so.1, Image id = 5
+	Loading /lib/x86_64-linux-gnu/libc.so.6, Image id = 6
+	Loading /lib/x86_64-linux-gnu/libdl.so.2, Image id = 7
+	Loading /lib/x86_64-linux-gnu/libpthread.so.0, Image id = 8
+	Loading /lib/x86_64-linux-gnu/libattr.so.1, Image id = 9
+	Unloading /bin/ls
+	Unloading /lib64/ld-linux-x86-64.so.2
+	Unloading /lib/x86_64-linux-gnu/libselinux.so.1
+	Unloading /lib/x86_64-linux-gnu/librt.so.1
+	Unloading /lib/x86_64-linux-gnu/libacl.so.1
+	Unloading /lib/x86_64-linux-gnu/libc.so.6
+	Unloading /lib/x86_64-linux-gnu/libdl.so.2
+	Unloading /lib/x86_64-linux-gnu/libpthread.so.0
+	Unloading /lib/x86_64-linux-gnu/libattr.so.1	
+</pre>
+<p>A classification of some of the shipped PIN tools examples are:</p>
+<h4>Analysing instructions</h4>
+<ul>
+<li>inscount0.cpp: checks number of executed instructions of application program</li>
+<li>itrace.cpp: lists addresses of executed instructions of application program</li>
+<li>pinatrace.cpp: lists addresses of accessed memory and type of operation (read, write)</li>
+<li>opcodemix.cpp: lists opcodes of executed instructions with number of executions and category summary</li>
+<li>regmix.cpp: analyses the usage or program registers
+</ul>
+<h4>Analysing basic blocks</h4>
+<ul>
+<li>inscount1.cpp: counts all instructions of a basic block at once.</li>
+<li>edgcnt.cpp:lists addresses of jump instructions, type of jump (direct, indirect), and number of times performed</li>
+</ul>
+<h4>Analysing routines</h4>
+<ul>
+<li>proccount.cpp: counts number of times each routine is invoked and number of instructions in it</li>
+</ul>
+<h3>Analysing libraries</h3>
+<ul>
+<li>imageload.cpp: lists loading and unloading of dynamic libraries invoked by program</li>
+</ul>
+<h4>Developing the first PIN tool</h4>
+<p>PIN includes in source/tools/MyPinTool/ a sample tool that can be used as code code base to start creating basic PIN tools. To create, compile and execute a this basic example, the following commands could be used:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ cp -r pin-2.12-58423-gcc.4.4.7-linux/source/tools/MyPinTool/ pin1/
+$ cd pin1
+$ make -f makefile mPIN_ROOT=../pin-2.12-58423-gcc.4.4.7-linux
+$ ls obj-intel64/
+MyPinTool.o  MyPinTool.so
+$ ../pin-2.12-58423-gcc.4.4.7-linux/pin -t obj-intel64/MyPinTool.so -- /bin/ls
+===============================================
+This application is instrumented by MyPinTool
+===============================================
+makefile  makefile.rules  MyPinTool.cpp  obj-intel64
+</pre>
+<p>To make things simple, a development directory &#8220;mytools&#8221; could be created outside the PIN directory hierarchy:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ls -l
+total 35636
+drwxr-xr-x 4 user users     4096 mar  9 22:39 mytools
+lrwxrwxrwx 1 user users       30 ago 24  2013 pin -&gt; pin-2.12-58423-gcc.4.4.7-linux
+drwxr-xr-x 7 user users     4096 mar 10 01:12 pin-2.12-58423-gcc.4.4.7-linux
+</pre>
+<p>The development directory will contain the tools source code and the objects:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title=""> 
+$ ls -l mytools
+total 120
+-rw-r--r-- 1 user users  676 feb  3 2013 Makefile
+-rwxr-xr-x 1 user users  366 feb  3 2013 build.sh
+-rw-r--r-- 1 user users 6033 feb  9 05:08 check_pc_sections.cpp
+-rw-r--r-- 1 user users 7062 feb  9 03:27 check_secciones.cpp
+-rw-r--r-- 1 user users 7796 feb  9 04:44 detect_pc_noexec.cpp
+-rw-r--r-- 1 user users 5278 feb  9 02:30 load_unload_imag.cpp
+-rw-r--r-- 1 user users 5435 feb  9 02:44 load_unload_sec.cpp
+-rw-r--r-- 1 user users 2822 feb  4  2013 makefile.rules
+drwxr-xr-x 2 user users 4096 feb  3 18:46 obj-intel64
+</pre>
+<p>A script (build.sh) could be created in order to help the compilation of PIN tools that reside in the development directory. The code of the script could be as shown below:</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+#!/bin/sh
+PIN_ROOT=../pin
+dstdir=obj-intel64
+function negrita() { echo -e &amp;quot;&#92;&#48;33[1m${1}&#92;&#48;33[0m&amp;quot;; }
+
+test -d $dstdir || mkdir $dstdir
+
+for f in *.cpp; do
+    negrita &amp;quot;[*] Building $f&amp;quot;;
+    obj=`echo $f | sed -e 's/cpp/so/'`
+    make $dstdir/$obj PIN_ROOT=$PIN_ROOT
+    negrita &amp;quot;[*] Exec $PIN_ROOT/pin -t $dstdir/$obj -- &lt;program&gt;&amp;quot;
+done
+</pre>
+<p>This script can be used to compile or all tools contained in the &#8220;mytools&#8221; development directory at one. Also, some tricks could help when using this dynamic instrumentation framework:</p>
+<ul>
+<li>The option -appdebug tells PIN to start a GDB server to debug the application</li>
+<li>The -appdebug option can also be used to debug from IDA Pro any application using PIN using the remote GDB debugger</li>
+<li>It can&#8217;t be specified which port PIN will listen in as it will be randomly selected every time we execute PIN</li>
+<ul>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-gUeLewPwnDAbBre" class="g-recaptcha-explicit-id"><div id="g-recaptcha-gUeLewPwnDAbBre"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.084 seconds. -->
+</div>
+</body>
+</html>
+

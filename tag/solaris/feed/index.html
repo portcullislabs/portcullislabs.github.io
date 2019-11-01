@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Solaris</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/solaris/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>UNIX and Linux setUID advice and guidance</title>
+		<link>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/</link>
+		<comments>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
+		<pubDate>Fri, 16 Jun 2017 14:41:53 +0000</pubDate>
+		<dc:creator><![CDATA[AFC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[FreeBSD]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5793</guid>
+		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
+<p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
+<p>One good approach would be:</p>
+<p>&#8220;The only good setUID is a chmod -s setuid&#8221; i.e. deactivate this particular functionality.</p>
+<p>However, sysadmins may (understandably) get a bit wobbly when we suggest this and come up with a number of fairly valid reasons why this is tricky. They have a point to some extent, but this is 2017 and we should be biting some of these bullets.</p>
+<p>Yes, reducing the risk in this area is tough, but it is in fact a good start in defining least privilege security controls. You can learn how little or how much power individual users require and manage this accordingly. You can also test your changes before rolling them out and sanity check the advice given.</p>
+<p>At the very least we need a list of files that should not be setUID that we can give to sysadmins and, with confidence, recommend removing or changing the permissions. A pragmatic strategy for mitigating the risks incurred would also be good.</p>
+<h2>So what are they?</h2>
+<p>SetUID/setGID bits are file permissions set on binary files when we need them to run with the permissions of the owner (setUID) or the group (setGID) that owns the file, usually a root or equivalent user. Historically this functionality was entrenched in UNIX and Linux and was necessary, up to a point, for a system to function as intended.</p>
+<p>Many vendors are now working toward eliminating the requirement for these permissions and UNIX based systems can be configured, with some care, not to use them.</p>
+<p>We potentially have 3 categories of setUID and setGID files:</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>May have become setUID by accident, installation of third-party software, malicious activity or sloppy coding and should almost certainly not be allowed</li>
+<li>tar, find, vi, etc</li>
+<li>Likely high risk to get root easily</li>
+<li>Epic fail -rwsrw-rw- More common than you would think</li>
+<li>Vendor supplied software often a culprit</li>
+</ul>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>Redundant, legacy or not really required to be setUID</li>
+<li>rcp, arping, etc</li>
+<li>Likely low risk but should be easy to remove</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>OS may fail to function as expected if setUID is removed without care</li>
+<li>For example passwd, sudo</li>
+<li>Should be mitigated to minimise risks</li>
+<li>Many can be reclassified as 2 above and have the setUID bit removed</li>
+</ul>
+<p>We report on categories 1 (naughty) and 2 (remove) scoring appropriate to the risk and ease of exploitation. We report on 3 (allowed) with recommendations to mitigate.</p>
+<p>For example, a setUID on the find command (or any shell command with abilities to run other programs or shells) would be a high risk vulnerability allowing regular users to become root fairly easily.</p>
+<h2>How to deal with these issues?</h2>
+<p>The approach to recommend to customers:</p>
+<ol>
+<li>Audit &#8211; find all setUID and setGID files on the system locally and on all filesystems not mounted nosetuid</li>
+<li>Validate &#8211; elfsign and cross checks against vendor checksums</li>
+<li>Eliminate where possible &#8211; uninstall, chmod -s or rm</li>
+<li>Mitigate where necessary &#8211; FIM, auditing, remote logging, mount NAS nosetuid</li>
+</ol>
+<p>This applies primarily to common Linux distributions. Solaris and AIX for example may have slightly different filenames and locations, but similar principles apply.</p>
+<p>The ubiquitous sudo or other equivalent tools can be used to configure fine grained privilege management without the requirement for setUID permissions. Your version of sudo must be up to date, the sudoers configuration files must be secure and have a strictly limited set of commands allowed per user or group.</p>
+<p>Customers need to consider how the remediation and mitigation steps fit within their overall strategies for user and privilege management alongside local and remote file permissions.</p>
+<p>For example:</p>
+<p>Do they have a good FIM solution and can they utilise remote logging as a mitigation? Do they wish to work at the standard build level and have a hardened standard build? If so, then maybe they&#8217;re in the right place to look at removing these permissions?</p>
+<p>In particular File Integrity Monitoring, which should focus on the most vulnerable files on a system, should track any changes to the files with the setUID/setGID bit set. Any changes should be audited and remotely logged to ensure that an attacker cannot cover their tracks.</p>
+<p>Other mitigation techniques include SELinux and other RBAC mechanisms on Linux, Trusted Execution and Trusted Computing Base on AIX and RBAC on Solaris.</p>
+<p>More recent Linux kernels (starting 2.6.26) can make use of capabilities which provide fine-grained control over superuser permissions, allowing use of the root user to be avoided.</p>
+<p>Sysadmins need some encouragement and support in both remediation and mitigation. If something unexpected does not work upon removing a setUID file permission, it is important to try to use that as a learning experience and a consequence of taking least privilege as far as possible.</p>
+<p>At the very least tighten up your sudo configuration and remove as many setUIDs as you can.</p>
+<h3>Finding setUID and setGID files</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \;
+</pre>
+<p>Example output:</p>
+<p>Here is a setUID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-rws--x--x. 1 root root 23960 Sep 23  2016 /usr/bin/chfn
+</pre>
+<p>And here is a setGID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-r-xr-sr-x. 1 root tty 15392 May  4  2014 /usr/bin/wall
+</pre>
+<h3>Just for fun</h3>
+<p>Snapshot a VM of your favourite Linux distro and run the following command (<b>this will break your system in odd ways, so never do it to a production system</b>) and run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -perm -u+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setUID.lst
+# find / -type f -perm -g+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setGID.lst
+# for a in `cat /var/tmp/setUID.lst`; do chmod u-s $a; done
+# for a in `cat /var/tmp/setGID.lst`; do chmod g-s $a; done
+</pre>
+<p>See what breaks.</p>
+<p>You can revert to the snapshot if your nerve does not hold.</p>
+<p>You should be able to reboot the machine and log in as a normal user. After that you will discover the limitations you have imposed upon yourself and the operating system.</p>
+<h3>The lists (mid 2017) which are not exhaustive</h3>
+<p>N.B. PATHs to the files may vary&#8230;</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>/usr/bin/awk</li>
+<li>/bin/tar</li>
+<li>/usr/bin/python</li>
+<li>/usr/bin/script</li>
+<li>/usr/bin/man</li>
+<li>/usr/bin/ssh</li>
+<li>/usr/bin/scp</li>
+<li>/usr/bin/git</li>
+<li>/usr/bin/find</li>
+<li>/usr/bin/gdb</li>
+<li>/usr/bin/pico</li>
+<li>/usr/bin/nano</li>
+<li>/usr/bin/zip</li>
+<li>/usr/bin/vi</li>
+<li>/usr/sbin/lsof</li>
+<li>/bin/cat</li>
+<li>/usr/bin/vim</li>
+<li>/usr/bin/gvim</li>
+</ul>
+<p>The point with this list is that they should not really be setUID or setGID and they all have command options that could spawn a shell or otherwise engage in mischief.</p>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>/usr/bin/rcp</li>
+<li>/usr/bin/rlogin</li>
+<li>/usr/bin/rsh</li>
+<li>/usr/libexec/openssh/ssh-keysign</li>
+<li>/usr/lib/openssh/ssh-keysign</li>
+<li>/sbin/netreport</li>
+<li>/usr/sbin/usernetctl</li>
+<li>/usr/sbin/userisdnctl</li>
+<li>/usr/sbin/pppd</li>
+<li>/usr/bin/lockfile</li>
+<li>/usr/bin/mail-lock</li>
+<li>/usr/bin/mail-unlock</li>
+<li>/usr/bin/mail-touchlock</li>
+<li>/usr/bin/dotlockfile</li>
+<li>/usr/bin/arping</li>
+<li>/usr/sbin/uuidd</li>
+<li>/usr/bin/mtr</li>
+<li>/usr/lib/evolution/camel-lock-helper-1.2</li>
+<li>/usr/lib/pt_chown</li>
+<li>/usr/lib/eject/dmcrypt-get-device</li>
+<li>/usr/lib/mc/cons.saver</li>
+</ul>
+<p>Consider removing as a good mitigation strategy.</p>
+<p>Here&#8217;s some others that are usually installed setUID, however, on a hardened system they can usually have their setUID/setGID bits removed:</p>
+<ul>
+<li>/bin/mount</li>
+<li>/bin/umount</li>
+<li>/usr/bin/at</li>
+<li>/usr/bin/newgrp</li>
+<li>/usr/bin/ssh-agent</li>
+<li>/sbin/mount.nfs</li>
+<li>/sbin/umount.nfs</li>
+<li>/sbin/mount.nfs4</li>
+<li>/sbin/umount.nfs4</li>
+<li>/usr/bin/crontab</li>
+<li>/usr/bin/wall</li>
+<li>/usr/bin/write</li>
+<li>/usr/bin/screen</li>
+<li>/usr/bin/mlocate</li>
+<li>/usr/bin/chage</li>
+<li>/usr/bin/chfn</li>
+<li>/usr/bin/chsh</li>
+<li>/bin/fusermount</li>
+<li>/usr/bin/Xorg</li>
+<li>/usr/bin/X</li>
+<li>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</li>
+<li>/usr/lib/vte/gnome-pty-helper</li>
+<li>/usr/lib/libvte9/gnome-pty-helper</li>
+<li>/usr/lib/libvte-2.90-9/gnome-pty-helper</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>/bin/ping</li>
+<li>/bin/su</li>
+<li>/sbin/pam_timestamp_check</li>
+<li>/sbin/unix_chkpwd</li>
+<li>/usr/bin/gpasswd</li>
+<li>/usr/bin/locate</li>
+<li>/usr/bin/passwd</li>
+<li>/usr/libexec/utempter/utempter</li>
+<li>/usr/sbin/lockdev</li>
+<li>/usr/sbin/sendmail.sendmail</li>
+<li>/usr/bin/expiry</li>
+<li>/bin/ping6</li>
+<li>/usr/bin/traceroute6.iputils</li>
+<li>/usr/bin/pkexec</li>
+<li>/usr/bin/sudo</li>
+<li>/usr/bin/sudoedit</li>
+<li>/usr/sbin/postdrop</li>
+<li>/usr/sbin/postqueue</li>
+<li>/usr/sbin/suexec</li>
+<li>/usr/lib/squid/ncsa_auth</li>
+<li>/usr/lib/squid/pam_auth</li>
+<li>/usr/kerberos/bin/ksu</li>
+<li>/usr/sbin/ccreds_validate</li>
+</ul>
+<h2>Final words</h2>
+<p>It&#8217;s worth noting that we know these lists won&#8217;t work for everyone; systems are complex and behaviour is intertwined. That said, no matter what your opinion on the necessity or otherwise of a setUID/setGID bit on a given file, we&#8217;d like to think the approach of knowing which files have the setUID/setGID bit and why is something we can all get on board with.</p>
+<h3>Some good references</h3>
+<ul>
+<li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
+<li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</title>
+		<link>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/</link>
+		<comments>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/#comments</comments>
+		<pubDate>Tue, 05 May 2015 13:23:35 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5100</guid>
+		<description><![CDATA[<p>Just like Linux, the modern Solaris install doesn&#8217;t simply rely on UID/GID to determine privilege. Instead there are roles and profiles to contend with. The following is a loose explanation of how they work: User = user + group + user_attr + /etc/security/auth_attr + /etc/security/auth_attr.d/* user = Raw privileges (PRIV_DEFAULT + !PRIV_LIMIT) user_attr = List [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/">uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Just like Linux, the modern Solaris install doesn&#8217;t simply rely on UID/GID to determine privilege. Instead there are roles and profiles to contend with. The following is a loose explanation of how they work:<span id="more-5100"></span></p>
+<ol>
+<li>User = user + group + user_attr + /etc/security/auth_attr + /etc/security/auth_attr.d/*</li>
+<li>
+<ol>
+<li>user = Raw privileges (PRIV_DEFAULT + !PRIV_LIMIT)</li>
+<li>user_attr = List of profiles (/etc/security/prof_attr + /etc/security/prof_attr.d/*)</li>
+<ol>
+<li>prof_attr = List of authorisations (/etc/security/auth_attr + /etc/security/auth_attr.d)</li>
+</ol>
+</ol>
+</li>
+</ol>
+<p>Additionally, /etc/security/exec_attr specifies what privs a particular command will execute under a given profile.</p>
+<p>The first user added will get root by virtue of this scheme. Having said that, for Solaris 11, Oracle pretty much canned this and moved to sudo instead. It&#8217;s still there though, if you look.</p>
+<p>So today, we were looking at a Solaris 11 box which was mostly being managed via sudo. I say mostly because we found this (isolated) gem in user_attr:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+bob::::profiles=Service Management,Service Operator
+</pre>
+<p>It&#8217;s likely not a backdoor but it is rather odd given the beautiful /etc/sudoers.d hirearchy that also existed on the same system. This authorised them to use the solaris.smf.manage and solaris.smf.modify privileges.</p>
+<p>This could be bad. To quote the <a title="man page" href="http://docs.oracle.com/cd/E23824_01/html/821-1474/smf-security-5.html">man page</a>, users authorised with the solaris.smf.modify privilege are:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+Authorized to add, delete, or modify services, service instances, or their properties, and to read protected property values.
+</pre>
+<p>whilst solaris.smf.manage is:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+The service management profile is the minimum required to use the pkg(1) command to add or remove software packages that contain an inventory of services in its service manifest.
+</pre>
+<p>So is it exploitable? Well, it turns out that users with those particular authorised privileges can run the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@localhost:~ $ svccfg -s &lt;service&gt; setenv -m start LD_PRELOAD /tmp/libdoor.so; svcadm refresh &lt;service&gt;; svcadm restart &lt;service&gt;
+</pre>
+<p>This, when executed, will cause the named service to have a new environment variable defined (LD_PRELOAD) which points at our malicious code (/tmp/libdoor.so) which will be loaded by the service when it is restarted. As a result, our malicious code will be run as the same user as the victim user, giving us persistent privileged access to the victim machine.</p>
+<p>Without these privileges, the same command will result in an error:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@localhost:~ $ svccfg -s &lt;service&gt; setenv -m start LD_PRELOAD /tmp/libdoor.so; svcadm refresh &lt;service&gt;; svcadm restart &lt;service&gt;
+svccfg: Permission denied.
+</pre>
+<p>Bottom line, if you compromise a modern Solaris box, try running auths (and roles) to check what privileges may have been left behind, it may be more than you think.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/">uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

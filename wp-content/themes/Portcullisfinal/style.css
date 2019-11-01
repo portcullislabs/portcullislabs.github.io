@@ -1,0 +1,4092 @@
+/*
+Theme Name: Portcullisfinal
+Theme URI: 
+Description: 
+Version: 1.0
+Author: Norbert Lukacsi
+Author URI: 
+Tags: , fixed-width, valid HTML5, widgets
+*/
+
+@font-face {
+    font-family: ciscosansttregular;
+    src: url('fonts/laoui.woff') format('woff');
+}
+
+#portcullis-main
+{
+   background: #989898;
+   margin:0 auto;
+   font-size: 13px;
+   font-family: Tahoma, Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   position: relative;
+   width: 100%;
+   min-height: 100%;
+   left: 0;
+   top: 0;
+   cursor:default;
+   overflow:hidden;
+}
+table, ul.portcullis-hmenu
+{
+   font-size: 13px;
+   font-family:  Tahoma, Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, ul, ol, li
+{
+   margin: 0;
+   padding: 0;
+}
+
+/* Reset buttons border. It's important for input and button tags. 
+ * border-collapse should be separate for shadow in IE. 
+ */
+.portcullis-button
+{
+   border: 0;
+   border-collapse: separate;
+   -webkit-background-origin: border !important;
+   -moz-background-origin: border !important;
+   background-origin: border-box !important;
+   background: #6A2C90;
+   -webkit-border-radius:6px;
+   -moz-border-radius:6px;
+   border-radius:6px;
+   padding:0 5px;
+   margin:0 auto;
+   height:21px;
+}
+
+.portcullis-postcontent,
+.portcullis-postheadericons,
+.portcullis-postfootericons,
+.portcullis-blockcontent,
+ul.portcullis-vmenu a 
+{
+   text-align: left;
+}
+
+.portcullis-postcontent,
+.portcullis-postcontent li,
+.portcullis-postcontent table,
+.portcullis-postcontent a,
+.portcullis-postcontent a:link,
+.portcullis-postcontent a:visited,
+.portcullis-postcontent a.visited,
+.portcullis-postcontent a:hover,
+.portcullis-postcontent a.hovered
+{
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 150%;
+}
+
+.portcullis-postcontent p
+{
+   margin: 12px 0;
+}
+
+.portcullis-postcontent h1, .portcullis-postcontent h1 a, .portcullis-postcontent h1 a:link, .portcullis-postcontent h1 a:visited, .portcullis-postcontent h1 a:hover,
+.portcullis-postcontent h2, .portcullis-postcontent h2 a, .portcullis-postcontent h2 a:link, .portcullis-postcontent h2 a:visited, .portcullis-postcontent h2 a:hover,
+.portcullis-postcontent h3, .portcullis-postcontent h3 a, .portcullis-postcontent h3 a:link, .portcullis-postcontent h3 a:visited, .portcullis-postcontent h3 a:hover,
+.portcullis-postcontent h4, .portcullis-postcontent h4 a, .portcullis-postcontent h4 a:link, .portcullis-postcontent h4 a:visited, .portcullis-postcontent h4 a:hover,
+.portcullis-postcontent h5, .portcullis-postcontent h5 a, .portcullis-postcontent h5 a:link, .portcullis-postcontent h5 a:visited, .portcullis-postcontent h5 a:hover,
+.portcullis-postcontent h6, .portcullis-postcontent h6 a, .portcullis-postcontent h6 a:link, .portcullis-postcontent h6 a:visited, .portcullis-postcontent h6 a:hover,
+.portcullis-blockheader .t, .portcullis-blockheader .t a, .portcullis-blockheader .t a:link, .portcullis-blockheader .t a:visited, .portcullis-blockheader .t a:hover,
+.portcullis-vmenublockheader .t, .portcullis-vmenublockheader .t a, .portcullis-vmenublockheader .t a:link, .portcullis-vmenublockheader .t a:visited, .portcullis-vmenublockheader .t a:hover,
+.portcullis-headline, .portcullis-headline a, .portcullis-headline a:link, .portcullis-headline a:visited, .portcullis-headline a:hover,
+.portcullis-slogan, .portcullis-slogan a, .portcullis-slogan a:link, .portcullis-slogan a:visited, .portcullis-slogan a:hover,
+.portcullis-postheader, .portcullis-postheader a, .portcullis-postheader a:link, .portcullis-postheader a:visited, .portcullis-postheader a:hover
+{
+   font-size: 32px;
+   font-family: Tahoma, Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   line-height: 120%;
+}
+
+.portcullis-postcontent a, .portcullis-postcontent a:link
+{
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-decoration: none;
+   color: #6A2C91;
+}
+
+.portcullis-postcontent a:visited, .portcullis-postcontent a.visited
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   color: #6A2C91;
+}
+
+.portcullis-postcontent  a:hover, .portcullis-postcontent a.hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: underline;
+   color: #C837A1;
+}
+
+.portcullis-postcontent h1
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 23px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent h1
+{
+   margin: 10px 0 0;
+   font-size: 23px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h1 a, .portcullis-postcontent h1 a:link, .portcullis-postcontent h1 a:hover, .portcullis-postcontent h1 a:visited, .portcullis-blockcontent h1 a, .portcullis-blockcontent h1 a:link, .portcullis-blockcontent h1 a:hover, .portcullis-blockcontent h1 a:visited 
+{
+   font-size: 23px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h2
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 20px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent h2
+{
+   margin: 10px 0 0;
+   font-size: 20px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h2 a, .portcullis-postcontent h2 a:link, .portcullis-postcontent h2 a:hover, .portcullis-postcontent h2 a:visited, .portcullis-blockcontent h2 a, .portcullis-blockcontent h2 a:link, .portcullis-blockcontent h2 a:hover, .portcullis-blockcontent h2 a:visited 
+{
+   font-size: 20px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h3
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 18px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent h3
+{
+   margin: 10px 0 0;
+   font-size: 18px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h3 a, .portcullis-postcontent h3 a:link, .portcullis-postcontent h3 a:hover, .portcullis-postcontent h3 a:visited, .portcullis-blockcontent h3 a, .portcullis-blockcontent h3 a:link, .portcullis-blockcontent h3 a:hover, .portcullis-blockcontent h3 a:visited 
+{
+   font-size: 18px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h4
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 26px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   
+}
+
+.portcullis-blockcontent h4
+{
+   margin: 10px 0 0;
+   font-size: 16px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h4 a, .portcullis-postcontent h4 a:link, .portcullis-postcontent h4 a:hover, .portcullis-postcontent h4 a:visited, .portcullis-blockcontent h4 a, .portcullis-blockcontent h4 a:link, .portcullis-blockcontent h4 a:hover, .portcullis-blockcontent h4 a:visited 
+{
+   font-size: 16px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h5
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent h5
+{
+   margin: 10px 0 0;
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h5 a, .portcullis-postcontent h5 a:link, .portcullis-postcontent h5 a:hover, .portcullis-postcontent h5 a:visited, .portcullis-blockcontent h5 a, .portcullis-blockcontent h5 a:link, .portcullis-blockcontent h5 a:hover, .portcullis-blockcontent h5 a:visited 
+{
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h6
+{
+   color: #000000;
+   margin: 10px 0 0;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent h6
+{
+   margin: 10px 0 0;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-postcontent h6 a, .portcullis-postcontent h6 a:link, .portcullis-postcontent h6 a:hover, .portcullis-postcontent h6 a:visited, .portcullis-blockcontent h6 a, .portcullis-blockcontent h6 a:link, .portcullis-blockcontent h6 a:hover, .portcullis-blockcontent h6 a:visited 
+{
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+header, footer, article, nav, #portcullis-hmenu-bg, .portcullis-sheet, .portcullis-hmenu a, .portcullis-vmenu a, .portcullis-slidenavigator > a, .portcullis-checkbox:before, .portcullis-radiobutton:before
+{
+   -webkit-background-origin: border !important;
+   -moz-background-origin: border !important;
+   background-origin: border-box !important;
+}
+
+header, footer, article, nav, #portcullis-hmenu-bg, .portcullis-sheet, .portcullis-slidenavigator > a, .portcullis-checkbox:before, .portcullis-radiobutton:before
+{
+   display: block;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+ul
+{
+   list-style-type: none;
+}
+
+ol
+{
+   list-style-position: inside;
+}
+
+html, body
+{
+   height: 100%;
+}
+
+body
+{
+   padding: 0;
+   margin:0;
+   min-width: 998px;
+   color: #292929;
+}
+
+.clearfix:before, .clearfix:after {
+   content: "";
+   display: table;
+}
+
+.clearfix:after {
+   clear: both;
+}
+
+.cleared {
+   font: 0/0 serif;
+   clear: both;
+}
+
+form
+{
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+table.position
+{
+   position: relative;
+   width: 100%;
+   table-layout: fixed;
+}
+
+li h1, .portcullis-postcontent li h1, .portcullis-blockcontent li h1 
+{
+   margin:1px;
+} 
+li h2, .portcullis-postcontent li h2, .portcullis-blockcontent li h2 
+{
+   margin:1px;
+} 
+li h3, .portcullis-postcontent li h3, .portcullis-blockcontent li h3 
+{
+   margin:1px;
+} 
+li h4, .portcullis-postcontent li h4, .portcullis-blockcontent li h4 
+{
+   margin:1px;
+} 
+li h5, .portcullis-postcontent li h5, .portcullis-blockcontent li h5 
+{
+   margin:1px;
+} 
+li h6, .portcullis-postcontent li h6, .portcullis-blockcontent li h6 
+{
+   margin:1px;
+} 
+li p, .portcullis-postcontent li p, .portcullis-blockcontent li p 
+{
+   margin:1px;
+}
+
+
+/* No need for this styling
+.portcullis-shapes
+{
+   position: absolute;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   overflow: hidden;
+   /*z-index: 0;*/
+}*/
+
+.portcullis-slider-inner {
+   position: relative;
+   overflow: hidden;
+   width: 100%;
+   height: 100%;
+}
+
+.portcullis-slidenavigator > a {
+   display: inline-block;
+   vertical-align: middle;
+   outline-style: none;
+   font-size: 1px;
+}
+
+.portcullis-slidenavigator > a:last-child {
+   margin-right: 0 !important;
+}
+
+.portcullis-object1741532833 h1, 
+.portcullis-object1741532833 h2, 
+.portcullis-object1741532833 h3, 
+.portcullis-object1741532833 h4, 
+.portcullis-object1741532833 h5, 
+.portcullis-object1741532833 h6, 
+.portcullis-object1741532833 p, 
+.portcullis-object1741532833 a, 
+.portcullis-object1741532833 ul, 
+.portcullis-object1741532833 ol, 
+.portcullis-object1741532833 li
+{
+  line-height: 125%;
+}
+
+.portcullis-object1741532833
+{
+  position: absolute;
+  top: 59px;
+  left: 92.34%;
+  margin-left: -262px !important;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  overflow: hidden;
+    z-index: 101;
+  width: 324px;
+  height: 20px;
+}
+
+.portcullis-object1741532833-text
+{
+font-size: 16px;
+font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+text-decoration: none;
+//text-align: left;
+text-align: right;
+  color: #000000 !important;
+  display: table-cell;
+  outline-style: none;
+  padding: 0px 0px !important;
+  word-wrap: break-word;
+  height: 20px;
+  width: 324px;
+}
+.portcullis-textblock ul > li
+{
+    background-position-y: 1px !important;
+}
+.portcullis-object1269462037 h1, 
+.portcullis-object1269462037 h2, 
+.portcullis-object1269462037 h3, 
+.portcullis-object1269462037 h4, 
+.portcullis-object1269462037 h5, 
+.portcullis-object1269462037 h6, 
+.portcullis-object1269462037 p, 
+.portcullis-object1269462037 a, 
+.portcullis-object1269462037 ul, 
+.portcullis-object1269462037 ol, 
+.portcullis-object1269462037 li
+{
+  line-height: 125%;
+}
+
+.portcullis-object1269462037
+{
+  position: absolute;
+  top: 35px;
+  left: 97.93%;
+  margin-left: -357px !important;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  overflow: hidden;
+    z-index: 101;
+  width: 363px;
+  height: 25px;
+}
+
+.portcullis-object1269462037-text
+{
+font-size: 20px;
+font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+text-decoration: none;
+//text-align: left;
+text-align: right;
+  color: #000000 !important;
+  display: table-cell;
+  outline-style: none;
+  padding: 0px 0px !important;
+  word-wrap: break-word;
+  height: 25px;
+  width: 363px;
+}
+.portcullis-textblock ul > li
+{
+    background-position-y: 3px !important;
+}
+.portcullis-headline
+{
+  display: inline-block;
+  position: absolute;
+  min-width: 50px;
+  top: 48px;
+  left: 14.6%;
+  line-height: 100%;
+  margin-left: -11px !important;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  /*z-index: 99;*/
+}
+
+.portcullis-headline, 
+.portcullis-headline a, 
+.portcullis-headline a:link, 
+.portcullis-headline a:visited, 
+.portcullis-headline a:hover
+{
+font-size: 20px;
+font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+font-weight: normal;
+font-style: normal;
+text-decoration: none;
+text-align: left;
+  padding: 0;
+  margin: 0;
+  color: #6A2C91 !important;
+  white-space: nowrap;
+}
+.portcullis-slogan
+{
+  display: inline-block;
+  position: absolute;
+  min-width: 50px;
+  top: 72px;
+  left: 16.4%;
+  line-height: 100%;
+  margin-left: -29px !important;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  /*z-index: 99;*/
+  white-space: nowrap;
+}
+
+.portcullis-slogan, 
+.portcullis-slogan a, 
+.portcullis-slogan a:link, 
+.portcullis-slogan a:visited, 
+.portcullis-slogan a:hover
+{
+font-size: 16px;
+font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+text-decoration: none;
+text-align: left;
+  padding: 0;
+  margin: 0;
+  color: #000000 !important;
+}
+
+
+
+
+.portcullis-footer .layout-item-old-0 { padding-right: 10px;padding-left: 10px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }
+
+            .portcullis-header
+            {
+                -webkit-box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+                box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+                //margin:20px auto 0;
+                margin:0 auto;
+                height: 150px;
+                //height:204px;
+                background-color:#FFFFFF;
+                //border-top: 7px solid #6a2c91;
+                //background-image: url('images/object1741532833.png'),url('images/object1269462037.png'),url('images/object1586850639.png'),url('images/object1474609808.png'), url('images/header.jpg');
+                //background-position: 622px 59px,622px 35px,576px 43px,658px 140px, 0 0;
+                //background-repeat: no-repeat;
+                position: relative;
+                width: 998px;
+                //z-index: auto !important;
+            }
+
+
+
+.responsive .portcullis-header 
+{
+   background-image: url('images/header.jpg');
+   background-position: center center;
+}
+
+.portcullis-header>.widget 
+{
+   position:absolute;
+   z-index:101;
+}
+
+.portcullis-nav
+{
+   background: #5C358D;
+   background: transparent;
+   border-bottom:5px solid #6A2C91;
+   /*z-index: 100*/;
+   font-size: 0;
+   position: absolute;
+   margin: 0;
+   bottom:   0;
+   width: 100%;
+   text-align: right;
+}
+
+ul.portcullis-hmenu a, ul.portcullis-hmenu a:link, ul.portcullis-hmenu a:visited, ul.portcullis-hmenu a:hover 
+{
+   outline: none;
+   position: relative;
+   /*z-index: 11;*/
+}
+
+ul.portcullis-hmenu, ul.portcullis-hmenu ul
+{
+   display: block;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   list-style-type: none;
+}
+
+ul.portcullis-hmenu li
+{
+   position: relative;
+   /*z-index: 5;*/
+   display: block;
+   float: left;
+   background: none;
+   margin: 0;
+   padding: 0;
+   border: 0;
+}
+
+ul.portcullis-hmenu li:hover
+{
+   z-index: 10000;
+   white-space: normal;
+}
+
+ul.portcullis-hmenu:after, ul.portcullis-hmenu ul:after
+{
+   content: ".";
+   height: 0;
+   display: block;
+   visibility: hidden;
+   overflow: hidden;
+   clear: both;
+}
+
+ul.portcullis-hmenu, ul.portcullis-hmenu ul 
+{
+   min-height: 0;
+}
+
+ul.portcullis-hmenu 
+{
+   display: inline-block;
+   vertical-align: bottom;
+}
+
+.portcullis-nav:before 
+{
+   content:' ';
+}
+
+.portcullis-hmenu-extra1
+{
+   position: relative;
+   display: block;
+   float: left;
+   width: auto;
+   height: auto;
+   background-position: center;
+}
+
+.portcullis-hmenu-extra2
+{
+   position: relative;
+   display: block;
+   float: right;
+   width: auto;
+   height: auto;
+   background-position: center;
+}
+
+.portcullis-hmenu
+{
+   float: right;
+}
+
+.portcullis-menuitemcontainer
+{
+   margin:0 auto;
+}
+ul.portcullis-hmenu>li {
+   margin-left: 4px;
+}
+ul.portcullis-hmenu>li:first-child {
+   margin-left: 2px;
+}
+ul.portcullis-hmenu>li:last-child, ul.portcullis-hmenu>li.last-child {
+   margin-right: 2px;
+}
+
+ul.portcullis-hmenu>li>a
+{
+   background: #FFFFFF;
+   border:1px solid rgba(0, 0, 0, 0.1);
+   border-bottom:none;
+   padding:0 22px;
+   margin:0 auto;
+   position: relative;
+   display: block;
+   height: 31px;
+   cursor: pointer;
+   text-decoration: none;
+   color: #414139;
+   line-height: 31px;
+   text-align: center;
+}
+
+.portcullis-hmenu a, 
+.portcullis-hmenu a:link, 
+.portcullis-hmenu a:visited, 
+.portcullis-hmenu a.active, 
+.portcullis-hmenu a:hover
+{
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-decoration: none;
+   text-align: left;
+}
+
+ul.portcullis-hmenu>li>a.active
+{
+   background: #6A2C91;
+   border:1px solid #6A2C91;
+   border-bottom:none;
+   padding:0 22px;
+   margin:0 auto;
+   color: #FFFFFF;
+   padding-bottom: 5px;
+   margin-bottom: -5px;
+   text-decoration: none;
+}
+
+ul.portcullis-hmenu>li>a:visited, 
+ul.portcullis-hmenu>li>a:hover, 
+ul.portcullis-hmenu>li:hover>a {
+   text-decoration: none;
+}
+
+ul.portcullis-hmenu>li>a:hover, .desktop ul.portcullis-hmenu>li:hover>a
+{
+   background: #6A2C91;
+   border:1px solid #5D358D;
+   border-bottom:none;
+   padding:0 22px;
+   margin:0 auto;
+}
+ul.portcullis-hmenu>li>a:hover, 
+.desktop-nav ul.portcullis-hmenu>li:hover>a {
+   color: #FFFFFF;
+   text-decoration: none;
+}
+ul.portcullis-hmenu>li>a.active:hover {
+   padding-bottom: 0;
+   margin-bottom: 0;
+}
+
+ul.portcullis-hmenu li li a
+{
+   background: #5C358D;
+   background: transparent;
+   padding:0 22px;
+   margin:0 auto;
+}
+ul.portcullis-hmenu li li 
+{
+   float: none;
+   width: auto;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+.desktop-nav ul.portcullis-hmenu li li ul>li:first-child 
+{
+   margin-top: 5px;
+}
+
+ul.portcullis-hmenu li li ul>li:last-child 
+{
+   margin-bottom: 0;
+}
+
+.portcullis-hmenu ul a
+{
+   display: block;
+   white-space: nowrap;
+   height: 25px;
+   min-width: 7em;
+   border: 0 solid transparent;
+   text-align: left;
+   line-height: 25px;
+   color: #4D4D4D;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   margin:0;
+}
+
+.portcullis-hmenu ul a:link, 
+.portcullis-hmenu ul a:visited, 
+.portcullis-hmenu ul a.active, 
+.portcullis-hmenu ul a:hover
+{
+   text-align: left;
+   line-height: 25px;
+   color: #4D4D4D;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   margin:0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li>ul>li
+{
+   margin-top: 0;
+   margin-bottom: 0;
+}
+
+.desktop-nav .portcullis-hmenu>li>ul>li>a
+{
+   font-weight: bold !important;
+}
+.desktop-nav .portcullis-hmenu>li>ul>li
+{
+   float: left;
+}
+.desktop-nav .portcullis-hmenu>li>ul>li>ul
+{
+   position: relative;
+   left: 0 !important;
+   right: auto !important;
+   padding: 0 !important;
+   margin: 0 !important;
+}
+.desktop-nav .portcullis-hmenu>li:hover>ul>li>ul
+{
+   visibility: visible;
+}
+.desktop-nav .portcullis-hmenu>li>ul>li>ul:before
+{
+   visibility: hidden;
+}
+
+ul.portcullis-hmenu li li:after
+{
+   display: block;
+   position: absolute;
+   content: ' ';
+   height: 0;
+   top: -3px;
+   left: 0;
+   right: 0;
+   z-index: 1;
+   border-bottom: 1px solid #CFCFCF;
+}
+
+.desktop-nav ul.portcullis-hmenu>li>ul>li:after, 
+.desktop-nav ul.portcullis-hmenu>li>ul>li:before
+{
+   display: none;
+}
+.desktop-nav ul.portcullis-hmenu li li:after
+{
+   left: 5px;
+   right: 5px;
+}
+
+ul.portcullis-hmenu ul li a:hover
+{
+   background: #A6A6A6;
+   margin:0 auto;
+}
+.portcullis-hmenu ul a:hover
+{
+   text-decoration: none;
+}
+
+.portcullis-hmenu ul li a:hover
+{
+   color: #FFFFFF;
+}
+
+.desktop-nav .portcullis-hmenu ul li:hover>a
+{
+   color: #FFFFFF;
+}
+
+ul.portcullis-hmenu ul:before
+{
+   background: #F2F2F2;
+   border:1px solid #6A2C91;
+   margin:0 auto;
+   display: block;
+   position: absolute;
+   content: ' ';
+   z-index: 1;
+}
+.desktop-nav ul.portcullis-hmenu li:hover>ul {
+   visibility: visible;
+   top: 100%;
+}
+.desktop-nav ul.portcullis-hmenu li li:hover>ul {
+   top: 0;
+   left: 100%;
+}
+
+ul.portcullis-hmenu ul
+{
+   visibility: hidden;
+   position: absolute;
+   z-index: 10;
+   left: 0;
+   top: 0;
+   background-image: url('images/spacer.gif');
+}
+
+.desktop-nav ul.portcullis-hmenu>li>ul
+{
+   padding: 15px 35px 35px 35px;
+   margin: -10px 0 0 -30px;
+}
+
+.desktop-nav ul.portcullis-hmenu ul ul
+{
+   padding: 35px 35px 35px 15px;
+   margin: -35px 0 0 -6px;
+}
+
+.desktop-nav ul.portcullis-hmenu ul.portcullis-hmenu-left-to-right 
+{
+   right: auto;
+   left: 0;
+   margin: -10px 0 0 -30px;
+}
+
+.desktop-nav ul.portcullis-hmenu ul.portcullis-hmenu-right-to-left 
+{
+   left: auto;
+   right: 0;
+   margin: -10px -30px 0 0;
+}
+
+.desktop-nav ul.portcullis-hmenu li li:hover>ul.portcullis-hmenu-left-to-right {
+   right: auto;
+   left: 100%;
+}
+.desktop-nav ul.portcullis-hmenu li li:hover>ul.portcullis-hmenu-right-to-left {
+   left: auto;
+   right: 100%;
+}
+
+.desktop-nav ul.portcullis-hmenu ul ul.portcullis-hmenu-left-to-right
+{
+   right: auto;
+   left: 0;
+   padding: 35px 35px 35px 15px;
+   margin: -35px 0 0 -6px;
+}
+
+.desktop-nav ul.portcullis-hmenu ul ul.portcullis-hmenu-right-to-left
+{
+   left: auto;
+   right: 0;
+   padding: 35px 15px 35px 35px;
+   margin: -35px -6px 0 0;
+}
+
+.desktop-nav ul.portcullis-hmenu li ul>li:first-child {
+   margin-top: 0;
+}
+.desktop-nav ul.portcullis-hmenu li ul>li:last-child {
+   margin-bottom: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu ul ul:before
+{
+   border-radius: 0;
+   top: 30px;
+   bottom: 30px;
+   right: 30px;
+   left: 10px;
+}
+
+.desktop-nav ul.portcullis-hmenu>li>ul:before
+{
+   top: 10px;
+   right: 30px;
+   bottom: 30px;
+   left: 30px;
+}
+
+.desktop-nav ul.portcullis-hmenu>li>ul.portcullis-hmenu-left-to-right:before {
+   right: 30px;
+   left: 30px;
+}
+.desktop-nav ul.portcullis-hmenu>li>ul.portcullis-hmenu-right-to-left:before {
+   right: 30px;
+   left: 30px;
+}
+.desktop-nav ul.portcullis-hmenu ul ul.portcullis-hmenu-left-to-right:before {
+   right: 30px;
+   left: 10px;
+}
+.desktop-nav ul.portcullis-hmenu ul ul.portcullis-hmenu-right-to-left:before {
+   right: 10px;
+   left: 30px;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext>a
+{
+   white-space: nowrap;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext>a:hover,
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>a,
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>a.active  
+{
+   background: none;
+   /* default padding + border size */
+  padding: 1px 23px 0 23px;
+   /* margin for shadow */
+  margin: -0 -0 0 -0;
+   overflow: hidden;
+   position: relative;
+   border: none;
+   border-radius: 0;
+   box-shadow: none;
+   color: #616161;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext>a:hover:before,
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>a:before,
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>a.active:before  
+{
+   position: absolute;
+   content: ' ';
+   /* top, right, left - for shadow */
+  top: 0;
+   right: 0;
+   left: 0;
+   /* border + shadow */
+  bottom: -1px;
+   background-color: #F2F2F2;
+   border: 1px Solid #6A2C91;
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
+   z-index: -1;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>ul 
+{
+   padding-top: 4px;
+   /* menu bar padding */
+  margin-top: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>ul:before 
+{
+   /* border + shadow */
+  top: -1px;
+   clip: rect(5px, auto, auto, auto);
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
+}
+
+ul.portcullis-hmenu>li.ext>.ext-r,
+ul.portcullis-hmenu>li.ext>.ext-l,
+ul.portcullis-hmenu>li.ext>.ext-m,
+ul.portcullis-hmenu>li.ext>.ext-off
+{
+   display: none;
+   z-index: 12;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext>ul 
+{
+   z-index: 13;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-r:hover>.ext-r,
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l:hover>.ext-l
+{
+   position: absolute;
+   display: block;
+   overflow: hidden;
+   /* size of radius 
+   * if size if 0 we should now generate script 
+   * that adds ext-r and ext-m divs
+   */
+  height: 5px;
+   top: 100%;
+   padding-top: 1px;
+   margin-top: -1px;
+/* border width + shadow */}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-r:before,
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-l:before
+{
+   position: absolute;
+   content: ' ';
+   top: 0;
+   /* border + shadow */
+  bottom: -1px;
+   background-color: #F2F2F2;
+   border: 1px Solid #6A2C91;
+   box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-r:hover>.ext-r
+{
+   left: 100%;
+   right: auto;
+   padding-left: 0;
+   margin-left: 0;
+   padding-right: 1px;
+   margin-right: -1px;
+/* only shadow */}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-r:hover>.ext-r:before
+{
+   right: 0;
+   left: -1px;
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l:hover>.ext-l
+{
+   right: 100%;
+   left: auto;
+   padding-right: 0;
+   margin-right: 0;
+   padding-left: 1px;
+   margin-left: -1px;
+/* only shadow */}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l:hover>.ext-l:before
+{
+   right: -1px;
+   left: 0;
+   border-top-right-radius: 0;
+   border-top-left-radius: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-m, 
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-off 
+{
+   position: absolute;
+   display: block;
+   overflow: hidden;
+   height: 4px;
+   top: 100%;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-r:hover>.ext-m 
+{
+   /* shadow offset */
+  left: -0;
+   right: 0;
+   /* shadow offset */
+  padding-right: 0;
+   padding-left: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-off 
+{
+   /* shadow offset */
+  left: -0;
+   right: -0;
+   /* shadow offset */
+  padding-left: 0;
+   padding-right: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l:hover>.ext-m
+{
+   /* shadow offset */
+  right: -0;
+   left: 0;
+   /* shadow offset */
+  padding-left: 0;
+   padding-right: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l.ext-r:hover>.ext-m
+{
+   /* shadow offset */
+  right: -0;
+   left: -0;
+   /* shadow offset */
+  padding-left: 0;
+   padding-right: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-m:before, 
+.desktop-nav ul.portcullis-hmenu>li.ext:hover>.ext-off:before 
+{
+   position: absolute;
+   content: ' ';
+   top: -1px;
+   bottom: -1px;
+   /* shadow offset */
+  background-color: #F2F2F2;
+   border: 1px Solid #6A2C91;
+   box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-r:hover>.ext-m:before
+{
+   right: -1px;
+   left: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l:hover>.ext-m:before
+{
+   left: -1px;
+   right: 0;
+}
+
+.desktop-nav ul.portcullis-hmenu>li.ext.ext-l.ext-r:hover>.ext-m:before
+{
+   left: -1px;
+   right: -1px;
+
+}
+
+.portcullis-sheet
+{
+   background: #FFFFFF;
+   -webkit-box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+   -moz-box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+   box-shadow:0 2px 6px 3px rgba(0, 0, 0, 0.4);
+   padding:3px;
+   margin:0 auto;
+   margin-bottom:40px;
+   position:relative;
+   cursor:auto;
+   width: 998px;
+   z-index: auto !important;
+}
+
+.portcullis-layout-wrapper
+{
+   position: relative;
+   margin: 0 auto 0 auto;
+   z-index: auto !important;
+}
+
+.portcullis-content-layout
+{
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+   border-collapse: collapse;
+}
+
+.portcullis-content-layout-row 
+{
+   display: table-row;
+}
+
+.portcullis-layout-cell
+{
+   display: table-cell;
+   vertical-align: top;
+}
+
+.portcullis-breadcrumbs
+{
+   margin:0 auto;
+}
+
+a.portcullis-button,
+a.portcullis-button:link,
+a:link.portcullis-button:link,
+body a.portcullis-button:link,
+a.portcullis-button:visited,
+body a.portcullis-button:visited,
+input.portcullis-button,
+button.portcullis-button
+{
+   text-decoration: none;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   position:relative;
+   display: inline-block;
+   vertical-align: middle;
+   white-space: nowrap;
+   text-align: center;
+   color: #FFFFFF;
+   margin: 0 !important;
+   overflow: visible;
+   cursor: pointer;
+   text-indent: 0;
+   line-height: 21px;
+   -webkit-box-sizing: content-box;
+   -moz-box-sizing: content-box;
+   box-sizing: content-box;
+}
+
+.portcullis-button img
+{
+   margin: 0;
+   vertical-align: middle;
+}
+
+.firefox2 .portcullis-button
+{
+   display: block;
+   float: left;
+}
+
+input, select, textarea
+{
+   vertical-align: middle;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+}
+
+.portcullis-block select 
+{
+   width:96%;
+}
+
+input.portcullis-button
+{
+   float: none !important;
+}
+
+.portcullis-button.active, .portcullis-button.active:hover
+{
+   background: #E0E0E0;
+   -webkit-border-radius:6px;
+   -moz-border-radius:6px;
+   border-radius:6px;
+   border:1px solid #B83295;
+   padding:0 5px;
+   margin:0 auto;
+}
+.portcullis-button.active, .portcullis-button.active:hover {
+   color: #5C358D !important;
+}
+
+.portcullis-button.hover, .portcullis-button:hover
+{
+   background: #FFFFFF;
+   -webkit-border-radius:6px;
+   -moz-border-radius:6px;
+   border-radius:6px;
+   border:1px solid #6A2C90;
+   padding:0 5px;
+   margin:0 auto;
+}
+.portcullis-button.hover, .portcullis-button:hover {
+   color: #6A2C90 !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea
+{
+   background: #FEFBFD;
+   -webkit-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.2);
+   -moz-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.2);
+   box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.2);
+   margin:0 auto;
+}
+input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea
+{
+   width: 100%;
+   padding: 4px 0;
+   color: #292929 !important;
+}
+input.portcullis-error, textarea.portcullis-error
+{
+   background: #FEFBFD;
+   background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -moz-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -o-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -ms-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   -svg-background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   border:1px solid #E2341D;
+   margin:0 auto;
+}
+input.portcullis-error, textarea.portcullis-error {
+   color: #292929 !important;
+}
+form.portcullis-search input[type="text"]
+{
+   background: #F7F7F7;
+   background: linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   background: -moz-linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   background: -o-linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   background: -ms-linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   background: linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   -svg-background: linear-gradient(top, #D6D6D6 0, #F2F2F2 40%, #F5F5F5 50%, #F5F5F5 100%) no-repeat;
+   border-radius: 0;
+   border:1px solid #828282;
+   margin:0 auto;
+   width: 100%;
+   padding: 2px 0;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   color: #262626 !important;
+}
+form.portcullis-search 
+{
+   background-image: none;
+   border: 0;
+   display:block;
+   position:relative;
+   top:0;
+   padding:0;
+   margin:5px;
+   left:0;
+   line-height: 0;
+}
+
+form.portcullis-search input
+{
+   top:0;
+   right:0;
+}
+
+form.portcullis-search>input {
+   bottom:0;
+   left:0;
+   vertical-align: middle;
+}
+ 
+form.portcullis-search input[type="submit"]
+{
+   margin:0 auto;
+   color: #DBDBDB !important;
+   position:absolute;
+   display:block;
+   left: auto;
+   border:none;
+   background:url('images/searchicon.png') center center no-repeat;
+   width:24px;
+   height: 100%;
+   padding:0;
+}
+
+label.portcullis-checkbox:before
+{
+   background: #F8F9F6;
+   background: linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   background: -moz-linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   background: -o-linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   background: -ms-linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   background: linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   -svg-background: linear-gradient(top, #FFFFFF 0, #C5D0B4 100%) no-repeat;
+   -webkit-border-radius:12px;
+   -moz-border-radius:12px;
+   border-radius:12px;
+   -webkit-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   -moz-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:24px;
+   height:24px;
+}
+label.portcullis-checkbox
+{
+   cursor: pointer;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   line-height: 24px;
+   display: inline-block;
+}
+
+.portcullis-checkbox>input[type="checkbox"]
+{
+   margin: 0 5px 0 0;
+}
+
+label.portcullis-checkbox.active:before
+{
+   background: #DA77BF;
+   background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -moz-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -o-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -ms-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   -svg-background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   -webkit-border-radius:12px;
+   -moz-border-radius:12px;
+   border-radius:12px;
+   -webkit-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   -moz-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:24px;
+   height:24px;
+   display: inline-block;
+}
+
+label.portcullis-checkbox.hovered:before
+{
+   background: #E8ABD8;
+   background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -moz-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -o-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -ms-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   -svg-background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   -webkit-border-radius:12px;
+   -moz-border-radius:12px;
+   border-radius:12px;
+   -webkit-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   -moz-box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   box-shadow:1px 1px 2px 1px rgba(0, 0, 0, 0.35);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:24px;
+   height:24px;
+   display: inline-block;
+}
+
+label.portcullis-radiobutton:before
+{
+   background: #FEFBFD;
+   background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -moz-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -o-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: -ms-linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   -svg-background: linear-gradient(top, #FFFFFF 0, #E59FD2 100%) no-repeat;
+   -webkit-border-radius:3px;
+   -moz-border-radius:3px;
+   border-radius:3px;
+   -webkit-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   -moz-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:12px;
+   height:12px;
+   display: inline-block;
+   vertical-align: top;
+   content: ' ';
+}
+label.portcullis-radiobutton
+{
+   cursor: pointer;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   line-height: 12px;
+   display: inline-block;
+   position: relative;
+}
+
+.portcullis-radiobutton>input[type="radio"]
+{
+   vertical-align: baseline;
+   margin: 0 5px 0 0;
+}
+
+label.portcullis-radiobutton.active:before
+{
+   background: #DA77BF;
+   background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -moz-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -o-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: -ms-linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   -svg-background: linear-gradient(top, #E59FD2 0, #CE4BAB 100%) no-repeat;
+   -webkit-border-radius:3px;
+   -moz-border-radius:3px;
+   border-radius:3px;
+   -webkit-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   -moz-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:12px;
+   height:12px;
+   display: inline-block;
+}
+
+label.portcullis-radiobutton.hovered:before
+{
+   background: #E8ABD8;
+   background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -moz-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -o-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: -ms-linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   -svg-background: linear-gradient(top, #F4D7EC 0, #DC7FC3 100%) no-repeat;
+   -webkit-border-radius:3px;
+   -moz-border-radius:3px;
+   border-radius:3px;
+   -webkit-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   -moz-box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   box-shadow:0 0 2px 1px rgba(0, 0, 0, 0.4);
+   border:1px solid #595959;
+   margin:0 auto;
+   width:12px;
+   height:12px;
+   display: inline-block;
+}
+
+label.portcullis-radiobutton input[type="radio"]
+{
+   display: none;
+}
+
+label.portcullis-radiobutton.portcullis-checked:after
+{
+   content: url('images/radiobuttonicon.png');
+   position: absolute;
+   line-height: 12px;
+   left: 0;
+   top: 0;
+}
+
+.portcullis-vmenublock
+{
+   margin:10px;
+}
+div.portcullis-vmenublock img
+{
+   margin: 0;
+}
+
+.portcullis-vmenublockheader
+{
+   background: #696969;
+   background: linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   background: -moz-linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   background: -o-linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   background: -ms-linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   background: linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   -svg-background: linear-gradient(top, #7A7A7A 0, #575757 100%) no-repeat;
+   -webkit-border-radius:4px;
+   -moz-border-radius:4px;
+   border-radius:4px;
+   padding:10px 0;
+   margin:0 auto 7px;
+}
+.portcullis-vmenublockheader .t,
+.portcullis-vmenublockheader .t a,
+.portcullis-vmenublockheader .t a:link,
+.portcullis-vmenublockheader .t a:visited, 
+.portcullis-vmenublockheader .t a:hover
+{
+   color: #FFFFFF;
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   margin: 0 10px;
+}
+
+.portcullis-vmenublockheader .t:before
+{
+   content:url('images/vmenublockheadericon.png');
+   margin-right:6px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-vmenublockheader .t:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-vmenublockcontent
+{
+   background: #949494;
+   -webkit-border-radius:4px;
+   -moz-border-radius:4px;
+   border-radius:4px;
+   border:1px solid #7A7A7A;
+   margin:0 auto;
+}
+
+ul.portcullis-vmenu, ul.portcullis-vmenu ul
+{
+   list-style: none;
+   display: block;
+}
+
+ul.portcullis-vmenu, ul.portcullis-vmenu li
+{
+   display: block;
+   margin: 0;
+   padding: 0;
+   width: auto;
+   line-height: 0;
+}
+
+ul.portcullis-vmenu
+{
+   margin-top: 0;
+   margin-bottom: 0;
+}
+
+ul.portcullis-vmenu ul
+{
+   display: none;
+   margin: 0;
+   padding: 0;
+   position: relative;
+}
+
+ul.portcullis-vmenu ul.active
+{
+   display: block;
+}
+
+ul.portcullis-vmenu>li>a
+{
+   background: #E3E3E3;
+   background: rgba(227, 227, 227, 0.76);
+   padding:0 15px;
+   margin:0 auto;
+   color: #333333;
+   min-height: 30px;
+   line-height: 30px;
+}
+ul.portcullis-vmenu a 
+{
+   display: block;
+   cursor: pointer;
+   z-index: 1;
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-decoration: none;
+   position:relative;
+}
+
+ul.portcullis-vmenu li{
+   position:relative;
+}
+
+ul.portcullis-vmenu>li
+{
+   margin-top: 1px;
+}
+ul.portcullis-vmenu>li>ul
+{
+   padding: 0;
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+ul.portcullis-vmenu>li:first-child
+{
+   margin-top:0;
+}
+
+ul.portcullis-vmenu>li>a:hover, ul.portcullis-vmenu>li>a.active:hover
+{
+   background: #F5F5F5;
+   padding:0 15px;
+   margin:0 auto;
+}
+ul.portcullis-vmenu>li>a:hover, ul.portcullis-vmenu>li>a.active:hover
+{
+   text-decoration: none;
+}
+
+ul.portcullis-vmenu a:hover, ul.portcullis-vmenu a.active:hover 
+{
+   color: #74205E;
+}
+
+ul.portcullis-vmenu>li>a.active:hover>span.border-top, ul.portcullis-vmenu>li>a.active:hover>span.border-bottom 
+{
+   background-color: transparent;
+}
+
+ul.portcullis-vmenu>li>a.active
+{
+   background: #595959;
+   padding:0 15px;
+   margin:0 auto;
+   text-decoration: none;
+   color: #FFFFFF;
+}
+
+ul.portcullis-vmenu>li:after, ul.portcullis-vmenu>li>ul:after, ul.portcullis-vmenu>li:before, ul.portcullis-vmenu>li>ul:before{
+   display: block;
+   position: absolute;
+   content: ' ';
+   left: 0;
+   right: 0;
+   top: -1px;
+}
+
+ul.portcullis-vmenu>li:after, ul.portcullis-vmenu>li>ul:after{
+   z-index: 1;
+   height: 0;
+   border-bottom: 1px solid #BFBFBF;
+}
+
+ul.portcullis-vmenu>li:before, ul.portcullis-vmenu>li>ul:before{
+   z-index: 0;
+   height: 1px;
+   background-color: rgba(227, 227, 227, 0.76);
+}
+ul.portcullis-vmenu>li:first-child:before, ul.portcullis-vmenu>li:first-child:after 
+{
+   display:none;
+}
+
+ul.portcullis-vmenu>li>ul:before
+{
+   background: #F5F5F5;
+   margin:0 auto;
+   display: block;
+   position: absolute;
+   content: ' ';
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+}
+
+ul.portcullis-vmenu li li a
+{
+   background: #F7F7F7;
+   margin:0 auto;
+   position: relative;
+}
+ul.portcullis-vmenu ul li
+{
+   margin: 0;
+   padding: 0;
+}
+ul.portcullis-vmenu li li{
+   position: relative;
+   margin-top: 1px;
+}
+
+ul.portcullis-vmenu ul a
+{
+   display: block;
+   position: relative;
+   min-height: 24px;
+   overflow: visible;
+   padding: 0;
+   padding-left: 27px;
+   padding-right: 27px;
+   z-index: 0;
+   line-height: 24px;
+   color: #424242;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-decoration: none;
+   margin-left: 0;
+   margin-right: 0;
+}
+
+ul.portcullis-vmenu ul a:visited, ul.portcullis-vmenu ul a.active:hover, ul.portcullis-vmenu ul a:hover, ul.portcullis-vmenu ul a.active
+{
+   line-height: 24px;
+   color: #424242;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-decoration: none;
+   margin-left: 0;
+   margin-right: 0;
+}
+
+ul.portcullis-vmenu ul ul a
+{
+   padding-left: 54px;
+}
+ul.portcullis-vmenu ul ul ul a
+{
+   padding-left: 81px;
+}
+ul.portcullis-vmenu ul ul ul ul a
+{
+   padding-left: 108px;
+}
+ul.portcullis-vmenu ul ul ul ul ul a
+{
+   padding-left: 135px;
+}
+
+ul.portcullis-vmenu li li a:before
+{
+   content:url('images/vmenusubitemicon.png');
+   margin-right:10px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera ul.portcullis-vmenu li li a:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+ul.portcullis-vmenu ul>li>a:hover, ul.portcullis-vmenu ul>li>a.active:hover
+{
+   background: #B5B5B5;
+   margin:0 auto;
+}
+ul.portcullis-vmenu ul li a:hover, ul.portcullis-vmenu ul li a.active:hover
+{
+   text-decoration: none;
+   color: #FFFFFF;
+}
+
+ul.portcullis-vmenu ul a:hover:after
+{
+   background-position: center ;
+}
+ul.portcullis-vmenu ul a.active:hover:after
+{
+   background-position: center ;
+}
+ul.portcullis-vmenu ul a.active:after
+{
+   background-position: bottom ;
+}
+
+ul.portcullis-vmenu li li a:hover:before
+{
+   content:url('images/vmenuhoveredsubitemicon.png');
+   margin-right:10px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera ul.portcullis-vmenu li li a:hover:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+ul.portcullis-vmenu ul>li>a.active
+{
+   background: #7A7A7A;
+   margin:0 auto;
+}
+ul.portcullis-vmenu ul a.active, ul.portcullis-vmenu ul a:hover, ul.portcullis-vmenu ul a.active:hover
+{
+   text-decoration: none;
+   color: #FFFFFF;
+}
+
+ul.portcullis-vmenu li li a.active:before
+{
+   content:url('images/vmenuactivesubitemicon.png');
+   margin-right:10px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera ul.portcullis-vmenu li li a.active:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+ul.portcullis-vmenu li li:after
+{
+   display: block;
+   position: absolute;
+   content: ' ';
+   height: 0;
+   top: -1px;
+   left: 0;
+   right: 0;
+   z-index: 1;
+   border-bottom: 1px solid #D4D4D4;
+}
+
+ul.portcullis-vmenu li li:before
+{
+   display: block;
+   position: absolute;
+   content: ' ';
+   left: 0;
+   right: 0;
+   top: -1px;
+   z-index: 0;
+   height: 1px;
+   background-color: #F7F7F7;
+}
+ul.portcullis-vmenu>li>ul>li:first-child:before, ul.portcullis-vmenu>li>ul>li:first-child:after 
+{
+   display: none;
+}
+
+.portcullis-block
+{
+   background: #F7F7F7;
+   -webkit-border-radius:4px;
+   -moz-border-radius:4px;
+   border-radius:4px;
+   border:1px solid rgba(199, 199, 199, 0.7);
+   margin:10px;
+}
+div.portcullis-block img
+{
+   border: none;
+   margin: 5px;
+}
+
+.portcullis-blockheader
+{
+   background: #6A2C90;
+   background: linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   background: -webkit-linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   background: -moz-linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   background: -o-linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   background: -ms-linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   background: linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   -svg-background: linear-gradient(top, #8136B0 0, #562475 100%) no-repeat;
+   -webkit-border-radius:4px;
+   -moz-border-radius:4px;
+   border-radius:4px;
+   border:1px solid transparent;
+   padding:12px 3px;
+   margin:0 auto;
+}
+.portcullis-blockheader .t,
+.portcullis-blockheader .t a,
+.portcullis-blockheader .t a:link,
+.portcullis-blockheader .t a:visited, 
+.portcullis-blockheader .t a:hover
+{
+   color: #FFFFFF;
+   font-size: 14px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   margin: 0 5px;
+}
+
+.portcullis-blockheader .t:before
+{
+   content:url('images/blockheadericon.png');
+   margin-right:6px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-blockheader .t:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-blockcontent
+{
+   padding:3px;
+   margin:0 auto;
+   color: #262626;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 175%;
+}
+.portcullis-blockcontent table,
+.portcullis-blockcontent li, 
+.portcullis-blockcontent a,
+.portcullis-blockcontent a:link,
+.portcullis-blockcontent a:visited,
+.portcullis-blockcontent a:hover
+{
+   color: #262626;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 175%;
+}
+
+.portcullis-blockcontent p
+{
+   margin: 0 5px;
+}
+
+.portcullis-blockcontent a, .portcullis-blockcontent a:link
+{
+   color: #6A2C90;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.portcullis-blockcontent a:visited, .portcullis-blockcontent a.visited
+{
+   color: #424242;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+}
+
+.portcullis-blockcontent a:hover, .portcullis-blockcontent a.hover
+{
+   color: #C0359B;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+}
+.portcullis-block ul>li:before
+{
+   content:url('images/blockbullets.png');
+   margin-right:6px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   margin-left: -10px;
+}
+.opera .portcullis-block ul>li:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-block li
+{
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 175%;
+   color: #121212;
+   margin: 5px 0 0 10px;
+}
+
+/* style-position: outside*/
+.portcullis-block ul>li, .portcullis-block ol
+{
+   padding: 0;
+   padding-left: 10px;
+}
+
+.portcullis-block ol>li
+{
+   list-style-position: outside;
+}
+.portcullis-post
+{
+   padding:10px;
+}
+a img
+{
+   border: 0;
+}
+
+.portcullis-article img, img.portcullis-article, .portcullis-block img, .portcullis-footer img
+{
+   border: 1px solid #7A7A7A;
+   margin: 10px 10px 10px 10px;
+}
+
+.portcullis-metadata-icons img
+{
+   border: none;
+   vertical-align: middle;
+   margin: 2px;
+}
+
+.portcullis-article table, table.portcullis-article
+{
+   border-collapse: collapse;
+   margin: 1px;
+}
+
+.portcullis-post .portcullis-content-layout-br
+{
+   height: 0;
+}
+
+.portcullis-article th, .portcullis-article td
+{
+   padding: 2px;
+   border: dotted 1px #474747;
+   vertical-align: top;
+   text-align: left;
+}
+
+.portcullis-article th
+{
+   text-align: center;
+   vertical-align: middle;
+   padding: 7px;
+}
+
+pre
+{
+   overflow: auto;
+   padding: 0.1em;
+}
+
+.preview-cms-logo
+{
+   border: 0;
+   margin: 1em 1em 0 0;
+   float: left;
+}
+
+.image-caption-wrapper
+{
+   padding: 10px 10px 10px 10px;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+.image-caption-wrapper img
+{
+   margin: 0 !important;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+.image-caption-wrapper div.portcullis-collage
+{
+   margin: 0 !important;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+.image-caption-wrapper p
+{
+   font-size: 80%;
+   text-align: right;
+   margin: 0;
+}
+
+.portcullis-postmetadataheader
+{
+   background: #FFFFFF;
+   background: rgba(255, 255, 255, 0.5);
+   margin:0 auto;
+   position:relative;
+   z-index:1;
+   padding: 1px;
+   margin-bottom: 5px;
+}
+
+.portcullis-postheader
+{
+   color: #424242;
+   margin: 5px 0px;
+   font-size: 22px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-align: left;
+}
+
+.portcullis-postheader a, 
+.portcullis-postheader a:link, 
+.portcullis-postheader a:visited,
+.portcullis-postheader a.visited,
+.portcullis-postheader a:hover,
+.portcullis-postheader a.hovered
+{
+   font-size: 22px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: normal;
+   text-align: left;
+}
+
+.portcullis-postheader a, .portcullis-postheader a:link
+{
+   font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   text-decoration: none;
+   text-align: left;
+   color: #424242;
+}
+
+.portcullis-postheader a:visited, .portcullis-postheader a.visited
+{
+   font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   text-decoration: none;
+   text-align: left;
+   color: #6A2C91;
+}
+
+.portcullis-postheader a:hover,  .portcullis-postheader a.hovered
+{
+   font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   text-decoration: none;
+   text-align: left;
+   color: #C837A1;
+}
+
+.portcullis-postheadericons,
+.portcullis-postheadericons a,
+.portcullis-postheadericons a:link,
+.portcullis-postheadericons a:visited,
+.portcullis-postheadericons a:hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #696969;
+}
+
+.portcullis-postheadericons
+{
+   display:inline-block;
+   padding: 1px;
+}
+
+.portcullis-postheadericons a, .portcullis-postheadericons a:link
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   color: #5C358D;
+}
+
+.portcullis-postheadericons a:visited, .portcullis-postheadericons a.visited
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: italic;
+   text-decoration: none;
+   color: #595959;
+}
+
+.portcullis-postheadericons a:hover, .portcullis-postheadericons a.hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: italic;
+   text-decoration: underline;
+   color: #8C2671;
+}
+
+.portcullis-postdateicon:before
+{
+   content:url('images/postdateicon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postdateicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postpdficon:before
+{
+   content:url('images/postpdficon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postpdficon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postprinticon:before
+{
+   content:url('images/postprinticon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postprinticon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postemailicon:before
+{
+   content:url('images/postemailicon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postemailicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postediticon:before
+{
+   content:url('images/postediticon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postediticon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postcontent ul>li:before,  .portcullis-post ul>li:before,  .portcullis-textblock ul>li:before
+{
+   content:url('images/postbullets.png');
+   margin-right:6px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postcontent ul>li:before, .opera   .portcullis-post ul>li:before, .opera   .portcullis-textblock ul>li:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postcontent li, .portcullis-post li, .portcullis-textblock li
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #404040;
+   margin: 3px 0 0 11px;
+}
+
+/* style-position: outside*/
+.portcullis-postcontent ul>li, .portcullis-post ul>li, .portcullis-textblock ul>li, .portcullis-postcontent ol, .portcullis-post ol, .portcullis-textblock ol
+{
+   padding: 0;
+   padding-left: 10px;
+}
+
+.portcullis-postcontent ul>li:before,  .portcullis-post ul>li:before,  .portcullis-textblock ul>li:before
+{
+   margin-left: -10px;
+}
+
+.portcullis-postcontent ol>li, .portcullis-post ol>li, .portcullis-textblock ol>li
+{
+   list-style-position: outside;
+}.portcullis-postcontent ol, .portcullis-post ol, .portcullis-textblock ol, .portcullis-postcontent ul, .portcullis-post ul, .portcullis-textblock ul
+{
+   margin: 1em 0 1em 11px;
+}
+
+.portcullis-postcontent li ol, .portcullis-post li ol, .portcullis-textblock li ol, .portcullis-postcontent li ul, .portcullis-post li ul, .portcullis-textblock li ul
+{
+   margin: 0.5em 0 0.5em 11px;
+}
+
+.portcullis-postcontent li, .portcullis-post li, .portcullis-textblock li
+{
+   margin: 3px 0 0 0;
+}
+
+.portcullis-postcontent ol>li, .portcullis-post ol>li, .portcullis-textblock ol>li
+{
+   /* overrides overflow for "ul li" and sets the default value */
+  overflow: visible;
+}
+
+.portcullis-postcontent ul>li, .portcullis-post ul>li, .portcullis-textblock ul>li
+{
+   /* makes "ul li" not to align behind the image if they are in the same line */
+  overflow-x: visible;
+   overflow-y: hidden;
+}
+
+blockquote
+{
+   background: #7A7A7A url('images/postquote.png') no-repeat scroll;
+   padding:15px 15px 15px 52px;
+   margin:10px 0 0 25px;
+   color: #FFFFFF;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: italic;
+   text-align: left;
+   /* makes block not to align behind the image if they are in the same line */
+  overflow: auto;
+   clear:both;
+}
+blockquote a, .portcullis-postcontent blockquote a, .portcullis-blockcontent blockquote a, .portcullis-footer blockquote a,
+blockquote a:link, .portcullis-postcontent blockquote a:link, .portcullis-blockcontent blockquote a:link, .portcullis-footer blockquote a:link,
+blockquote a:visited, .portcullis-postcontent blockquote a:visited, .portcullis-blockcontent blockquote a:visited, .portcullis-footer blockquote a:visited,
+blockquote a:hover, .portcullis-postcontent blockquote a:hover, .portcullis-blockcontent blockquote a:hover, .portcullis-footer blockquote a:hover
+{
+   color: #FFFFFF;
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-weight: normal;
+   font-style: italic;
+   text-align: left;
+}
+
+/* Override native 'p' margins*/
+blockquote p,
+.portcullis-postcontent blockquote p,
+.portcullis-blockcontent blockquote p,
+.portcullis-footer blockquote p
+{
+   margin: 0;
+   margin: 5px 0;
+}
+
+.portcullis-postmetadatafooter
+{
+   border-bottom:1px solid #E0E0E0;
+   margin:0 auto;
+   position:relative;
+   z-index:1;
+   padding: 1px;
+}
+
+.portcullis-postfootericons,
+.portcullis-postfootericons a,
+.portcullis-postfootericons a:link,
+.portcullis-postfootericons a:visited,
+.portcullis-postfootericons a:hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #5C358D;
+}
+
+.portcullis-postfootericons
+{
+   display:inline-block;
+   padding: 1px;
+}
+
+.portcullis-postfootericons a, .portcullis-postfootericons a:link
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   color: #5C358D;
+}
+
+.portcullis-postfootericons a:visited, .portcullis-postfootericons a.visited
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   color: #5C358D;
+}
+
+.portcullis-postfootericons a:hover, .portcullis-postfootericons a.hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   color: #8C2671;
+}
+
+.portcullis-postcategoryicon:before
+{
+   content:url('images/postcategoryicon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postcategoryicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-posttagicon:before
+{
+   content:url('images/posttagicon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-posttagicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postcommentsicon:before
+{
+   content:url('images/postcommentsicon.png');
+   margin-right:6px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   bottom: auto;
+}
+.opera .portcullis-postcommentsicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postdatepickericon:before
+{
+   content:url('images/postdatepickericon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postdatepickericon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postdatepickerlefticon:before
+{
+   content:url('images/postdatepickerlefticon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postdatepickerlefticon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postdatepickerrighticon:before
+{
+   content:url('images/postdatepickerrighticon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postdatepickerrighticon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.Navigator .portcullis-ccs-navigator img, .Navigator img
+{
+   border: 0;
+   margin: 0;
+   vertical-align: middle;
+}
+tr.Navigator td, td span.Navigator
+{
+   text-align: center;
+   vertical-align: middle;
+}
+
+.portcullis-postslider1icon:before
+{
+   content:url('images/postslider1icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider1icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider2icon:before
+{
+   content:url('images/postslider2icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider2icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider3icon:before
+{
+   content:url('images/postslider3icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider3icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider4icon:before
+{
+   content:url('images/postslider4icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider4icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider5icon:before
+{
+   content:url('images/postslider5icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider5icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider6icon:before
+{
+   content:url('images/postslider6icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider6icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postslider7icon:before
+{
+   content:url('images/postslider7icon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postslider7icon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postsliderscicon:before
+{
+   content:url('images/postsliderscicon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postsliderscicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-postsliderseicon:before
+{
+   content:url('images/postsliderseicon.png');
+   margin-right:6px;
+   bottom: 0;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+}
+.opera .portcullis-postsliderseicon:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.Sorter img
+{
+   border:0;
+   vertical-align:middle;
+   padding:0;
+   margin:0;
+   position:static;
+   z-index:1;
+   width: 12px;
+   height: 6px;
+}
+
+.Sorter a
+{
+   position:relative;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #757575;
+}
+
+.Sorter a:link
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #757575;
+}
+
+.Sorter a:visited, .Sorter a.visited
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #757575;
+}
+
+.Sorter a:hover, .Sorter a.hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #595959;
+}
+
+.Sorter
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color:#404040;
+}
+
+.portcullis-footer
+{
+   background: #7E7E7E;
+   border-top:6px solid #A6A6A6;
+   padding:15px;
+   margin:20px auto 0;
+   position: relative;
+   color: #FFFFFF;
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 175%;
+   text-align: center;
+}
+
+.portcullis-footer a,
+.portcullis-footer a:link,
+.portcullis-footer a:visited,
+.portcullis-footer a:hover,
+.portcullis-footer td, 
+.portcullis-footer th,
+.portcullis-footer caption
+{
+   color: #FFFFFF;
+   font-size: 12px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   line-height: 175%;
+}
+
+.portcullis-footer p 
+{
+   padding:0;
+   text-align: center;
+}
+
+.portcullis-footer a,
+.portcullis-footer a:link
+{
+   color: #FFFFFF;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+}
+
+.portcullis-footer a:visited
+{
+   color: #FFFFFF;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+}
+
+.portcullis-footer a:hover
+{
+   color: #D463B6;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   text-decoration: underline;
+}
+
+.portcullis-footer img
+{
+   border: none;
+   margin: 0;
+}
+
+.portcullis-footer ul>li:before
+{
+   content:url('images/footerbullets.png');
+   margin-right:6px;
+   bottom: 2px;
+   position:relative;
+   display:inline-block;
+   vertical-align:middle;
+   font-size:0;
+   line-height:0;
+   margin-left: -9px;
+}
+.opera .portcullis-footer ul>li:before
+{
+   /* Vertical-align:middle in Opera doesn't need additional offset */
+    bottom: 0;
+}
+
+.portcullis-footer li
+{
+   font-size: 13px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   color: #949494;
+}
+
+/* style-position: outside*/
+.portcullis-footer ul>li, .portcullis-footer ol
+{
+   padding: 0;
+   padding-left: 9px;
+}
+
+.portcullis-footer ol>li
+{
+   list-style-position: outside;
+}
+.portcullis-page-footer, 
+.portcullis-page-footer a,
+.portcullis-page-footer a:link,
+.portcullis-page-footer a:visited,
+.portcullis-page-footer a:hover
+{
+   font-family: Arial;
+   font-size: 10px;
+   letter-spacing: normal;
+   word-spacing: normal;
+   font-style: normal;
+   font-weight: normal;
+   text-decoration: underline;
+   color: #C9C9C9;
+}
+
+.portcullis-page-footer
+{
+   position: relative;
+   z-index: auto !important;
+   padding: 1em;
+   text-align: center !important;
+   text-decoration: none;
+   color: #C9C9C9;
+}
+
+img.portcullis-lightbox
+{
+   cursor: pointer;
+}
+
+#portcullis-lightbox-bg *
+{
+   padding: 0;
+   margin: 0;
+}
+
+div#portcullis-lightbox-bg
+{
+   top: 0;
+   left: 0;
+   width: 100%;
+   position: absolute;
+   height: 100%;
+   background-color: #000;
+   opacity: 0.8;
+   filter: alpha(opacity=80);
+   z-index: 9999;
+}
+
+img.portcullis-lightbox-image
+{
+   -webkit-transition: opacity 350ms ease-in-out;
+   -moz-transition: opacity 350ms ease-in-out;
+   -o-transition: opacity 350ms ease-in-out;
+   -ms-transition: opacity 350ms ease-in-out;
+   transition: opacity 350ms ease-in-out;
+   cursor: pointer;
+   z-index: 10000;
+   position: fixed;
+   border: 6px solid #fff;
+   border-radius: 3px;
+   opacity: 0;
+   filter: alpha(opacity=0);
+}
+
+img.portcullis-lightbox-image.active
+{
+   opacity: 1;
+   filter: alpha(opacity=100);
+}
+
+.lightbox-error
+{
+   position: fixed;
+   background: #fff;
+   z-index: 100;
+   opacity: 0.95;
+   padding: 20px;
+   border: 1px solid #b4b4b4;
+   border-radius: 10px;
+   box-shadow: 0 2px 5px #333;
+   width: 300px;
+   height: 80px;
+}
+
+.loading
+{
+   position: fixed;
+   background: #fff url('images/preloader-01.gif') center center no-repeat;
+   width: 32px;
+   height: 32px;
+   z-index: 10100;
+   opacity: 0.5;
+   padding: 10px;
+   border: 1px solid #b4b4b4;
+   border-radius: 10px;
+   box-shadow: 0 2px 5px #333;
+}
+
+.arrow
+{
+   height: 100px;
+   width: 82px;
+   z-index: 10003;
+   position: fixed;
+   cursor: pointer;
+   opacity: 0.5;
+   filter: alpha(opacity=50);
+}
+
+.arrow.left
+{
+   left: 9px;
+}
+.arrow.right
+{
+   right: 9px;
+}
+
+.arrow:hover
+{
+   opacity: 1;
+   filter: alpha(opacity=100);
+}
+
+.arrow.disabled 
+{
+   display: none;
+}
+
+.arrow-t, .arrow-b
+{
+   height: 6px;
+   width: 30px;
+   left: 26px;
+   background-color: #fff;
+   position: relative;
+   border-radius: 3px;
+}
+
+.arrow-t
+{
+   top: 38px;
+}
+
+.arrow-b
+{
+   top: 50px;
+}
+
+.close
+{
+   width: 22px;
+   height: 22px;
+   position: fixed;
+   top: 30px;
+   right: 39px;
+   cursor: pointer;
+   opacity: 0.5;
+   filter: alpha(opacity=50);
+}
+
+.close:hover 
+{
+   opacity: 1;
+   filter: alpha(opacity=100);
+}
+
+.close .cw, .close .ccw
+{
+   position: absolute;
+   top: 8px;
+   left: -4px;
+   width: 30px;
+   height: 6px;
+   background-color: #fff;
+   border-radius: 3px;
+}
+
+.cw
+{
+   transform: rotate(45deg);
+   -ms-transform: rotate(45deg);
+   /* IE 9 */
+    -webkit-transform: rotate(45deg);
+   /* Safari and Chrome */
+    -o-transform: rotate(45deg);
+   /* Opera */
+    -moz-transform: rotate(45deg);
+/* Firefox */}
+
+.ccw
+{
+   transform: rotate(-45deg);
+   -ms-transform: rotate(-45deg);
+   /* IE 9 */
+    -webkit-transform: rotate(-45deg);
+   /* Safari and Chrome */
+    -o-transform: rotate(-45deg);
+   /* Opera */
+    -moz-transform: rotate(-45deg);
+/* Firefox */}
+
+.close-alt, .arrow-right-alt, .arrow-left-alt 
+{
+   display: none;
+   color: #fff;
+   font-size: 2.5em;
+}
+
+.ie8 .close-alt, .ie8 .arrow-right-alt, .ie8 .arrow-left-alt {
+   display: block;
+}
+.ie8 .cw, .ie8 .ccw {
+   display: none;
+}
+
+.portcullis-content-layout .portcullis-content
+{
+   margin:0 auto;
+}
+
+.portcullis-content-layout .portcullis-sidebar1
+{
+   margin:0 auto;
+   width: 27%;
+}
+
+
+
+textarea#comment
+{
+    width:99%;
+}
+
+ul#comments-list div.avatar
+{
+    float:right;    
+}
+
+ul#comments-list, ul#comments-list li
+{
+  background: none;
+  padding:0;
+}
+
+ul#comments-list li li
+{
+  margin-left: 20px;
+}
+
+div.avatar
+{
+  position:relative;
+  margin: 7px;
+  border: 1px solid #aaa;
+  padding: 1px;
+  background: #fff;
+  float:left;
+}
+
+div.avatar img, div.avatar img.wp-post-image
+{
+    margin:0 !important;
+    padding:0;
+    border:none;
+}
+
+span.page-navi-outer, span.page-navi-inner 
+{
+    position:relative;
+    display:block;
+    float:left;
+    margin:0;
+    padding:0;
+}
+
+span.page-navi-outer
+{
+  margin: 1px;
+  border: 1px solid #aaa;
+}
+
+span.page-navi-inner 
+{
+  padding: 1px;
+  min-width:14px;
+  line-height:18px;
+  text-align:center;
+  border: 2px solid #fff;
+  font-weight:bold;
+}
+
+a span.page-navi-inner, span.page-navi-caption span.page-navi-inner 
+{
+    border-width:1px;
+    font-weight:normal;
+}
+
+a span.page-navi-outer, span.page-navi-caption
+{
+    margin:2px 1px;
+}
+
+ul#comments-list li cite
+{
+  font-size: 1.2em;
+}
+
+#commentform textarea
+{
+  width: 100%;
+}
+
+#commentform
+{
+  text-align:left;
+}
+
+.rtl #commentform
+{
+  text-align:right;
+}
+
+img.wp-smiley
+{
+  border: none;
+  margin: 1px;
+  vertical-align:middle;
+  padding: 0;
+}
+
+.navigation
+{
+  display: block;
+  text-align: center;
+}
+
+/* Recommended by http://codex.wordpress.org/CSS */
+/* Begin */
+.aligncenter, div.aligncenter, .portcullis-article .aligncenter img, .aligncenter img.portcullis-article, .aligncenter img, img.aligncenter
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p.aligncenter , p.center 
+{
+   text-align: center; 
+}
+
+.alignleft
+{
+  float: left;
+}
+
+.alignright
+{
+  float: right;
+}
+
+.wp-caption
+{
+  border: 1px solid #ddd;
+  background-color: #f3f3f3;
+  padding-top: 4px;
+  margin: 10px;
+}
+
+.wp-caption img
+{
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+}
+
+.wp-caption p.wp-caption-text
+{
+  font-size: 11px;
+  line-height: 17px;
+  padding: 0 4px 5px;
+  margin: 0;
+}
+
+.wp-caption, .wp-caption p
+{
+    text-align: center;
+}
+
+.gallery {
+	margin: 0 auto 18px;
+    clear:both;
+    overflow:hidden;
+}
+
+.gallery .gallery-item {
+	float: left;
+	margin-top: 0;
+	text-align: center;
+	width: 33%;
+}
+.gallery img {
+	border: 2px solid #cfcfcf;
+}
+
+.gallery .gallery-caption {
+	color: #888;
+	font-size: 12px;
+	margin: 0 0 12px;
+}
+
+.gallery dl {
+	margin: 0;
+}
+
+.gallery img {
+	border: 10px solid #f1f1f1;
+}
+
+.gallery br+br {
+	display: none;
+}
+/* End */
+
+
+.hidden
+{
+  display: none;
+}
+
+/* Calendar */
+#wp-calendar {
+  empty-cells: show;
+  margin: 10px auto 0;
+  width: 155px;
+}
+
+#wp-calendar #next a {
+  padding-right: 10px;
+  text-align: right;
+}
+
+#wp-calendar #prev a {
+  padding-left: 10px;
+  text-align: left;
+}
+
+#wp-calendar a {
+  display: block;
+}
+
+#wp-calendar caption {
+  text-align: center;
+  width: 100%;
+}
+
+#wp-calendar td {
+  padding: 3px 0;
+  text-align: center;
+}
+
+.gallery {
+  letter-spacing: normal;
+}
+
+.portcullis-content {
+  position: relative;
+  z-index: 1;   
+}
+
+#todays-events{
+  position: relative;
+  z-index: 11;    
+}
+
+#upcoming-events{
+  position: relative;
+  z-index: 10;    
+}
+
+img.wp-post-image 
+{
+    margin:0 5px 5px 0 !important;
+}
+
+ul#comments-list li
+{
+    list-style-image: none;
+    background:none;
+    list-style-type:none;
+    
+}
+
+div.portcullis-footer div.portcullis-content-layout
+{
+    margin:0 auto;
+    width:100%;
+}
+
+div.portcullis-layout-cell-size1 
+{
+    width:100%;
+}
+
+div.portcullis-layout-cell-size2 
+{
+    width:50%;
+}
+div.portcullis-layout-cell-size3 
+{
+    width:33%;
+}
+
+div.portcullis-layout-cell-size4
+{
+    width:25%;
+}
+
+.portcullis-widget-title
+{
+    padding:0 0 0 24px;
+    margin-bottom:0;
+}
+
+div.portcullis-center-wrapper
+{
+  position: relative;
+  float: right;
+  right: 50%;
+
+}
+
+div.portcullis-center-inner
+{
+  position: relative;
+  float: left;
+  left: 50%;
+}
+
+.firefox2 div.portcullis-center-inner
+{
+  float: none;
+}
+
+div.breadcrumbs h4, 
+div.breadcrumbs p, 
+li.pingback p, 
+#respond p,
+h3#reply-title, 
+h4#comments, 
+h4.box-title
+{
+    margin:0;
+}
+
+#respond .comment-notes {
+	margin-bottom: 1em;
+}
+
+.form-allowed-tags {
+	line-height: 1em;
+}
+
+#comments-list #respond {
+	margin-left: 20px !important;
+}
+
+#cancel-comment-reply-link {
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 18px;
+}
+
+#respond .required {
+	color: #ff4b33;
+	font-weight: bold;
+}
+
+#respond label {
+	font-size: 12px;
+}
+
+#respond input {
+	margin: 0 0 9px;
+	width: 98%;
+}
+
+#respond textarea {
+	width: 98%;
+}
+
+#respond .form-allowed-tags {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+#respond .form-allowed-tags code {
+	font-size: 11px;
+}
+
+#respond .form-submit {
+	margin: 12px 0;
+}
+
+#respond .form-submit input {
+	width: auto;
+}
+
+.portcullis-footer .portcullis-widget-title 
+{
+    font-size:1.2em;
+    padding: 0;
+}
+
+.portcullis-footer .portcullis-widget,
+.portcullis-footer .portcullis-widget a,
+.portcullis-footer .portcullis-widget a:link,
+.portcullis-footer .portcullis-widget a:visited,
+.portcullis-footer .portcullis-widget a:hover
+{
+    text-align: left;
+}
+
+DIV[id^="GMPmap"] IMG 
+{
+    margin: 0px;
+}
+
+/* Begin Additional CSS Styles */
+.portcullis-box .portcullis-post .layout-item-1 {
+background: #ffffff; 
+background: -moz-linear-gradient(top,  #ffffff 0%, #dedede 100%); 
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dedede)); 
+background: -webkit-linear-gradient(top,  #ffffff 0%,#dedede 100%); 
+background: -o-linear-gradient(top,  #ffffff 0%,#dedede 100%); 
+background: -ms-linear-gradient(top,  #ffffff 0%,#dedede 100%); 
+background: linear-gradient(top,  #ffffff 0%,#dedede 100%); 
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dedede',GradientType=0 ); 
+-webkit-border-radius: 5px;-moz-border-radius: 10px;border-radius: 5px;
+}
+
+.portcullis-blockheader .t, .portcullis-vmenublockheader .t {white-space: nowrap;}
+/* End Additional CSS Styles */
+
+
+productheading {
+
+font-size: 200%;
+color: #666666; 
+font-family: Tahoma, Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+text-align: left;
+font-weight: normal; 
+
+}
+
+hr {
+
+border: 0;
+color: #c7c7c7;
+background-color: #c7c7c7;
+height: 1px;
+width: 100%;
+text-align: left;
+
+}
+
+
+productsubheading {
+  
+color: #666666; 
+font-weight: bold;
+text-align: left; 
+font-size: 110%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;   
+
+}
+
+
+producttext {
+  
+color: #3c3c3c;
+font-size: 110%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+} 
+
+productsubheading1 {
+  
+ color: #666666;
+ font-size: 130%;
+ text-align: left;
+ font: bold; 
+ font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif; 
+
+}
+
+whylist {
+  
+color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;   
+
+} 
+
+getintouchheading {
+
+color: #666666; 
+font-size: 130%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+getintouchtext {
+
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+}
+
+getintouchphone {
+
+color: #000000;
+font-size: 100%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif; 
+
+}
+
+extrapageheadings {
+
+font-size: 200%;
+color: #666666;  
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+text-align: left;
+font-weight: normal; 
+
+}
+
+extrapagetext {
+  
+color: #3c3c3c;
+font-size: 110%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+} 
+
+jobheading {
+
+text-align:center;
+color: #666666;
+font-size: 110%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+jobtext {
+  
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;   
+
+} 
+
+Jobdescriptiontext {
+  
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+} 
+
+pagejobheading {
+
+text-align:center;
+color: #000000;
+font-size: 100%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+pagejobtext {
+
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+} 
+
+pagemainjobtext {
+
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;   
+
+} 
+
+jobsubheading {
+
+text-align:left;
+color: #000000;
+font-size: 100%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif; 
+
+
+}
+
+addressheading {
+
+text-align:center;
+color: #666666;
+font-size: 110%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+addresstext {
+
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+} 
+
+companyheading {
+
+text-align:center;
+color: #000000;
+font-size: 130%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+updatewhitepaperstext {
+
+font-color: #666666;
+font-size: 100%;
+font-style: italic;
+text-align: left;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+
+}
+
+whitepapertoolsheading {
+
+color: #666666; 
+font-size: 110%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+testimonialheader {
+
+color: #666666; 
+font-size: 110%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif; 
+
+}
+
+testimonialtext {
+
+color: #000000;
+font-size: 100%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;  
+
+
+}
+
+
+vulnerabilitiessubheadings {
+
+text-align:left;
+color: #000000;
+font-size: 130%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+
+eventheader {
+
+text-align:center;
+color: #666666;
+font-size: 110%;
+font-weight: bold;
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif;
+
+
+}
+
+eventdescription {
+
+font-color: #3c3c3c;
+font-size: 100%;
+text-align: left; 
+font-family: Tahoma,Arial,'Arial Unicode MS', Helvetica, Sans-Serif; 
+
+
+}
+
+
+.contentbox {
+	padding-left: 25px;	
+	width: 400px;	
+}
+
+heading {
+	padding-left: 20px;
+        font-size: 22px;
+}
+
+contactheading {
+	padding-left: 0px;
+        font-size: 22px;
+}
+
+.mainpagebox {
+	padding-left: 50px;	
+	width: 830px;	
+}
+
+mainpageheading {
+	font-size: 29px;
+        font-weight: bold;
+        font-type: Tahoma
+}
+
+
+.layout-item-10 { color: #292929; background: ; padding: 10px;  }
+
+
+pre {
+border: 1px solid #C7C7C7;
+padding: 1em;
+background-color: #f9f9f9;
+white-space: pre-wrap;       /* css-3 */
+white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+white-space: -pre-wrap;      /* Opera 4-6 */
+white-space: -o-pre-wrap;    /* Opera 7 */
+word-wrap: break-word;       /* Internet Explorer 5.5+ */
+
+}
+#cisco {
+    -webkit-box-shadow:0 2px 4px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow:0 2px 4px 1px rgba(0, 0, 0, 0.4);
+    box-shadow:0 2px 4px 1px rgba(0, 0, 0, 0.4);
+    background-color:#7F7B7B;
+    border-bottom:solid 5px rgba(0, 0, 0, 0.4);
+    font-family:'ciscosansttregular';
+    font-size: 14px;
+    //height:47px;
+    line-height:47px;
+    padding-bottom:2px;
+    z-index:-99999;
+}
+@media all and (max-width: 997px){
+    #cisco #cisco-container {
+        height: 68px !important;
+        margin-bottom: 0px;
+    }
+}
+#cisco #cisco-container {
+    margin:0 auto;
+    width:998px;
+}
+@media all and (max-width: 997px){
+    #cisco #cisco-container {
+        margin:0 auto;
+        width:auto;
+    }  
+}
+#cisco img {
+    border: 0;
+    vertical-align: middle;
+}
+#cisco .cisco-logo {
+    height:40px;
+}
+@media all and (max-width: 997px){
+    #cisco .cisco-logo {
+        display:block;
+        margin:0 auto;
+    }
+}
+#cisco .learnmore {
+    position: relative;
+    top: 1px;
+}
+@media all and (max-width: 997px){
+    #cisco .learnmore {
+        position: absolute;
+        top: 30px;
+        left: 15px;
+    }
+}
+#cisco a {
+    color:#F6F6F6;
+    text-decoration:none;
+}
+#cisco a:hover {
+    text-decoration:underline;
+}
+#cisco .left {
+    float:left;
+    padding-left:50px;
+    text-align:left;
+}
+#cisco .right {
+    float:right;
+    padding-right:15px;
+    text-align:right;
+}
+@media all and (max-width: 997px){
+    #cisco .left, #cisco .right {
+        float:none;
+        padding:0 15px;
+    }
+    #cisco .right {
+        position: absolute;
+        top: 30px;
+        right: 5px;
+        width: 90px;
+    }
+}

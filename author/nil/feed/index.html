@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; NIL</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/nil/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>phrasen&#124;drescher</title>
+		<link>https://labs.portcullis.co.uk/tools/phrasen-drescher/</link>
+		<comments>https://labs.portcullis.co.uk/tools/phrasen-drescher/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:31:47 +0000</pubDate>
+		<dc:creator><![CDATA[NIL]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=197</guid>
+		<description><![CDATA[<p>A tool for bruteforce guessing pass phrases, password hashes or remote accounts of various services. phrasen&#124;drescher is a modular and multi processing pass phrase cracking tool. Key Features In version 1.1 it comes with two plugins with the purposes to: crack pass phrases of RSA or DSA keys crack MS SQL 2000/2005 SHA1 hashes remote [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/phrasen-drescher/">phrasen|drescher</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>A tool for bruteforce guessing pass phrases, password hashes or remote accounts of various services.<span id="more-197"></span></p>
+<p>phrasen|drescher is a modular and multi processing pass phrase cracking tool.</p>
+<h2>Key Features</h2>
+<p>In version 1.1 it comes with two plugins with the purposes to:</p>
+<ul>
+<li>crack pass phrases of RSA or DSA keys</li>
+<li>crack MS SQL 2000/2005 SHA1 hashes</li>
+<li>remote SSHv2 account brute forcing</li>
+<li>HTTP login form account cracking</li>
+</ul>
+<p>A simple plugin API allows an easy development of new plugins.</p>
+<p>Further features are:</p>
+<ul>
+<li>Modular</li>
+<li>Multi Processing</li>
+<li>Dictionary attack with or without permutations (uppercase, lowercase, l33t, etc.)</li>
+<li>Bruteforce attacks for custom character sets</li>
+<li>Runs on FreeBSD, NetBSD, OpenBSD, MacOS and Linux</li>
+</ul>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+phrasen|drescher 1.1.1 - the passphrase cracker
+Copyright (C) 2008 Nico Leidecker; http://www.leidecker.info
+
+Usage: ./pd plugin [options]
+
+ Available plugins:
+   http-raw  mssql  rsa-dsa  ssh
+
+ General Options:
+   h           : print this message
+   v           : verbose mode
+   i from[:to] : incremental mode beginning with word length `from'
+                 and going to `to'
+   d file      : run dictionary based with words from `file'
+   w number    : number of worker threads (default is one)
+   r rules     : specify rewriting rules for the dictionary mode:
+                   A = all characters upper case
+                   F = first character upper case
+                   L = last character upper case
+                   W = first letter of each word to upper case
+                   a = all characters lower case
+                   f = first character lower case
+                   l = last character lower case
+                   w = first letter of each word to lower case
+                   D = prepend digit
+                   d = append digit
+                   e = 1337 characters
+                   x = all rules
+
+ Environment Variables::
+   PD_PLUGINS : the directory containing plugins
+   PD_CHARMAP : the characters for the incremental mode are
+                taken from a character list. A customized list
+                can be specified in the environment variable
+</pre>
+<h2>Examples</h2>
+<h3>Plugin Handling</h3>
+<p>The default plugin directory is ./plugins. However you can specify a custom path:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ export PD_PLUGINS=/my/plugin/directory
+$ pd
+phrasen|drescher 1.1.1 - the passphrase cracker
+Copyright (C) 2008 Nico Leidecker; nfl@portcullis-security.com
+
+Usage: pd plugin [options]
+Please choose a plugin first or use -h for more help
+Available plugins:
+ rsa-dsa  mssql  ssh  http-raw
+
+Set the plugin directory in the environment variable
+PD_PLUGINS if required.
+</pre>
+<h3>Dictionary Mode</h3>
+<p>You can perform a simple dictionary attack on a RSA private key pass phrase using the corresponding module like this:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ phrasendrescher rsa-dsa -d dict.txt -K ~/.ssh/id_rsa
+phrasen|drescher 1.1.1 - the passphrase cracker
+Copyright (C) 2008 Nico Leidecker; nfl@portcullis-security.com
+
+match: (0) ~/.ssh/id_rsa [test123]
+finished!
+bye, bye...
+</pre>
+<h3>Dictionary Mode With Permutations</h3>
+<p>If you want to permute your dictionary there are loads of options (see Usage page), e.g:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ phrasendrescher rsa-dsa -r aF -d dict.txt -K ~/.ssh/id_rsa
+phrasen|drescher 1.1.1 - the passphrase cracker
+Copyright (C) 2008 Nico Leidecker; nfl@portcullis-security.com
+
+match: (0) ~/.ssh/id_rsa [test123]
+finished!
+bye, bye...
+</pre>
+<p>Here the &#8216;a&#8217; rule converts each word to lower case and the &#8216;F&#8217; rule uses initial caps for each word.</p>
+<h3>Brute Force Mode</h3>
+<p>You can specify a custom character set for a brute force attack. Here we choose quick a small character set, so the attack will actually finish:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ PD_CHARMAP=&quot;tes1234&quot; phrasendrescher rsa-dsa -i 1:7 -K ~/.ssh/id_rsa
+phrasen|drescher 1.1.1 - the passphrase cracker
+Copyright (C) 2008 Nico Leidecker; nfl@portcullis-security.com
+
+match: (0) ~/.ssh/id_rsa [test123]
+finished!
+bye, bye...
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/phrasendrescher-1.1.1.tar.gz" target="_blank" title="Download Phrasendrescher-1.1.1 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Phrasendrescher-1.1.1 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/phrasendrescher-1.1.1.tar.gz" title="Download phrasendrescher-1.1.1.tar.gz" target="_blank" id="wpfb-file-link-1">phrasendrescher-1.1.1.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    305.1 KiB<br />
+    MD5 hash: 633145dfef99002110ff13483555f812 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/phrasen-drescher/">phrasen|drescher</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/phrasen-drescher/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>sucrack</title>
+		<link>https://labs.portcullis.co.uk/tools/sucrack/</link>
+		<comments>https://labs.portcullis.co.uk/tools/sucrack/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:20:26 +0000</pubDate>
+		<dc:creator><![CDATA[NIL]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=180</guid>
+		<description><![CDATA[<p>sucrack is a multithreaded Linux/UNIX tool for brute-force cracking local user accounts via su. This tool comes in handy when you&#8217;ve gained access to a low-privilege user account but are allowed to su to other users. Many su implementations require a pseudo terminal to be attached in order to take the password from the user. This can&#8217;t [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/sucrack/">sucrack</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>sucrack is a multithreaded Linux/UNIX tool for brute-force cracking local user accounts via su.<span id="more-180"></span></p>
+<p>This tool comes in handy when you&#8217;ve gained access to a low-privilege user account but are allowed <i>to su</i> to other users. Many su implementations require a pseudo terminal to be attached in order to take the password from the user. This can&#8217;t be easily achieved with a simple shell script. This tool, written in C, is highly efficient and can attempt multiple logins at the same time.</p>
+<p>Please be advised that using this tool will take a lot of the CPU performance and fill up the logs quite quickly. sucrack is so far known to be running on FreeBSD, NetBSD, Linux.</p>
+<h2>Installation</h2>
+<p>First of all, you&#8217;ll want to upload the source to the target system (assuming you don&#8217;t have a pre-compiled copy that will work):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ tar xfz sucrack-1.2.3.tar.gz
+$ cd sucrack-1.2.3
+$ ./configure
+$ make
+$ cd src
+</pre>
+<p>Obviously, you won&#8217;t have the luxury of running &#8220;make install&#8221; yet as you&#8217;re not root.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sucrack 1.2.3 (LINUX) - the su cracker
+Copyright (C) 2006  Nico Leidecker; nfl@portcullis-security.com
+
+ Usage: ./sucrack [-char] [-w num] [-b size] [-s sec] [-u user] [-l rules] wordlist
+
+ The word list can either be an existing file or stdin. In that case, use '-' instead of a file name
+
+ Options:
+   h       : print this message
+   a       : ansi escape codes not available.
+             Use the --enable-statistics configure flag.
+   s sec   : statistics display interval not available.
+             Use the --enable-statistics configure flag.
+   c       : only print statistics if a key other than `q' is pressed. (default)
+   r       : enable rewriter
+   w num   : number of worker threads running with
+   b size  : size of word list buffer
+   u user  : user account to su to
+   l rules : specify rewriting rules; rules can be:
+               A = all characters upper case
+               F = first character upper case
+               L = last character upper case
+               a = all characters lower case
+               f = first character lower case
+               l = last character lower case
+               D = prepend digit
+               d = append digit
+               e = 1337 characters
+               x = all rules
+
+ Environment Variables:
+   SUCRACK_SU_PATH      : The path to su (usually /bin/su or /usr/bin/su)
+
+   SUCRACK_AUTH_FAILURE : The message su returns on an authentication
+                          failure (like &quot;su: Authentication failure&quot; or &quot;su: Sorry&quot;)
+   SUCRACK_AUTH_SUCCESS : The message that indicates an authentication
+                          success. This message must not be a password
+                          listed in the wordlist (default is &quot;SUCRACK_SUCCESS&quot;)
+
+ Example:
+   export SUCRACK_AUTH_SUCCESS=&quot;sucrack_says_hello&quot;
+   ./sucrack -a -w 20 -s 10 -u root -rl AFLafld dict.txt
+</pre>
+<h2>Examples</h2>
+<h3>Running a dictionary attack on an account</h3>
+<p>On my dual-core test system, this 100-thread attack ran at around 50 guesses per second.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./sucrack -w 100 -u root dict.txt
+password is: test123
+</pre>
+<p>Bear in mind that if the target system has little memory or little CPU power, running 100 threads may DoS the system, so be careful.</p>
+<h3>Permuting the dictionary</h3>
+<p>Check out the Usage page for list of options to alter the case, append digits, etc. to the dictionary. In the example below, we try each word in lower case and append a digit:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./sucrack -w 100 -r -l ad -u smbguest dict.txt
+password is: test123
+</pre>
+<h3>Reading Passwords from STDIN</h3>
+<p>Besides of getting passwords from a dictionary or in the incremental mode, you can use the password generator of your choice and feed sucrack with passwords. John the Ripper&#8217;s great password generator can be used this way for instance:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ john --stdout --incremental | sucrack -
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/sucrack-1.2.3.tar.gz" target="_blank" title="Download Sucrack-1.2.3 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Sucrack-1.2.3 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/sucrack-1.2.3.tar.gz" title="Download sucrack-1.2.3.tar.gz" target="_blank" id="wpfb-file-link-2">sucrack-1.2.3.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    109.5 KiB<br />
+    MD5 hash: 6ebfe5e94577a53ce8dcabadd3581ec3 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/sucrack/">sucrack</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/sucrack/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Having Fun With PostgreSQL</title>
+		<link>https://labs.portcullis.co.uk/whitepapers/having-fun-with-postgresql/</link>
+		<comments>https://labs.portcullis.co.uk/whitepapers/having-fun-with-postgresql/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 17:54:28 +0000</pubDate>
+		<dc:creator><![CDATA[NIL]]></dc:creator>
+				<category><![CDATA[Whitepapers]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=108</guid>
+		<description><![CDATA[<p>PostgreSQL is one of the most commonly used open source database management systems. This document describes weaknesses in the PostgreSQL configuration that may be abused for privilege escalation, as well as remote command execution and the uploading of arbitrary files to the system.</p><p>The post <a href="https://labs.portcullis.co.uk/whitepapers/having-fun-with-postgresql/">Having Fun With PostgreSQL</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>PostgreSQL is one of the most commonly used open source database management systems.<span id="more-108"></span></p>
+<p>This document describes weaknesses in the PostgreSQL configuration that may be abused for privilege escalation, as well as remote command execution and the uploading of arbitrary files to the system.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/Having_Fun_With_PostgreSQL.pdf" target="_blank" title="Download Having Fun With PostgreSQL"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Having Fun With PostgreSQL" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/Having_Fun_With_PostgreSQL.pdf" title="Download Having_Fun_With_PostgreSQL.pdf" target="_blank" id="wpfb-file-link-3">Having_Fun_With_PostgreSQL.pdf</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    133.5 KiB<br />
+    MD5 hash: 3278ca0a980845fd57e4fee660f30ae1 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/whitepapers/having-fun-with-postgresql/">Having Fun With PostgreSQL</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/whitepapers/having-fun-with-postgresql/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

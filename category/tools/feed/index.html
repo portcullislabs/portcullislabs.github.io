@@ -1,0 +1,1193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Tools</title>
+	<atom:link href="https://labs.portcullis.co.uk/category/tools/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>RPDscan</title>
+		<link>https://labs.portcullis.co.uk/tools/rpdscan/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rpdscan/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 19:46:13 +0000</pubDate>
+		<dc:creator><![CDATA[FC]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4408</guid>
+		<description><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations. Key features Finds every Remmina configuration file and preferences Decrypts every saved password for every user it finds Python based for easy access and speed Overview Remmina is a well used Linux based RDP connection software, as many people [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations.<span id="more-4408"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Finds every Remmina configuration file and preferences</li>
+<li>Decrypts every saved password for every user it finds</li>
+<li>Python based for easy access and speed</li>
+</ul>
+<h2>Overview</h2>
+<p>Remmina is a well used Linux based RDP connection software, as many people who use Linux use Remmina for connecting to multiple machines they often save the password for each connection, Remmina stores this password in an encrypted manner using a private key hidden in a seperate preference file for each user on the Linux machine. RPDscan actively finds these preference files and extracts the private key then uses this key to decrypt all of the saved passwords and then displays to the user the username the password and computer details.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Python</li>
+<li>Linux target</li>
+</ul>
+<h2>Installation</h2>
+<p>Download the script onto your target machine and run, there is no installation required for this tool.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+</pre>
+<p>RPDscan is initially set to search only the /home directory as 99% of all files will be in that location, however the python file can easily be edited to include the entire / tree.</p>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+found this pref file /home/fc/.remmina/remmina.pref========
+Found a conf file: /home/fc/.remmina/1366367609312.remmina
+Saved password:
+^**D!sEx@mpl3ssh_username=ssh_server=
+
+username=fc
+
+domain=
+
+server=172.16.0.266
+
+========
+Found a conf file: /home/fc/.remmina/1366641829516.remmina
+
+server=10.256.0.1
+
+Saved password:
+@n0ther3Xamp!e
+
+ssh_username=
+
+ssh_server=
+
+username=ExampleDomain\\Administrator
+
+domain=
+</pre>
+<p>Here you can see that RPDscan has found two saved password files and extracted all the data you need to connect.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" target="_blank" title="Download RPDscan Py"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RPDscan Py" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" title="Download RPDscan.py.tgz" target="_blank" id="wpfb-file-link-1">RPDscan.py.tgz</a>
+    
+    <br />
+    April 16, 2014<br />
+    
+  </div>
+  <div class="info">
+    1.1 KiB<br />
+    MD5 hash: 935738ab08748ff5ef09c2346ffc4755 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 16, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rpdscan/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>AMES (Another Metasploit Exploit Suggester)</title>
+		<link>https://labs.portcullis.co.uk/tools/ames-another-metasploit-exploit-suggester/</link>
+		<comments>https://labs.portcullis.co.uk/tools/ames-another-metasploit-exploit-suggester/#comments</comments>
+		<pubDate>Thu, 03 Apr 2014 05:30:54 +0000</pubDate>
+		<dc:creator><![CDATA[FC]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[metasploit]]></category>
+		<category><![CDATA[nessus]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3795</guid>
+		<description><![CDATA[<p>AMES is a tool to parse the new Nessus output files and autogenerate an easy to copy and paste command line exploit using Metasploit CLI. Key features Handles the new .nessus xml based file output Keeps up to date with new Metasploit exploits as you update MSF database Python based for easy access and speed Overview The AMES tool passes the new style .nessus xml file output [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/ames-another-metasploit-exploit-suggester/">AMES (Another Metasploit Exploit Suggester)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>AMES is a tool to parse the new Nessus output files and autogenerate an easy to copy and paste command line exploit using Metasploit CLI.<span id="more-3795"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Handles the new .nessus xml based file output</li>
+<li>Keeps up to date with new Metasploit exploits as you update MSF database</li>
+<li>Python based for easy access and speed</li>
+</ul>
+<h2>Overview</h2>
+<p>The AMES tool passes the new style .nessus xml file output from Nessus scanning software, it will then locate any exploit based on the CVE reported. The Tool will then build a selection of command lines that the user can easily copy and paste to use. Since metasploit removed the autopwn feature this is as point and click exploit that can be used.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Python</li>
+<li>Metasploit Framework</li>
+</ul>
+<p>In addition to these you will need to edit the ames.py file and update the location of your Metasploit Trunk and save it.</p>
+<h3>Optional requirements</h3>
+<p>Nessus is only required if you wish to perform your own scans and generate reports, it is not a requirement to run the tool against reports generated elsewhere.</p>
+<ul>
+<li>Nessus</li>
+</ul>
+<h2>Installation</h2>
+<p>Download the script and run, there is no installation required for this tool.</p>
+<h2>Usage</h2>
+<p>On your first run you will see the following error:</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3796"><div class="lb-album"><a href="#image-3796"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/first_run_error-300x32.jpg" alt="First Run Error" ><span></span></a></div>              
+<a href="#imageclose-3796" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3796">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/first_run_error.jpg" alt="image-3796">
+                   </div></a><p class="wp-caption-text">First Run Error</p></div>
+<p>This is just a reminder that you need to edit the ames.py file and replace the &#8220;Trunk = &#8221; line with the location for your Metasploit trunk location.</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3797"><div class="lb-album"><a href="#image-3797"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trunk_update-300x24.jpg" alt="Trunk Update" ><span></span></a></div>              
+<a href="#imageclose-3797" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3797">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trunk_update.jpg" alt="image-3797">
+                   </div></a><p class="wp-caption-text">Trunk Update</p></div>
+<p>Once your Trunk location has been set in ames.py you can then use the tool as below.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python ames.py [nessus report file]
+</pre>
+<p>Copy and paste the relevant exploit you wish to attempt.</p>
+<h2>Examples</h2>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3798"><div class="lb-album"><a href="#image-3798"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/example-300x113.jpg" alt="Example" ><span></span></a></div>              
+<a href="#imageclose-3798" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3798">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/example.jpg" alt="image-3798">
+                   </div></a><p class="wp-caption-text">Example</p></div>
+<p>Here you can see that AMES has discovered some expoilts and sorted them, just copy and paste the msfcli command line</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3799"><div class="lb-album"><a href="#image-3799"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/system_example-300x223.jpg" alt="System Example" ><span></span></a></div>              
+<a href="#imageclose-3799" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3799">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/system_example.jpg" alt="image-3799">
+                   </div></a><p class="wp-caption-text">System Example</p></div>
+<p>Here we see one of the command lines copy and pasted and successfully exploit a system discovered by Nessus.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ames.py.tgz" target="_blank" title="Download Ames Py"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ames Py" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ames.py.tgz" title="Download ames.py.tgz" target="_blank" id="wpfb-file-link-2">ames.py.tgz</a>
+    
+    <br />
+    February 21, 2014<br />
+    
+  </div>
+  <div class="info">
+    2.1 KiB<br />
+    MD5 hash: f2efb955fa5b083bc9065a486f049488 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>February 21, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/ames-another-metasploit-exploit-suggester/">AMES (Another Metasploit Exploit Suggester)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/ames-another-metasploit-exploit-suggester/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>WordPress Build Review</title>
+		<link>https://labs.portcullis.co.uk/tools/wordpress-build-review/</link>
+		<comments>https://labs.portcullis.co.uk/tools/wordpress-build-review/#comments</comments>
+		<pubDate>Fri, 14 Feb 2014 12:50:30 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3362</guid>
+		<description><![CDATA[<p>WordPress Build Review is a tool to check the basic security settings in a WordPress installation. Key features Checks the WordPress version Checks the WordPress plugins versions Checks WordPress minor updates are enabled Checks the WordPress configuration Checks the theme configuration Identifies the presence of backup files in web folder Checks the Anti-Virus Checks the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/wordpress-build-review/">WordPress Build Review</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>WordPress Build Review is a tool to check the basic security settings in a WordPress installation.<span id="more-3362"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Checks the WordPress version</li>
+<li>Checks the WordPress plugins versions</li>
+<li>Checks WordPress minor updates are enabled</li>
+<li>Checks the WordPress configuration</li>
+<li>Checks the theme configuration</li>
+<li>Identifies the presence of backup files in web folder</li>
+<li>Checks the Anti-Virus</li>
+<li>Checks the file and directory permissions</li>
+<li>Checks HTTPS in admin panel is enabled</li>
+</ul>
+<h2>Overview</h2>
+<p>WordPress-build-review checks the basic security configuration that a WordPress installation should have.</p>
+<p>The idea of this tool is to perform a build review on WordPress installations. This tool should works with the default installed software in a Linux distribution.</p>
+<p>This tool was developed and tested in Linux. However, it should also work on other POSIX alike platforms as long as the dependencies (GNU utils) are available. Please let us know if you try running this tool in other platforms, your feedback is appreciated.</p>
+<h2>Installation</h2>
+<p>Download the tool from the link below and uncompress it.</p>
+<p>Make sure you have the tools `curl&#8217; and `bc&#8217; installed in your system.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./wordpress-build-review.sh /full/path/to/wordpress/root/folder/
+...
+Starting wordpress-build-review v1.0 at Fri Jan 31 16:19:53 GMT 2014
+
+by David Muñoz ( dmg@portcullis-security.com )
+
+This tool checks the basic security configuration that a wordpress installation
+should have.
+
+Use of this script is only permitted on systems which you have been granted
+legal permission to perform a security assessment of. Apart from this
+condition the GPL v2 applies.
+
+Search the output below for the word '[VV]' for the security issues found.
+If you don't see it then this script didn't find any problems.
+Search the output below for the word '[WW]' for problems occurred during script
+execution. These problems must be checked manually.
+Finally search the output below for the word '[II]' for correct issues.
+...
+</pre>
+<h2>Examples</h2>
+<p>Here we can see some example issues that the tool is able to identify:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./wordpress-build-review.sh /var/www/wordpress | grep &quot;[VV]&quot;
+...
+[VV][001]File wp-login.php found. It is recommended to change its name.
+[VV][002]File readme.html found. It is recommended to delete it.
+[VV][005]The wordpress version installed is out-to-date. Installed version is: 3.8. Last version is: 3.8.1.
+[VV][006]Plugin 6scan-protection is out-of-date. Please, update it. Installed version is: 3.0.5. Last version is: 3.0.6.
+[VV][009]HTTPS on the LOGIN and ADMIN sections are not enabled in wp-config but SSL may still being enforced by the web server config.
+[VV][015]File /var/www/wordpress/test.bak found, consider to remove it.
+[VV][015]File /var/www/wordpress/wp-config.php~ found, consider to remove it.
+[VV]Default or backup files found, please remove them.
+[VV][012]The file /var/www/wordpress/wp-config.php~ has 664 permissions, consider to set it to 644 or 640
+[VV]Incorrect file permissions, please correct them.
+[VV][013]The folder /var/www/wordpress/wp-content/plugins/test has 775 permissions, consider to set it to 755 or 750
+[VV]Incorrect folder permissions, please correct them.
+[VV][010]Wordpress table prefix is set by default &lt;wp_&gt;. Please, consider to change it.
+[VV][008]Wordpress database user is root, please change it.
+...
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/wordpress-build-review_v1.0.tar.gz" target="_blank" title="Download Wordpress-build-review V1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Wordpress-build-review V1.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/wordpress-build-review_v1.0.tar.gz" title="Download wordpress-build-review_v1.0.tar.gz" target="_blank" id="wpfb-file-link-3">wordpress-build-review_v1.0.tar.gz</a>
+    
+    <br />
+    February 17, 2014<br />
+    
+  </div>
+  <div class="info">
+    5.2 KiB<br />
+    MD5 hash: 4a6072f4c13478a8707275fd3c17c9f7 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>February 17, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/wordpress-build-review/">WordPress Build Review</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/wordpress-build-review/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>rdp-sec-check</title>
+		<link>https://labs.portcullis.co.uk/tools/rdp-sec-check/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rdp-sec-check/#comments</comments>
+		<pubDate>Wed, 12 Feb 2014 11:14:44 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[RDP]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=193</guid>
+		<description><![CDATA[<p>rdp-sec-check is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). Key features Support for targets file Support for saving the tool output to a specified logfile Control over the connection and responses timeouts Control over the number of retries when timeouts occurs Overview rdp-sec-check is a Perl script to [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>rdp-sec-check is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services).<span id="more-193"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Support for targets file</li>
+<li>Support for saving the tool output to a specified logfile</li>
+<li>Control over the connection and responses timeouts</li>
+<li>Control over the number of retries when timeouts occurs</li>
+</ul>
+<h2>Overview</h2>
+<p>rdp-sec-check is a Perl script to enumerate the different security settings of an remote destktop service (AKA Terminal Services).</p>
+<p>It does not require authentication, only network connectivity to TCP port 3389.</p>
+<p>It can determine many (though not quite all) of the security settings from the RDP-Tcp Properties | General tab:</p>
+<ul>
+<li>Check which security layers are supported by the service: Standard RDP Security, TLSv1.0, CredSSP</li>
+<li>For Standard RDP Security it detects the level of encryption supported: 40-bit, 56-bit, 128-bit, FIPS</li>
+</ul>
+<p>The following potential security issues are flagged if present:</p>
+<ul>
+<li>The service supports Standard RDP Security &#8211; rhis is known to be vulnerable to an active &#8220;Man-In-The-Middle&#8221; attack</li>
+<li>The service supports weak encryption (40-bit or 56-bit)</li>
+<li>The service does not mandate Network Level Authentication (NLA) - NLA can help to prevent certain types of Denial of Service attack</li>
+<li>The service supports FIPS encryption but doesn&#8217;t mandate it &#8211; may only be interesting for jurisdictions where FIPS is required</li>
+</ul>
+<h2>Requirements</h2>
+<p>rdp-sec-check is a simple Perl script that requires one module from CPAN. Run &#8216;cpan&#8217; as root then install the Encoding::BER module:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# cpan
+cpan[1]&gt; install Encoding::BER
+</pre>
+<h2>Example output 1: An old Windows 2000 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.94
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:34:38 2012
+
+Target:    10.0.0.94
+IP:        10.0.0.94
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Negotiation ignored - old Windows 2000/XP/2003 system??
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Not supported
+
+[+] Summary of protocol support
+
+[-] 10.0.0.94:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.94:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.94:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.94:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_128BIT : FALSE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_FIPS   : FALSE
+
+[+] Summary of security issues
+
+[-] 10.0.0.94:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.94:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.94:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:34:39 2012
+</pre>
+<h2>Example output 2: A Windows 2003 SP0 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.93
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:35:34 2012
+
+Target:    10.0.0.93
+IP:        10.0.0.93
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Negotiation ignored - old Windows 2000/XP/2003 system??
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+
+[+] Summary of protocol support
+
+[-] 10.0.0.93:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.93:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.93:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.93:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_128BIT : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_FIPS   : TRUE
+
+[+] Summary of security issues
+
+[-] 10.0.0.93:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.93:3389 has issue FIPS_SUPPORTED_BUT_NOT_MANDATED
+[-] 10.0.0.93:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.93:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+</pre>
+<h2>Example output 3: A typical Windows 2003 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.111
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:36:56 2012
+
+Target:    10.0.0.111
+IP:        10.0.0.111
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Supported
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Not supported - SSL_NOT_ALLOWED_BY_SERVER
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Not supported - SSL_NOT_ALLOWED_BY_SERVER
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+
+[+] Summary of protocol support
+
+[-] 10.0.0.111:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.111:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.111:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.111:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_128BIT : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_FIPS   : TRUE
+
+[+] Summary of security issues
+
+[-] 10.0.0.111:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.111:3389 has issue FIPS_SUPPORTED_BUT_NOT_MANDATED
+[-] 10.0.0.111:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.111:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:36:56 2012
+</pre>
+<h2>Example output 4: A well configured Windows 2008 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.21
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:32:30 2012
+
+Target:    10.0.0.21
+IP:        10.0.0.21
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Not supported - HYBRID_REQUIRED_BY_SERVER
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Not supported - HYBRID_REQUIRED_BY_SERVER
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Supported
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Not supported
+
+[+] Summary of protocol support
+
+[-] 10.0.0.21:3389 supports PROTOCOL_RDP   : FALSE
+[-] 10.0.0.21:3389 supports PROTOCOL_HYBRID: TRUE
+[-] 10.0.0.21:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_40BIT  : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_128BIT : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_56BIT  : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_FIPS   : FALSE
+
+[+] Summary of security issues
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:32:31 2012
+</pre>
+<p>The latest version of the code will be maintained on <a href="https://github.com/portcullislabs/rdp-sec-check">github</a>. Older versions are available below.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rdp-sec-check/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>iker</title>
+		<link>https://labs.portcullis.co.uk/tools/iker/</link>
+		<comments>https://labs.portcullis.co.uk/tools/iker/#comments</comments>
+		<pubDate>Mon, 27 Jan 2014 12:12:52 +0000</pubDate>
+		<dc:creator><![CDATA[JGO]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[IKE]]></category>
+		<category><![CDATA[scanner]]></category>
+		<category><![CDATA[VPN]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3177</guid>
+		<description><![CDATA[<p>iker is a Python tool to analyse the security of the key exchange phase in IPsec based VPNs. Key features Discover VPN services running Fingerprint based on vendor IDs (VID) Guess implementation basing on responses analysis (backoff) Enumerate supported transforms in Main Mode Check for Aggressive Mode Enumerate supported transforms in this Aggressive Mode Enumerate [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/iker/">iker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>iker is a Python tool to analyse the security of the key exchange phase in IPsec based VPNs.<span id="more-3177"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Discover VPN services running</li>
+<li>Fingerprint based on vendor IDs (VID)</li>
+<li>Guess implementation basing on responses analysis (backoff)</li>
+<li>Enumerate supported transforms in Main Mode</li>
+<li>Check for Aggressive Mode</li>
+<li>Enumerate supported transforms in this Aggressive Mode</li>
+<li>Enumerate valid client/group IDs in Aggressive Mode</li>
+<li>Allow for rate limiting</li>
+<li>Analyse results to list actual issues</li>
+<li>Export results in 2 different formats</li>
+<li>Load IPs from command line or text files</li>
+<li>Determine support for IKEv2</li>
+</ul>
+<h2>Overview</h2>
+<p>iker scans and analyses the Internet Key Exchange (IKE) protocol, identifying common misconfigurations in VPN concentrators. It is based on ike-scan.</p>
+<p>It discovers and try to fingerprint the VPNs in a first step. Later, it tries to enumerates valid transforms in Main Mode and in Aggressive Mode if it is supported. Finally, it will try to enumerate group IDs if a dictionary was provided.</p>
+<p>iker implements two ways of enumerating valid group IDs:</p>
+<ul>
+<li><a title="Cisco IPSec VPN Implementation Group Name Enumeration Vulnerability" href="http://www.cisco.com/en/US/products/csr/cisco-sr-20101124-vpn-grpname.html" target="_blank">Cisco IPSec VPN Implementation Group Name Enumeration Vulnerability</a></li>
+<li>Responses analysis</li>
+</ul>
+<p>Once all the tests have been launched, iker analyses the results and generates a report with the issues found.</p>
+<h2>Requirements</h2>
+<ul>
+<li><a title="ike-scan" href="http://www.nta-monitor.com/tools-resources/security-tools/ike-scan" target="_blank">ike-scan</a></li>
+<li><a title="Python" href="http://www.python.org/" target="_blank">Python</a></li>
+</ul>
+<p>In addition, the following Python packages are used (they usually are included with normal Python installations):</p>
+<ul>
+<li>subprocess</li>
+<li>argparse</li>
+</ul>
+<h2>Installation</h2>
+<p>Download iker from the link below and uncompress it.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py -h
+
+iker v. 1.0
+
+The ike-scan based script which checks for security flaws in IPsec-based VPNs.
+
+                               by Julio Gomez ( jgo@portcullis-security.com )
+
+usage: iker.py [-h] [-v] [-d DELAY] [-i INPUT] [-o OUTPUT] [-x XML]
+               [--encalgs ENCALGS] [--hashalgs HASHALGS]
+               [--authmethods AUTHMETHODS] [--dhgroups DHGROUPS] [--fullalgs]
+               [--ikepath IKEPATH] [-c CLIENTIDS]
+               [target]
+
+positional arguments:
+  target                The IP address or the network (CIDR notation) to scan.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Be verbose.
+  -d DELAY, --delay DELAY
+                        Delay between requests (in milliseconds). Default: 0
+                        (No delay).
+  -i INPUT, --input INPUT
+                        An input file with an IP address/network per line.
+  -o OUTPUT, --output OUTPUT
+                        An output file to store the results.
+  -x XML, --xml XML     An output file to store the results in XML format.
+                        Default: output.xml
+  --encalgs ENCALGS     The encryption algorithms to check. Default: DES,
+                        3DES, AES/128, AES/192 and AES/256. Example:
+                        --encalgs=&quot;1 5 7/128 7/192 7/256&quot;
+  --hashalgs HASHALGS   The hash algorithms to check. Default: MD5 and SHA1.
+                        Example: --hashalgs=&quot;1 2&quot;
+  --authmethods AUTHMETHODS
+                        The authorization methods to check. Default: Pre-
+                        Shared Key, RSA Signatures, Hybrid Mode and XAUTH.
+                        Example: --authmethods=&quot;1 3 64221 65001&quot;
+  --dhgroups DHGROUPS   The Diffie-Hellman groups to check. Default: MODP 768,
+                        MODP 1024 and MODP 1536. Example: --dhgroups=&quot;1 2 5&quot;
+  --fullalgs            Equivalent to: --encalgs=&quot;1 2 3 4 5 6 7/128 7/192
+                        7/256 8&quot; --hashalgs=&quot;1 2 3 4 5 6&quot; --authmethods=&quot;1 2 3
+                        4 5 6 7 8 64221 64222 64223 64224 65001 65002 65003
+                        65004 65005 65006 65007 65008 65009 65010&quot;
+                        --dhgroups=&quot;1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+                        18&quot;
+  --ikepath IKEPATH     The FULL ike-scan path if it is not in the PATH
+                        variable and/or the name changed.
+  -c CLIENTIDS, --clientids CLIENTIDS
+                        A file (dictionary) with a client ID per line to
+                        enumerate valid client IDs in Aggressive Mode.
+                        Default: unset - This test is not launched by default.
+</pre>
+<h2>Examples</h2>
+<p>Loading the hosts/ranges to scan from a text file and saving the results into a text and an XML file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py -i ips.txt -o output.txt -x output.xml -v
+
+iker v. 1.0
+
+The ike-scan based script which checks for security flaws in IPsec-based VPNs.
+
+                               by Julio Gomez ( jgo@portcullis-security.com )
+
+Starting iker (https://labs.portcullis.co.uk/tools/) at Mon, 20 Jan 2014 14:34:15 +0000
+[*] Discovering IKE services, please wait...
+10.0.0.2 Notify message 14 (NO-PROPOSAL-CHOSEN)
+ HDR=(CKY-R=0000000000000000, msgid=f904f872)
+
+[*] Trying to fingerprint the devices. This proccess is going to take a while (1-5 minutes per IP). Be patient...
+[*] The device 10.0.0.2 could not been fingerprinted because no transform is known.
+
+[*] Looking for accepted transforms at 10.0.0.2
+[*] Transform found: Enc=3DES Hash=MD5 Auth=RSA_Sig Group=2:modp1024 LifeType=Seconds LifeDuration(4)=0x00007080
+[*] Vendor ID identified for IP 10.0.0.2 with transform Enc=3DES Hash=MD5 Auth=RSA_Sig Group=2:modp1024 LifeType=Seconds LifeDuration(4)=0x00007080: Firewall-1 NGX
+
+[*] Trying to fingerprint the devices (again). This proccess is going to take a while (1-5 minutes per IP). Be patient...
+[*] Implementation guessed for IP 10.0.0.2: Firewall-1 4.1/NG/NGX
+...
+</pre>
+<p>Specifying the encryption algorithms to check for supported transforms:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py --encalgs &quot;1 2 3 4 5 6 7/128 7/192 7/256 8&quot; 10.0.2.2
+[...]
+</pre>
+<p>Specifying that all the encryption algorithms, the hashing algorithms, the authentication methods and the DH groups must be checked:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py --fullalgs 10.0.2.2
+[...]
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-4').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/iker_v1.1.tar" target="_blank" title="Download Iker"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Iker" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/iker_v1.1.tar" title="Download iker_v1.1.tar" target="_blank" id="wpfb-file-link-4">iker_v1.1.tar</a>
+    
+    <br />
+    July 17, 2014<br />
+    Version: 1.1<br />
+  </div>
+  <div class="info">
+    40.0 KiB<br />
+    MD5 hash: c255b6beffcf1e0a2026a9fd3faede8a <br />
+    <a href="#" onclick="return wpfilebase_filedetails(4);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails4" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>July 17, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/iker/">iker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/iker/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>cspCalculator</title>
+		<link>https://labs.portcullis.co.uk/tools/cspcalculator/</link>
+		<comments>https://labs.portcullis.co.uk/tools/cspcalculator/#comments</comments>
+		<pubDate>Wed, 08 Jan 2014 15:35:09 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[HTML5]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1110</guid>
+		<description><![CDATA[<p>cspCalculator is a PoC implementation of a dynamic Content Security Policy creator. Key features Allows on the fly manipulation of Content Security Policy Enables UX developers to get visual feedback on how a CSP affects the application functionality Minimises the changes required to an existing application to allow this to happen Overview Content Security Policies [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/cspcalculator/">cspCalculator</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>cspCalculator is a PoC implementation of a dynamic <a title="Content Security Policy" href="http://en.wikipedia.org/wiki/Content_Security_Policy">Content Security Policy</a> creator.<span id="more-1110"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Allows on the fly manipulation of Content Security Policy</li>
+<li>Enables UX developers to get visual feedback on how a CSP affects the application functionality</li>
+<li>Minimises the changes required to an existing application to allow this to happen</li>
+</ul>
+<h2>Overview</h2>
+<p>Content Security Policies are a new feature of modern browsers that support HTML 5 designed to augment the traditional Same Origin Policy of browsers and help to limit the potential impact of Cross-site Scripting and other content manipulation vulnerabilities that may exist within a given web site and which could be exploited by an attacker. It allows allows web site owners to declare approved sources of content that browsers should be allowed to load on that page out-of-band through the use of additional HTTP headers.</p>
+<p>The aim here is to minimise the leg work for UX developers in creating web applications that both function and utilise secure development practices. We do this by reducing the server side code changes down to the injection of some client side JavaScript along with a few lines of server side stub code (in this case, in PHP). Once this has been integrated into application in a staging environment, the UX developer can tweak the CSP from their own browser and see how it affects the application functionality :).</p>
+<h2>Installation</h2>
+<ul>
+<li>Copy styles and js from src/html to your web root</li>
+<li>Copy index.php from src/html/examples/php to your web root or tweak your existing web pages in a similar fashion</li>
+</ul>
+<h2>Usage</h2>
+<p>The client side code (HTML) should include the following changes:</p>
+<pre class="brush: jscript; title: ; notranslate">
+&lt;head&gt;
+...
+	&lt;link rel=&quot;stylesheet&quot; href=&quot;styles/cspCalculator.css&quot; type=&quot;text/css&quot;/&gt;
+...
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;script src=&quot;js/cspCalculator.js&quot;&gt;&lt;/script&gt;
+	...
+&lt;/body&gt;
+</pre>
+<p>This will result in the CSS and JavaScript used to construct the cspCalculator UI being injected into resultant pages.</p>
+<p>Additionally, as a minimum case, the server side code should implement the following logic:</p>
+<pre class="brush: php; title: ; notranslate">
+$directiveslist = array(&quot;default-src&quot;, &quot;connect-src&quot;, &quot;font-src&quot;, &quot;frame-src&quot;, &quot;img-src&quot;, &quot;media-src&quot;, &quot;object-src&quot;, &quot;script-src&quot;, &quot;style-src&quot;, &quot;sandbox&quot;);
+$headerslist =  array(&quot;Content-Security-Policy&quot;, &quot;X-Content-Security-Policy&quot;, &quot;X-WebKit-CSP&quot;);
+foreach ($directiveslist as $directivename) {
+	header(&quot;Set-Cookie: &quot; . $directivename . &quot;=&quot; . $_COOKIE[$directivename], false);
+}
+foreach ($headerslist as $headername) {
+	$headervalue = &quot;&quot;;
+	foreach ($directiveslist as $directivename) {
+		$headervalue .= &quot;; &quot; . $directivename . &quot; &quot; . $_COOKIE[$directivename];
+	}
+	header($headername . &quot;: &quot; . $headervalue);
+}
+</pre>
+<p>We use cookies as a back channel to allow changes to the Content Security Policy by the UX developer from the UI to easily be signaled back to the web application so that the appropriate headers can be set. Cookies work nicely for this purpose as they do not interfere with any GET or POST parameters that the application may need to send for normal operation.</p>
+<p>Once operational, your web application will now include a drop down cspCalculator box on each of its pages. Within the drop down you will see various text boxes for each of the CSP directives that can be defined. The &#8220;Calculate&#8221; button next to each will attempt to determine the appropriate policy by examining the page&#8217;s DOM (something that isn&#8217;t 100% effective yet). The &#8220;Apply&#8221; button will force a round-trip to the server to force it to send the page with the new CSP headers applied. It is recommended that you use this tool in combination with something such as Chrome&#8217;s Inspect Element feature to identify any DOM elements that are blocked and which cspCalculator is unable to identify automatically.</p>
+<p><em>cspCalculator should not be deployed in a production environment, since the setting of cookies and/or a CSP by use of header() calls may itself introduce other classes of vulnerability. Rather, once the appropriate CSP has been identified it should be set statically through the use of header() (as in PHP) or other similar calls.</em></p>
+<h2>Examples</h2>
+<p>Since cspCalculator isn&#8217;t particularly easy to demonstrate in a static context, a demo version has been deployed for your amusement. This can be found on at <a title="www.cspcalculator.org" href="http://www.cspcalculator.org/">www.cspcalculator.org</a>. It has been presented on a separate domain to minimise the risks outlined above in the Usage section of this page.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-5').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/cspCalculator-0.2.tar.gz" target="_blank" title="Download CspCalculator-0.2 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="CspCalculator-0.2 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/cspCalculator-0.2.tar.gz" title="Download cspCalculator-0.2.tar.gz" target="_blank" id="wpfb-file-link-5">cspCalculator-0.2.tar.gz</a>
+    
+    <br />
+    November 29, 2013<br />
+    
+  </div>
+  <div class="info">
+    14.2 KiB<br />
+    MD5 hash: 496b55e3ffa575178428d1d85e42e113 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(5);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails5" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 29, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/cspcalculator/">cspCalculator</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/cspcalculator/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Crash</title>
+		<link>https://labs.portcullis.co.uk/tools/crash/</link>
+		<comments>https://labs.portcullis.co.uk/tools/crash/#comments</comments>
+		<pubDate>Tue, 17 Dec 2013 16:08:23 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[fuzzing]]></category>
+		<category><![CDATA[OSX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2672</guid>
+		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer.<span id="more-2672"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Catch OS X application&#8217;s crashes</li>
+<li>Display CPU registers</li>
+<li>Display disassembled code at the instruction that produced the crash</li>
+<li>Display a part of the stack</li>
+<li>Works transparently wether the application is 32 or 64 bits</li>
+</ul>
+<h2>Overview</h2>
+<p>The crash tool is a similar tool than the crash.exe tool from <a title="FileFuzz" href="http://packetstormsecurity.com/files/39626/FileFuzz.zip.html">FileFuzz</a> but for OS X. Used with an application fuzzer, it monitors the target application for exceptions.</p>
+<p>It is written in C and it works on both x86 and x86_64 architectures. It uses the excellent <a title="BeaEngine" href="http://www.beaengine.org/">BeaEngine</a> to disassemble the code.</p>
+<h2>Installation</h2>
+<p>In order to install the tool, you&#8217;ll need to generate a developer certificate.</p>
+<p>It can be done following those simple steps:</p>
+<ol>
+<li>Open Keychain Access.app</li>
+<li>Open menu Keychain Access/Certificate Assistant/Create a Certificate&#8230;</li>
+<li>Choose a name (codesigning-cert in the example).</li>
+<li>Set Identity Type to Self Signed Root.</li>
+<li>Set Certificate Type to Code Signing.</li>
+<li>Select the Let me override defaults.</li>
+<li>Click several times on Continue until you get to the Specify a Location For The Certificate screen, then set Keychain to System.</li>
+<li>Finally, using the contextual menu for the certificate, select Get Info, open the Trust item, and set Code Signing to Always Trust.</li>
+<li>You must quit Keychain Access application in order to use the certificate.</li>
+</ol>
+<p>Then run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ make
+gcc -Iinclude/ -Wall -pedantic -framework Security -sectcreate __TEXT __info_plist ./Info.plist BeaEngine.o crash.c -o crash
+$ sudo make install
+Password:
+cp crash /usr/local/bin
+chgrp procmod /usr/local/bin/crash
+chmod 2755 /usr/local/bin/crash
+codesign -s codesigning-cert /usr/local/bin/crash
+$
+</pre>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./crash
+Usage: crash [options] target arguments
+  -t seconds        timeout (default: 5).
+
+Using BeaEngine version 4.1-175.
+</pre>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# Define the amount of time the target program is allowed to live.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64
+[+] PID: 31273. Executing: /usr/local/bin/dummy64
+PID: 31273 (0x7a29)
+[+] Timeout exceeded, exiting.
+$
+
+# Catching a crash from a 64 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64 1 0
+[+] PID: 31282. Executing: /usr/local/bin/dummy64 1 0
+[+] Exception: unknown exception code 0xd.
+----------------------------------------------------------------------------------------------
+[ RAX: 4141414141414141  RBX: 0000000000000000  RCX: 4242424242424242  RDX: ffffffffffffffff ]
+[ RSI: 0000000000000000  RDI: 000000000000003c  RBP: 00007fff52359ef0  RSP: 00007fff52359eb0 ]
+[ R08: 0000000000000000  R09: 0000000000000000  R10: 0000000000000001  R11: 00007fff76360250 ]
+[ R12: 0000000000000000  R13: 0000000000000000  R14: 0000000000000000  R15: 0000000000000000 ]
+[     CS: 002b      FS: 0000      GS: 0000      RIP: 000000010d8a6ed4    o d I t s Z a p C   ]
+
+000000010d8a6ed4: mov        qword [rax], rcx
+000000010d8a6ed7: mov         [rbp-0x18], 0x00000000
+000000010d8a6ede: mov        eax,  [rbp-0x18]
+000000010d8a6ee1: mov         [rbp-0x14], eax
+000000010d8a6ee4: mov        eax,  [rbp-0x14]
+000000010d8a6ee7: add        rsp, 0x40
+
+Stack:
+00007fff52359eb0: 00007fff52359f38  8.5R....
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 4141414141414141  AAAAAAAA
+00007fff52359eb0: 0000000000000001  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 00007fff52359f10  ..5R....
+00007fff52359eb0: 000000036d4a705e  ^pJm....
+----------------------------------------------------------------------------------------------
+
+# Catching a crash from a 32 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy32 1 0
+[+] PID: 31285. Executing: /usr/local/bin/dummy32 1 0
+[+] Exception: KERN_INVALID_ADDRESS.
+--------------------------------------------------------------
+[ EAX: 00000000  EBX: bff6df54  ECX: bff6de4c  EDX: 99ce68e6 ]
+[ ESI: 00000000  EDI: 00000000  EBP: bff6df08  ESP: bff6ded0 ]
+[ ES: 0023  CS: 001b  SS: 0023  DS: 0023  FS: 0000  GS: 000f ]
+[ EIP: 00093f23                            o d I t S Z a P C ]
+
+00093f23: mov         [0x41414141], 0x42424242
+00093f2d: mov         [ebp-0x10], 0x00000000
+00093f34: mov        eax,  [ebp-0x10]
+00093f37: mov         [ebp-0x0C], eax
+00093f3a: mov        eax,  [ebp-0x0C]
+00093f3d: add        esp, 0x38
+
+Stack:
+bff6ded0: 00000000  ....
+bff6ded0: 0000000a  ....
+bff6ded0: 8fe925ec  .%..
+bff6ded0: 00093e5b  [&gt;..
+bff6ded0: 00000001  ....
+bff6ded0: bff6df50  P...
+bff6ded0: bff6df40  @...
+bff6ded0: bff6df38  8...
+--------------------------------------------------------------
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-6').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-6">crash-1.0.tar.bz2</a>
+    
+    <br />
+    December 17, 2013<br />
+    
+  </div>
+  <div class="info">
+    253.3 KiB<br />
+    MD5 hash: 53f1eb77dc8d1eeee38bc5da6cca25be <br />
+    <a href="#" onclick="return wpfilebase_filedetails(6);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails6" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 17, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/crash/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>smaSHeM</title>
+		<link>https://labs.portcullis.co.uk/tools/smashem/</link>
+		<comments>https://labs.portcullis.co.uk/tools/smashem/#comments</comments>
+		<pubDate>Tue, 12 Nov 2013 22:24:29 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[44CON]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[imisslsd]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2362</guid>
+		<description><![CDATA[<p>smaSHeM is a System V shared memory segment manipulator. Key features Allows dumping of segments in a variety of formats including JPEGs Allows patching of segments Overview System V shared memory segments created with shmget() are assigned an owner, a group and a set of permissions intended to limit access to the segment to designated [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/smashem/">smaSHeM</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>smaSHeM is a System V shared memory segment manipulator.<span id="more-2362"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Allows dumping of segments in a variety of formats including JPEGs</li>
+<li>Allows patching of segments</li>
+</ul>
+<h2>Overview</h2>
+<p>System V shared memory segments created with shmget() are assigned an owner, a group and a set of permissions intended to limit access to the segment to designated processes only. The owner of a shared memory segment can change the ownership and permissions on a segment after its creation using shmctl(). Any subsequent processes that wish to attach to the segment can only do so if they have the appropriate permissions. Once attached, the process can read or write to the segment, as per the permissions that were set when the segment was created.</p>
+<p>smaSHeM takes advantage of applications that set weak permissions on such segments, allowing an attacker to dump or patch their contents. As discussed in my presentation at 44CON 2013 entitled &#8220;<a title="I Miss LSD" href="/presentations/i-miss-lsd/">I miss LSD</a>&#8220;, in the case of many X11 applications it is possible to extract pixmaps of previously rendered GUI artifacts. When compiled with QtCore linking enabled, smaSHeM aids in that process by brute forcing potentially valid dimensions for the raw pixmap dump.</p>
+<h2>Installation</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./configure [--with-qtcore] &amp;&amp; make &amp;&amp; make install
+</pre>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ smaSHeM -v | -i &lt;shmemid&gt; -l &lt;shmemlength&gt; &lt;-@ &lt;patchoffset&gt; -s &lt;patchstring&gt; | -d [-p | -c | -P | -j -x &lt;xstart&gt; -X &lt;endx&gt; -y &lt;starty&gt; -Y &lt;yend&gt;]&gt;
+</pre>
+<h2>Examples</h2>
+<p>Dumping the contents of a System V shared memory segment prettily:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ smaSHeM -i 94273546 -l 459200 -d -P
+0xf32fa000      00 00 00 00 1a 1a 1a 1a ........
+0xf32fa008      7d 7d 7d 7d a7 a7 a7 a7 ........
+0xf32fa010      af af af af af af af af ........
+0xf32fa018      af af af af af af af af ........
+0xf32fa020      af af af af af af af af ........
+0xf32fa028      af af af af af af af af ........
+0xf32fa030      af af af af af af af af ........
+0xf32fa038      af af af af af af af af ........
+0xf32fa040      af af af af af af af af ........
+0xf32fa048      af af af af af af af af ........
+0xf32fa050      af af af af af af af af ........
+0xf32fa058      af af af af af af af af ........
+0xf32fa060      af af af af af af af af ........
+0xf32fa068      af af af af af af af af ........
+0xf32fa070      af af af af af af af af ........
+0xf32fa078      af af af af af af af af ........
+...
+</pre>
+<p>Patching a segment:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ smaSHeM -i 41779331 -l 2640 -@ 0 -s `perl -e 'print &quot;A&quot;x1024'`
+</pre>
+<p>Dumping the contents of a segment as a set of JPEGs with dimensions 0-300&#215;30 (required QtCore):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ smaSHeM -i 41779331 -l 2640 -d -J -x 0 -X 300 -y 30 -Y 30
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-7').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/smaSHeM-0.4.tar.gz" target="_blank" title="Download SmaSHeM-0.4 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="SmaSHeM-0.4 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/smaSHeM-0.4.tar.gz" title="Download smaSHeM-0.4.tar.gz" target="_blank" id="wpfb-file-link-7">smaSHeM-0.4.tar.gz</a>
+    
+    <br />
+    November 12, 2013<br />
+    
+  </div>
+  <div class="info">
+    210.0 KiB<br />
+    MD5 hash: 2e30e4edd2faf5946b6c0e1a244fd0ba <br />
+    <a href="#" onclick="return wpfilebase_filedetails(7);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails7" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 12, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/smashem/">smaSHeM</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/smashem/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Finding all the vhosts</title>
+		<link>https://labs.portcullis.co.uk/tools/finding-all-the-vhosts/</link>
+		<comments>https://labs.portcullis.co.uk/tools/finding-all-the-vhosts/#comments</comments>
+		<pubDate>Mon, 11 Nov 2013 17:00:15 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2216</guid>
+		<description><![CDATA[<p>There are a number of ways to own a webapp. In a shared environment, an attacker can enumerate all the applications accessible and target the weakest one to root the server and with it all the webapps on the box. To try and emulate this approach on a pentest, we have to find ALL THE [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/finding-all-the-vhosts/">Finding all the vhosts</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>There are a number of ways to own a webapp. In a shared environment, an attacker can enumerate all the applications accessible and target the weakest one to root the server and with it all the webapps on the box. To try and emulate this approach on a pentest, we have to find ALL THE VHOSTS.<span id="more-2216"></span></p>
+<h2>Key features</h2>
+<p>This natty python 2 script scrapes a series of web applications (including bing and yougetsignal&#8217;s database) and looks at <a title="Subject Alternative Names" href="https://en.wikipedia.org/wiki/Subject_Alternative_Name">Subject Alternative Names</a> in the SSL certificate to find as many web applications which resolve to an IP address as possible. No guarantees are made as to the completeness or accuracy of the data, but it&#8217;s the best we can do. It can give an insight into the attack surface associated with a given IP address, allowing testers to advise client in situations where the risk is out of their control.</p>
+<h2>Usage and example</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python2 allthevhosts.py 213.165.238.226
+[+] bing search complete
+[+] myipneighbours Search Complete
+[E]ipneighbour search error.
+[+] yougetsignal Search Complete
+[+] SAN enumeration complete.
+[+] resolved original addresss...
+[+] verifying that 8 found URLs resolve to the same address
+[+] all URLs resolved
+
+www.portcullis-security.com
+labs.portcullis.co.uk
+www.portcullis.co.uk
+ctads.net
+portcullis-forensics.com
+portcullis-security.com
+portcullis.co.uk
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-8').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/allthevhosts.tar.gz" target="_blank" title="Download Allthevhosts Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Allthevhosts Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/allthevhosts.tar.gz" title="Download allthevhosts.tar.gz" target="_blank" id="wpfb-file-link-8">allthevhosts.tar.gz</a>
+    
+    <br />
+    November 4, 2013<br />
+    
+  </div>
+  <div class="info">
+    1.7 KiB<br />
+    MD5 hash: be3c25a78d89f9b5234689250824fbed <br />
+    <a href="#" onclick="return wpfilebase_filedetails(8);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails8" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 4, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/finding-all-the-vhosts/">Finding all the vhosts</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/finding-all-the-vhosts/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Whois&#8230; Like A Boss!</title>
+		<link>https://labs.portcullis.co.uk/tools/whois-like-a-boss/</link>
+		<comments>https://labs.portcullis.co.uk/tools/whois-like-a-boss/#comments</comments>
+		<pubDate>Mon, 04 Nov 2013 16:48:41 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2192</guid>
+		<description><![CDATA[<p>At the outset of an external infrastructure test it&#8217;s often useful to ensure that the addresses you&#8217;re testing are correct, and actually owned by the client. Failure to do so can result in an awkward situation, and one we here at Portcullis Labs would like to avoid wherever possible. With this in mind, we&#8217;ve learned to [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/whois-like-a-boss/">Whois&#8230; Like A Boss!</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At the outset of an external infrastructure test it&#8217;s often useful to ensure that the addresses you&#8217;re testing are correct, and actually owned by the client. Failure to do so can result in an awkward situation, and one we here at Portcullis Labs would like to avoid wherever possible. With this in mind, we&#8217;ve learned to whois&#8230; like a boss.<span id="more-2192"></span></p>
+<h2>Key features</h2>
+<p>This handy little python 2 script does whois lookups on the IP addresses given in a file (one per line), and will give you the range and owner of each of the addresses (with duplicates removed) so you can spot anything that looks fishy <em>before</em> you start testing*.</p>
+<h2>Usage and example</h2>
+<p>IP address file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+8.8.8.8
+8.8.8.9
+4.4.2.2
+</pre>
+<p>And to run:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python2 whoislikeaboss.py ips
+8.0.0.0 - 8.255.255.255 Level 3 Communications, Inc.
+4.0.0.0 - 4.255.255.255 Level 3 Communications, Inc.
+</pre>
+<p>Simples!</p>
+<p>*- Common sense not included.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-9').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/whoislikeaboss.tar.gz" target="_blank" title="Download Whoislikeaboss Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Whoislikeaboss Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/whoislikeaboss.tar.gz" title="Download whoislikeaboss.tar.gz" target="_blank" id="wpfb-file-link-9">whoislikeaboss.tar.gz</a>
+    
+    <br />
+    November 4, 2013<br />
+    
+  </div>
+  <div class="info">
+    901.0 B<br />
+    MD5 hash: c628b46d07ee1c65668687e6d11a09c9 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(9);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails9" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 4, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/whois-like-a-boss/">Whois&#8230; Like A Boss!</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/whois-like-a-boss/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

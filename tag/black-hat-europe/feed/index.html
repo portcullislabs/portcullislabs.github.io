@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Black Hat Europe</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/black-hat-europe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>An offensive introduction to Active Directory on UNIX</title>
+		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
+<h2>Background to Active Directory integration solutions</h2>
+<p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
+Within a typical Active Directory integration solution (in this case <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/5.7_release_notes/sssd" title="SSSD">SSSD</a>), the solution shares a striking similarity to what a user might see on Windows. Notably, you have:</p>
+<ul>
+<li>DNS &#8211; Used for name resolution</li>
+<li>LDAP &#8211; Used for &#8220;one-time identification&#8221; and assertion of identity</li>
+<li>Kerberos &#8211; Used for ongoing authentication</li>
+<li>SSSD &#8211; Like LSASS</li>
+<li>PAM &#8211; Like msgina.dll or the more modern credential providers</li>
+</ul>
+<p>You can see a breakdown of this process <a title="here" href="https://rhelblog.redhat.com/2015/02/04/overview-of-direct-integration-options/">here</a>. Unlike Windows, there is no Group Policy for the most part (with some exceptions), so policies for sudo et al. are typically pushed as flat files to hosts.</p>
+<h2>Our research</h2>
+<p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
+<p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Where 2 worlds collide: Bringing Mimikatz et al to UNIX</title>
+		<link>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 08:04:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6806</guid>
+		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018).<span id="more-6806"></span></p>
+<p>Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may not be as well understood by a typical UNIX admin who does not have a strong background in Windows and AD. Over the last few months we&#8217;ve spent some time looking a number of specific Active Directory integration solutions (both open and closed source) for UNIX systems and documenting some of the tools, tactics and procedures that enable attacks on the forest to be staged from UNIX.</p>
+<p>This talk describes the technical details regarding our findings. It includes Proof of Concepts (PoC) showing real-world attacks against AD joined UNIX systems. Finally, potential solutions or mitigation controls are discussed that will help to either prevent those attacks or at the very least to detect them when they occur.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz" title="Linikatz">Linikatz</a></li>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/JohnTheRipper" title="JohnTheRipper dynamic.conf rules">JohnTheRipper dynamic.conf rules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/metasploit-framework" title="metasploit-framework post-exploitation modules">metasploit-framework post-exploitation modules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/blue/audit" title="auditd policies">auditd policies</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/tools/vas/fuzzers" title="fuzzers">fuzzers</a></li>
+</ul>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
+    
+    <br />
+    December 6, 2018<br />
+    
+  </div>
+  <div class="info">
+    724.9 KiB<br />
+    MD5 hash: cc712c5e46b16fbff22a2566b1248a91 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 6, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

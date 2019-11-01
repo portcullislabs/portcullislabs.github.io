@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>UART Debugging: Rooting an IP Phone using UART | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='UART Debugging: Rooting an IP Phone using UART - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board-300x208.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup-300x173.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup-300x213.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-300x194.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup-300x240.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected-300x197.png'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-6220 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-6220"  class="portcullis-post portcullis-article  post-6220 post type-post status-publish format-standard hentry category-blog tag-hardhack tag-training">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">UART Debugging: Rooting an IP Phone using UART</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="09:07">23/03/2018</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/dlz/" title="View all posts by DLZ">DLZ</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>In this post I share my solution to an <a href="/blog/hardware-hacking-how-to-train-a-team/" title="internal hacker challenge">internal hacker challenge</a> relating to identifying the UART pins on a VOIP phone and using them to gain root access.<span id="more-6220"></span></p>
+<p>UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a standalone integrated circuit. UART is used to transmit and receive serial data and is very commonly included in the microcontrollers for the purposes of testing.</p>
+<h2>Figuring out the pinout, baud rate and rooting the device</h2>
+<p>UART uses two wires to transmit and receive, which connect to Tx and Rx pins. However, UART is very commonly seen in a group of three pins. The third pin in UART is usually the ground pin.</p>
+<p>Before you start identifying the baud rate, you need to identify the correct pinout. You can use a multi-meter to do that. First thing we need to do is to identify points of interest. UART usually consists of two pins, so we need to identify where on the board UART could possibly be.</p>
+<div id="attachment_6230" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6221"><div class="lb-album"><a href="#image-6221"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board-300x208.png" alt="Inside of the Yealink SIP-T20P IP Phone" class="size-medium wp-image-6230 aligncenter"><span></span></a></div>              
+<a href="#imageclose-6221" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6221">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board.png" alt="image-6221">
+                   </div></a><p class="wp-caption-text"><strong>Inside of the Yealink SIP-T20P IP Phone</strong></p></div>
+<p>Above is an image of the PCB of a Yealink SIP-T20P IP Phone. We can see that this board contains two sets of pins in the bottom left corner of the board. As we know, UART consists of two pins, so we can safely say that the pins on the left could be what we are looking for:</p>
+<div id="attachment_6232" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6222"><div class="lb-album"><a href="#image-6222"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup-300x173.png" alt="Points of interest" class="size-medium wp-image-6232"><span></span></a></div>              
+<a href="#imageclose-6222" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6222">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup.png" alt="image-6222">
+                   </div></a><p class="wp-caption-text"><strong>Points of interest</strong></p></div>
+<p>Traces are those lines that go from the microcontroller to the pins. The dark green part is the isolation bit and the part in-between the isolation is where the copper trace runs and connect the pins to the microcontroller.</p>
+<div id="attachment_6246" style="width: 264px" class="wp-caption aligncenter"><a name="imageclose-6223"><div class="lb-album"><a href="#image-6223"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="UART traces" class="size-full wp-image-6246"><span></span></a></div>              
+<a href="#imageclose-6223" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6223">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="image-6223">
+                   </div></a><p class="wp-caption-text"><strong>UART traces</strong></p></div>
+<p>Now that we know where our UART pins are, the next job is to figure out which pins are Ground, Tx and Rx. There are many ways that this can be done. Firstly, we need to identify the Ground pin. In the image below, we can clearly see that the middle pin and right pin are connected to traces, so we can assume that these are the Tx and Rx pins of UART. The Ground pin can be easily identified as it will not have any traces going towards it. In this case, the Ground pin is the pin on the left, as we can clearly see that there is no trace going towards it &#8211; it is directly connected to the ground plane.</p>
+<div id="attachment_6231" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6224"><div class="lb-album"><a href="#image-6224"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup-300x213.png" alt="UART pins" class="size-medium wp-image-6231"><span></span></a></div>              
+<a href="#imageclose-6224" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6224">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup.png" alt="image-6224">
+                   </div></a><p class="wp-caption-text"><strong>UART pins</strong></p></div>
+<p>Once we have identified the Ground pin, we need to identify the Tx and Rx pins. This can be done in many different ways. One of these ways is very easy, and regards basically guessing the pins. There is a 50/50 chance that you will get it right, so if it does not work the first time, you can just change the pinout and it should work.</p>
+<p>Another way of identifying the Tx and Rx pins is to use a specialist tool, such as a JTAGulator. JTGAulator will be able to tell exactly which pin is which.</p>
+<div id="attachment_6229" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6225"><div class="lb-album"><a href="#image-6225"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-300x194.png" alt="The JTAGulator" class="size-medium wp-image-6229"><span></span></a></div>              
+<a href="#imageclose-6225" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6225">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator.png" alt="image-6225">
+                   </div></a><p class="wp-caption-text"><strong>The JTAGulator</strong></p></div>
+<p>Above is a image of a JTAGulator. JTAGulator has a set of connectors which can be used to find out the UART pinout, provide UART pass-through, connect JTAG, etc. In order to use it, we need to connect it to a USB port on our laptop to provide power. Once we do that, we use jump wires to connect the JTAGulator to our UART pins. JTAGulator connectors are all labelled starting from GND (Ground) pin, VADJ pin, and CH (Channel) pins, which range from 0 to 7.</p>
+<div id="attachment_6227" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6226"><div class="lb-album"><a href="#image-6226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup-300x240.png" alt="Picture showing The JTAGulator testing pins" class="size-medium wp-image-6227"><span></span></a></div>              
+<a href="#imageclose-6226" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup.png" alt="image-6226">
+                   </div></a><p class="wp-caption-text"><strong>Picture showing The JTAGulator testing pins</strong></p></div>
+<p>In order for the JTAGulator to work, we need to connect the pins correctly, so GND to GND, and Channels 0 and 1 to what we think are the Tx and Rx pins. Once finished, it should look like this:</p>
+<div id="attachment_6228" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6227"><div class="lb-album"><a href="#image-6227"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected-300x197.png" alt="The JTagulator connected to the UART pins of the IP Phone" class="size-medium wp-image-6228"><span></span></a></div>              
+<a href="#imageclose-6227" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6227">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected.png" alt="image-6227">
+                   </div></a><p class="wp-caption-text"><strong>The JTagulator connected to the UART pins of the IP Phone</strong></p></div>
+<p>Once the wires are connected, we need to find the correct baud rate in order to specify the rate at which bits are transmitted to get a human readable output. If baud rate is mismatched, the data can be either misinterpreted or completely missed. There are many different ways to figure out the Baud Rate of different boards. One way is to basically just guess the baud rate. There are several typically-used baud rates, such as 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000 bits per second. Basically, connect the device and try those different baud rates until you get readable output is also a way of figuring out the baud rate.</p>
+<p>Another way of figuring out the baud rate is to use an oscilloscope. In order to do that, we need to connect our oscilloscope to the Tx pin and then set our oscilloscope to trigger a pulse. Once this is done, we then measure the time of the shortest pulse and the reciprocal of that pulse is the baud rate. To provide an example, if our shortest pulse is 100µs, then our baud rate will be 1/(100 * 10^-6) = 10,000. As 10,000 is not a real baud rate, we round it to the closest possible baud rate which is 9,600 and there we have our baud rate.</p>
+<p>Using JTAGulator is another way of finding out the baud rate and pinout. Once we have the JTAGulator connected to our laptop, we need to communicate with it. JTAGulator is using a USB for power and connection, so we need to be able to achieve serial communication with the device. This can be achieved by using a screen tool on Linux, or putty on Windows. We used Debian, so the tool we used for serial communications was screen. Therefore, in order to establish serial communication, we run the command below:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ sudo screen /dev/tty.usbserial-AL024BCV 115200
+</pre>
+<p>The command above can be used to establish serial communication with our JTAGulator device. The command screen invokes the tool; the next part of it is where we specify the device to connect to &#8211; /dev is a directory in Linux where we can find all devices that are currently connected to our machine. A ttyUSB0 is the name of our JTAGulator device and the number after it is the baud rate. The baud rate can be found in the JTAGulator documentation. When we run this command, we will end up with a connection to JTAGulator:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+:h
+JTAG Commands:
+I   Identify JTAG pinout (IDCODE Scan)
+B   Identify JTAG pinout (BYPASS Scan)
+D   Get Device ID(s)
+T   Test BYPASS (TDI to TDO)
+
+UART Commands:
+U   Identify UART pinout
+P   UART passthrough
+
+General Commands:
+V   Set target I/O voltage (1.2V to 3.3V)
+R   Read all channels (input)
+W   Write all channels (output)
+J   Display version information
+H   Display available commands
+</pre>
+<p>Now that we have established our serial communication with the JTAGulator, the first thing we need to do is to set the I/O voltage. If you try to do anything without setting the I/O voltage first, the device will prompt you to set the voltage. To set the voltage on the JTAGulator, we press V and then Enter. This will prompt us to select a set a voltage ranging from 1.2V to 3.3V. In this case, we have set the voltage to be 3.3V. The voltage needed to transmit data though the pins is usually contained within a datasheet of the device. However, 3.3V is a commonly used voltage in bigger chips. Smaller chips might use a voltage of 1.2V. It is essential to select a correct voltage. If the voltage is too big, it can damage the chip. On the other hand, if the voltage is too low, it can damage the device that is trying to communicate with the chip (in this case, the JTagulator).</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+:v
+Current target I/O voltage: Undefined
+Enter new target I/O voltage (1.2 - 3.3, 0 for off): 3.3
+New target I/O voltage set: 3.3
+Ensure VADJ is NOT connected to target!
+:
+</pre>
+<p>Once the voltage is set, we can start doing the pinout and baud rate identification. In order to do that, we press U and then enter. The JTAGulator will then prompt us for some information regarding the pinout identification such as:</p>
+<ul>
+<li>Text String to Output &#8211; This is the string that will be used to test different baud rates and based on the output we will be able to identify the correct one if the string is outputted the same. In this case, we will be using a string &#8220;test&#8221;</li>
+<li>Number of Channels &#8211; Number of channels is used to determine how many pins we are going to be using for the pinout identification. There is a maximum of 24 channels, 8 on each set of pins on our JTGAulator. In this scenario, we are doing UART which has only three pins and only two that are used for communications, so the number of channels that we are going to need is two. More channels may be required, however, when trying to identify JTAG pinout, for example</li>
+</ul>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+:U
+Enter text string to output (prefix with \x for hex) [CR]: test
+Enter number of channels to use (2 - 24): 2
+Ensure connections are on CH1..CH0.
+Possible permutations: 2
+Press spacebar to begin (any other key to abort)...
+</pre>
+<p>Now that we have got our parameters setup, we can start enumeration of the pinout and the baud rate. In order to begin, we need to press the spacebar and the JTAGulator will iterate through possible combinations of the pinout and baud rate:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+TXD: 1
+RXD: 0
+Baud: 1200
+Data: ..... [ FF FF FF FF FF ]
+
+TXD: 1
+RXD: 0
+Baud: 1800
+Data: .... [ FF FD FD FD ]
+
+TXD: 1
+RXD: 0
+Baud: 2400
+Data: ... [ FD F5 FD ]
+
+TXD: 1
+RXD: 0
+Baud: 3600
+Data: 9.9 [ 39 FF 39 ]
+
+TXD: 1
+RXD: 0
+Baud: 4800
+Data: .. [ F0 FA ]
+
+TXD: 1
+RXD: 0
+Baud: 7200
+Data: .. [ 8C B0 ]
+
+TXD: 1
+RXD: 0
+Baud: 9600
+Data: .. [ 00 ED ]
+
+TXD: 1
+RXD: 0
+Baud: 14400
+Data: ic.. [ 69 63 D6 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 19200
+Data: .....f.`..C.... [ A7 B7 15 19 80 66 B0 60 08 F4 43 9D 0E B9 FE ]
+
+TXD: 1
+RXD: 0
+Baud: 28800
+Data: di.. [ 64 69 DE FF ]
+
+TXD: 1
+RXD: 0
+Baud: 31250
+Data: ...x. [ D4 D6 B6 78 F5 ]
+
+TXD: 1
+RXD: 0
+Baud: 38400
+Data: ..... [ B4 E5 B3 1B F9 ]
+
+TXD: 1
+RXD: 0
+Baud: 57600
+Data: test...starting [ 74 65 73 74 0D 0A 0D 73 74 61 72 74 69 6E 67 20 ]
+
+TXD: 1
+RXD: 0
+Baud: 76800
+Data: tt... [ 74 74 82 8E F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 115200
+Data: .....0. [ 80 80 0C 80 80 30 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 153600
+Data: ... [ F0 F8 FC ]
+
+TXD: 1
+RXD: 0
+Baud: 230400
+Data: .... [ F8 F8 F8 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 250000
+Data: .... [ F8 00 F0 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 307200
+Data: ... [ E0 F0 F0 ]
+.
+UART scan complete!
+:
+</pre>
+<p>Once we start our iteration, we will see the output of different combinations that the JTAGulator has tested, as in the image above. We will need to go through those and see which one returns the string we have entered as one of our parameters.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+TXD: 1
+RXD: 0
+Baud: 57600
+Data: test...starting [ 74 65 73 74 0D 0A 0D 73 74 61 72 74 69 6E 67 20 ]
+</pre>
+<p>In the image above, we have located the correct pinout and baud rate for the Yealink SIP-TP20P IP Phone. So now that we have all the information we need, we can use these to correctly connect the pins and establish serial communication. Again, there are many different tools we can use to do that, such as a USB to Serial Adapter, or even JTAGulator. In this example, we will use the JTGAulator to perform something called UART pass-through. In case someone does not have or cannot afford a JTAGulator, there are other, cheaper solutions available (for example, USB to UART bridge modules or the Bus Pirate). These are USB sticks with UART connectors that allow a bi-directional link between USB bus and UART serial bus.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+UART Commands:
+U Identify UART pinout
+P UART passthrough
+</pre>
+<p>In order for us to perform a UART pass-through using the JTAGulator, we need to press P and then enter. This will prompt us to give some information which we have collected in the previous task. Once we enter the UART pass-through mode, JTAGulator will ask us for the channel numbers of the Tx and Rx pins. So based on the information we collected, we know that the Tx pin is connected to channel 1 and the Rx pin is connected to channel 0. Once we supply the pin information, we will then be asked to supply the baud rate. As we know from the previous task, the baud rate is 57,600.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+:p
+Enter new TXD pin [0]: 1
+Enter new RXD pin [0]: 0
+Enter new baud rate [0]: 57600
+Enable local echo? [y/N]:
+Entering UART passthrough! Press Ctrl-X to abort...
+</pre>
+<p>Once we enter this information, we can establish a UART pass-through. In this particular case, the device does not provide any security measures and as soon as you connect, you get through a booting process. To get to a root shell, the device must not be connected to the network, as right after the DHCP fails, you need to press enter and you get dropped into a root shell.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+#
+# id
+uid=0(root) gid=0(root)
+#
+</pre>
+<p>In the <a title="next part" href="/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/">next part</a> of this series, we will cover how another of the Team tackled the JTAG challenge.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-xXP96MBtdMd7WFk" class="g-recaptcha-explicit-id"><div id="g-recaptcha-xXP96MBtdMd7WFk"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.087 seconds. -->
+</div>
+</body>
+</html>
+

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; DLZ</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/dlz/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>UART Debugging: Rooting an IP Phone using UART</title>
+		<link>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/</link>
+		<comments>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/#comments</comments>
+		<pubDate>Fri, 23 Mar 2018 09:07:45 +0000</pubDate>
+		<dc:creator><![CDATA[DLZ]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6220</guid>
+		<description><![CDATA[<p>In this post I share my solution to an internal hacker challenge relating to identifying the UART pins on a VOIP phone and using them to gain root access. UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post I share my solution to an <a href="/blog/hardware-hacking-how-to-train-a-team/" title="internal hacker challenge">internal hacker challenge</a> relating to identifying the UART pins on a VOIP phone and using them to gain root access.<span id="more-6220"></span></p>
+<p>UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a standalone integrated circuit. UART is used to transmit and receive serial data and is very commonly included in the microcontrollers for the purposes of testing.</p>
+<h2>Figuring out the pinout, baud rate and rooting the device</h2>
+<p>UART uses two wires to transmit and receive, which connect to Tx and Rx pins. However, UART is very commonly seen in a group of three pins. The third pin in UART is usually the ground pin.</p>
+<p>Before you start identifying the baud rate, you need to identify the correct pinout. You can use a multi-meter to do that. First thing we need to do is to identify points of interest. UART usually consists of two pins, so we need to identify where on the board UART could possibly be.</p>
+<div id="attachment_6230" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6221"><div class="lb-album"><a href="#image-6221"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board-300x208.png" alt="Inside of the Yealink SIP-T20P IP Phone" class="size-medium wp-image-6230 aligncenter"><span></span></a></div>              
+<a href="#imageclose-6221" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6221">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board.png" alt="image-6221">
+                   </div></a><p class="wp-caption-text"><strong>Inside of the Yealink SIP-T20P IP Phone</strong></p></div>
+<p>Above is an image of the PCB of a Yealink SIP-T20P IP Phone. We can see that this board contains two sets of pins in the bottom left corner of the board. As we know, UART consists of two pins, so we can safely say that the pins on the left could be what we are looking for:</p>
+<div id="attachment_6232" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6222"><div class="lb-album"><a href="#image-6222"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup-300x173.png" alt="Points of interest" class="size-medium wp-image-6232"><span></span></a></div>              
+<a href="#imageclose-6222" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6222">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup.png" alt="image-6222">
+                   </div></a><p class="wp-caption-text"><strong>Points of interest</strong></p></div>
+<p>Traces are those lines that go from the microcontroller to the pins. The dark green part is the isolation bit and the part in-between the isolation is where the copper trace runs and connect the pins to the microcontroller.</p>
+<div id="attachment_6246" style="width: 264px" class="wp-caption aligncenter"><a name="imageclose-6223"><div class="lb-album"><a href="#image-6223"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="UART traces" class="size-full wp-image-6246"><span></span></a></div>              
+<a href="#imageclose-6223" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6223">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="image-6223">
+                   </div></a><p class="wp-caption-text"><strong>UART traces</strong></p></div>
+<p>Now that we know where our UART pins are, the next job is to figure out which pins are Ground, Tx and Rx. There are many ways that this can be done. Firstly, we need to identify the Ground pin. In the image below, we can clearly see that the middle pin and right pin are connected to traces, so we can assume that these are the Tx and Rx pins of UART. The Ground pin can be easily identified as it will not have any traces going towards it. In this case, the Ground pin is the pin on the left, as we can clearly see that there is no trace going towards it &#8211; it is directly connected to the ground plane.</p>
+<div id="attachment_6231" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6224"><div class="lb-album"><a href="#image-6224"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup-300x213.png" alt="UART pins" class="size-medium wp-image-6231"><span></span></a></div>              
+<a href="#imageclose-6224" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6224">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup.png" alt="image-6224">
+                   </div></a><p class="wp-caption-text"><strong>UART pins</strong></p></div>
+<p>Once we have identified the Ground pin, we need to identify the Tx and Rx pins. This can be done in many different ways. One of these ways is very easy, and regards basically guessing the pins. There is a 50/50 chance that you will get it right, so if it does not work the first time, you can just change the pinout and it should work.</p>
+<p>Another way of identifying the Tx and Rx pins is to use a specialist tool, such as a JTAGulator. JTGAulator will be able to tell exactly which pin is which.</p>
+<div id="attachment_6229" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6225"><div class="lb-album"><a href="#image-6225"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-300x194.png" alt="The JTAGulator" class="size-medium wp-image-6229"><span></span></a></div>              
+<a href="#imageclose-6225" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6225">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator.png" alt="image-6225">
+                   </div></a><p class="wp-caption-text"><strong>The JTAGulator</strong></p></div>
+<p>Above is a image of a JTAGulator. JTAGulator has a set of connectors which can be used to find out the UART pinout, provide UART pass-through, connect JTAG, etc. In order to use it, we need to connect it to a USB port on our laptop to provide power. Once we do that, we use jump wires to connect the JTAGulator to our UART pins. JTAGulator connectors are all labelled starting from GND (Ground) pin, VADJ pin, and CH (Channel) pins, which range from 0 to 7.</p>
+<div id="attachment_6227" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6226"><div class="lb-album"><a href="#image-6226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup-300x240.png" alt="Picture showing The JTAGulator testing pins" class="size-medium wp-image-6227"><span></span></a></div>              
+<a href="#imageclose-6226" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup.png" alt="image-6226">
+                   </div></a><p class="wp-caption-text"><strong>Picture showing The JTAGulator testing pins</strong></p></div>
+<p>In order for the JTAGulator to work, we need to connect the pins correctly, so GND to GND, and Channels 0 and 1 to what we think are the Tx and Rx pins. Once finished, it should look like this:</p>
+<div id="attachment_6228" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6227"><div class="lb-album"><a href="#image-6227"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected-300x197.png" alt="The JTagulator connected to the UART pins of the IP Phone" class="size-medium wp-image-6228"><span></span></a></div>              
+<a href="#imageclose-6227" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6227">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected.png" alt="image-6227">
+                   </div></a><p class="wp-caption-text"><strong>The JTagulator connected to the UART pins of the IP Phone</strong></p></div>
+<p>Once the wires are connected, we need to find the correct baud rate in order to specify the rate at which bits are transmitted to get a human readable output. If baud rate is mismatched, the data can be either misinterpreted or completely missed. There are many different ways to figure out the Baud Rate of different boards. One way is to basically just guess the baud rate. There are several typically-used baud rates, such as 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000 bits per second. Basically, connect the device and try those different baud rates until you get readable output is also a way of figuring out the baud rate.</p>
+<p>Another way of figuring out the baud rate is to use an oscilloscope. In order to do that, we need to connect our oscilloscope to the Tx pin and then set our oscilloscope to trigger a pulse. Once this is done, we then measure the time of the shortest pulse and the reciprocal of that pulse is the baud rate. To provide an example, if our shortest pulse is 100µs, then our baud rate will be 1/(100 * 10^-6) = 10,000. As 10,000 is not a real baud rate, we round it to the closest possible baud rate which is 9,600 and there we have our baud rate.</p>
+<p>Using JTAGulator is another way of finding out the baud rate and pinout. Once we have the JTAGulator connected to our laptop, we need to communicate with it. JTAGulator is using a USB for power and connection, so we need to be able to achieve serial communication with the device. This can be achieved by using a screen tool on Linux, or putty on Windows. We used Debian, so the tool we used for serial communications was screen. Therefore, in order to establish serial communication, we run the command below:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo screen /dev/tty.usbserial-AL024BCV 115200
+</pre>
+<p>The command above can be used to establish serial communication with our JTAGulator device. The command screen invokes the tool; the next part of it is where we specify the device to connect to &#8211; /dev is a directory in Linux where we can find all devices that are currently connected to our machine. A ttyUSB0 is the name of our JTAGulator device and the number after it is the baud rate. The baud rate can be found in the JTAGulator documentation. When we run this command, we will end up with a connection to JTAGulator:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+:h
+JTAG Commands:
+I   Identify JTAG pinout (IDCODE Scan)
+B   Identify JTAG pinout (BYPASS Scan)
+D   Get Device ID(s)
+T   Test BYPASS (TDI to TDO)
+
+UART Commands:
+U   Identify UART pinout
+P   UART passthrough
+
+General Commands:
+V   Set target I/O voltage (1.2V to 3.3V)
+R   Read all channels (input)
+W   Write all channels (output)
+J   Display version information
+H   Display available commands
+</pre>
+<p>Now that we have established our serial communication with the JTAGulator, the first thing we need to do is to set the I/O voltage. If you try to do anything without setting the I/O voltage first, the device will prompt you to set the voltage. To set the voltage on the JTAGulator, we press V and then Enter. This will prompt us to select a set a voltage ranging from 1.2V to 3.3V. In this case, we have set the voltage to be 3.3V. The voltage needed to transmit data though the pins is usually contained within a datasheet of the device. However, 3.3V is a commonly used voltage in bigger chips. Smaller chips might use a voltage of 1.2V. It is essential to select a correct voltage. If the voltage is too big, it can damage the chip. On the other hand, if the voltage is too low, it can damage the device that is trying to communicate with the chip (in this case, the JTagulator).</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+:v
+Current target I/O voltage: Undefined
+Enter new target I/O voltage (1.2 - 3.3, 0 for off): 3.3
+New target I/O voltage set: 3.3
+Ensure VADJ is NOT connected to target!
+:
+</pre>
+<p>Once the voltage is set, we can start doing the pinout and baud rate identification. In order to do that, we press U and then enter. The JTAGulator will then prompt us for some information regarding the pinout identification such as:</p>
+<ul>
+<li>Text String to Output &#8211; This is the string that will be used to test different baud rates and based on the output we will be able to identify the correct one if the string is outputted the same. In this case, we will be using a string &#8220;test&#8221;</li>
+<li>Number of Channels &#8211; Number of channels is used to determine how many pins we are going to be using for the pinout identification. There is a maximum of 24 channels, 8 on each set of pins on our JTGAulator. In this scenario, we are doing UART which has only three pins and only two that are used for communications, so the number of channels that we are going to need is two. More channels may be required, however, when trying to identify JTAG pinout, for example</li>
+</ul>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+:U
+Enter text string to output (prefix with \x for hex) [CR]: test
+Enter number of channels to use (2 - 24): 2
+Ensure connections are on CH1..CH0.
+Possible permutations: 2
+Press spacebar to begin (any other key to abort)...
+</pre>
+<p>Now that we have got our parameters setup, we can start enumeration of the pinout and the baud rate. In order to begin, we need to press the spacebar and the JTAGulator will iterate through possible combinations of the pinout and baud rate:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+TXD: 1
+RXD: 0
+Baud: 1200
+Data: ..... [ FF FF FF FF FF ]
+
+TXD: 1
+RXD: 0
+Baud: 1800
+Data: .... [ FF FD FD FD ]
+
+TXD: 1
+RXD: 0
+Baud: 2400
+Data: ... [ FD F5 FD ]
+
+TXD: 1
+RXD: 0
+Baud: 3600
+Data: 9.9 [ 39 FF 39 ]
+
+TXD: 1
+RXD: 0
+Baud: 4800
+Data: .. [ F0 FA ]
+
+TXD: 1
+RXD: 0
+Baud: 7200
+Data: .. [ 8C B0 ]
+
+TXD: 1
+RXD: 0
+Baud: 9600
+Data: .. [ 00 ED ]
+
+TXD: 1
+RXD: 0
+Baud: 14400
+Data: ic.. [ 69 63 D6 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 19200
+Data: .....f.`..C.... [ A7 B7 15 19 80 66 B0 60 08 F4 43 9D 0E B9 FE ]
+
+TXD: 1
+RXD: 0
+Baud: 28800
+Data: di.. [ 64 69 DE FF ]
+
+TXD: 1
+RXD: 0
+Baud: 31250
+Data: ...x. [ D4 D6 B6 78 F5 ]
+
+TXD: 1
+RXD: 0
+Baud: 38400
+Data: ..... [ B4 E5 B3 1B F9 ]
+
+TXD: 1
+RXD: 0
+Baud: 57600
+Data: test...starting [ 74 65 73 74 0D 0A 0D 73 74 61 72 74 69 6E 67 20 ]
+
+TXD: 1
+RXD: 0
+Baud: 76800
+Data: tt... [ 74 74 82 8E F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 115200
+Data: .....0. [ 80 80 0C 80 80 30 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 153600
+Data: ... [ F0 F8 FC ]
+
+TXD: 1
+RXD: 0
+Baud: 230400
+Data: .... [ F8 F8 F8 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 250000
+Data: .... [ F8 00 F0 F8 ]
+
+TXD: 1
+RXD: 0
+Baud: 307200
+Data: ... [ E0 F0 F0 ]
+.
+UART scan complete!
+:
+</pre>
+<p>Once we start our iteration, we will see the output of different combinations that the JTAGulator has tested, as in the image above. We will need to go through those and see which one returns the string we have entered as one of our parameters.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+TXD: 1
+RXD: 0
+Baud: 57600
+Data: test...starting [ 74 65 73 74 0D 0A 0D 73 74 61 72 74 69 6E 67 20 ]
+</pre>
+<p>In the image above, we have located the correct pinout and baud rate for the Yealink SIP-TP20P IP Phone. So now that we have all the information we need, we can use these to correctly connect the pins and establish serial communication. Again, there are many different tools we can use to do that, such as a USB to Serial Adapter, or even JTAGulator. In this example, we will use the JTGAulator to perform something called UART pass-through. In case someone does not have or cannot afford a JTAGulator, there are other, cheaper solutions available (for example, USB to UART bridge modules or the Bus Pirate). These are USB sticks with UART connectors that allow a bi-directional link between USB bus and UART serial bus.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+UART Commands:
+U Identify UART pinout
+P UART passthrough
+</pre>
+<p>In order for us to perform a UART pass-through using the JTAGulator, we need to press P and then enter. This will prompt us to give some information which we have collected in the previous task. Once we enter the UART pass-through mode, JTAGulator will ask us for the channel numbers of the Tx and Rx pins. So based on the information we collected, we know that the Tx pin is connected to channel 1 and the Rx pin is connected to channel 0. Once we supply the pin information, we will then be asked to supply the baud rate. As we know from the previous task, the baud rate is 57,600.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+:p
+Enter new TXD pin [0]: 1
+Enter new RXD pin [0]: 0
+Enter new baud rate [0]: 57600
+Enable local echo? [y/N]:
+Entering UART passthrough! Press Ctrl-X to abort...
+</pre>
+<p>Once we enter this information, we can establish a UART pass-through. In this particular case, the device does not provide any security measures and as soon as you connect, you get through a booting process. To get to a root shell, the device must not be connected to the network, as right after the DHCP fails, you need to press enter and you get dropped into a root shell.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+#
+# id
+uid=0(root) gid=0(root)
+#
+</pre>
+<p>In the <a title="next part" href="/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/">next part</a> of this series, we will cover how another of the Team tackled the JTAG challenge.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

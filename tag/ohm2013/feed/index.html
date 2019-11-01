@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; OHM2013</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/ohm2013/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</title>
+		<link>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/#comments</comments>
+		<pubDate>Tue, 05 Nov 2013 14:38:10 +0000</pubDate>
+		<dc:creator><![CDATA[BRC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[ASLR]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[OHM2013]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1458</guid>
+		<description><![CDATA[<p>One interesting talk I&#8217;ve attended on OHM 2013 was titled &#8220;Returning Signals for fun and profit&#8221;. This talk was given by Erik Bosman. The talk refers to a new way exploiting binaries using the Linux signal&#8217;s stack frame. This post could be summarised with the following words: Return oriented programming has been proven to be [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>One interesting talk I&#8217;ve attended on OHM 2013 was titled &#8220;Returning Signals for fun and profit&#8221;. This talk was given by Erik Bosman. The talk refers to a new way exploiting binaries using the Linux signal&#8217;s stack frame.<span id="more-1458"></span></p>
+<p>This post could be summarised with the following words:</p>
+<p><a title="Return oriented programming" href="http://en.wikipedia.org/wiki/Return-oriented_programming">Return oriented programming</a> has been proven to be a very effective way of circumventing data execution prevention features like <a title="ASLR" href="http://en.wikipedia.org/wiki/Address_space_layout_randomization">ASLR</a> present in modern operating systems, but the attacker needs to know the binary structure of the target executable in order to extract the so-called <a href="http://users.suse.com/~krahmer/no-nx.pdf‎">borrowed chunks of code</a>. Here a generic binary exploitation technique will be covered which in some cases requires no knowledge about the running program.</a></p>
+<h2>Contexts and switches</h2>
+<p>A clever way to alter the control flow of the program by using <a title="context control" href="http://www.linfo.org/context_switch.html">context control</a> will be described. A program execution context comprises the CPU&#8217;s registers, the program counter plus other operating system specific data at any point in time. A context switch is the process of storing and restoring the state of a process so that execution can be resumed from the same point at a later time. There are two types of context switches: software and hardware.</p>
+<p>In this post I will cover the software context switch used in the process of a task returning from a software signal on 64bits. The Linux implementation of signals is fully POSIX-compliant, and the data used to recover the task from a previus state (the interrupted context: registers, program counter, signal mask, etc.) is be saved in a ucontext_t structure on the stack for the thread, along with the trampoline return address. Signal handlers installed with the SA_SIGINFO flag are able to examine this ucontext_t structure. The definition of the structure ucontext can be seen in the include/uapi/asm-generic/ucontext.h header file:</p>
+<pre class="brush: cpp; first-line: 1; title: ; notranslate">
+#ifndef __ASM_GENERIC_UCONTEXT_H
+#define __ASM_GENERIC_UCONTEXT_H
+
+struct ucontext {
+        unsigned long     uc_flags;
+        struct ucontext  *uc_link;
+        stack_t           uc_stack;
+        struct sigcontext uc_mcontext;
+        sigset_t          uc_sigmask;   /* mask last for extensibility */
+};
+
+#endif /* __ASM_GENERIC_UCONTEXT_H */
+</pre>
+<p>The structure sigcontext, which holds the saved state of the task (registers, etc) can be examined in the arch/x86/include/asm/sigcontext.h header file:</p>
+<pre class="brush: cpp; first-line: 40; title: ; notranslate">
+struct sigcontext {
+        unsigned long r8;
+        unsigned long r9;
+        unsigned long r10;
+        unsigned long r11;
+        unsigned long r12;
+        unsigned long r13;
+        unsigned long r14;
+        unsigned long r15;
+        unsigned long di;
+        unsigned long si;
+        unsigned long bp;
+        unsigned long bx;
+        unsigned long dx;
+        unsigned long ax;
+        unsigned long cx;
+        unsigned long sp;
+        unsigned long ip;
+        unsigned long flags;
+        unsigned short cs;
+        unsigned short gs;
+        unsigned short fs;
+        unsigned short __pad0;
+        unsigned long err;
+        unsigned long trapno;
+        unsigned long oldmask;
+        unsigned long cr2;
+
+        /*
+         * fpstate is really (struct _fpstate *) or (struct _xstate *)
+         * depending on the FP_XSTATE_MAGIC1 encoded in the SW reserved
+         * bytes of (struct _fpstate) and FP_XSTATE_MAGIC2 present at the end
+         * of extended memory layout. See comments at the definition of
+         * (struct _fpx_sw_bytes)
+         */
+        void __user *fpstate;           /* zero when no FPU/extended context */
+        unsigned long reserved1[8];
+};
+</pre>
+<p>The struct _fpstate __user *fpstate is defined in the arch/x86/include/uapi/asm/sigcontext.h header file:</p>
+<pre class="brush: cpp; first-line: 69; title: ; notranslate">
+struct _fpstate {
+        /* Regular FPU environment */
+        unsigned long   cw;
+        unsigned long   sw;
+        unsigned long   tag;
+        unsigned long   ipoff;
+        unsigned long   cssel;
+        unsigned long   dataoff;
+        unsigned long   datasel;
+        struct _fpreg   _st[8];
+        unsigned short  status;
+        unsigned short  magic;          /* 0xffff = regular FPU data only */
+
+        /* FXSR FPU environment */
+        unsigned long   _fxsr_env[6];   /* FXSR FPU env is ignored */
+        unsigned long   mxcsr;
+        unsigned long   reserved;
+        struct _fpxreg  _fxsr_st[8];    /* FXSR FPU reg data is ignored */
+        struct _xmmreg  _xmm[8];
+        unsigned long   padding1[44];
+
+        union {
+                unsigned long   padding2[12];
+                struct _fpx_sw_bytes sw_reserved; /* represents the extended
+                                                   * state info */
+        };
+};
+</pre>
+<p>Finally, the signal information structure struct siginfo is available in include/uapi/asm-generic/siginfo.h:</p>
+<p>From include/uapi/asm-generic/siginfo.h:</p>
+<pre class="brush: cpp; first-line: 48; title: ; notranslate">
+typedef struct siginfo {
+        int si_signo;
+        int si_errno;
+        int si_code;
+
+        union {
+                int _pad[SI_PAD_SIZE];
+
+                /* kill() */
+                struct {
+                        __kernel_pid_t _pid;    /* sender's pid */
+                        __ARCH_SI_UID_T _uid;   /* sender's uid */
+                } _kill;
+
+                /* POSIX.1b timers */
+                struct {
+                        __kernel_timer_t _tid;  /* timer id */
+                        int _overrun;           /* overrun count */
+                        char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+                        sigval_t _sigval;       /* same as below */
+                        int _sys_private;       /* not to be passed to user */
+                } _timer;
+
+                /* POSIX.1b signals */
+                struct {
+                        __kernel_pid_t _pid;    /* sender's pid */
+                        __ARCH_SI_UID_T _uid;   /* sender's uid */
+                        sigval_t _sigval;
+                } _rt;
+
+                /* SIGCHLD */
+                struct {
+                        __kernel_pid_t _pid;    /* which child */
+                        __ARCH_SI_UID_T _uid;   /* sender's uid */
+                        int _status;            /* exit code */
+                        __ARCH_SI_CLOCK_T _utime;
+                        __ARCH_SI_CLOCK_T _stime;
+                } _sigchld;
+
+                /* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+                struct {
+                        void __user *_addr; /* faulting insn/memory ref. */
+#ifdef __ARCH_SI_TRAPNO
+                        int _trapno;    /* TRAP # which caused the signal */
+#endif
+                        short _addr_lsb; /* LSB of the reported address */
+                } _sigfault;
+
+                /* SIGPOLL */
+                struct {
+                        __ARCH_SI_BAND_T _band; /* POLL_IN, POLL_OUT, POLL_MSG */
+                        int _fd;
+                } _sigpoll;
+
+                /* SIGSYS */
+                struct {
+                        void __user *_call_addr; /* calling user insn */
+                        int _syscall;   /* triggering system call number */
+                        unsigned int _arch;     /* AUDIT_ARCH_* of syscall */
+                } _sigsys;
+        } _sifields;
+} __ARCH_SI_ATTRIBUTES siginfo_t;
+</pre>
+<p>As a summary, the the following kernel source files play a part in this technique:</p>
+<pre class="brush: cpp; gutter: false; highlight: [1,4,9]; title: ; notranslate">
+arch/x86/include/uapi/asm/sigcontext32.h (32bits)
+   	struct _fpstate_ia32
+   	struct sigcontext_ia32
+arch/x86/include/uapi/asm/sigcontext.h
+   	struct _fpstate
+	#ifndef __KERNEL__
+   	 	struct sigcontext (contains void __user *fpstate; )
+	#endif /* !__KERNEL__ */
+arch/x86/include/asm/sigcontext.h
+ 	#include &amp;lt;uapi/asm/sigcontext.h&amp;gt;
+   	struct sigcontext ( contains void __user *fpstate; )&lt;/pre&gt;
+</pre>
+<p>The good thing about storing this data on the stack is that the kernel does not need to remember the signals it delivered, but the bad point is that It can be forged.</p>
+<p>When switching context, the kernel will execute setup_rt_frame, where all user-space registers are saved and the kernel stack frame return address is modified to point to the handler of the installed signal handler. A small sequence of code jumper is put on the user stack which will return us to kernel space once the signal handler has finished.</p>
+<p>From arch/x86/kernel/signal.c:</p>
+<pre class="brush: cpp; first-line: 669; title: ; notranslate">
+static int
+setup_rt_frame(int sig, struct k_sigaction *ka, siginfo_t *info,
+                struct pt_regs *regs)
+{
+        int usig = signr_convert(sig);
+        sigset_t *set = sigmask_to_save();
+        compat_sigset_t *cset = (compat_sigset_t *) set;
+
+        /* Set up the stack frame */
+        if (is_ia32_frame()) {
+                if (ka-&gt;sa.sa_flags &amp; SA_SIGINFO)
+                        return ia32_setup_rt_frame(usig, ka, info, cset, regs);
+                else
+                        return ia32_setup_frame(usig, ka, cset, regs);
+        } else if (is_x32_frame()) {
+                return x32_setup_rt_frame(usig, ka, info, cset, regs);
+        } else {
+                return __setup_rt_frame(sig, ka, info, set, regs);
+        }
+}
+</pre>
+<p>From arch/x86/kernel/signal.c:</p>
+<pre class="brush: cpp; first-line: 408; title: ; notranslate">
+static int __setup_rt_frame(int sig, struct k_sigaction *ka, siginfo_t *info,
+                            sigset_t *set, struct pt_regs *regs)
+{
+        struct rt_sigframe __user *frame;
+        void __user *fp = NULL;
+        int err = 0;
+
+        frame = get_sigframe(ka, regs, sizeof(struct rt_sigframe), &amp;fp);
+
+        if (!access_ok(VERIFY_WRITE, frame, sizeof(*frame)))
+                return -EFAULT;
+
+        if (ka-&gt;sa.sa_flags &amp; SA_SIGINFO) {
+                if (copy_siginfo_to_user(&amp;frame-&gt;info, info))
+                        return -EFAULT;
+        }
+
+        put_user_try {
+                /* Create the ucontext.  */
+                if (cpu_has_xsave)
+                        put_user_ex(UC_FP_XSTATE, &amp;frame-&gt;uc.uc_flags);
+                else
+                        put_user_ex(0, &amp;frame-&gt;uc.uc_flags);
+                put_user_ex(0, &amp;frame-&gt;uc.uc_link);
+                err |= __save_altstack(&amp;frame-&gt;uc.uc_stack, regs-&gt;sp);
+
+                /* Set up to return from userspace.  If provided, use a stub
+                   already in userspace.  */
+                /* x86-64 should always use SA_RESTORER. */
+                if (ka-&gt;sa.sa_flags &amp; SA_RESTORER) {
+                        put_user_ex(ka-&gt;sa.sa_restorer, &amp;frame-&gt;pretcode);
+                } else {
+                        /* could use a vstub here */
+                        err |= -EFAULT;
+                }
+        } put_user_catch(err);
+
+        err |= setup_sigcontext(&amp;frame-&gt;uc.uc_mcontext, fp, regs, set-&gt;sig[0]);
+        err |= __copy_to_user(&amp;frame-&gt;uc.uc_sigmask, set, sizeof(*set));
+
+        if (err)
+                return -EFAULT;
+
+        /* Set up registers for signal handler */
+        regs-&gt;di = sig;
+        /* In case the signal handler was declared without prototypes */
+        regs-&gt;ax = 0;
+
+        /* This also works for non SA_SIGINFO handlers because they expect the
+           next argument after the signal number on the stack. */
+        regs-&gt;si = (unsigned long)&amp;frame-&gt;info;
+        regs-&gt;dx = (unsigned long)&amp;frame-&gt;uc;
+        regs-&gt;ip = (unsigned long) ka-&gt;sa.sa_handler;
+
+        regs-&gt;sp = (unsigned long)frame;
+
+        /* Set up the CS register to run signal handlers in 64-bit mode,
+           even if the handler happens to be interrupting 32-bit code. */
+        regs-&gt;cs = __USER_CS;
+
+        return 0;
+}
+</pre>
+<p>The above code restores the exact user-register contents into the kernel stack frame (including the return address and flags register) and executes a normal return from syscall, bringing the execution flow back to the original code that jumped to the signal handler.</p>
+<p>The stack frame image that Linux configures for signal returning assembles the following diagram:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ [-------------]
+ [    STACK    ]
+ [-------------]
+ [   FPSTATE   ]
+ [-------------]
+ [   UCONTEXT  ]
+ [-------------]
+ [ SIGINFO+arg ]
+ [-------------]
+</pre>
+<p>A detailed view on 64bits should assemble the following diagram:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+     [------------------------------------------]
+0x00 [  rt_sigreturn()      |  uc_flags         ]
+0x10 [  &amp;uc                 |  uc_stack.ss_sp   ]
+0x20 [  uc_stack.ss_flags   |  uc_stack.ss_size ]
+0x30 [  r8                  |  r9               ]
+0x40 [  r10                 |  r11              ]
+0x50 [  r12                 |  r13              ]
+0x60 [  r14                 |  r15              ]
+0x70 [  rdi                 |  rsi              ]
+0x80 [  rbp                 |  rbx              ]
+0x90 [  rdx                 |  rax              ]
+0xA0 [  rcx                 |  rsp              ]
+0xB0 [  rip                 |  eflags           ]
+0xC0 [  cs / gs / fs        |  err              ]
+0xD0 [  trapno              |  oldmask (unused) ]
+0xE0 [  cr2 (segfault addr) |  &amp;fpstate         ]
+0xF0 [  __reserved          |  sigmask          ]
+     [------------------------------------------]
+</pre>
+<h2>Exploitation</h2>
+<p>By forging the contents of the struct sigcontext, which holds the saved registers values, setting the $rax register to the desired syscall number, setting the systemcall args properly and finally setting the program counter $rip pointing to an >syscall; ret gadget, we can effectively modify the execution flow of the program and execute the desired systemcall. Also, several SigRet frames can be chained by using the value of the saved $rsp register of the returning frame and the gadget syscall;ret.</p>
+<ul>
+<li>rax =&gt; syscall_number</li>
+<li>rdi =&gt; arg1</li>
+<li>rsi =&gt; arg2</li>
+<li>rdx =&gt; arg3</li>
+<li>r10 =&gt; arg4</li>
+<li>r8 =&gt; arg5</li>
+<li>r9 =&gt; arg6</li>
+<li>rip =&gt; syscall;ret</li>
+<li>rsp =&gt; next_frame</li>
+<li>cs=0&#215;33 / gs=0&#215;0 / fs=0&#215;0</li>
+<li>&amp;fpstate = NULL</li>
+</ul>
+<p>The forged stack structure should assemble the following:</p>
+<pre class="brush: bash; gutter: false; highlight: [1,4,5,8,10,11,12,13,15]; title: ; notranslate">
+     [------------------------------------------]
+0x00 [  rt_sigreturn()      |  uc_flags         ]*
+0x10 [  &amp;uc                 |  uc_stack.ss_sp   ]
+0x20 [  uc_stack.ss_flags   |  uc_stack.ss_size ]
+0x30 [  arg5                |  arg6             ]*
+0x40 [  arg4                |  r11              ]*
+0x50 [  r12                 |  r13              ]
+0x60 [  r14                 |  r15              ]
+0x70 [  arg1                |  arg2             ]*
+0x80 [  rbp                 |  rbx              ]
+0x90 [  arg3                |  syscall_number   ]*
+0xA0 [  rcx                 |  next_frame       ]*
+0xB0 [  syscall;ret         |  eflags           ]*
+0xC0 [  cs=0x33/gs=0/fs=0   |  err              ]*
+0xD0 [  trapno              |  oldmask (unused) ]
+0xE0 [  cr2 (segfault addr) |  &amp;fpstate         ]*
+0xF0 [  __reserved          |  sigmask          ]
+     [------------------------------------------]
+</pre>
+<p>As a summary, for SigReturn oriented programming, the following requirements are needed:</p>
+<ol>
+<li>Controllable stack</li>
+<li>Knowing the address of a system call gadget</li>
+<li>A known writable address</li>
+<li>Known file descriptor</li>
+<li>Control over the RAX register</li>
+</ol>
+<p>More information:</p>
+<ul>
+<li>man(2) getcontext</li>
+<li>man(2) setcontext</li>
+<li><a title="Returning signals for fun and profit" href="https://program.ohm2013.org/event/233.html">Returning signals for fun and profit</a></li>
+<li><a title="Context switch" href="http://www.linfo.org/context_switch.html">Context switch</a></li>
+<li><a title="The Linux Signal Handling Model" href="http://www.linuxjournal.com/article/3985">The Linux Signal Handling Model</a></li>
+<li><a title="The GNU C Library - Signal Handling" href="http://www.cs.utah.edu/dept/old/texinfo/glibc-manual-0.02/library_21.html">The GNU C Library &#8211; Signal Handling</a></li>
+<li><a title="Wikipedia - Context switch" href="http://en.wikipedia.org/wiki/Context_switch">Wikipedia &#8211; Context switch</a></li>
+<li><a title="Wikipedia - Getcontext" href="http://en.wikipedia.org/wiki/Getcontext">Wikipedia &#8211; Getcontext</a></li>
+<li><a title="Wikipedia - Setcontext" href="http://en.wikipedia.org/wiki/Setcontext">Wikipedia &#8211; Setcontext</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Mailpile: Well, they&#8217;re half right</title>
+		<link>https://labs.portcullis.co.uk/blog/mailpile-well-theyre-half-right/</link>
+		<comments>https://labs.portcullis.co.uk/blog/mailpile-well-theyre-half-right/#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 16:21:40 +0000</pubDate>
+		<dc:creator><![CDATA[MWE]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[OHM2013]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1231</guid>
+		<description><![CDATA[<p>Recently, there has been a lot of media buzz about Mailpile, a new startup which has raised over $100,000 on IndieGoGo for its eponymous locally hosted web mail project. Having been present at the talk at which this project was officially launched at OHM 2013, I was surprised to see the media&#8217;s reaction to the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/mailpile-well-theyre-half-right/">Mailpile: Well, they&#8217;re half right</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Recently, there has been a lot of media buzz about <a title="Mailpile" href="http://www.mailpile.is/" target="_blank">Mailpile</a>, a new startup which has raised over $100,000 on IndieGoGo for its eponymous locally hosted web mail project. Having been present at the talk at which this project was officially launched at OHM 2013, I was surprised to see the media&#8217;s reaction to the project. Mailpile appears to have garnered almost universal acclaim for its security features, and praised for its goal of &#8220;Rescuing email from the cloud&#8221; (the name of the presentation given at OHM 2013, slides can be <a title="Rescuing E-mail from the Cloud" href="http://www.mailpile.is/files/OHM2013%20-%20Rescuing%20e-mail%20from%20the%20cloud.pdf">found here</a>). I diagree with the media&#8217;s praise for this project, and here&#8217;s why&#8230;<span id="more-1231"></span></p>
+<p>In their presentation, the Mailpile developers stated the concerns with cloud email to be:</p>
+<ul>
+<li>The centralisation of email storage, making mass surveillance trivial</li>
+<li>Poor spam filtering</li>
+<li>Lack of innovation with regards to F/OSS solutions</li>
+<li>Mass encryption is a &#8220;distant dream&#8221;</li>
+<li>Proprietary lock-in</li>
+<li>Risk of EEE tactics (Embrace, Extend, and Extinguish)</li>
+<li>Spam filters being used for censorship</li>
+<li>Incompatibility with encryption</li>
+</ul>
+<p>I happen to agree with each of these issues (perhaps excepting spam). However, in the wake of PRISM, maybe we should even expand this problem space. Metadata is a big deal: It reveals (in a best case scenario) who you&#8217;ve been talking to and when, how long your messages are, and if you include attachments. Why can&#8217;t we protect this data too? Granted, this would require a somewhat more radical solution,  but I don&#8217;t see why this is a problem that couldn&#8217;t be solved. Still, it&#8217;s not fair to judge Mailpile on the basis of problems it doesn&#8217;t aim to solve, so I&#8217;ll discount this for the rest of my post.</p>
+<p>What Mailpile propose is yet another mail user agent. Mailpile&#8217;s killer feature in the presentation appeared to be the search functionality, returning genuinely impressive search results in mere milliseconds. Beyond this, the interface was vaguely reminiscent of GMail, though obviously still in a very early stage of development. So, a nice interface, but it still doesn&#8217;t seem to address what I believe is the key issue surrounding web mail: Centralisation. From a pragmatic standpoint, no matter how simple it is to employ GPG, the standard user will not opt for it. Therefore, in my mind, the easiest way to raise the barrier to mass surveillance (the hot button topic right now) is to decentralise the storage of email, something which Mailpile fails to address.</p>
+<p>Let&#8217;s take each of the problem bullet points, and see if Mailpile offers a solution. Mailpile at least partly addresses the following:</p>
+<ul>
+<li>Lack of innovation with regards to FOSS solutions &#8211; Does Mailpile count as innovation? That&#8217;s a matter of opinion</li>
+<li>Proprietary lock-in &#8211; Mailpile somewhat addresses this. If one interface supports multiple back-ends, users will find it easier to move between them</li>
+<li>Risk of EEE tactics (Embrace, Extend, and Extinguish) &#8211; Mailpile partly addresses this, much for the same reasons as above</li>
+<li>Incompatibility with encryption &#8211; Mailpile solves this problem! A locally hosted client is ideal as a solution for this problem</li>
+</ul>
+<p>So, out of 8 issues identified with cloud email, Mailpile fully solves 1, and partly addresses 3. What of the other 4?</p>
+<ul>
+<li>The centralisation of email storage, making mass surveillance trivial</li>
+<li>Poor spam filtering</li>
+<li>Mass encryption is a &#8220;distant dream&#8221;</li>
+<li>Spam filters being used for censorship</li>
+</ul>
+<p>All of these, excepting mass encryption, are really server side problems. Mailpile couldn&#8217;t hope to solve these. So, what would? Spam filtering seems to be already solved &#8211; numerous crowd-sourcing solutions exist, and in my mind this is the right way to go about solving this problem. The decentralisation of email storage just relies on more people running mail servers, and not relying on one of the big cloud providers.</p>
+<p>The relative complexity of installing, configuring and maintaining an email server puts many off &#8211; this is what web mail really offers the average user. In my mind, the solution lies in a mail server that&#8217;s simple to deploy and maintain. Decentralising the infrastructure is what will negate the majority of the evils of web mail, not another web mail client, no matter how timely the marketing is.</p>
+<p>On Mailpile&#8217;s own web page, they have quotes from articles on their product. These come from Wired, TechCrunch, Boing Boing, and Crowdfund Insider. These large publications should have done their homework before praising Mailpile&#8217;s security, as it does not appear to address the problems it aims to solve. It is my belief that the majority of Mailpile&#8217;s funding has come off of the back of such positive press, some of which is completely unwarranted.  It&#8217;s nice to see a positive reaction to a product with the aim of improving security and privacy for end users, but next time can we actually make sure it delivers on these goals first?</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/mailpile-well-theyre-half-right/">Mailpile: Well, they&#8217;re half right</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/mailpile-well-theyre-half-right/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>OHM 2013: An overview</title>
+		<link>https://labs.portcullis.co.uk/blog/ohm-2013-an-overview/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ohm-2013-an-overview/#comments</comments>
+		<pubDate>Sun, 18 Aug 2013 11:13:56 +0000</pubDate>
+		<dc:creator><![CDATA[FTR]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[OHM2013]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1271</guid>
+		<description><![CDATA[<p>This summer, a few of us at Portcullis went for a trip to Holland where the OHM 2013 event took place. This is a large gathering for hackers, geeks, scientists, engineers, artists and crafters from all over the world living in small themed camping villages for 4 days. To any frequent attendant of camping festivals [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-an-overview/">OHM 2013: An overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This summer, a few of us at Portcullis went for a trip to Holland where the <a title="OHM 2013" href="https://ohm2013.org/">OHM 2013</a> event took place. This is a large gathering for hackers, geeks, scientists, engineers, artists and crafters from all over the world living in small themed camping villages for 4 days. To any frequent attendant of camping festivals like HAR or <a title="EMF Camp 2014" href="https://www.emfcamp.org">EMF Camp 2014</a>, OHM environment was no surprise: a mix of the geeky, trendy and bizarre where a real alien space ship could easily go unnoticed.<span id="more-1271"></span></p>
+<div id="attachment_1273" style="width: 234px" class="wp-caption alignright"><a name="imageclose-1272"><div class="lb-album"><a href="#image-1272"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-2-224x300.jpg" alt="Hacking This Way At OHM 2013" class="size-medium wp-image-1273"><span></span></a></div>              
+<a href="#imageclose-1272" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1272">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-2.jpg" alt="image-1272">
+                   </div></a><p class="wp-caption-text">All the paths at OHM 2013 reference geek culture</p></div>
+<h2>So, what can you do in an event like this?</h2>
+<p>This is great place to discover what other people have been doing by the talks, find new ideas and perspectives which you can debate but also to get that skill you have been craving for a long time but never had the chance to grasp, through any of the workshops. Simply walking around and let your curiosity rule can bring you a very good time as well and let you find extraordinary people including some stars that only a privileged few of us, know. It&#8217;s all great but don&#8217;t take me too seriously, entertainment is a key element on it whether you fancy dancing to some techno music or to relax by beating kids at old games in the retro gaming area.</p>
+<p>This year, OHM was particularly well packed with its very busy <a title="OHM 2013 program" href="https://program.ohm2013.org">program</a> going on over 20 tents holding lectures, meetings, workshops, demonstrations and other performances about everything from cooking to politics. Dominant topics were Government Surveillance, Computer Forensics, Cryptography, Lockpicking and Vulnerability Research. There was also a lot going on with 3D printers, Arduinos, Raspberry Pi and soldering of course.</p>
+<p>When it comes to my favourite talks I would denote the grand work performed by the <a title="Netherlands Forensic Institute" href="http://www.forensicinstitute.nl">Netherlands Forensic Institute</a> which brought at least 3 great presentations on fraud investigations and memory analysis. A special reference goes to Ruud Schramp on &#8220;<a title="RAM Memory acquisition using live-BIOS modification" href="https://program.ohm2013.org/event/157.html" target="_blank">RAM Memory acquisition using live-BIOS modification</a>&#8221; who describes an alternative way to acquire the RAM when firewire or userspace tools are not available. This involves swapping a BIOS on a live system to prevent ECC memory from getting wiped on reboots as well as a way to bypass live plugging PCIe failures. Epic!</p>
+<div id="attachment_1272" style="width: 310px" class="wp-caption alignright"><a name="imageclose-1273"><div class="lb-album"><a href="#image-1273"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-1-300x224.jpg" alt="Ohm 2013 By Night #1" class="size-medium wp-image-1272"><span></span></a></div>              
+<a href="#imageclose-1273" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1273">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-1.jpg" alt="image-1273">
+                   </div></a><p class="wp-caption-text">The lights at OHM 2013 were something to behold</p></div>
+<p>Another presentation that for sure deserves to be on my top 3 was &#8220;<a title="Hard disks: More than just block devices" href="http://spritesmods.com/?art=hddhack">Hard disks: More than just block devices</a>&#8221; where hacking these devices and its internal controllers brings a new meaning to the sentence &#8220;How to install Linux in your hard-drive&#8221; by Sprite_tm. Finally, together at the top comes the great vulnerability research on network devices with &#8220;<a title="Cisco in the sky with diamonds" href="http://www.phenoelit.org/stuff/CiscoInTheSkyWithDiamonds.pdf">Cisco in the sky with diamonds</a>&#8221; by FX.</p>
+<p>There were other highlights worth mentioning. Over video conference we had Julian Assange speaking about government surveillance, Google&#8217;s cooperation and, of course, the NSA case. Like it or not this was the moment that commanded the most attention and participation not to mention a few tears.<br />
+Another important event largely awaited was the &#8220;<a href="https://srlabs.de/rooting-sim-cards/" title="SIM card exploitation">SIM card exploitation</a>&#8221; by Karsten Nohl who has brought us the results of his 3 year research which exposed weaknesses on some of these cards namely regarding the supported encryption (DES).</p>
+<p>There were more, many more, great talks for which I can only enumerate here but only after reminding you that this is a personal choice of someone who, unfortunately, could not attend all lectures and workshops talking place at the same time and had to make some tough decisions of which shall be the best to attend:</p>
+<div id="attachment_1274" style="width: 310px" class="wp-caption alignright"><a name="imageclose-1274"><div class="lb-album"><a href="#image-1274"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-3-300x224.jpg" alt="OHM 2013 By Night #2" class="size-medium wp-image-1274"><span></span></a></div>              
+<a href="#imageclose-1274" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1274">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/photo-3.jpg" alt="image-1274">
+                   </div></a><p class="wp-caption-text">The final night party at OHM 2013</p></div>
+<ul>
+<li>&#8220;<a title="Returning signals for fun and profit" href="https://program.ohm2013.org/event/233.html">Returning signals for fun and profit</a>&#8221; by Erik Bosman</li>
+<li>&#8220;<a title="Counter-cryptanalysis: fire retardant for the next Flame-like attack on MD5 &amp; SHA-1" href="https://program.ohm2013.org/event/192.html">Counter-cryptanalysis: fire retardant for the next Flame-like attack on MD5 &amp; SHA-1</a>&#8221; by Marc Stevens</li>
+<li>&#8220;<a title="Forensic hardware hacking" href="https://program.ohm2013.org/event/29.html">Forensic hardware hacking</a>&#8221; @NFI by Ronald van der Knijff</li>
+<li>&#8220;<a title="Low-cost vulnerability research: XSLT fuzzing as a case study" href="https://program.ohm2013.org/event/261.html">Low-cost vulnerability research: XSLT fuzzing as a case study</a>&#8221; by Nicolas Grégoire</li>
+<li>&#8220;<a title="Tracy - system call injection and tracing" href="https://program.ohm2013.org/event/217.html">Tracy &#8211; system call injection and tracing</a>&#8221; by Merlijn B.W. Wajer</li>
+<li>&#8220;<a title="Even more clipboard fun" href="https://program.ohm2013.org/event/221.html">Even more clipboard fun</a>&#8221; by niekt0</li>
+<li>&#8220;<a title="The political and hacker origins of Twitter" href="https://program.ohm2013.org/event/107.html">The political and hacker origins of Twitter</a>&#8221; by Rabble</li>
+<li>&#8220;<a title="Non-signature payload-based intrusion detection" href="https://program.ohm2013.org/event/13.html">Non-signature payload-based intrusion detection</a>&#8221; by nemsis</li>
+</ul>
+<p>I highly recommend you to have a look at these and other presentations even though at the time of writing, they were not available on the web site. Stay tuned as they were all recorded and new contents are coming over all the time at on the <a title="OHM wiki" href="https://ohm2013.org/wiki/Observe._Hack._Make._2013.">OHM 2013 wiki</a>.</p>
+<p>I would like to leave a note of praise to the remarkable work by the organisation and all volunteers to bring this camping festival to life. It was quite impressive to see all the preparations down to the smallest details to make everything work and without them it would have never been possible.</p>
+<p>It was a true privilege to attend OHM, I can only recommend it! A very healthy way to break out the daily routine for once and enjoy this non-stop party made of a great mix of technology &amp; nature environment. Finally, I leave you with an invitation to another event that shall be pretty much like this due right next year on <a title="EMFCamp 2014" href="https://www.emfcamp.org" target="_blank">EMFcamp 2014</a>. I hope to see you there!</p>
+<h3>More&#8230;</h3>
+<ul>
+<li>Podcasts and videos available <a title="mirror" href="http://bofh.nikhef.nl/events/OHM/">online</a></li>
+<li>Some of the presentations (audio) are now available <a title="online" href="http://archive.org/details/ohm2013">online</a>!</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-an-overview/">OHM 2013: An overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ohm-2013-an-overview/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>We&#8217;re all going on our summer holidays&#8230;</title>
+		<link>https://labs.portcullis.co.uk/blog/were-all-going-on-our-summer-holidays/</link>
+		<comments>https://labs.portcullis.co.uk/blog/were-all-going-on-our-summer-holidays/#comments</comments>
+		<pubDate>Fri, 26 Jul 2013 00:42:13 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[OHM2013]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1185</guid>
+		<description><![CDATA[<p>We&#8217;re not really, but some of the Portcullis Labs Team are off to OHM 2013 in Holland. For those of you who don&#8217;t know, OHM is the latest in a long line of four yearly &#8220;hacker&#8221; conferences that take place in a field, with the participants camping out. Unlike more conventional conferences such as DEF [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/were-all-going-on-our-summer-holidays/">We&#8217;re all going on our summer holidays&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We&#8217;re not really, but some of the Portcullis Labs Team are off to <a title="OHM 2013" href="https://ohm2013.org/">OHM 2013</a> in Holland. For those of you who don&#8217;t know, OHM is the latest in a long line of four yearly &#8220;hacker&#8221; conferences that take place in a field, with the participants camping out. Unlike more conventional conferences such as DEF CON in Vegas, OHM and its previous incarnations focus on more than simply traditional information security, by also appealing to those who appreciate the DIY spirit of the maker community. Unlike the aforementioned DEF CON, you will see talks on topics such as how to make cheese and 3D printing at OHM. With this in mind, and with the promise of post-con articles on things we enjoyed, I asked the Team what talks they&#8217;re particularly keen to see:<span id="more-1185"></span></p>
+<ul>
+<li>&#8220;<a title="NetBSD network security vulnerability disclosure" href="https://program.ohm2013.org/event/252.html">NetBSD network security vulnerability disclosure</a>&#8221; &#8211; This talk covers a recently discovered vulnerability in the NetBSD networking code. One for those of you who have an interest in UNIX focused security research, hopefully we&#8217;ll see some kernels panic. #imisslsd</li>
+<li>&#8220;<a title="Decoding memory dumps of mobile phones and navigation systems" href="https://program.ohm2013.org/event/365.html">Decoding memory dumps of mobile phones and navigation systems</a>&#8221; &#8211; This is a workshop that looks at how to analyse the memory dumps of common mobile phones and other similar devices. Having already performed some work in this space to give our customers a worst case scenario for lost and stolen phones and contributed some of our expertise to the forthcoming <a title="OWASP" href="http://owasp.org/">OWASP</a> mobile methodologies, we&#8217;re wondering if there are any neat tricks we&#8217;ve missed</li>
+<li>&#8220;<a title="Non-signature payload-based intrusion detection" href="https://program.ohm2013.org/event/13.html">Non-signature payload-based intrusion detection</a>&#8221; &#8211; Talk showing off a non-signature payload-base approach to intrusion detection. We assume it will catch Meterpreter but what about our custom payloads?</li>
+<li>&#8220;<a title="Trolling the web of trust" href="https://program.ohm2013.org/event/113.html">Trolling the web of trust</a> &#8221; &#8211; The web of trust is often considered a strength of PGP however just like Facebook, it can also inform your adversary about the friends you keep. So perhaps you&#8217;d like to be friends with key ID 0xF2D755CC? (clue: check out http://pgp.mit.edu/)</li>
+<li>&#8220;<a title="Rescuing email from the cloud" href="https://program.ohm2013.org/event/105.html">Rescuing email from the cloud</a>&#8221; &#8211; Perhaps the flip side to the previous talk, despite the potential for information leakage, PGP presents the only real option for those of you who want to avoid the Internet equivalent of sending all your correspondence as postcards. So what exactly do we do about web mail services that live in the cloud?</li>
+<li>&#8220;<a title="Hacking your car with open source hardware and software" href="https://program.ohm2013.org/event/26.html">Hacking your car with open source hardware and software</a>&#8221; &#8211; We tried to persuade one of our previous employees to let us hack his BMW, he said &#8220;no&#8221;. This talk promises some new tricks which will benefit next year&#8217;s <a title="White Hat Rally" href="http://info.whitehatrally.org/">White Hat Rally</a> participants. Best dressed card this year went to our <a title="Roving Muppets" href="http://uk.virginmoneygiving.com/fundraiser-web/fundraiser/showFundraiserProfilePage.action?userUrl=portcullis-whr-2013&amp;isTeam=true">Roving Muppets</a>, but I fully expect that next year, we&#8217;ll win it outright!</li>
+<li>&#8220;<a title="SIM card exploitation" href="https://program.ohm2013.org/event/169.html">SIM card exploitation</a>&#8221; &#8211; All over the news at the moment, Karsten Nohl talks about his investigations into Java-based SIMs and the possibilities for remote attacks against mobile phones utilising SMS as an entry point. We&#8217;re hoping that it will build on the previous <a href="http://wiki.thc.org/gsm/simtoolkit">THC</a> research</li>
+<li>&#8220;<a title="Counter-cryptanalysis: Fire retardant for the next Flame-like attack on MD5 and SHA-1" href="https://program.ohm2013.org/event/192.html">Counter-cryptanalysis: Fire retardant for the next Flame-like attack on MD5 and SHA-1</a>&#8221; &#8211; Marc Stevens is responsible for some of the more interesting research on viable attacks on SHA-1. This talk will look at some of the state-of-the-art collision attacks on hashing algorithms that are &#8220;just around the corner&#8221; and how they might be mitigated. We expect this talk to be hot!</li>
+<li>&#8220;<a title="Even more clipboard fun" href="https://program.ohm2013.org/event/221.html">Even more clipboard fun</a>&#8221; &#8211; This is all about tricks involving invisible control characters, which whilst unseen on a web page, may when pasted into an xterm yield unexpected command execution.</li>
+<li>&#8220;<a title="Cisco in the sky with diamonds" href="https://program.ohm2013.org/event/215.html">Cisco in the sky with diamonds</a>&#8221; &#8211; Having previously looked at <a href="http://support.huawei.com/support/pages/news/NewsInfoAction.do?doc_id=IN0000054784&#038;colID=ROOTENWEB%7CCO0000000170&#038;actionFlag=view">Huawei</a>, Felix &#8220;FX&#8221; Lindner pops up to give us the skinny on some recent Cisco research.</li>
+<li>&#8220;<a title="Low-cost vulnerability research: XSLT fuzzing as a case study" href="https://program.ohm2013.org/event/261.html">Low-cost vulnerability research: XSLT fuzzing as a case study</a>&#8221; &#8211; A talk by Nicolas Grégoire covering his fuzzing of a number of XSLT parsers. If you&#8217;re processing XML (and who isn&#8217;t these days) then inform yourself on the risks you face</li>
+<li>&#8220;<a title="Make your own spork" href="https://program.ohm2013.org/event/81.html">Make your own spork</a>&#8221; &#8211; Seriously, who wouldn&#8217;t?</li>
+</ul>
+<p>Anyway, the Team will be heading out on Tuesday morning and heading back on Sunday evening. We&#8217;re going to be located in the <a title="EMF village" href="https://ohm2013.org/wiki/Village:EMF">EMF village</a>, so feel free to pop by for a beer if you&#8217;re fortunate enough to be attending too.</p>
+<p>Editor&#8217;s note: A little bird pointed out that I&#8217;d spelt Karsten Nohl&#8217;s name incorrectly. This has now been fixed.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/were-all-going-on-our-summer-holidays/">We&#8217;re all going on our summer holidays&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/were-all-going-on-our-summer-holidays/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

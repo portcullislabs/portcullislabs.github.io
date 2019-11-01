@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>http-dir-enum | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/tools/http-dir-enum/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='http-dir-enum - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/tools/http-dir-enum/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-218 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-218"  class="portcullis-post portcullis-article  post-218 post type-post status-publish format-standard hentry category-tools">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">http-dir-enum</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="16:49">28/03/2008</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/tools/http-dir-enum/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>A command-line tool for bruteforce-guessing directory and filenames on web servers.<span id="more-218"></span></p>
+<p>http-dir-enum is a tool for finding content that is not linked on a web site. Its main use is for finding directories that exist on a server. Simply provide a dictionary file and a URL.</p>
+<p>This tool is written in PERL and uses the LWP library.</p>
+<h2>Key features</h2>
+<ul>
+<li>Automatic detection of which HTTP response code to ignore (normally 404, but can vary on some sites)</li>
+<li>Support for bruteforcing Files and Directories</li>
+<li>Can search for directories recursively</li>
+<li>Proxy support</li>
+<li>Support for HTTP Basic Authentication</li>
+<li>Support for sending custom cookies</li>
+<li>Save scan output in XML format</li>
+<li>Command line (lack of GUI is a feature, not a bug)</li>
+<li>Mutli-threading for extra speed</li>
+<li>HTTP keep alive support for extra speed (can be turned off)</li>
+</ul>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+
+http-dir-enum v0.4.3 ( https://labs.portcullis.co.uk/application/http-dir-enum/ )
+Copyright (C) 2006 Mark Lowe ( mrl@portcullis-security.com )
+
+Given a URL and a wordlist, http-dir-enum will attempt to determine names of
+directories that exist on a web site.
+
+Usage: http-dir-enum.pl [options] -f dir-file url
+
+options are:
+-m n Maximum number of worker processes (default: 8)
+-f file File of potential directory names
+-k file File of known directory names
+-c 0|1 Close connection between each attempt (default: 0)
+-r 0|1 Recursively enumerate sub directories (default: 1)
+-t n Wait a maximum of n seconds for reply (default: 20)
+-u user Username to use for basic authentication
+-p pass Password to use for basic authentication
+-H g|h HTTP method g=GET, h=HEAD (default: head)
+-i code Ignore HTTP response code (e.g. 404 or '404|200')
+-U str Set User-Agent header to str (default based on Firefox 2.0.0.2/Linux)
+-s 0|1 Add a trailing slash to the URL (default: 1)
+-S 0|1 Case sensitive directory names (default: 1)
+-a 0|1 Automatically determine HTTP response code to ignore (default: 1)
+-l n Limit scan to n attempts per second (default: unlimited)
+-R 0|1 Follow redirects (default: 0)
+-q Quiet. Don't print out info (&quot;[I]&quot;) messages
+-n n Only read first n lines of dirs file (default: unlimited)
+-o file Save XML report of dirs found to file (default: don't save a report)
+-x regx Return only results that match this regular expression
+-X regx Ignore results that match this regular expression
+-P url Proxy URL
+-C str Use cookie
+-v Verbose
+-d Debugging output
+-D code Print out whole response if it has HTTP code &quot;code&quot; (e.g. 500)
+-h This help message
+
+The default options should be suitable most of the time, so the
+typical usage would be:
+
+http-dir-enum.pl -f dirs.txt http://host
+
+PERFORMANCE TIPS:
+
+* Make sure the number of processes (-m) is less than the number of directories
+passed via the -f option. It normally is anyway.
+
+* Use a lower number of processes (e.g. 2) over fast connections like localhost. Use a
+higher number (e.g. 8 or 32) over laggy connections.
+
+</pre>
+<h2>Examples</h2>
+<p>Below are some common uses for http-dir-enum. The output has been edited for brevity in most cases.</p>
+<h3>Guessing directory names</h3>
+<p>The simplest (and most common way to run http-dir-enum is:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -f directory-names.txt http://192.168.2.54
+Starting http-dir-enum v0.4.3 ( https://labs.portcullis.co.uk/application/http-dir-enum/ )
+Copyright (C) 2006 Mark Lowe ( mrl@portcullis-security.com )
+
+URL .................... http://192.168.2.54
+Directory name file .... directory-names.txt
+HTTP Method ............ HEAD
+Recursive dir search ... On
+Auto-ignore ............ On
+
+######## Scan started on Fri Mar 28 16:08:11 2008 #########
+[I] Processing directory: / (0 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54
+cgi-bin 403
+doc 403
+icons 200
+test 200
+images 200
+[I] Processing directory: cgi-bin (4 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/cgi-bin
+[I] Processing directory: doc (3 dirs remaining)
+[I] Auto-ignoring HTTP code 403 for http://192.168.2.54/doc
+[I] Processing directory: icons (2 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/icons
+[I] Processing directory: test (1 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/test
+test/include 200
+test/www 403
+[I] Processing directory: images (2 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/images
+[I] Processing directory: test/include (1 dirs remaining)
+[I] Auto-ignoring HTTP code 200 for http://192.168.2.54/test/include
+[I] Processing directory: test/www (0 dirs remaining)
+[I] Auto-ignoring HTTP code 403 for http://192.168.2.54/test/www
+######## Scan completed on Fri Mar 28 16:08:16 2008 #########
+7 results.
+
+5648 queries in 5 seconds (1130 queries / sec)
+</pre>
+<p>This will guess directory names using the dictionary file directory-names.txt. http-dir-enum will automatically figure out which HTTP response code it needs to ignore &#8211; for most directories it&#8217;s 404, but some it&#8217;s 403 or even 200. Any requests that don&#8217;t elicit the ignored response code are reported.</p>
+<p>By default directory name guessing is recursive, i.e. when a directory is found http-dir-enum search for subdirectories within it. To turn off recursion use -r 0.</p>
+<p>HTTP HEAD requests are used by default as they&#8217;re small and faster. Some servers don&#8217;t respond well to HEAD requests, so you can use GET requests instead with -H g.</p>
+<p>To slow scans down a bit (you don&#8217;t want to DoS the server you&#8217;re testing!) you can use -l 100 to limit scanning to 100 requests per second. You&#8217;ll need to figure out many requests the target can handle. It varies a lot between servers, and even between directories on a single server.</p>
+<p>If you&#8217;re scanning an IIS server you might want to use -S 0 to turn off case sensitivity.</p>
+<p>You can use just the first 2000 lines of your huge dictionary file using -n 2000.</p>
+<p>If for some reason you don&#8217;t want http-dir-enum to automatically detect which HTTP response code to ignore, use -a 0 to turn off this feature.</p>
+<p>To manually specify an HTTP response code to ignore, use something like -i 404, or -i &#8217;404|200&#8242;.</p>
+<h3>Less output</h3>
+<p>If you&#8217;d prefer not to know exactly where your scan is up to, you can use the -q option:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -q -f directory-names.txt http://192.168.2.54
+Starting http-dir-enum v0.4.3 ( https://labs.portcullis.co.uk/application/http-dir-enum/ )
+Copyright (C) 2006 Mark Lowe ( mrl@portcullis-security.com )
+
+URL .................... http://192.168.2.54
+Processes .............. 8
+Directory name file .... directory-names.txt
+Query timeout .......... 20 secs
+HTTP Method ............ HEAD
+Max Queries / sec ...... unlimited
+Trailing slash ......... On
+Recursive dir search ... On
+Close connections ...... Off
+Follow redirects ....... Off
+Case sensistive dirs ... On
+Auto-ignore ............ On
+
+######## Scan started on Fri Mar 28 16:21:25 2008 #########
+icons 200
+test 200
+images 200
+cgi-bin 403
+doc 403
+test/include 200
+test/www 403
+######## Scan completed on Fri Mar 28 16:21:29 2008 #########
+7 results.
+
+5648 queries in 4 seconds (1412 queries / sec)
+</pre>
+<h3>Guessing file names</h3>
+<p>Sometimes during testing you need to search all the directories on a web server for a particular file. Maybe you just uploaded a file via the web app, but don&#8217;t know where it&#8217;s storing it on the server. Or, maybe you just researched the web server you&#8217;re testing and found that &#8216;password.properties&#8217; is a really important file if you can download it.</p>
+<p>You need to supply a list of known directory name (taken from your directory-guessing attack), and a list of filenames:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -k dirs.txt -f files.txt http://192.168.2.54
+Starting http-dir-enum v0.4.3 ( https://labs.portcullis.co.uk/application/http-dir-enum/ )
+Copyright (C) 2006 Mark Lowe ( mrl@portcullis-security.com )
+
+######## Scan started on Fri Mar 28 16:35:48 2008 #########
+[I] Processing directory: cgi-bin (6 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/cgi-bin
+cgi-bin/test.cgi 200
+[I] Processing directory: icons (6 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/icons
+[I] Processing directory: test (5 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/test
+[I] Processing directory: images (4 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://192.168.2.54/images
+[I] Processing directory: doc (3 dirs remaining)
+[I] Auto-ignoring HTTP code 403 for http://192.168.2.54/doc
+[I] Processing directory: test/include (2 dirs remaining)
+[I] Auto-ignoring HTTP code 200 for http://192.168.2.54/test/include
+[I] Processing directory: test/www (1 dirs remaining)
+[I] Auto-ignoring HTTP code 403 for http://192.168.2.54/test/www
+[I] Processing directory: cgi-bin/test.cgi (0 dirs remaining)
+[I] Auto-ignoring HTTP code 200 for http://192.168.2.54/cgi-bin/test.cgi
+######## Scan completed on Fri Mar 28 16:35:50 2008 #########
+1 results.
+
+1688 queries in 2 seconds (844 queries / sec)
+</pre>
+<h3>Apache username guessing</h3>
+<p>Apache servers configured with the UserDir directive are vulnerable to username enumeration. This can be exploited with http-dir-enum. First create a dictionary file in the following format:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+~root ~bin ~listen ~adm ...
+</pre>
+<p>Then run http-dir-enum with your dictionary file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -f apache-tilda-usernames.txt http://localhost
+Starting http-dir-enum v0.4.3 ( https://labs.portcullis.co.uk/application/http-dir-enum/ )
+Copyright (C) 2006 Mark Lowe ( mrl@portcullis-security.com )
+
+######## Scan started on Mon Mar 31 12:51:25 2008 #########
+[I] Processing directory: / (0 dirs remaining)
+[I] Auto-ignoring HTTP code 404 for http://localhost
+~adm 403
+~apache 403
+~bin 403
+~cron 403
+~daemon 403
+~ftp 403
+~games 403
+~halt 403
+~ldap 403
+~lp 403
+...
+</pre>
+<p>Each user that exists on the systems should show up with a 403 response code (meaning that that user&#8217;s home directory exists, but you can&#8217;t browse it).</p>
+<h3>Using HTTPS</h3>
+<p>http-dir-enum is based on the LWP library, so can do SSL if LWP is installed properly. Simply specify an HTTPS URL:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -f dict.txt https://192.168.2.54
+</pre>
+<h3>Non-standard TCP ports</h3>
+<p>Simply put the port number in the URL as you would in a browser:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -f dict.txt http://192.168.2.54:8000
+</pre>
+<h3>Using a proxy</h3>
+<p>Use the -P option to specify the URL for your proxy:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -P http://myproxy:3128 -f dict.txt http://192.168.2.54
+</pre>
+<h3>Using Basic Authentication</h3>
+<p>You can specify Basic Auth credentials on the command line:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ http-dir-enum.pl -u user -p pass -f dict.txt http://192.168.2.54
+</pre>
+<p>The latest version of the code will be maintained on <a href="https://github.com/portcullislabs/http-dir-enum">github</a>. Older versions are available below.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/http-dir-enum-0.4.3.tar.gz" target="_blank" title="Download Http-dir-enum-0.4.3 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Http-dir-enum-0.4.3 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/http-dir-enum-0.4.3.tar.gz" title="Download http-dir-enum-0.4.3.tar.gz" target="_blank" id="wpfb-file-link-1">http-dir-enum-0.4.3.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    60.0 KiB<br />
+    MD5 hash: df76eb7fd9d34d1698c0b1fbe8fa6f62 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div><div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/http-dir-enum-0.4.2.tar.gz" target="_blank" title="Download Http-dir-enum-0.4.2 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Http-dir-enum-0.4.2 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/http-dir-enum-0.4.2.tar.gz" title="Download http-dir-enum-0.4.2.tar.gz" target="_blank" id="wpfb-file-link-2">http-dir-enum-0.4.2.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    61.1 KiB<br />
+    MD5 hash: c2c46b540666bd433cc8cd416222a9f3 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-GqiSUsowO4dfxrU" class="g-recaptcha-explicit-id"><div id="g-recaptcha-GqiSUsowO4dfxrU"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/tools/http-dir-enum/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/wp-filebase/js/common.js?ver=3.4.4'></script>
+<script type="text/javascript">
+//<![CDATA[
+wpfbConf={"ql":true,"hl":0,"pl":1,"hu":"https:\/\/labs.portcullis.co.uk\/","db":"download","fb":false,"cm":0,"ajurl":"https:\/\/labs.portcullis.co.uk\/wp-admin\/admin-ajax.php?action=wpfilebase","ajurlpub":"\/\/labs.portcullis.co.uk\/?wpfilebase_ajax=1"};function wpfb_ondl(file_id,file_url,file_path){ if(typeof pageTracker == 'object') {
+	pageTracker._trackPageview(file_url); // new google analytics tracker
+} else if(typeof urchinTracker == 'function') {	
+	urchinTracker(file_url); // old google analytics tracker
+} }
+//]]>
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 66 queries. 0.088 seconds. -->
+</div>
+</body>
+</html>
+

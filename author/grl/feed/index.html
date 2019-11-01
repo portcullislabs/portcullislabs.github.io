@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; GRL</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/grl/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>SSTIC 2017 wrap-up</title>
+		<link>https://labs.portcullis.co.uk/blog/sstic-2017-wrap-up/</link>
+		<comments>https://labs.portcullis.co.uk/blog/sstic-2017-wrap-up/#comments</comments>
+		<pubDate>Tue, 27 Jun 2017 12:55:42 +0000</pubDate>
+		<dc:creator><![CDATA[GRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[SSTIC]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5838</guid>
+		<description><![CDATA[<p>This year, one member of the Portcullis team went to one of the biggest security events in France: SSTIC (Symposium sur la sécurité des technologies de l&#8217;information et des communications). This post will highlight the most interesting presentations. Many of the slides, articles and videos are available on the SSTIC web site, but they are [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/sstic-2017-wrap-up/">SSTIC 2017 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This year, one member of the Portcullis team went to one of the biggest security events in France: <a title="SSTIC" href="https://www.sstic.org">SSTIC</a> (Symposium sur la sécurité des technologies de l&#8217;information et des communications). This post will highlight the most interesting presentations. Many of the slides, articles and videos are available on the <a title="SSTIC web site" href="https://www.sstic.org/2017/programme/">SSTIC web site</a>, but they are mostly in French.<span id="more-5838"></span></p>
+<p>The SSTIC event is one of the oldest security event in France with <a title="La Nuit du Hack" href="https://nuitduhack.com/en">La Nuit du Hack</a>, this year it was the 15th edition. The event is based at Rennes (Brittany), a small town with lots of students and bars. For the record, there is a street on this city which is nicknamed &#8220;Thirsty Street&#8221; because the majority of the bars of the city are located there. The event took place over 3 days (7, 8 and 9 of June) and welcomed around 600 security enthusiasts. There is only one track with 29 presentations in different formats:</p>
+<ul>
+<li>11 Short talks: 15 min</li>
+<li>14 Regular talks: 30 min</li>
+<li>5 Guest talks: between 45 min and 1 hour</li>
+</ul>
+<p>However in addition, there are &#8220;rump sessions&#8221;, which is a sort of lightening talks with a maximum duration of 3 minutes. Why maximum? Well, due to the fact the audience is able to stop the presentation by applauding the speaker.</p>
+<p>Here were some of our favorite talks that were delivered at this event:</p>
+<h2>Silo Administration (&#8220;Administration en Silo&#8221;)</h2>
+<p>This talk was presented by Aurélien Bordes working for the ANSSI, which is the French equivalent of the NCSC. It was a very interesting talk showing how is possible to harden your Windows domain in order to avoid a full compromise during an internal penetration test or an APT. The idea is to prevent the attackers from performing lateral movements and obtaining domain admin rights in your Windows domain.</p>
+<p>First, the speaker explained that a Windows domain can be divided in three different levels:</p>
+<ul>
+<li>RED: Administration resources (Active Directory, administrator workstations, etc.)</li>
+<li>YELLOW: Business data and assets manipulating those data</li>
+<li>GREEN: end-user workstations</li>
+</ul>
+<p>Usually, the YELLOW level is the most important one. But in order to protect it, it is necessary to protect also the RED level. The idea is to improve the security of those levels by securing the authentication process in Windows. To do so, you should take the following steps:</p>
+<ul>
+<li>Disable NTLM and use Kerberos instead</li>
+<li>Forbid Kerberos delegation for the administrators</li>
+<li>Protect the AS requests on Kerberos</li>
+<li>Restrict the computers where the administrators are allowed to connect from</li>
+</ul>
+<p>For the first two items, an administrator can easily apply those using GPO. For the other items, the following features available in Windows can be used:</p>
+<ul>
+<li><a title="Protected Users Security Group" href="https://technet.microsoft.com/en-us/library/dn466518(v=ws.11).aspx">Protected Users Security Group</a></li>
+<li>Kerberos Armoring to protect AS and TGS exchanges</li>
+<li>Set-up <a title="Authentication Policies" href="https://msdn.microsoft.com/en-us/library/dn486813(v=ws.11).aspx">Authentication Policies</a> to restrict the lifetime of TGT tickets and to allow an account to connect only from specific workstations</li>
+</ul>
+<p>These features are not new, but they are not really well known. However, to enjoy those features you need to use at least Windows 8 and Windows Server 2012 versions.</p>
+<h2>WSUSpendu</h2>
+<p>This talk was presented by Romain Coltel (Alsid) and Yves Le Provost (ANSSI). The goal was to present a new tool called <a title="WSUSpendu" href="https://github.com/AlsidOfficial/WSUSpendu">WSUSpendu </a>(pendu means hanged in French). This work was inspired by the <a title="WSUSPect" href="https://github.com/ctxis/wsuspect-proxy">WSUSPect</a> tool presented at BlackHat in 2015 which allowed &#8220;Man-In-The-Middle&#8221; attacks to be performed on WSUS insecure connections in order to inject fake updates on the target. By default, WSUS use HTTP connections to send the updates, which are composed of signed binaries and XML files containing the description of the updates. The idea of the WSUSpendu tool is to inject directly fake updates on the WSUS server. The use case is very simple: if an attacker is able to compromise the WSUS server, it is possible to insert malicious updates on the WSUS database in order to target a specific workstation or a server.</p>
+<p>This tool could be very useful during internal penetration tests and should be on your tool set.</p>
+<h2>Binacle</h2>
+<p>Another presentation made by one of the ANSSI team (Guillaume Jeanne) and another interesting tool when hunting malicious binaries. Guillaume presented a tool called <a title="Binacle" href="https://github.com/ANSSI-FR/Binacle">Binacle</a> which allows you to make full-text searches on binaries. Of course, the idea is not just to make string searches but also to be able to search for a series of bytes for instance. In the first part, the speaker showed us the difficulties to make searches on a binary comparing to a text file. Guillaume tried several solutions allowing to make a search in a constant timeframe, with a reasonable database size and allowing a quick insertion on the database. Next, he compared the execution time of his tool to a Yara scan. And the result is much better. So, the idea of Guillaume is to use Binacle in order to help the generation of Yara rules but also to speed up the scans.</p>
+<p>To finish, the tool was written in Rust and could be really useful for incident response jobs.</p>
+<h2>TV5 Monde post-incident review</h2>
+<p>For the closing conference, the ANSSI team (again!) delivered feedback about the TV5 Monde hack. As a reminder, TV5 Monde is a French channel hacked in 2015 by the APT28 group. This hack was affecting the broadcast of the programmes for several days, but also the different online accounts (Twitter, Facebook and YouTube). The first part of the presentation focused on how the attackers succeed to compromise the internal network and without any surprise it was, unfortunately, pretty easy. The attackers were able to steal the credentials from a contractor (VPN access) and use them to obtain internal access to the TV5 channel network. The lack of network segregation allowed the attackers to compromise several machines and they quickly found a domain admin account. The next step was to create a specific domain administrator to be used by the attackers in order to reconnect easily. Finally, the attackers found an internal wiki containing clear-text passwords and documentation about the broadcast equipments used by TV5 Monde. The second part of the presentation focused on the remediation part and especially on how the ANSSI guys rebuilt the Active Directory. A complete retranscription of the presentation was made by Mathieu Suiche and can be found on his blog <a title="here" href="https://blog.comae.io/lessons-from-tv5monde-2015-hack-c4d62f07849d ">here</a>.</p>
+<p>This presentation was really good and it was really interesting to have some feedback about a security incident event. Bravo to the ANSSI and TV5 Monde for this feedback and for choosing to share this kind of information to the community.</p>
+<h2>Other interesting talks</h2>
+<ul>
+<li><a title="YaCO" href="https://github.com/DGA-MI-SSI/YaCo">YaCO</a> (Yet another Collaborative tool): This tool aims to add a &#8220;multi-user&#8221; layer to the IDA Debugger in order to allow multiple persons to work on the same binary</li>
+<li>Deploying TLS 1.3: Presentation made by Filippo Valsorda (CloudFare): This presentation focused on the new features available on TLS1.3. If it sounds interesting, read the blog article <a title="here" href="https://blog.cloudflare.com/tls-1-3-overview-and-q-and-a/">here</a>and see the <a title="video" href="https://static.sstic.org/videos2017/SSTIC_2017-06-09_P05.mp4">video</a> in English</li>
+<li>Breaking Samsung Galaxy Secure Boot through Download mode: Frédéric Basse presented a bootloader bug in Samsung Galaxy smartphones which, with physical access allowed for the execution of arbitrary code. <a title="Full article" href="https://www.sstic.org/media/SSTIC2017/SSTIC-actes/attacking_samsung_secure_boot/SSTIC2017-Article-attacking_samsung_secure_boot-basse.pdf">Full article</a> in English</li>
+<li><a title="BinCAT" href="https://github.com/airbus-seclab/bincat">BinCAT</a>: purrfecting binary static analysis: BinCAT is a tool able to perform static analysis on x86 binaries with the following features: value analysis (registers and memory), taint analysis, type reconstruction and propagation, backward and forward analysis. <a title="Full article" href="https://www.sstic.org/media/SSTIC2017/SSTIC-actes/bincat_purrfecting_binary_static_analysis/SSTIC2017-Article-bincat_purrfecting_binary_static_analysis-biondi_rigo_zennou_mehrenberger.pdf">Full article</a> in English</li>
+<li>Subscribers remote geolocation and tracking using 4G VoLTE enabled Android phone: P1Sec presented an issue on the VoLTE (Voice over LTE) protocol allowing to leak the position (localization) of your contact. <a title="Full article" href="https://www.sstic.org/media/SSTIC2017/SSTIC-actes/remote_geolocation_and_tracing_of_subscribers_usin/SSTIC2017-Article-remote_geolocation_and_tracing_of_subscribers_using_4g_volte_android_phone-le-moal_ventuzelo_coudray.pdf">Full article</a> in English</li>
+</ul>
+<h2>References</h2>
+<p>A more detailed write-up in English can be found on the following links:</p>
+<ul>
+<li>Day 1: <a href="https://blog.rootshell.be/2017/06/08/sstic-2017-wrap-day-1/">https://blog.rootshell.be/2017/06/08/sstic-2017-wrap-day-1</a><a href="https://blog.rootshell.be/2017/06/08/sstic-2017-wrap-day-1/">/</a></li>
+<li>Day 2: <a href="https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-2/">https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-2</a><a href="https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-2/">/</a></li>
+<li>Day 3: <a href="https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-3/">https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-3</a><a href="https://blog.rootshell.be/2017/06/09/sstic-2017-wrap-day-3/">/</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/sstic-2017-wrap-up/">SSTIC 2017 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/sstic-2017-wrap-up/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+<enclosure url="https://static.sstic.org/videos2017/SSTIC_2017-06-09_P05.mp4" length="1424405169" type="video/mp4" />
+		</item>
+	</channel>
+</rss>

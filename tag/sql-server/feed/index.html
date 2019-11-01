@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; SQL Server</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/sql-server/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>MS SQL Server audit: Surface area reduction (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/#comments</comments>
+		<pubDate>Thu, 15 Feb 2018 20:27:39 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[SQL Server]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3384</guid>
+		<description><![CDATA[<p>Continuing on from part 1, we will look other benchmark settings that will help to reduce the surface area of attack. Other settings There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered: Set is_trustworthy settings for [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Continuing on from <a href="/blog/ms-sql-server-audit-surface-area-reduction-part-1/">part 1</a>, we will look other benchmark settings that will help to reduce the surface area of attack.<span id="more-3384"></span></p>
+<h2>Other settings</h2>
+<p>There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered:</p>
+<ul>
+<li>Set is_trustworthy settings for each database in sys.databases to off (2.10 in CIS SQL Server 2008R2; 2.9 in CIS SQL Server 2012)</li>
+<li>Disable unnecessary SQL Server protocols (2.11 in CIS SQL Server 2008R2; 2.10 in CIS SQL Server 2012)</li>
+<li>Configure SQL Server to use non-standard ports (2.12 in CIS SQL Server 2008R2; 2.11 in CIS SQL Server 2012)</li>
+<li>Set the &#8220;Hide Instance&#8221; option to Yes for Production SQL Server instances (2.13 in CIS SQL Server 2008R2; 2.12 in CIS SQL Server 2012)</li>
+<li>Disable the sa Login Account by setting is_disabled in sys.server_principals to yes where sid is 0&#215;01 (2.14 in CIS SQL Server 2008R2; 2.13 in CIS SQL Server 2012)</li>
+<li>Rename the sa Login Account (2.15 in CIS SQL Server 2008R2; 2.14 in CIS SQL Server 2012)</li>
+</ul>
+<h3>Set is_trustworthy setting is off for each database</h3>
+<p>Using the catalog view of databases (sys.databases), check whether the database is trusted or not using the &#8220;is_trustworthy_on&#8221;. Here we want to ensure that databases are considered not trusted and set to disabled (0).</p>
+<p>Note: The msdb database is excluded as <a title="disabling the trustworthy setting" href="http://support.microsoft.com/kb/2183687">disabling the trustworthy setting</a> may cause unexpected behaviour in SQL Server components that use information from the msdb database.</p>
+<p>A query can be constructed as follows:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name FROM sys.databases WHERE is_trustworthy_on = 1 AND name != 'msdb' AND state = 0;
+</pre>
+<p>The Trustworthy setting can also be observed using SQL Server Management Studio.</p>
+<ul>
+<li>Within the Object Explorer, navigate to the SQL Server Instance and expand the path to &#8220;Databases&#8221;</li>
+<li>Right-click on each database under &#8216;Databases&#8217; and &#8216;Databases\System databases&#8217; and select properties</li>
+<li>Click on &#8220;Options&#8221; page and scroll down in the right pane to &#8220;Miscellaneous&#8221; where &#8220;Trustworthy&#8221; is seen</li>
+</ul>
+<div id="attachment_3562" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3385"><div class="lb-album"><a href="#image-3385"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio-300x210.png" alt="Trustworthy option for database in SQL Server Management Studio" class="size-medium wp-image-3562"><span></span></a></div>              
+<a href="#imageclose-3385" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3385">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio.png" alt="image-3385">
+                   </div></a><p class="wp-caption-text">Trustworthy option for database in SQL Server Management Studio</p></div>
+<h3>Disable unnecessary SQL Server protocols</h3>
+<p>Ideally the number of SQL Server protocols enabled should be reduced. It is noted that CIS Security Benchmark do not score this particular issue.</p>
+<p>The list of SQL Server Protocols can be found in SQL Server Configuration Manager. To see the settings:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Ensure that only required protocols are enabled</li>
+</ul>
+<p>Note: Microsoft does not specify exactly which protocols should be disabled. However, the setting for a default installation of SQL Server 2008R2 for example appears to be.</p>
+<ul>
+<li>NP (Named Pipes) &#8211; Disabled</li>
+<li>SM (Shared Memory) &#8211; Enabled</li>
+<li>TCP &#8211; Enabled</li>
+<li>Via &#8211; Disabled</li>
+</ul>
+<p>The following is query that performs a check on the protocols by checking the registry entry for each of the 4 possible protocols, NP (Named Pipes), SM (Shared Memory), TCP and Via. Note: It makes 4 separate queries for each protocol by finding whether registry entry is enabled or not with the results combined together using a union.</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @MajorVersion decimal
+DECLARE @RegKey_Instance nvarchar(500)
+DECLARE @RegValue_Instance VARCHAR(100)
+
+DECLARE @RegKey nvarchar(500)
+DECLARE @Value_Sm int
+DECLARE @Display_Sm VARCHAR(20)
+DECLARE @Value_Np int
+DECLARE @Display_Np VARCHAR(20)
+DECLARE @Value_TCP int
+DECLARE @Display_TCP VARCHAR(20)
+DECLARE @Value_Via int
+DECLARE @Display_Via VARCHAR(20)
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+-- Get the Major version number. 8=SQL2000, 9=SQL2005, 10=SQL2008, 11=SQL2012
+-- Convert first 2 characters ('8.', '9.', '10', '11'). Convert to Decimal
+SET @MajorVersion=CONVERT(decimal,CONVERT(varchar(2),(SERVERPROPERTY('ProductVersion'))))
+
+-- Get the RegKey for Instance Name (e.g. 'MSSQLSERVER')
+SET @RegKey_Instance='SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL'
+
+-- Get the RegValue for Instance Name (e.g. 'MSSQL10_50.MSSQLSERVER')
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey_Instance,
+  @value_name = @InstanceName,
+  @value = @RegValue_Instance OUTPUT
+
+-- Get the RegKey for SM (Shared Memory) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Sm'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Sm OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Sm OUTPUT
+
+-- Get the RegKey for Np (Named Pipes) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Np'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Np OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Np OUTPUT
+
+-- Get the RegKey for TCP and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\TCP'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_TCP OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_TCP OUTPUT
+
+-- Get the RegKey for Via and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Via'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Via OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Via OUTPUT
+
+SELECT @Display_Np as DisplayName, @Value_Np as Enabled
+UNION SELECT @Display_Sm, @Value_Sm
+UNION SELECT @Display_TCP, @Value_TCP
+UNION SELECT @Display_Via, @Value_Via
+</pre>
+<p>The following is a sample result from a SQL Server 2008R2 database instance:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+DisplayName          Enabled
+-------------------- -----------
+Named Pipes                    0
+Shared Memory                  1
+TCP/IP                         1
+VIA                            0
+</pre>
+<h3>Check port is running for SQL Server</h3>
+<p>An ideal practice is to configure the SQL server instance to not use the default TCP port of 1433. Using a non-default port helps protect the database from attacks directed to the default port. It is noted that CIS Security Benchmark do no score this particular issue.</p>
+<p>This can be checked using netstat and looking for port 1433 in command prompt:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt;netstat -ano
+</pre>
+<p>Or with PowerShell:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt;netstat -ano | select-string 1433.+listening
+</pre>
+<p>Alternatively, SQL Server Configuration Manager can be used to see what port is set:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Right-click on &#8220;TCP&#8221;</li>
+<li>Click on the &#8220;IP Protocols&#8221; tab</li>
+<li>Observe the IP address and port that has been set</li>
+</ul>
+<p>You should also ensure the interface for each IP address (particularly Internet interface) is not enabled.</p>
+<p>A query that uses the registry settings for the TCP service used by SQL Server can be made and the port returned as follows:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @RegKey VARCHAR(100)
+DECLARE @PortNumber VARCHAR(20)
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+SET @RegKey = 'SOFTWARE\MICROSOFT\MSSQLServer\'+@InstanceName+'\Supersocketnetlib\TCP'
+EXEC xp_regread
+  @rootkey='HKEY_LOCAL_MACHINE', @key=@RegKey,
+  @value_name='Tcpport', @value=@PortNumber OUTPUT
+
+SELECT @InstanceName as Instance, @PortNumber as Port
+</pre>
+<h3>Hidden option</h3>
+<p>Another good practice is to configure SQL Server instances within production environments as hidden to prevent advertisement by the SQL Server Browser service.</p>
+<p>The &#8220;Hide Instance&#8221; state can be found in SQL Server Configuration Manager. To see the settings:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Right-click &#8220;Protocols for&#8221;, and then select &#8220;Properties&#8221;</li>
+<li>On the &#8220;Flags&#8221; tab, observe the &#8220;Hide Instance&#8221; box</li>
+<li>In the &#8220;Hide Instance&#8221; box, select Yes to enable hiding the server instance</li>
+</ul>
+<p>The following query can be used to determine if the server instance is hidden:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @MajorVersion decimal
+DECLARE @RegKey_Instance nvarchar(500)
+DECLARE @RegValue_Instance VARCHAR(100)&lt;/pre&gt;
+DECLARE @RegKey nvarchar(500)
+DECLARE @Value int
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+-- Get the Major version number. 8=SQL2000, 9=SQL2005, 10=SQL2008, 11=SQL2012
+-- Convert first 2 characters ('8.', '9.', '10', '11'). Convert to Decimal
+SET @MajorVersion=CONVERT(decimal,CONVERT(varchar(2),(SERVERPROPERTY('ProductVersion'))))
+
+-- Get the RegKey for Instance Name (e.g. 'MSSQLSERVER')
+SET @RegKey_Instance='SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL'
+
+-- Get the RegValue for Instance Name (e.g. 'MSSQL10_50.MSSQLSERVER')
+EXECUTE xp_regread
+@rootkey = 'HKEY_LOCAL_MACHINE',
+@key = @RegKey_Instance,
+@value_name = @InstanceName,
+@value = @RegValue_Instance OUTPUT
+
+-- Get the RegKey for SM (Shared Memory) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib'
+EXECUTE xp_regread
+@rootkey = 'HKEY_LOCAL_MACHINE',
+@key = @RegKey,
+@value_name = 'HideInstance',
+@value = @Value OUTPUT
+
+SELECT @InstanceName as 'InstanceName', @Value as 'HideInstance'
+</pre>
+<h3>Check sa account has been disabled</h3>
+<p>A good practice is to have the widely known system admin account sa disabled. Enforcing this control reduces the probability of an attacker executing brute force attacks.</p>
+<p>The following query shows the name of the system admin account, which sa by default and whether it is disabled:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name, is_disabled
+FROM sys.server_principals
+WHERE sid = 0x01;
+</pre>
+<h3>Check sa account has been renamed</h3>
+<p>A good practice is to have the widely known system admin account sa disabled. It is more difficult to launch password-guessing and brute-force attacks against the sa account if the username is not known.</p>
+<p>The following query lists the name of the system admin account:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name
+FROM sys.server_principals
+WHERE sid = 0x01;
+</pre>
+<h2>Summary</h2>
+<p>In this article, you have seen a few more settings that can be used to configure to reduce the surface area of attack and improve the security of the SQL Server following good practices and the CIS Security Benchmark.</p>
+<p>You can audit manually looking at SQL Server Management Studio and SQL Server Configuration Manager. You can also create a query that will read the catalog information for the databases and the registry to gather the information about the server instance.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>MS SQL Server Audit: Extended Stored Procedures / Table Privileges</title>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/#comments</comments>
+		<pubDate>Fri, 23 Jan 2015 16:24:17 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[SQL Server]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3385</guid>
+		<description><![CDATA[<p>(If you excuse the pun), everyone has a different view on Extended Stored Procedures: Some might say they are stored procedures with extra functionality Some might say they can cause problems to a database if misused Some simply say they are stored procedures with a prefix of xp_ This post will hopefully give a better [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>(If you excuse the pun), everyone has a different view on Extended Stored Procedures:</p>
+<ul>
+<li>Some might say they are stored procedures with extra functionality</li>
+<li>Some might say they can cause problems to a database if misused</li>
+<li>Some simply say they are stored procedures with a prefix of xp_</li>
+</ul>
+<p>This post will hopefully give a better understanding of what Extended Stored Procedures are, how to identify them and how to restrict public access to them. Also this post will look at identifying permissions upon tables, views and functions to ensure it is not possible for users to directly modify data.<span id="more-3385"></span></p>
+<h2>Assessing XP stored procedures</h2>
+<p>Extended Stored Procedures are stored procedures that call functions from Dynamic-Link Library (DLL) files. However these features are deprecated in SQL Server 2012 and may not be supported in <a title="future versions of SQL Server" href="http://msdn.microsoft.com/en-us/library/ms143729.aspx">future versions of SQL Server</a>. CLR integration should be installed instead if required. In the CIS benchmarks for SQL Server 2008R2 and SQL Server 2012, item 2.2 CLR Integration should be disabled with CLR enabled configuration setting set to 0.</p>
+<p>In general, Extended Stored Procedures should not be enabled as good practice. In Centre for Internet Security (CIS) Benchmark for SQL Server 2008r2 and 2012, for the Extended Stored Procedures listed, the recommendation is for those stored procedures to be disabled.</p>
+<p>Extended Stored Procedures can be observed using SQL Server Management Studio. Within the Object Explorer, navigate to the SQL Server Instance and expand the path following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+Databases\System Databases\master\Programmability\Extended Stored Procedures\System Extended Stored Procedures
+</pre>
+<p>Locate any of the Extended Stored Procedures and look at their properties. The CIS Benchmark for SQL Server 2008R2 and SQL Server 2012 identifies the following are audited:</p>
+<ul>
+<li>3.1 xp_availablemedia</li>
+<li>3.2 xp_cmdshell</li>
+<li>3.3 xp_dirtree</li>
+<li>3.4 xp_enumgroups</li>
+<li>3.5 xp_fixeddrives</li>
+<li>3.6 xp_servicecontrol</li>
+<li>3.7 xp_subdirs</li>
+<li>3.8 xp_regaddmultistring</li>
+<li>3.9 xp_regdeletekey</li>
+<li>3.10 xp_regdeletevalue</li>
+<li>3.11 xp_regenumvalue</li>
+<li>3.12 xp_regremovemultistring</li>
+<li>3.13 xp_regwrite</li>
+<li>3.14 xp_regread</li>
+</ul>
+<p>For example, to look at xp_dirtree:</p>
+<ol>
+<li>Locate xp_dirtree (labelled sys.xp_dirtree) in the object explorer, right click and select Properties</li>
+<li>Select the Permissions tab</li>
+<li>Look in the Users or Roles listing, If the public entry does not exist, then it complies with the CIS Benchmark (and you can skip further steps)</li>
+<li>If public entry does exist, select the it within the Users or Roles listing</li>
+<li>If the Grant checkbox for the Execute permission is checked, the Public role has Execute permission on the procedure</li>
+</ol>
+<p>You should remove the the public entry.</p>
+<div id="attachment_3566" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3386"><div class="lb-album"><a href="#image-3386"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/xp_dirtree-300x210.png" alt="Permissions for xp_dirtree" class="size-medium wp-image-3566"><span></span></a></div>              
+<a href="#imageclose-3386" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3386">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/xp_dirtree.png" alt="image-3386">
+                   </div></a><p class="wp-caption-text">Permissions for xp_dirtree</p></div>
+<p>A useful query can be constructed that gathers the permissions granted to public for all XP stored procedures. The query looks at the database permissions table and identifies the associated objects that are extended stored procedures (XP) with it assigned permissions which applies to PUBLIC.</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+select OBJECT_NAME(major_id) as 'extended_procedure', permission_name, 'PUBLIC' as 'to_principal'
+from sys.database_permissions where OBJECT_NAME(major_id) like 'XP_%'
+AND [type] = 'EX' AND grantee_principal_id = 0
+order by 'extended_procedure';
+</pre>
+<h2>Table &amp; View Privileges</h2>
+<p>In CIS Benchmark for SQL Server 2008R2 and SQL Server 2012, there is a recommendation to sanitise the database and application user input. To help to perform this, a good idea is to gather all the permissions for tables, views, stored procedures and functions including the columns for each of these object types. Note for each user with the permissions to access these object types, the aim is to eliminate any permissions to INSERT, DELETE or UPDATE to non-administrative users (i.e. user that do not require these permissions).</p>
+<p>The following query gathers all objects of the above type and their columns and identifies which users can access them with what permission for each database.</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+sp_msforeachdb 'USE ? SELECT ''?'', cast(o.name as char) AS ObjectName,
+CASE o.type WHEN &quot;U&quot; THEN &quot;Table&quot; WHEN &quot;V&quot; THEN &quot;View&quot; WHEN &quot;P&quot; THEN &quot;Stored Proc&quot; WHEN &quot;FN&quot; THEN &quot;Function&quot; ELSE o.type END AS ObjectType,
+cast(u.name as char) AS UserName, p.state_desc, p.permission_name, USER_NAME(o.schema_id) AS SchemaName,
+CASE WHEN cl.column_id IS NULL THEN &quot;--&quot; ELSE cl.name END AS ColName,
+CASE WHEN p.state = &quot;W&quot; THEN &quot;X&quot; ELSE &quot;--&quot; END AS IsGrantOption
+FROM sys.objects AS o
+INNER JOIN
+sys.database_permissions AS p ON p.major_id = o.object_id
+INNER JOIN
+sys.database_principals AS u ON p.grantee_principal_id = u.principal_id
+LEFT JOIN
+sys.columns AS cl
+ON cl.column_id = p.minor_id AND cl.object_id = p.major_id
+WHERE o.type in (&quot;U&quot;, &quot;V&quot;, &quot;P&quot;, &quot;FN&quot;)
+ORDER BY u.name, p.state_desc ASC, p.permission_name ASC'
+</pre>
+<h2>Summary</h2>
+<p>In this article, we have looked Extended Stored Procedures and how to identify them. In general, Extended Stored Procedures are not required for the running of a SQL Server and should be disabled from use. Good practices from Microsoft and CIS support this.<br />
+We also looked at constructing a query that can evaluate what permissions are assigned to users for objects that can be applied to sensitive data, such as tables, views, stored procedures and functions.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>MS SQL Server audit: Surface area reduction (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/#comments</comments>
+		<pubDate>Wed, 26 Feb 2014 06:50:04 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[SQL Server]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3380</guid>
+		<description><![CDATA[<p>SQL Server has a number of components that allow clients to connect and communicate with it. Microsoft introduced the term, &#8220;Surface Area Reduction&#8221; as a security measure that involves stopping or disabling unused components. Like the name suggests, it reduces the number of ways that an attacker could try to interrogate the SQL Server. This [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>SQL Server has a number of components that allow clients to connect and communicate with it. Microsoft introduced the term, &#8220;Surface Area Reduction&#8221; as a security measure that involves stopping or disabling unused components. Like the name suggests, it reduces the number of ways that an attacker could try to interrogate the SQL Server.<span id="more-3380"></span></p>
+<p>This post discusses the following:</p>
+<ul>
+<li>Surface area reduction using Microsoft SQL server-wide configuration (sys.configurations) using the Center for Internet Security (CIS) SQL Server guidelines as a benchmark</li>
+<li>SQL Server Policy to reduce surface area configuration</li>
+<li>Which Services should be disabled</li>
+<li>Surface area reduction using other tables and views using Center for Internet Security (CIS) SQL Server guidelines as a benchmark</li>
+</ul>
+<p>Note: The queries mentioned in this article are based on SQL Server 2008 R2. They all should be applicable to SQL Server 2012. Older versions of SQL Server may have different syntax.</p>
+<h2>Server-wide configuration</h2>
+<p>Microsoft SQL Server has amongst all of its features, catalog views that return information used by its database engine. One particular catalog information that provides details about all the server wide configuration values is &#8220;sys.configurations&#8221;. Such information covered include: audit modes, language settings, memory usage, tracing and type of stored procedures enabled.</p>
+<p>The following SQL query displays all the server-wide configuration values:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name, cast(value_in_use as char) FROM sys.configurations;
+</pre>
+<p>In general, to reduce the surface area, you should disable as many unnecessary features and services as possible without affecting the performance and functionality of your SQL Server Database Engine. Furthermore, some audit features should be enabled to be log access yo your SQL Server Database Engine. Fortunately, the Center for Internet Security provide security benchmarks for SQL Server that can be followed to cover off disabling unnecessary features.</p>
+<p>CIS have written security benchmark guides for SQL Server 2005, 2008 and 2012. It is noted that the SQL Server 2008R2 and 2012 are very similar in layout and recommendation.</p>
+<p>Based on the CIS security benchmarks recommended for SQL Server 2008R2 and 2012, for surface area reduction, the following configuration settings relating to the server-wide configuration (sys.configurations) should be disabled for compliance.</p>
+<ol>
+<li>Ad Hoc Distributed Queries</li>
+<li>CLR Enabled</li>
+<li>Cross DB Ownership Chaining</li>
+<li>Database Mail XPs</li>
+<li>OLE Automation Procedures</li>
+<li>Remote Access</li>
+<li>Remote Admin Connections</li>
+<li>Scan For Startup Procs</li>
+<li>SQL Mail XPs</li>
+</ol>
+<p>Note: the last configuration setting, &#8220;SQL Mail XPs&#8221; is not covered in the CIS Microsoft SQL Server 2012 Database as that setting was deprecated in that version with &#8220;Database Mail XPs&#8221; as its replacement.</p>
+<p>Other configuration settings of interest:</p>
+<ul>
+<li>Agent XPs &#8211; Extended Stored Procedures for SQL Server Agent should be disabled. Default value is &#8217;0&#8242; (disabled)</li>
+<li>C2 Audit Mode &#8211; Logs both successful and successful attempts to access statements and objects (superceded by Common Criteria Compliance). C2 Audit Mode should be enabled</li>
+<li>Common Criteria Compliance Enabled &#8211; Replacement for &#8216;C2 Audit Mode&#8217; (only available for Enterprise/Developer versions). Common Criteria Compliance should be enabled</li>
+<li>SMO and DMO XPs &#8211; Extended Stored Procedures for SQL Server Management Objects (SMO) and Database Management Objects (DMO) ideally should be disabled. However, Default value is &#8217;1&#8242; (enabled). If disabled, SQL Server Management Studio will not see the database instance and to load the database instance force this setting to be re-enabled</li>
+<li>Default Trace Enabled &#8211; Tracing should be enabled. Default value is &#8217;1&#8242; (enabled)</li>
+</ul>
+<p>The remediation covered by the CIS security benchmark is to show advanced options and then configure the configuration setting, with 0 (for disable) as appropriate.</p>
+<p>For example to disable &#8220;Scan For Startup Procedures&#8221;:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+EXECUTE sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXECUTE sp_configure 'Scan for startup procs', 0;
+RECONFIGURE;
+GO
+EXECUTE sp_configure 'show advanced options', 0;
+RECONFIGURE;
+</pre>
+<h2>SQL Server policy</h2>
+<p>Microsoft recommend that policy-based management for SQL Server is used. In earlier versions of SQL Server, this was covered using <a title="Surface Area Configuration" href="http://technet.microsoft.com/en-us/library/ms188980%28v=sql.90%29.aspx">Surface Area Configuration</a>. This was removed from <a title="SQL Server 2008" href="http://technet.microsoft.com/en-us/library/ms161956%28v=sql.100%29.aspx">SQL Server 2008</a> and its functionality was moved into policy management facets in SQL Server Management Studio.</p>
+<p>Using SQL Server Management Studio, within the Object Explorer, navigate to the SQL Server Instance and expand the path following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+Management\Policy Management\Facets
+</pre>
+<p>The following facets should be disabled (disabled by default) according to Microsoft:</p>
+<ul>
+<li>Surface Area Configuration</li>
+<li>Surface Area Configuration for Analysis Services</li>
+<li>Surface Area Configuration for Reporting Services</li>
+</ul>
+<p>As seen in the following screenshot example:</p>
+<p><!--Image: Surface Area Configuration Facet--><br />
+<div id="attachment_3405" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3381"><div class="lb-album"><a href="#image-3381"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/surfaceareafacet-300x210.png" alt="Surface Area Configuration Facet in SQL Server Management Studio" class="size-medium wp-image-3405"><span></span></a></div>              
+<a href="#imageclose-3381" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3381">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/surfaceareafacet.png" alt="image-3381">
+                   </div></a><p class="wp-caption-text">Surface Area Configuration Facet in SQL Server Management Studio</p></div>
+<h2>Services</h2>
+<p>Microsoft also recommend turning off any unneeded services by setting the service to either manual startup or disabled using SQL Server Configuration Manager.</p>
+<p>Microsoft do not specify exactly which services that should be disabled. Obviously, you want the core SQL Server service but you could in theory run without the other services. Double check if you need other services such SQL Server analysing and SQL Server reporting services.</p>
+<p>To see what services are currently running or disabled, in SQL Server Configuration Manager:</p>
+<ol>
+<li>Click on SQL Server Services</li>
+<li>In Details Pane, right-click on a service and choose properties</li>
+<li>To change the start mode, select &#8220;service&#8221; tab and edit the start mode entry</li>
+</ol>
+<p>As seen in the following screenshot example:</p>
+<p><!--Image: Disabling SQL services with SQL Server Configuration Manager--><br />
+<div id="attachment_3404" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3382"><div class="lb-album"><a href="#image-3382"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/disablesqlservices-300x223.png" alt="Disable SQL Services using SQL Server Configuration Manager" class="size-medium wp-image-3404"><span></span></a></div>              
+<a href="#imageclose-3382" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3382">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/disablesqlservices.png" alt="image-3382">
+                   </div></a><p class="wp-caption-text">Disable SQL Services using SQL Server Configuration Manager</p></div>
+<h2>Summary</h2>
+<p>In this post, we have had a look at reducing surface area by:</p>
+<ul>
+<li>Modifying the server-wide configuration (sys.configurations view)</li>
+<li>Applying SQL Server policies</li>
+<li>Turning off unneeded SQL services</li>
+</ul>
+<p>In the second part of the article, we will look at other features and SQL queries that can be used to reduce the surface area and comply with good security practices.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>MS SQL Server Audit: Introduction</title>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/#comments</comments>
+		<pubDate>Mon, 10 Feb 2014 06:20:21 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[SQL Server]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3371</guid>
+		<description><![CDATA[<p>MS SQL Server is Microsoft&#8217;s relational database management system with a large number of features and services. With this coverage, there is a large surface area for attack and vulnerabilities. Fortunately, there are a number of security benchmarks and good practice documents available. This article gives an introduction to the security guidelines available and an [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>MS SQL Server is Microsoft&#8217;s relational database management system with a large number of features and services. With this coverage, there is a large surface area for attack and vulnerabilities. Fortunately, there are a number of security benchmarks and good practice documents available. This article gives an introduction to the security guidelines available and an overview on what key areas to audit and lock down.<span id="more-3371"></span></p>
+<h2>Introduction</h2>
+<p>Microsoft has a <a title="SQL Server - Best Practices" href="http://technet.microsoft.com/en-gb/sqlserver/bb671430.aspx">SQL Server &#8211; Best Practices</a> section on their <a title="technet" href="http://technet.microsoft.com/">technet</a> web site. Specifically, a couple of good practice documents of interest are:</p>
+<ul>
+<li><a title="Microsoft SQL Server 2008 R2 Best Practices Analyzer Whitepaper" href="http://www.microsoft.com/en-gb/download/details.aspx?id=436">Microsoft SQL Server 2008 R2 Best Practices Analyzer Whitepaper</a></li>
+<li><a title="Microsoft SQL Server 2012 Best Practices Analyzer Whitepaper" href="http://www.microsoft.com/en-us/download/details.aspx?id=29302">Microsoft SQL Server 2012 Best Practices Analyzer Whitepaper</a></li>
+</ul>
+<p>Microsoft also has available a Best Practices Analyser (BPA) for each version of SQL Server which is a diagnostics tool that trawls through a given SQL Server instance and reports the configurations and any differences against Microsoft&#8217;s recommended good practices.</p>
+<p>The <a title="Center for Internet Security" href="http://www.cisecurity.org/">Center for Internet Security</a> (CIS) is the non-profit organisation focused on enhancing the cyber security readiness and response of public and private sector entities. One of its divisions deals with setting <a title="Security Benchmarks" href="http://benchmarks.cisecurity.org/downloads/">Security Benchmarks</a> for a number of systems and frameworks. There are specific security benchmark documents for each major version of <a title="SQL Server" href="http://benchmarks.cisecurity.org/downloads/browse/index.cfm?category=benchmarks.server">SQL Server</a> up to 2012.</p>
+<p>Security Technical Implementation Guide (STIG) is a methodology for standardised secure installation and maintenance of computer software and hardware. It was originally defined by the Defense Information Systems Agency (DISA) which created configuration documents in support of the US Department of Defence (DoD). The resource for STIG documents can be found on DISA&#8217;s <a title="Information Assurance Support Environment" href="http://iase.disa.mil/stigs/index.html">Information Assurance Support Environment</a>.</p>
+<p>Looking in particular at Microsoft SQL Server Best Practice and CIS security benchmark, there are a few sections that are covered:</p>
+<ul>
+<li>Compliance</li>
+<li>Encryption</li>
+<li>Access Control</li>
+<li>Authentication</li>
+<li>Network Security</li>
+<li>Auditing</li>
+</ul>
+<h3>Compliance</h3>
+<p>For compliance, a number of items have been identified to help improve the security for a SQL Server and used as a benchmark setting. The following are areas for compliance</p>
+<ul>
+<li>Surface Area Reduction &#8211; Configure settings on SQL server to disable unnecessary features and services</li>
+<li>Policy-Based Management &#8211; Configure a policy on SQL server</li>
+<li>Service Account Selection and Management &#8211; Configure and disable unnecessary services</li>
+<li>SQL Server Best Practices Analyzer and other analysis utilities &#8211; Run SQL tools to assist in auditing the SQL Server (such as SQL Server Best Practices Analyzer, Microsoft Baseline Security Analyser (MBSA), Microsoft Security Compliance Manager (SCM), Anti-Virus.</li>
+<li>Patching and Automatic Windows Update &#8211; Ensure underlying system is patched up to date.</li>
+</ul>
+<h3>Encryption</h3>
+<p>For encryption, the following should be considered:</p>
+<ul>
+<li>Encryption of Data and Database</li>
+<li>SSL Encryption of client connections</li>
+</ul>
+<h3>Access Control</h3>
+<p>For access control, the following should be considered:</p>
+<ul>
+<li>Administrator Privileges</li>
+<li>Database Ownership and Trust</li>
+<li>Lockdown of System Stored Procedures</li>
+<li>Schemas</li>
+<li>Authorization</li>
+<li>Catalog Security</li>
+<li>Execution Context</li>
+<li>Remote Data Source Execution</li>
+</ul>
+<h3>Authentication</h3>
+<p>For authentication, the following should be considered:</p>
+<ul>
+<li>Authentication Modes and Logins</li>
+<li>Password Policy</li>
+<li>Contained Databases and Authentication</li>
+</ul>
+<h3>Network Security</h3>
+<p>For network security, the following should be considered:</p>
+<ul>
+<li>Limiting the network protocols used</li>
+<li>Configuring and enabling a firewall</li>
+<li>Avoiding expose a server that is running SQL Server to the public Internet</li>
+</ul>
+<h3>Auditing</h3>
+<p>For auditing, it is scenario-specific but in general to configure your server to audit as much detail as possible without making the server inoperable.<br />
+Generally, you should look at:</p>
+<ul>
+<li>Auditing is scenario-specific. Balance the need for auditing with the overhead of generating addition data</li>
+<li>Use the SQL Server 2008/2012 Audit feature for the most secure, performant, and granular</li>
+<li>Audit successful logins in addition to unsuccessful logins if you store highly sensitive data</li>
+<li>Audit DDL and specific server events by using trace events or event notifications</li>
+<li>DML can be audited by using trace events or SQL Server Audit</li>
+<li>Use WMI to be alerted of emergency events</li>
+</ul>
+<h2>Summary</h2>
+<p>As we have seen there are a number of security benchmark and guideline articles available. Examples include Microsoft, Center for Information Security (CIS) and Security Technical Implementation Guide (STIG). We looked at the general areas covered in these examples. In the next post, we shall look further at the first of these areas, reducing the surface area for vulnerabilities and attack.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

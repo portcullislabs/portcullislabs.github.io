@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; binary</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/binary/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Using Intel Pin tools for binary instrumentation</title>
+		<link>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/</link>
+		<comments>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/#comments</comments>
+		<pubDate>Tue, 04 Nov 2014 16:03:01 +0000</pubDate>
+		<dc:creator><![CDATA[BRC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[binary]]></category>
+		<category><![CDATA[reversing]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4131</guid>
+		<description><![CDATA[<p>This article is continues the topic on dynamic instrumentation that it was presented before in a previous article. Yama LSM In this post, the basics of coding Intel Pin tools will be presented, but before we discuss this, you should be aware that a Linux Security Module exists that prevents binary instrumentation by default. Yama [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
+<h2>Yama LSM</h2>
+<p>In this post, the basics of coding <a title="Intel Pin" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel Pin</a> tools will be presented, but before we discuss this, you should be aware that a <a title="Linux Security Module" href="http://en.wikipedia.org/wiki/Linux_Security_Modules">Linux Security Module</a> exists that prevents binary instrumentation by default. <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a> is a Linux Security Module that collects a number of system-wide <a title="DAC" href="http://en.wikipedia.org/wiki/Discretionary_access_control">DAC</a> security protections that are not handled by the core kernel itself. Yama is controlled using sysctl. A description of some of the possible values for /proc/sys/kernel/yama/ptrace_scope is provided below:</p>
+<ul>
+<li>0 =&gt; Classic ptrace: a process can PTRACE_ATTACH to any other process running under the same uid, as long as it is dumpable.</li>
+<li>1 =&gt; Restricted ptrace: a process can only PTRACE_ATTACH only its descendants although an inferior can call prctl(PR_SET_PTRACER, debugger, &#8230;) to allow the debugger to call PTRACE_ATTACH.</li>
+<li>2 =&gt; Admin-only attach: only processes with CAP_SYS_PTRACE may use ptrace with PTRACE_ATTACH</li>
+<li>3 =&gt; No attach: no processes may use ptrace with PTRACE_ATTACH nor via PTRACE_TRACEME.</li>
+</ul>
+<p>For detailed information, visit the Linux kernel documentation about <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a>.</p>
+<p>Continuing with the Pin topic, it should be noted that if a Pin tool is executed without setting /proc/sys/kernel/yama/ptrace_scope to 0, the following message will appear:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ../pin/pin -t obj-intel64/check_pc_sections.so -- /bin/ls
+E:Attach to pid 9495 failed.
+E:  The Operating System configuration prevents Pin from using the default (parent) injection mode.
+E:  To resolve this, either execute the following (as root):
+E:  $ echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
+E:  Or use the &quot;-injection child&quot; option.
+E:  For more information, regarding child injection, see Injection section in the Pin User Manual.
+E:
+Terminado (killed)
+</pre>
+<p>To allow debugging of inferior processes the value of /proc/sys/kernel/yama/ptrace_scope needs to be changed using sysctl:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# sysctl kernel.yama.ptrace_scope=0
+kernel.yama.ptrace_scope = 0
+</pre>
+<h3>Pin tools</h3>
+<p>The Pin tools are the tools created using Pin and used to perform program analysis on user space. Pin tools that perform the binary instrumentation have two key components:</p>
+<ol>
+<li>The instrumentation callback routine: a mechanism that decides if and where to inject calls to analysis functions; and</li>
+<li>The analysis function: code to execute at insertion points.</li>
+</ol>
+<p>Note that the Pin tools are able to control a program starting with the very first instruction, meaning that it is possible even to inspect the linker&#8217;s code of a binary loading shared libraries. This could be utilised to perform run-time bug hunting in the operating system linker. Also, when programming Pin tools, it should be kept in mind that as the <a title="Pin documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/index.html#Pin">Pin documentation</a> specifies, it is more important to tune the analysis code than the instrumentation code. This is because the instrumentation is executed once, but analysis code is called many times.</p>
+<h2>Executable Images and Sections</h2>
+<p>Pin provides access to the binary&#8217;s images and image sections using linked lists. Those lists can be traversed using the API calls APP_ImgHead(), App_ImgTail(), IMG_Valid(IMG x), IMG_Next(IMG x) and IMG_Previous(IMG x); additionally, a number a API functions exist for accessing image properties such as name, size, type, start address, etc. A detailed view of the image API can be examined in the <a title="image documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/group__IMG__BASIC__API.html">image API documentation</a>.</p>
+<p>The image sections have the equivalent API functions to traverse the linked list: IMG_SecHead(IMG x),IMG_SecTail(IMG x), SEC_Valid(sec x), SEC_Prev(sec x), SEC_Next(sec x), SEC_Address (SEC sec), SEC_Valid (SEC x), etc. The complete list can be found in the <a title="section API documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/group__SEC__BASIC__API.html">section API documentation</a>.</p>
+<p>To illustrate the usage of the image and section API an example is provided:</p>
+<pre class="brush: cpp; title: ; notranslate">
+#include &quot;pin.H&quot;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string.h&gt;
+
+// =====================================================================
+// Usage
+// =====================================================================
+
+INT32 Usage()
+{
+    cerr &lt;&lt; &quot;[*] This Pin tool prints the images and section names of a binary when loading&quot; &lt;&lt; endl;
+    return -1;
+}
+
+// =====================================================================
+// Analysis routines
+// =====================================================================
+
+// Prints image and section name, type and address
+VOID loadImageSec(IMG img, VOID *v)
+{
+    UINT64 sec_cont = 0;
+    string img_type;
+    string sec_type;
+
+    switch (IMG_Type(img)){
+        case IMG_TYPE_STATIC:
+            img_type = &quot;static&quot;;
+            break;
+        case IMG_TYPE_SHARED:
+            img_type = &quot;shared&quot;;
+            break;
+        case IMG_TYPE_SHAREDLIB:
+            img_type = &quot;shared library&quot;;
+            break;
+        case IMG_TYPE_RELOCATABLE:
+            img_type = &quot;relocatable&quot;;
+            break;
+        default:
+            img_type = &quot;unknown&quot;;
+    }
+
+    cout &lt;&lt; &quot;[*] Loading image &quot; &lt;&lt; IMG_Name(img).c_str();
+    cout &lt;&lt; &quot; @ &quot; &lt;&lt; StringFromAddrint(IMG_StartAddress(img));
+    cout &lt;&lt; &quot; type &quot; &lt;&lt; img_type &lt;&lt; endl;
+
+    for (SEC sec=IMG_SecHead(img); SEC_Valid(sec); sec=SEC_Next(sec)) {
+        if (strcmp(SEC_Name(sec).c_str(),&quot;&quot;)) {
+
+            switch (SEC_Type(sec)){
+                case SEC_TYPE_REGREL:
+                    sec_type = &quot;relocations&quot;;
+                    break;
+                case SEC_TYPE_DYNREL:
+                    sec_type = &quot;dynamic relocations&quot;;
+                    break;
+                case SEC_TYPE_EXEC:
+                    sec_type = &quot;code&quot;;
+                    break;
+                case SEC_TYPE_DATA:
+                    sec_type = &quot;initialized data&quot;;
+                    break;
+                case SEC_TYPE_BSS:
+                    sec_type = &quot;unitialized data&quot;;
+                    break;
+                case SEC_TYPE_LOOS:
+                    sec_type = &quot;operating system specific&quot;;
+                    break;
+                case SEC_TYPE_USER:
+                    sec_type = &quot;user application specific&quot;;
+                    break;
+                default:
+                    sec_type = &quot;unknown&quot;;
+            }
+
+            cout &lt;&lt; &quot;\t =&gt; Loading section &quot; &lt;&lt; SEC_Name(sec).c_str();
+            cout &lt;&lt; &quot; @ &quot; &lt;&lt; StringFromAddrint(SEC_Address(sec));
+            cout &lt;&lt; &quot; type &quot; &lt;&lt; sec_type &lt;&lt; endl;
+
+            sec_cont++;
+        }
+    }
+
+    cout &lt;&lt; &quot;[*] Done loading &quot; &lt;&lt; IMG_Name(img).c_str() &lt;&lt; &quot;: &quot; &lt;&lt; sec_cont &lt;&lt; &quot; sections&quot; &lt;&lt; endl;
+
+}
+
+// =====================================================================
+// Main
+// =====================================================================
+
+int main(int argc, char *argv[])
+{
+
+    if(PIN_Init(argc,argv)) {
+        return Usage();
+    }
+
+    cout &lt;&lt; &quot;[*] Executing Pin tool&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;[*] Adding instrumentation functions&quot; &lt;&lt; endl;
+    IMG_AddInstrumentFunction(loadImageSec, 0);
+
+    cout &lt;&lt; &quot;[*] Executing target program&quot; &lt;&lt; endl;
+    PIN_StartProgram();
+
+    return 0;
+}
+// EOF
+</pre>
+<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+~/mytools $ ./build.sh
+[*] Building load_bin_img_sec.cpp
+g++ -DBIGARRAY_MULTIPLIER=1 -DUSING_XED -Wall -Werror -Wno-unknown-pragmas -fno-stack-protector -DTARGET_IA32E -DHOST_IA32E -fPIC -DTARGET_LINUX  -I../pin/source/include/pin -I../pin/source/include/pin/gen -I../pin/extras/components/include -I../pin/extras/xed2-intel64/include -I../pin/source/tools/InstLib -O3 -fomit-frame-pointer -fno-strict-aliasing   -c -o obj-intel64/load_bin_img_sec.o load_bin_img_sec.cpp
+g++ -shared -Wl,--hash-style=sysv -Wl,-Bsymbolic -Wl,--version-script=../pin/source/include/pin/pintool.ver    -o obj-intel64/load_bin_img_sec.so obj-intel64/load_bin_img_sec.o  -L../pin/intel64/lib -L../pin/intel64/lib-ext -L../pin/intel64/runtime/glibc -L../pin/extras/xed2-intel64/lib -lpin -lxed -ldwarf -lelf -ldl
+[*] Exec ../pin/pin -t obj-intel64/load_bin_img_sec.so -- &lt;program&gt;
+</pre>
+<p>The binary /bin/ls is taken as example target binary for the execution of compiled Pin tool:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+~/mytools $ ../pin/pin -t obj-intel64/load_bin_img_sec.so -- /bin/ls /tmp/
+[*] Executing PIN tool
+[*] Adding instrumentation functions
+[*] Executing target program
+[*] Loading image /usr/bin/ls @ 0x00007f55b8798000 type shared
+	 =&gt; Loading section .interp @ 0x0000000000400238 type initialized data
+	 =&gt; Loading section .note.ABI-tag @ 0x0000000000400254 type initialized data
+	 =&gt; Loading section .note.gnu.build-id @ 0x0000000000400274 type initialized data
+	 =&gt; Loading section .dynsym @ 0x0000000000400350 type unknown
+	 =&gt; Loading section .dynstr @ 0x0000000000400f50 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x0000000000401670 type relocations
+	 =&gt; Loading section .rela.plt @ 0x0000000000401718 type relocations
+	 =&gt; Loading section .init @ 0x0000000000402180 type code
+	 =&gt; Loading section .plt @ 0x00000000004021a0 type code
+	 =&gt; Loading section .text @ 0x00000000004028a0 type code
+	 =&gt; Loading section .fini @ 0x0000000000411d4c type code
+	 =&gt; Loading section .rodata @ 0x0000000000411d60 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x0000000000416e7c type initialized data
+	 =&gt; Loading section .eh_frame @ 0x0000000000417588 type initialized data
+	 =&gt; Loading section .init_array @ 0x0000000000619df0 type initialized data
+	 =&gt; Loading section .fini_array @ 0x0000000000619df8 type initialized data
+	 =&gt; Loading section .jcr @ 0x0000000000619e00 type initialized data
+	 =&gt; Loading section .dynamic @ 0x0000000000619e08 type unknown
+	 =&gt; Loading section .got @ 0x0000000000619ff8 type unknown
+	 =&gt; Loading section .got.plt @ 0x000000000061a000 type initialized data
+	 =&gt; Loading section .data @ 0x000000000061a3a0 type initialized data
+	 =&gt; Loading section .bss @ 0x000000000061a600 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/bin/ls: 24 sections
+[*] Loading image /lib64/ld-linux-x86-64.so.2 @ 0x00007f55b8788000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55cb9201c8 type initialized data
+	 =&gt; Loading section .hash @ 0x00007f55cb9201f0 type unknown
+	 =&gt; Loading section .dynsym @ 0x00007f55cb920470 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55cb920710 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55cb920988 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55cb920ac0 type relocations
+	 =&gt; Loading section .plt @ 0x00007f55cb920b50 type code
+	 =&gt; Loading section .text @ 0x00007f55cb920bc0 type code
+	 =&gt; Loading section .rodata @ 0x00007f55cb939100 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55cb93d300 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55cb93d950 type initialized data
+	 =&gt; Loading section .data.rel.ro @ 0x00007f55cbb40ba0 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55cbb40e10 type unknown
+	 =&gt; Loading section .got @ 0x00007f55cbb40fa0 type unknown
+	 =&gt; Loading section .data @ 0x00007f55cbb41000 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55cbb41fa0 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .symtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .strtab @ 0x0000000000000000 type unknown
+[*] Done loading /lib64/ld-linux-x86-64.so.2: 20 sections
+[*] Loading image /usr/lib/libcap.so.2 @ 0x00007f55b7c50000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b84a8190 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b84a82b0 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b84a8898 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b84a8c30 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b84a9080 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b84a9350 type code
+	 =&gt; Loading section .plt @ 0x00007f55b84a9370 type code
+	 =&gt; Loading section .text @ 0x00007f55b84a9560 type code
+	 =&gt; Loading section .fini @ 0x00007f55b84aac54 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b84aac60 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b84aaf48 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b84ab060 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b86ab648 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b86ab650 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b86ab658 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b86ab660 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b86ab840 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b86ab870 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b86ab980 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b86abac8 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libcap.so.2: 22 sections
+[*] Loading image /usr/lib/libacl.so.1 @ 0x00007f55b7c48000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b82881c8 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b82884f8 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b8288ed0 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b8289580 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b8289700 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b8289cb8 type code
+	 =&gt; Loading section .plt @ 0x00007f55b8289ce0 type code
+	 =&gt; Loading section .text @ 0x00007f55b828a0c0 type code
+	 =&gt; Loading section .fini @ 0x00007f55b828dea4 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b828deb0 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b828e154 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b828e380 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b848fd98 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b848fda0 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b848fda8 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b848fdb0 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b848ffb0 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b8490000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b8490200 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b8490270 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libacl.so.1: 22 sections
+[*] Loading image /usr/lib/libc.so.6 @ 0x00007f55b7a68000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b7ee0270 type initialized data
+	 =&gt; Loading section .note.ABI-tag @ 0x00007f55b7ee0294 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b7ee3d28 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b7ef0d78 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b7ef7b10 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b7eff298 type relocations
+	 =&gt; Loading section .plt @ 0x00007f55b7eff3c0 type code
+	 =&gt; Loading section .text @ 0x00007f55b7eff490 type code
+	 =&gt; Loading section __libc_freeres_fn @ 0x00007f55b8028bc0 type code
+	 =&gt; Loading section __libc_thread_freeres_fn @ 0x00007f55b80299b0 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b8029ba0 type initialized data
+	 =&gt; Loading section .interp @ 0x00007f55b804b790 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b804b7b0 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b80521e0 type initialized data
+	 =&gt; Loading section .gcc_except_table @ 0x00007f55b807a954 type initialized data
+	 =&gt; Loading section .hash @ 0x00007f55b807ad18 type unknown
+	 =&gt; Loading section .tdata @ 0x00007f55b827e718 type initialized data
+	 =&gt; Loading section .tbss @ 0x00007f55b827e728 type unitialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b827e728 type initialized data
+	 =&gt; Loading section __libc_subfreeres @ 0x00007f55b827e730 type initialized data
+	 =&gt; Loading section __libc_atexit @ 0x00007f55b827e820 type initialized data
+	 =&gt; Loading section __libc_thread_subfreeres @ 0x00007f55b827e828 type initialized data
+	 =&gt; Loading section .data.rel.ro @ 0x00007f55b827e860 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b8281b80 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b8281d70 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b8282000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b8282080 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b8283740 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sigstack @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sigreturn @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.siggetmask @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tmpnam @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tmpnam_r @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tempnam @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sys_errlist @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sys_nerr @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.gets @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getpw @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.re_max_failures @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.lchmod @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getwd @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sstk @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.revoke @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.mktemp @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.gtty @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.stty @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.chflags @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fchflags @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.bdflush @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.__gets_chk @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_space @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_init @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_append @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_alloc @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_next @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_find @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getmsg @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.putmsg @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fattach @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fdetach @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.setlogin @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .symtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .strtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libc.so.6: 65 sections
+[*] Loading image /usr/lib/libattr.so.1 @ 0x00007f55b7c50000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b7cd81c8 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b7cd8378 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b7cd8930 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b7cd8ce8 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b7cd8dc0 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b7cd9198 type code
+	 =&gt; Loading section .plt @ 0x00007f55b7cd91c0 type code
+	 =&gt; Loading section .text @ 0x00007f55b7cd9460 type code
+	 =&gt; Loading section .fini @ 0x00007f55b7cdb4ac type code
+	 =&gt; Loading section .rodata @ 0x00007f55b7cdb4b5 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b7cdb56c type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b7cdb668 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b7edbdc8 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b7edbdd0 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b7edbdd8 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b7edbde0 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b7edbfd0 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b7edc000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b7edc160 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b7edc168 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libattr.so.1: 22 sections
+PKGBUILD      plugtmp  test-kernel-security.py  yaourt-tmp-user
+~/mytools $
+</pre>
+<p>As you can see, Intel Pin tool provides a rich API to inspect the different parts of a binary, including sections, images, functions, registers, etc, which could help security researchers to detect an anomalies such us:</p>
+<ul>
+<li>Whether the instruction pointer points to a memory address outside the code segment?</li>
+<li>Are parts of the memory getting overwritten by user input?</li>
+<li>Whether there are too many RETs getting executed within a small part of the code</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

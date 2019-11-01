@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Evaluating SteamOS&#039;s security posture (a first look) | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Evaluating SteamOS&#039;s security posture (a first look) - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-2620 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-2620"  class="portcullis-post portcullis-article  post-2620 post type-post status-publish format-standard hentry category-blog tag-analysis tag-hardhack tag-steamos">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Evaluating SteamOS&#8217;s security posture (a first look)</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="08:47">16/12/2013</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/tmb/" title="View all posts by TMB">TMB</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the <a href="http://repo.steampowered.com/steamos/dists/alchemist_beta/" title="beta tree of SteamOS">beta tree of SteamOS</a>, a new, &#8220;open&#8221; games platform from the developers at Valve.<span id="more-2620"></span></p>
+<p>Whilst we did contact them to ask about getting a physical system to look at, they weren&#8217;t forthcoming. Instead, I spent Friday night impatiently clicking refresh, waiting the release of their packages so that I could build a virtual machine and take it for a spin. It should therefore be noted that the system I evaluated is not an official release. Notably, the official image only supports EFI based hardware with an Nvidia graphics card. Since I opted to perform the install under VMware, certain hacks were needed to be performed to get it to function. Notably, I needed to bootstrap the install from an existing Debian system.</p>
+<p>To explain how I performed my build, I took a base install of Debian wheezy, updated the sources.list file to point at Valve&#8217;s SteamOS repository and performed a dist-upgrade. I then installed all remaining packages available within the USB install image and ran the supplied post_install.sh script. Finally, I sanity checked and removed any packages not in the <a href="http://repo.steampowered.com/steamos/conf/packagelist.txt" title="package list">package list</a>.</p>
+<p>Having installed SteamOS, I decided to examine what packages were installed and whether any had known vulnerabilities. In the long run, Valve are going to have to deal with a constantly shifting target as new vulnerabilities are announced. Whilst they may well benefit from the work done by the Debian security team, this isn&#8217;t assured given Valve&#8217;s decision to rebuild all the packages. Having said this, it appears that Valve have, for now at least, published packages covering all known security updates that have been published by the Debian security team. Whilst we didn&#8217;t perform an exhaustive search, it appears that the last relevant security update that had been applied at the point where this evaluation was performed was <a title="DSA-2788" href="http://www.debian.org/security/2013/dsa-2788">DSA-2788</a>. Readers should note however that it is unlikely that any non-Debian security team supported patches will have been applied. Packages of note, included:</p>
+<ul>
+<li>apache-2.2-bin &#8211; appears unused at this time</li>
+<li>bluez</li>
+<li>iceweasel</li>
+<li>netcat-traditional</li>
+<li>openssh-server</li>
+<li>openssh-client</li>
+<li>steam-launcher</li>
+<li>steam-autoupdate</li>
+<li>steamos-compositor</li>
+<li>valve-archive-keyring</li>
+<li>valve-bugreporter</li>
+<li>Firmware for various proprietary technology including NVidia and ATI graphics cards and Broadcom&#8217;s wireless NICs</li>
+</ul>
+<p>As mentioned above, the Apache web server does not appear to be functional at this moment in time although it does pull in mod_dnssd which might give a clue as to its ultimate purpose. There are a limited number of services which do listen on all network interfaces, namely sshd, dhclient, avahi-daemon and ntpd. In fact, it&#8217;s probably just as well that the number of services is limited for now, since there is no host-based firewall configured.</p>
+<p>In order to understand the threat models exposed by Valve&#8217;s design decisions, it is necessary to examine the contexts under which code can be executed. In addition to the traditional accounts found on UNIX like systems which are provided for the purposes of executing daemons and other system functions, the following accounts are present:</p>
+<table>
+<tr>
+<td>Username</td>
+<td>Password</td>
+<td>Access</td>
+<td>Privileges</td>
+</tr>
+<tr>
+<td>root</td>
+<td>n/a</td>
+<td>No direct access</td>
+<td></td>
+</tr>
+<tr>
+<td>steam</td>
+<td>steam</td>
+<td>SSH, Steam desktop</td>
+<td>groups: desktop, audio, dip, video, polkit, plugdev, netdev, bluetooth; polkit: access NetworkManager based on netdev membership; sudo: run bugreport.sh as steam, run steamos-update as root</td>
+</tr>
+<tr>
+<td>desktop</td>
+<td></td>
+<td>SSH (once a password has been set), GNOME desktop</td>
+<td>sudo: run bugreport.sh as steam, run steamos-update as root, become root (once a password has been set)</td>
+</tr>
+</table>
+<p>As you can see, other than preventing direct access to the UNIX account, SteamOS takes a naive approach. All user access be performed as either the steam or desktop users, neither of which have strong passwords. This contrasts starkly with operating systems such as Android on which each and every user application executes within a different context. Whilst applications could still be executed within with isolated contexts through the use of a non-discretionary access control model such as that provided SELinux, as we will see later, Valve have not as yet enabled this. What this means in practice, is that if a user executes malicious code, either from Steam itself or by way of side loading, then access to the system as a whole is relatively uncontrolled. Given the expected user base, SteamOS may prove an attractive target for attackers in due course. In particular, you should note the steam account has a weak, predictable password set and is therefore available over the network via SSH with minimal effort.</p>
+<p>In terms of privileged access, as you can see, there are two scripts which the desktop user can execute. bugreport.sh which can be run via sudo as the steam user and steamos-update which can be run as any user including root. In my experience such scripts are an obvious point of weakness in UNIX like systems, indeed, when testing our clients, it is rare that we do not find scripts such as these which cannot be exploited to escalate ones privileges. They therefore require further analysis.</p>
+<p>Firstly, I looked at bugreport.sh. This script takes a screenshot and then calls valve-bugreport. The latter is a Python GUI application which allows users to report their issue to Valve via a web exposed API. The script allows users to send Valve a fair bit of additional information about the bug including the software that has been installed, the contents of /tmp/dumps and ~/.steam/logs. The API is secured using SSL and basic authentication however it appears that the users Steam credentials are cached in ~/.valve-bugreporter.cfg:</p>
+<pre class="brush: python; gutter: false; title: ; notranslate" title="">
+g_configFile = os.path.expanduser('~/.valve-bugreporter.cfg')
+g_config = ConfigParser.SafeConfigParser({'username':'', 'password':'', 'steamid':''})
+</pre>
+<p>Note: It appears a <a href="https://github.com/ValveSoftware/SteamOS/issues/19" title="bug">bug</a> has already been opened for this &#8220;feature&#8221;.</p>
+<p>Screenshot filenames are constructed using mktemp which is of course (in principal*) vulnerable to <a href="http://cwe.mitre.org/data/definitions/363.html" title="TOCTOU">TOCTOU</a> attacks.</p>
+<p>Given the hassle Canonical have had with their privacy invading tweaks, I wonder whether similar concerns will be raised around SteamOS, however it is worth bearing in mind that this data is only sent when you file a bug report and it is sent over SSL to Atlassian. SSL Labs gives Atlassian a <a href="https://www.ssllabs.com/ssltest/analyze.html?d=valvesoftware.atlassian.net" title="B">B</a> for their current configuration.</p>
+<p>Secondly, I looked at steamos-update which is used to update SteamOS. This script makes use of the standard Debian update tools to update the main OS. Again, we see a potential* TOCTOU attack in the creation of /tmp/steamos-update.pid, which is of concern because steamos-update can be run as the root user, but as with the screenshots, the attack is thwarted due to the mitigations present in the Linux kernel. The script also calls steam which is Valve&#8217;s Steam client application. There are more TOCTOU of use violations with steam itself, but since they&#8217;re not exploitable we&#8217;ll leave them be except to point out that /tmp/dumps probably doesn&#8217;t want to be created &#8220;777&#8243;.</p>
+<p>Speaking of kernel level exploit mitigations, I observed that the following settings are set:</p>
+<table>
+<tr>
+<td>Kernel mitigation</td>
+<td>Value</td>
+<td>Implication</td>
+</tr>
+<tr>
+<td>kernel.kptr_restrict</td>
+<td>0</td>
+<td>Kernel symbols can be trivially resolved</td>
+</tr>
+<tr>
+<td>kernel.randomize_va_space</td>
+<td>2</td>
+<td>ASLR applied to all parts of process memory layout</td>
+</tr>
+<tr>
+<td>vm.mmap_min_addr</td>
+<td>65536</td>
+<td>Prevents processes mapping near-to-NULL pages as part of an in-kernel privilege escalation</td>
+</tr>
+<tr>
+<td>SELinux</td>
+<td>not configured</td>
+<td>no process context isolation</td>
+</tr>
+<tr>
+<td>kernel.yama.ptrace_scope</td>
+<td>0</td>
+<td>Process owners can debug processes</td>
+</tr>
+<tr>
+<td>fs.suid_dumpable</td>
+<td>0</td>
+<td>SetUID processes are not dumpable</td>
+</tr>
+<tr>
+<td>fs.protected_symlinks</td>
+<td>1</td>
+<td>Symlink TOCTOU attacks (such as *) limited as described in <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=800179c9b8a1e796e441674776d11cd4c05d61d7" title="commit">commit</a></td>
+</tr>
+<tr>
+<td>fs.protected_hardlinks</td>
+<td>1</td>
+<td>Hardlink TOCTOU attacks limited as described in <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=800179c9b8a1e796e441674776d11cd4c05d61d7" title="commit">commit</a></td>
+</tr>
+<tr>
+<td>kernel.modules_disabled</td>
+<td>0</td>
+<td>Kernel modules can be loaded</td>
+</tr>
+<tr>
+<td>kernel.modprobe</td>
+<td>/sbin/modprobe</td>
+<td>Kernel module loading helper enabled</td>
+</tr>
+<tr>
+<td>kernel.poweroff_cmd</td>
+<td>/sbin/poweroff</td>
+<td>Poweroff helper enabled</td>
+</tr>
+<tr>
+<td>net.*.conf.*.accept_redirects</td>
+<td>1</td>
+<td>ICMP redirects are accepted</td>
+</tr>
+<tr>
+<td>net.*.conf.*.secure_redirects</td>
+<td>1</td>
+<td>ICMP redirects should only come from the default nexthop router</td>
+</tr>
+<tr>
+<td>net.ipv4.tcp_syncookies</td>
+<td>1</td>
+<td>TCP syncookies are enabled</td>
+</tr>
+</table>
+<p>Examining the 72 userland processes running at the time these stats were collected, there is practically no use of any compile time mitigations:</p>
+<table>
+<tr>
+<td>Kernel mitigation</td>
+<td>In use in</td>
+<td>Implication</td>
+</tr>
+<tr>
+<td>PIE</td>
+<td>14</td>
+<td>Only programs built as Position Independent Executables (PIE) can take advantage of the exec ASLR which protects against return-to-* during memory corruption attacks</td>
+</tr>
+<tr>
+<td>RELRO</td>
+<td>13</td>
+<td>Only programs built with RELRO can benefit from their relocation table being marked as read-only which protects against GOT-overwrites</td>
+</tr>
+<tr>
+<td>Stack Smashing Protection</td>
+<td>17</td>
+<td>Only programs compiled with Stack Smashing Protection utilise a randomized stack canary that protects against stack overflows</td>
+</tr>
+</table>
+<p>As an aside, the permissions on /usr/local are still as I described in my &#8220;Breaking the linker: Exploiting the linker paper&#8221;. Whilst SteamOS doesn&#8217;t utilise the staff group, which limits this as an avenue for attack, it&#8217;s interesting to see that Valve didn&#8217;t make any attempt to audit the permissions they inherited from Debian.</p>
+<p>This concludes our evaluation of SteamOS&#8217;s security posture. SteamOS has not been significantly hardened by Valve. With respect to both kernel and userland hardening, it largely appears unchanged from stock Debian, something I believe is a missed opportunity. Whilst Debian needs to be all things to all people (it runs on 11 different hardware architectures for a start), this is clearly not the case for Valve and it would therefore have been nice to see them improve the security boundaries of the offering. In a future article, I hope to examine the Steam client application and hopefully shed some light on Valve&#8217;s Security Development Lifecycle.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-eKQHyh8tXWjvwQ6" class="g-recaptcha-explicit-id"><div id="g-recaptcha-eKQHyh8tXWjvwQ6"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPython.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.088 seconds. -->
+</div>
+</body>
+</html>
+

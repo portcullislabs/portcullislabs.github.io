@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>JTAG on-chip debugging: Extracting passwords from memory | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='JTAG on-chip debugging: Extracting passwords from memory - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig1_broadlinkrmPro-300x240.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig2_boradlink_econtrolapp-168x300.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig3_inside_broadlinkrmpro-300x257.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig4_jtag_pinouts-300x225.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig5_jtagulator-300x146.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig6_jtagulator_connected-300x271.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig7_jtagulating_identification-300x111.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig8_jtag_signal_reverse-300x292.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig9_shikra-300x168.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig10_shikra_jtag_connections-300x231.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig11_shikra_to_usb-300x228.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig12_register_values-202x300.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig13_duming_to_file-300x112.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig14_wifi_passphrase-300x191.png'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-6160 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-6160"  class="portcullis-post portcullis-article  post-6160 post type-post status-publish format-standard hentry category-blog tag-hardhack tag-training">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">JTAG on-chip debugging: Extracting passwords from memory</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="09:30">29/03/2018</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/isa/" title="View all posts by ISA">ISA</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>Following on from my <a title="colleague's post on using UART to root a phone" href="/blog/uart-debugging-rooting-an-ip-phone-using-uart/">colleague&#8217;s post on using UART to root a phone</a>, I look at another of our challenges, whereby sensitive information such as passwords can be extracted from a device&#8217;s memory if physical access to the device is acquired.<span id="more-6160"></span></p>
+<h2>The goal and target</h2>
+<div id="attachment_6163" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6161"><div class="lb-album"><a href="#image-6161"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig1_broadlinkrmPro-300x240.jpg" alt="BroadLink RM Pro Smart Remote Control" class="size-medium wp-image-6163"><span></span></a></div>              
+<a href="#imageclose-6161" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6161">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig1_broadlinkrmPro.jpg" alt="image-6161">
+                   </div></a><p class="wp-caption-text">BroadLink RM Pro Smart Remote Control</p></div>
+<p>The target device is the BroadLink RM Pro universal remote control designed for home convenience and automation.</p>
+<p>This smart remote control can be used to control multiple home appliances through its application. It also allows users to create scenarios whereby multiple actions can be programmed and activated simultaneously. Device setup and functionality is accessed through the BroadLink e-Control application. This application must be running on a device connected to the same Wi-Fi network as the smart remote and the appliance you want to control.</p>
+<div id="attachment_6165" style="width: 178px" class="wp-caption aligncenter"><a name="imageclose-6162"><div class="lb-album"><a href="#image-6162"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig2_boradlink_econtrolapp-168x300.png" alt="BroadLink e-Control application" class="size-medium wp-image-6165"><span></span></a></div>              
+<a href="#imageclose-6162" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6162">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig2_boradlink_econtrolapp.png" alt="image-6162">
+                   </div></a><p class="wp-caption-text">BroadLink e-Control application</p></div>
+<p>For the purpose of this challenge, setting up the device is required. In a real scenario, the device would likely already be set up.</p>
+<p>Start by connecting the smart remote to a Wi-Fi network and entering the Wi-Fi SSID and Passphrase within the e-Controls application. The application then subsequently tries to locate the device within the network and once it is found, a connection is established.</p>
+<p>Now that the smart remote is functional, an attacker who has physical access to the device may attempt to extract configuration or sensitive information loaded in memory. Successfully replicating this attack scenario is the main goal of this challenge.</p>
+<h2>Taking a look inside</h2>
+<p>The first step is to investigate the internal components of the device, starting by carefully taking apart the unit. There are three easily removable housing screws situated on the underside of the device.</p>
+<p>Once opened, we can then identify different points of interest within the device. These can be internal or external ports, the board&#8217;s chips, components, model and serial numbers. Identifying the chip&#8217;s model and serial number is essential and will provide us with the information we need in latter stages.</p>
+<div id="attachment_6166" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6163"><div class="lb-album"><a href="#image-6163"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig3_inside_broadlinkrmpro-300x257.jpg" alt="Inside BroadLink RM Pro Smart remote" class="size-medium wp-image-6166"><span></span></a></div>              
+<a href="#imageclose-6163" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6163">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig3_inside_broadlinkrmpro.jpg" alt="image-6163">
+                   </div></a><p class="wp-caption-text">Inside BroadLink RM Pro Smart remote</p></div>
+<p>Looking for ways to communicate with the device is another key step. When working with embedded architectures, the presence of debug interfaces such as UART and JTAG is a common method used to establish serial connectivity to the device.</p>
+<h2>JTAG</h2>
+<p>Joint Test Action Group or more simply JTAG, is a standardised type of serial communication commonly used by engineers and developers to perform on-board testing or diagnostics of embedded devices, also known as boundary scanning. Another functionality of JTAG, which is seemingly more used today, is CPU level debugging allowing read-write access to registers and memory.</p>
+<p>The JTAG interface uses four connection points also known as Test Access Port or TAP. These connection points correspond to four signals:</p>
+<ul>
+<li>TDI &#8211; Test Data In; this signal represents input data sent to the device</li>
+<li>TDO &#8211; Test Data Out, which represents output data from the device</li>
+<li>TCK &#8211; Test Clock, used to synchronise data from the TMS and TDI (rising edge of Test Clock) and TDO (falling edge of Test Clock)</li>
+<li>TMS &#8211; Test Mode Select; this signal is used to control the state of the TAP controller</li>
+<li>TRST &#8211; Test Reset; this is an optional signal used for resetting the TAP controller</li>
+</ul>
+<h2>Identifying JTAG pinouts</h2>
+<p>The implementation of JTAG is non-standardised, which means that the signal pinouts you may encounter will vary between devices. Aside from the standalone JTAG connection points, commonly seen JTAG interfaces may be a part of a 10 pin, 14 pin, 16 or 20 pin header.</p>
+<div id="attachment_6167" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6164"><div class="lb-album"><a href="#image-6164"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig4_jtag_pinouts-300x225.jpg" alt="JTAG pinouts" class="size-medium wp-image-6167"><span></span></a></div>              
+<a href="#imageclose-6164" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6164">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig4_jtag_pinouts.jpg" alt="image-6164">
+                   </div></a><p class="wp-caption-text">JTAG pinouts</p></div>
+<p>Looking closely at the device, the five connection points on the corner of the board is the JTAG interface. Using the JTAG&#8217;s debugging functionality should enable us to read and write data stored in memory.</p>
+<p>Note: Some devices will have JTAG present but their connections will have been disabled before being released into production.</p>
+<p>There are various tools available which can be used to identify JTAG signal pinouts, all of which vary in available features and pricing. Common examples are JTAGenum (for Arduino), JTAGulator and Hydrabus to name a few. For the purpose of this challenge, a JTAGulator is used. The JTAGulator supports a number of functionalities, including both the identification of UART and JTAG pinouts.</p>
+<div id="attachment_6170" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6165"><div class="lb-album"><a href="#image-6165"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig5_jtagulator-300x146.jpg" alt="The JTAGulator" class="size-medium wp-image-6170"><span></span></a></div>              
+<a href="#imageclose-6165" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6165">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig5_jtagulator.jpg" alt="image-6165">
+                   </div></a><p class="wp-caption-text">The JTAGulator</p></div>
+<h2>Connecting the JTAGulator</h2>
+<p>The JTAGulator is connected to the smart remote starting from the lowest number of channels/pins on the board (CH0-CH4). The lowest numbered pinouts are used due to the brute-force method used by the JTAGulator to identify the signal value for each pinout. Using the lowest pin number decreases the number of permutation to iterate through and ultimately speeds up the identification process.</p>
+<div id="attachment_6171" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6166"><div class="lb-album"><a href="#image-6166"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig6_jtagulator_connected-300x271.jpg" alt="JTAGulator connected to the device' class="size-medium wp-image-6171"><span></span></a></div>              
+<a href="#imageclose-6166" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6166">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig6_jtagulator_connected.jpg" alt="image-6166">
+                   </div></a><p class="wp-caption-text">JTAGulator connected to the device&#8217;s JTAG pins</p></div>
+<p>Once connected, you can control using the JTAGulator via USB connection, which will appear as a serial interface. A number of terminal emulators such as PuTTY, Hyperterminal or Minicom can be used to interface with the JTAGulator. In this instance, we will use ‘screen&#8217; utility, which is installed by default on many Linux distributions. It can be used to establish a serial connection to the JTAGulator via the default ttyUSB0 device in Linux machines. The JTAGulator&#8217;s baudrate of 115200 should also be provided like so:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ sudo screen /dev/ttyUSB0 115200
+</pre>
+<p>Once a serial connection to the JTAGulator is established, pressing the ‘h&#8217; key shows a list of JTAG commands available. The first step is to set the target voltage to 3.3V, which pertains to the voltage required by the microprocessor. 3.3V is commonly used by most chips; however, accurate information regarding the operational voltage can be found by looking through the chip&#8217;s specification sheet. Setting the correct voltage is important as an incorrect voltage could damage or destroy the device. After setting the voltage, the &#8220;Identify JTAG pinout (IDCODE Scan) can be used to identify JTAG pins, which works by reading the device IDs &#8211; specifically, TDO, TMS and TCK signals. To identify the TDI pin, the BYPASS scan is used.</p>
+<p>When running the scans, enter the number of channels to use as five; this will allow the JTAGulator to use the connections made channels CH0 to CH4. The scans should complete fairly quickly as there are only five pins exposed in the board, resulting in a lower number of permutations to be made. If the JTAG implementation appears alongside multiple pinouts, this can increase the number of permutations, thus increasing the duration of the scan.</p>
+<div id="attachment_6172" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6167"><div class="lb-album"><a href="#image-6167"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig7_jtagulating_identification-300x111.png" alt="Identifying JTAG pinouts (BYPASS scan)" class="size-medium wp-image-6172"><span></span></a></div>              
+<a href="#imageclose-6167" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6167">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig7_jtagulating_identification.png" alt="image-6167">
+                   </div></a><p class="wp-caption-text">Identifying JTAG pinouts (BYPASS scan)</p></div>
+<p>The result of the BYPASS scan show us the location of the signal pinouts on the JTAGulator, which corresponds to the signal pinouts on the smart remote.</p>
+<p>You can skip this step entirely if the JTAG pinouts are labelled on the silkscreen print on the board, so do not forget to check both sides of the PCB, as it may save valuable time.</p>
+<div id="attachment_6173" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6168"><div class="lb-album"><a href="#image-6168"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig8_jtag_signal_reverse-300x292.jpg" alt="JTAG signal pinouts printed underneath the board" class="size-medium wp-image-6173"><span></span></a></div>              
+<a href="#imageclose-6168" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6168">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig8_jtag_signal_reverse.jpg" alt="image-6168">
+                   </div></a><p class="wp-caption-text">JTAG signal pinouts printed underneath the board</p></div>
+<h2>The Shikra</h2>
+<p>In order for us to get debug access on the smart remote, an interface and some form of OCD (On Chip Debugger) is required. Many devices on the market allow interfacing with JTAG to facilitate on chip debugging, such as Bus Pirate, Shikra and HydraBus. For this scenario, the Shikra and OpenOCD software are used.</p>
+<p>The Shikra is an FT232H USB device sometimes referred to as the &#8220;Swiss army knife of hardware hacking&#8221;; this device allows us to connect to a number of data interfaces, including UART, JTAG and SPI. A Shikra can be purchased from Xipiter: <a href="https://int3.cc/products/the-shikra">https://int3.cc/products/the-shikra</a>.</p>
+<div id="attachment_6174" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6169"><div class="lb-album"><a href="#image-6169"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig9_shikra-300x168.jpg" alt="The Shikra" class="size-medium wp-image-6174"><span></span></a></div>              
+<a href="#imageclose-6169" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6169">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig9_shikra.jpg" alt="image-6169">
+                   </div></a><p class="wp-caption-text">The Shikra</p></div>
+<p>The following diagram shows the Shikra pinouts for JTAG, which will be used to connect to the board&#8217;s corresponding JTAG pinouts. Ensure that the ground (GND) pin is also connected to a ground point on the board.</p>
+<div id="attachment_6190" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6170"><div class="lb-album"><a href="#image-6170"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig10_shikra_jtag_connections-300x231.png" alt="Shikra JTAG connections http://www.xipiter.com/uploads/2/4/4/8/24485815/shikra_documentation.pdf" class="size-medium wp-image-6190"><span></span></a></div>              
+<a href="#imageclose-6170" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6170">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig10_shikra_jtag_connections.png" alt="image-6170">
+                   </div></a><p class="wp-caption-text">Shikra JTAG connections http://www.xipiter.com/uploads/2/4/4/8/24485815/shikra_documentation.pdf</p></div>
+<div id="attachment_6191" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6171"><div class="lb-album"><a href="#image-6171"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig11_shikra_to_usb-300x228.jpg" alt="The Shikra giving serial to USB connectivity" class="size-medium wp-image-6191"><span></span></a></div>              
+<a href="#imageclose-6171" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6171">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig11_shikra_to_usb.jpg" alt="image-6171">
+                   </div></a><p class="wp-caption-text">The Shikra giving serial to USB connectivity</p></div>
+<h2>OpenOCD</h2>
+<p>OpenOCD allows us to perform on-chip debugging of the smart remote via JTAG using GDB. In Linux-based systems, you can install the OpenOCD package by running the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ sudo apt-get install openocd
+</pre>
+<p>In order for us to use OpenOCD, a configuration file for the interface (Shikra) and the target (Smart remote) are required. OpenOCD comes with a number of pre-installed interface and target configuration files; however, the one required does not come in the pre-installed list. The configuration file for the adapter can be found in Xipiter&#8217;s <a title="getting started guide for the Shikra" href="http://www.xipiter.com/musings/using-the-shikra-to-attack-embedded-systems-getting-started">getting started guide for the Shikra</a>.</p>
+<p>Shikra OpenOCD configuration file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+#shikra.cfg
+interface ftdi
+ftdi_vid_pid 0x0403 0x6014
+
+ftdi_layout_init 0x0c08 0x0f1b
+adapter_khz 2000
+#end shikra.cfg
+</pre>
+<p>Obtaining the configuration file for the target was not as straight forward. The configuration file required was not available within the pre-installed configuration files and attempting to use any of them results in compatibility errors with the device.</p>
+<p>The approach taken in identifying the appropriate target configuration file involved looking up the microprocessor&#8217;s make and model. Using a magnifying glass or a good enough camera, the specific chip printings can be determined. The chip in question is a Marvell 88MC200 and a simple Google search of this chip and the keyword OpenOCD returns the <a title="target configuration" href="http://openocd.zylin.com/#/c/2553/2/tcl/target/mc200.cfg">target configuration</a> needed.</p>
+<pre class="brush: bash; highlight: [7]; title: ; notranslate" title="">
+#
+# Marvell's Wireless Microcontroller Platform (88MC200)
+#
+# https://origin-www.marvell.com/microcontrollers/wi-fi-microcontroller-platform/
+#
+
+#source [find interface/ftdi/mc200.cfg]
+
+if &quot; [info exists CHIPNAME] &quot; &quot;
+   set  _CHIPNAME $CHIPNAME
+&quot; else &quot;
+   set  _CHIPNAME mc200
+&quot;
+
+set  _ENDIAN little
+
+# Work-area is a space in RAM used for flash programming
+# By default use 16kB
+if &quot; [info exists WORKAREASIZE] &quot; &quot;
+   set  _WORKAREASIZE $WORKAREASIZE
+&quot; else &quot;
+   set  _WORKAREASIZE 0x4000
+&quot;
+
+# JTAG scan chain
+if &quot; [info exists CPUTAPID ] &quot; &quot;
+   set _CPUTAPID $CPUTAPID
+&quot; else &quot;
+   set _CPUTAPID 0x4ba00477
+&quot;
+
+jtag newtap $_CHIPNAME cpu -irlen 4 -ircapture 0x1 -irmask 0xf -expected-id $_CPUTAPID
+
+set _TARGETNAME $_CHIPNAME.cpu
+target create $_TARGETNAME cortex_m -endian $_ENDIAN -chain-position $_TARGETNAME
+$_TARGETNAME configure -work-area-phys 0x2001C000 -work-area-size $_WORKAREASIZE -work-area-backup 0
+
+# Flash bank
+set _FLASHNAME $_CHIPNAME.flash
+flash bank $_FLASHNAME mrvlqspi 0x0 0 0 0 $_TARGETNAME 0x46010000
+
+# JTAG speed should be &lt;= F_CPU/6. F_CPU after reset is 32MHz
+# so use F_JTAG = 3MHz
+adapter_khz 3000
+adapter_nsrst_delay 100
+if &quot;[using_jtag]&quot; &quot;
+ jtag_ntrst_delay 100
+&quot;
+
+if &quot;![using_hla]&quot; &quot;
+   # if srst is not fitted use SYSRESETREQ to
+   # perform a soft reset
+   cortex_m reset_config sysresetreq
+&quot;</pre>
+<p>The above configuration file was pointing to an interface path (line 7) which in our case was not required and therefore has been commented out. The interface configuration file previously downloaded will be used instead and the file location specified as a command line argument in OpenOCD.</p>
+<p>Once both target and interface configuration files are saved locally, run the following OpenOCD command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ openocd -f /usr/share/openocd/scripts/interface/shikra.cfg -f /usr/share/openocd/scripts/target/mc200.cfg
+</pre>
+<p>The file path points to shikra.cfg file, which contains the interface configuration and mc200.cfg contains the target board configuration.</p>
+<p>The on-chip debugger should now be running as a server and will open local port 4444 on your system. You can then simply connect to this port with Telnet:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ telnet localhost 4444
+</pre>
+<h2>Dumping the device memory</h2>
+<p>Once connected, debug access to the board is now possible and allows control of registers and memory address.</p>
+<p>Before the registers can be accessed, sending a halt request is required to send the target into a debugging state. After sending the halt request, the reg command is used to view all of the available registers and its values on the device&#8217;s CPU. The full list of useful commands is available in the <a title="OpenOCD documentation" href="http://openocd.org/doc/html/General-Commands.html">OpenOCD documentation</a>.</p>
+<div id="attachment_6192" style="width: 212px" class="wp-caption aligncenter"><a name="imageclose-6172"><div class="lb-album"><a href="#image-6172"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig12_register_values-202x300.png" alt="Registers values shown in OpenOCD" class="size-medium wp-image-6192"><span></span></a></div>              
+<a href="#imageclose-6172" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6172">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig12_register_values.png" alt="image-6172">
+                   </div></a><p class="wp-caption-text">Registers values shown in OpenOCD</p></div>
+<p>Highlighted in the above image is the Stack Pointer (SP) register. Discussing how computer addressing works is beyond the scope of this blog (it is not a simple subject!). For now, it is enough to understand that the location of the Stack Pointer contains the last value pushed onto the stack of things in memory (RAM), serving as the starting address from where user space memory can be accessed.</p>
+<p>Going back to the original goal of extracting sensitive information from the device, the &#8220;dump_image&#8221; command can be used to dump memory content (in hex). To successfully dump as much information as possible, a trial and error approach to identify the boundaries of user space memory can be taken.</p>
+<p>The dump_image command can be used as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ dump_image img_out2 0x20002898 120000
+</pre>
+<p>The img_out2 argument is the output filename; the next argument is the Stack Pointer address and finally the amount of memory to dump in bytes.</p>
+<div id="attachment_6193" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6173"><div class="lb-album"><a href="#image-6173"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig13_duming_to_file-300x112.png" alt="Dumping memory to a file" class="size-medium wp-image-6193"><span></span></a></div>              
+<a href="#imageclose-6173" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6173">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig13_duming_to_file.png" alt="image-6173">
+                   </div></a><p class="wp-caption-text">Dumping memory to a file</p></div>
+<p>The image above shows that initial attempts at dumping memory may fail if a larger amount of bytes than what is available is specified.</p>
+<p>After successfully dumping the contents of memory in hex, an analysis of the file can be performed to identify any information that might be of interest.</p>
+<div id="attachment_6194" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6174"><div class="lb-album"><a href="#image-6174"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig14_wifi_passphrase-300x191.png" alt="Wi-Fi passphrase next to the SSID" class="size-medium wp-image-6194"><span></span></a></div>              
+<a href="#imageclose-6174" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6174">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig14_wifi_passphrase.png" alt="image-6174">
+                   </div></a><p class="wp-caption-text">Wi-Fi passphrase next to the SSID</p></div>
+<p>A hex editor of your choice can be used to navigate around the contents of the file and in the example above, we have used Ghex. Looking around the file and by performing a quick search, we can see the SSID name the device is connected to. 18 bytes after it, the passphrase was also shown.</p>
+<p>If we had purchased this device second-hand, then we could potentially use it to access someone&#8217;s home network and launch further attacks.</p>
+<h2>Conclusion</h2>
+<p>Cyber attacks on smart home devices should now be recognised by home consumers, as well as the risks posed should these devices be sold or stolen. On the other hand, manufacturers should consider methods for securing the hardware aspect &#8211; the very foundation of these devices &#8211; to ensure the security and privacy of its users.</p>
+<p>Cisco&#8217;s hardware hacking challenges gives us the opportunity to learn different methods to tamper or attack a device, therefore promoting a greater understanding of the security risks and controls they present. This post has presented a simple proof-of-concept attack on a consumer smart device, whereby a user&#8217;s Wi-Fi passphrase can be extracted and therefore allow an attacker to achieve persistent access to a victim&#8217;s network. This type of attack can be prevented by disabling &#8211; or more effectively &#8211; removing the JTAG ports completely from production devices, thereby minimising its attack surface.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-UapEbynxRt1RSnA" class="g-recaptcha-explicit-id"><div id="g-recaptcha-UapEbynxRt1RSnA"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.094 seconds. -->
+</div>
+</body>
+</html>
+

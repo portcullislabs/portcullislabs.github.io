@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Linux</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/linux/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Exploring Windows Subsystem for Linux</title>
+		<link>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/#comments</comments>
+		<pubDate>Thu, 27 Jul 2017 09:00:04 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5869</guid>
+		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new <a title="Windows Subsystem for Linux" href="https://msdn.microsoft.com/en-gb/commandline/wsl/about">Windows Subsystem for Linux</a> (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from <a title="Alex Ionescu" href="https://github.com/ionescu007/lxss">Alex Ionescu</a>), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take it for a spin.<span id="more-5869"></span></p>
+<p>The first thing I did once I had it installed was look at how the Windows process tree had changed. Running it results in two new branches to your process tree. The first contains the Windows bash.exe instance which hosts your new terminal:</p>
+<ul>
+<li>explorer.exe (runs as your user):
+<ul>
+<li>bash.exe (runs as your user):
+<ul>
+<li>conhost.exe (runs as your user)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Whilst the second contains the Linux process tree:</p>
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>init (runs as your user, no disabled privileges, locked into a job):
+<ul>
+<li>bash (runs as your user, disabled privileges, locked into a job, break away set to true)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>As you might expect, new code compiled to support this is well hardened and uses Windows 10&#8242;s advanced mitigations. Specifically, bash.exe has the following mitigations enabled:</p>
+<ul>
+<li>DEP enabled</li>
+<li>ASLR high entropy, bottom up</li>
+<li>CFG enabled</li>
+</ul>
+<p>Digging a little further, the same can&#8217;t be said for init, bash and other parts of the Linux process tree. Whilst DEP is enabled, ASLR and CFG are not. In fairness, this shouldn&#8217;t come as any great surprise &#8211; they&#8217;re Ubuntu packaged binaries however it does start to show show how introducing WSL to your system can change the systems posture.</p>
+<h2>The kernel</h2>
+<p>So what does the &#8220;kernel&#8221; version look like. Well, at the point I examined it:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+x@DESKTOP-L4857K3:~$ uname -a
+Linux DESKTOP-L4857K3 3.4.0+ #1 PREEMPT Thu Aug 1 17:06:05 CST 2013 x86_64 x86_64 x86_64 GNU/Linux
+</pre>
+<p>This version of the Linux kernel should be vulnerable to <a title="dirty cow" href="https://dirtycow.ninja/">dirty cow</a>, so what of it? It doesn&#8217;t work which again isn&#8217;t a huge surprise. As Alex has alluded to there is a quite a substantial amount of mapping going on to implement the Linux system calls on Windows and whilst they should be API compatible, the implementations between a real Linux kernel and what WSL gives up may be quite different.</p>
+<p>This does however bring up the first critical point: There is no relationship between the patches supplied as part of Windows Update and what goes on with WSL. If you don&#8217;t patch regularly you&#8217;ll still be vulnerable to a whole plethora of Ubuntu (userland) vulnerabilities.</p>
+<h2>Memory corruption mitigations</h2>
+<p>Some Linux mitigations are in play however (as they would be on any real Ubuntu system) as can be seen with <a title="checksec.sh" href="http://www.trapkit.de/tools/checksec.html">checksec.sh</a>:</p>
+<ul>
+<li>System-wide ASLR (kernel.randomize_va_space): On (Setting: 2)</li>
+<li>Does the CPU support NX: Yes</li>
+</ul>
+<p>And of course binaries are compiled with whatever <a title="Ubuntu hardening" href="https://wiki.ubuntu.com/Security/Features">Ubuntu hardening</a> is currently supported:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+	COMMAND    PID RELRO             STACK CANARY           NX/PaX        PIE
+	  init      1 Full RELRO        Canary found           NX enabled    Dynamic Shared Object
+	  sudo     14 Partial RELRO     Canary found           NX enabled    Dynamic Shared Object
+	    su     15 Partial RELRO     Canary found           NX enabled    No PIE
+	  bash     16 Partial RELRO     Canary found           NX enabled    No PIE
+	  bash      2 Partial RELRO     Canary found           NX enabled    No PIE
+</pre>
+<h2>Shared memory</h2>
+<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://labs.portcullis.co.uk/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:~# ipcs
+
+kernel not configured for shared memory
+
+kernel not configured for semaphores
+
+kernel not configured for message queues
+</pre>
+<p>Whether this will have any security implications, it&#8217;s difficult to say but at the very least it may stop certain applications from working. Other applications may revert to using other less well tested IPC mechanisms which may expose security issues along the way.</p>
+<h2>Debugging</h2>
+<p>Moving on, how about debugging something. A simple tool which exercises the ptrace() system call is strace. Here&#8217;s what happens when strace is run on a normal process:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:/sys# strace -f printf &quot;test&quot; 2&gt;&amp;1 | head -n 5
+execve(&quot;/usr/bin/printf&quot;, [&quot;printf&quot;, &quot;test&quot;], [/* 15 vars */]) = 0
+brk(0)                                  = 0xa9d000
+...
+</pre>
+<p>However you can&#8217;t strace PID 1 (as would have been possible on real Linux), instead ptrace() returns an error: &#8220;Operation not permitted&#8221;.</p>
+<h2>File systems</h2>
+<p>Whilst /mnt doesn&#8217;t show up as a different file system, /mnt/c is actually used to map the underlying Windows system disk. This is immediately peculiar since it is mapped with permissions of 0777 (world readable, world writable amongst others). Moreover any files created under it are created with an owner of root. You&#8217;d think this might be a problem but from what I&#8217;ve seen so far, assuming the Windows file permissions are set right then (because everything (even setUID processes) runs as you from Windows&#8217; perspective) you won&#8217;t be able to access anything inappropriate (think SAM etc). It. Just. Looks. Weird.</p>
+<p>Furthermore, the way that WSL implements umasks too is an oddity. umask doesn&#8217;t work on all file system types and in particular the aforementioned /mnt/c. Observe the following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:/# umask 666
+root@DESKTOP-L4857K3:/# touch foo
+root@DESKTOP-L4857K3:/# ls -la foo
+---------- 1 root root 0 Mar 28 23:10 foo
+root@DESKTOP-L4857K3:~# rm foo
+root@DESKTOP-L4857K3:~# cd /mnt/c/Users/x/
+root@DESKTOP-L4857K3:/mnt/c/Users/x# touch foo
+root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
+-rwxrwxrwx 1 root root 0 Mar 28 23:10 foo
+</pre>
+<p>Umask is honoured in the first location but not the second (a umask of 0666 should mean that files are created with no permissions). Whilst there&#8217;s a fundamental Windows reason why this is the case, there is nothing to indicate this to the Ubuntu instance&#8217;s userland and thus files created within your home directory might be created with undesirable permissions. Microsoft are tracking this in the GitHub as <a title="issue 352" href="https://github.com/Microsoft/BashOnWindows/issues/352">issue 352</a>.</p>
+<h2>Authentication</h2>
+<p>Unlike on a real Ununtu there&#8217;s no terminal level authentication (whilst user accounts within the Ubuntu instance do have passwords, they&#8217;re not needed unless you want to access the system remotely or gain root privileges via sudo). Moreover, from Windows&#8217; perspective there is no difference between UID 0 and UID 1000. You can start a terminal and then use sudo to elevate your privileges and Windows will be none the wiser (Linux capabilities aren&#8217;t mapped into Windows user rights or special tokens). That might mean that users won&#8217;t care too much about their Ubuntu instance&#8217;s passwords but as you can imagine with no password policy enforcement, users might be tempted to reuse their Windows passwords.</p>
+<p>I should also note that whilst sudo prompts for a password on each new instance of bash.exe/conhost.exe pair hosting a terminal however if you authenticate to sudo, close the terminal and then reopen it, then your sudo ticket may still be valid &#8211; this requires exact co-ordination as sudo sessions are tracked by PID, however the first terminal opened will always have a Linux bash process with a PID of 2 which may well be blessed from a previous sudo session.</p>
+<h2>Privileges</h2>
+<p>Finally, as per issue <a title="issue 561" href="https://github.com/Microsoft/BashOnWindows/issues/561">issue 561</a>, because everything runs as you from Windows&#8217; perspective, the only way to successfully execute ping (which requires an ICMP raw socket on Linux) is to run bash.exe in elevated mode (as Administrator). This, despite the fact that a non-elevated user can quite happily execute ping on the Windows host. WSL doesn&#8217;t even implement concept of root in any real sense, let along implement the necessary Linux syscalls to support capabilities in any useful fashion. This in turn means that everything else spawned from the elevated shell also runs with Windows administrative privileges. For comparison, here&#8217;s what the new branches of your process tree will look like:</p>
+<ul>
+<li>wininit.exe.exe (runs as SYSTEM):
+<ul>
+<li>services.exe (runs as SYSTEM):
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>RuntimeBroker.exe (runs as your user, disabled privileges, not elevated):
+<ul>
+<li>bash.exe (runs as your user, disabled privileges, elevated):
+<ul>
+<li>conhost.exe (runs as your user, disabled privileges, elevated)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The first contains the Windows bash.exe instance which hosts your new terminal, whilst the second contains the Linux process tree:</p>
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>init (runs as your user, no disabled privileges, locked into a job, elevated):
+<ul>
+<li>bash (runs as your user, disabled privileges, locked into a job, break away set to true, elevated):
+<ul>
+<li>sudo (runs as your user, disabled privileges, locked into a job, break away set to true, elevated):
+<ul>
+<li>ping (runs as your user, disabled privileges, locked into a job, break away set to true, elevated)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Microsoft&#8217;s stock answer is that the Ubuntu instance (or rather the bash.exe instance hosting the terminal and accompanying lxss.sys kernel implementation) is locked down, effectively sandboxed by a combination of Windows DACLs, the concept of <a href="jobs" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684161(v=vs.85).aspx">jobs</a> (touched upon at the start and akin to Linux <a title="cgroups" href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html">cgroups</a>) and syscall mapping that effectively uses lxss.sys to <a title="proxy" href="https://blogs.msdn.microsoft.com/wsl/2016/06/08/wsl-system-calls/">proxy</a> most syscalls onto their corresponding NT kernel implementation.</p>
+<h2>Conclusion</h2>
+<p>The design of WSL seems to be relatively robust if slightly odd, however time will tell, particularly if offensive teams pick up the whiff of a new opportunity. If nothing else, take this article as a reminder that WSL should not be considered a security boundary and that it will remain unmanaged irrespective of how you administer your Windows hosts.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>UNIX and Linux setUID advice and guidance</title>
+		<link>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/</link>
+		<comments>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
+		<pubDate>Fri, 16 Jun 2017 14:41:53 +0000</pubDate>
+		<dc:creator><![CDATA[AFC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[AIX]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[FreeBSD]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Solaris]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5793</guid>
+		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
+<p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
+<p>One good approach would be:</p>
+<p>&#8220;The only good setUID is a chmod -s setuid&#8221; i.e. deactivate this particular functionality.</p>
+<p>However, sysadmins may (understandably) get a bit wobbly when we suggest this and come up with a number of fairly valid reasons why this is tricky. They have a point to some extent, but this is 2017 and we should be biting some of these bullets.</p>
+<p>Yes, reducing the risk in this area is tough, but it is in fact a good start in defining least privilege security controls. You can learn how little or how much power individual users require and manage this accordingly. You can also test your changes before rolling them out and sanity check the advice given.</p>
+<p>At the very least we need a list of files that should not be setUID that we can give to sysadmins and, with confidence, recommend removing or changing the permissions. A pragmatic strategy for mitigating the risks incurred would also be good.</p>
+<h2>So what are they?</h2>
+<p>SetUID/setGID bits are file permissions set on binary files when we need them to run with the permissions of the owner (setUID) or the group (setGID) that owns the file, usually a root or equivalent user. Historically this functionality was entrenched in UNIX and Linux and was necessary, up to a point, for a system to function as intended.</p>
+<p>Many vendors are now working toward eliminating the requirement for these permissions and UNIX based systems can be configured, with some care, not to use them.</p>
+<p>We potentially have 3 categories of setUID and setGID files:</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>May have become setUID by accident, installation of third-party software, malicious activity or sloppy coding and should almost certainly not be allowed</li>
+<li>tar, find, vi, etc</li>
+<li>Likely high risk to get root easily</li>
+<li>Epic fail -rwsrw-rw- More common than you would think</li>
+<li>Vendor supplied software often a culprit</li>
+</ul>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>Redundant, legacy or not really required to be setUID</li>
+<li>rcp, arping, etc</li>
+<li>Likely low risk but should be easy to remove</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>OS may fail to function as expected if setUID is removed without care</li>
+<li>For example passwd, sudo</li>
+<li>Should be mitigated to minimise risks</li>
+<li>Many can be reclassified as 2 above and have the setUID bit removed</li>
+</ul>
+<p>We report on categories 1 (naughty) and 2 (remove) scoring appropriate to the risk and ease of exploitation. We report on 3 (allowed) with recommendations to mitigate.</p>
+<p>For example, a setUID on the find command (or any shell command with abilities to run other programs or shells) would be a high risk vulnerability allowing regular users to become root fairly easily.</p>
+<h2>How to deal with these issues?</h2>
+<p>The approach to recommend to customers:</p>
+<ol>
+<li>Audit &#8211; find all setUID and setGID files on the system locally and on all filesystems not mounted nosetuid</li>
+<li>Validate &#8211; elfsign and cross checks against vendor checksums</li>
+<li>Eliminate where possible &#8211; uninstall, chmod -s or rm</li>
+<li>Mitigate where necessary &#8211; FIM, auditing, remote logging, mount NAS nosetuid</li>
+</ol>
+<p>This applies primarily to common Linux distributions. Solaris and AIX for example may have slightly different filenames and locations, but similar principles apply.</p>
+<p>The ubiquitous sudo or other equivalent tools can be used to configure fine grained privilege management without the requirement for setUID permissions. Your version of sudo must be up to date, the sudoers configuration files must be secure and have a strictly limited set of commands allowed per user or group.</p>
+<p>Customers need to consider how the remediation and mitigation steps fit within their overall strategies for user and privilege management alongside local and remote file permissions.</p>
+<p>For example:</p>
+<p>Do they have a good FIM solution and can they utilise remote logging as a mitigation? Do they wish to work at the standard build level and have a hardened standard build? If so, then maybe they&#8217;re in the right place to look at removing these permissions?</p>
+<p>In particular File Integrity Monitoring, which should focus on the most vulnerable files on a system, should track any changes to the files with the setUID/setGID bit set. Any changes should be audited and remotely logged to ensure that an attacker cannot cover their tracks.</p>
+<p>Other mitigation techniques include SELinux and other RBAC mechanisms on Linux, Trusted Execution and Trusted Computing Base on AIX and RBAC on Solaris.</p>
+<p>More recent Linux kernels (starting 2.6.26) can make use of capabilities which provide fine-grained control over superuser permissions, allowing use of the root user to be avoided.</p>
+<p>Sysadmins need some encouragement and support in both remediation and mitigation. If something unexpected does not work upon removing a setUID file permission, it is important to try to use that as a learning experience and a consequence of taking least privilege as far as possible.</p>
+<p>At the very least tighten up your sudo configuration and remove as many setUIDs as you can.</p>
+<h3>Finding setUID and setGID files</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \;
+</pre>
+<p>Example output:</p>
+<p>Here is a setUID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-rws--x--x. 1 root root 23960 Sep 23  2016 /usr/bin/chfn
+</pre>
+<p>And here is a setGID file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+-r-xr-sr-x. 1 root tty 15392 May  4  2014 /usr/bin/wall
+</pre>
+<h3>Just for fun</h3>
+<p>Snapshot a VM of your favourite Linux distro and run the following command (<b>this will break your system in odd ways, so never do it to a production system</b>) and run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# find / -type f -perm -u+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setUID.lst
+# find / -type f -perm -g+s -exec ls -l {} \; |awk '{print $NF}'|grep -v proc &amp;amp;gt; /var/tmp/setGID.lst
+# for a in `cat /var/tmp/setUID.lst`; do chmod u-s $a; done
+# for a in `cat /var/tmp/setGID.lst`; do chmod g-s $a; done
+</pre>
+<p>See what breaks.</p>
+<p>You can revert to the snapshot if your nerve does not hold.</p>
+<p>You should be able to reboot the machine and log in as a normal user. After that you will discover the limitations you have imposed upon yourself and the operating system.</p>
+<h3>The lists (mid 2017) which are not exhaustive</h3>
+<p>N.B. PATHs to the files may vary&#8230;</p>
+<h3>The &#8220;naughty&#8221; list</h3>
+<ul>
+<li>/usr/bin/awk</li>
+<li>/bin/tar</li>
+<li>/usr/bin/python</li>
+<li>/usr/bin/script</li>
+<li>/usr/bin/man</li>
+<li>/usr/bin/ssh</li>
+<li>/usr/bin/scp</li>
+<li>/usr/bin/git</li>
+<li>/usr/bin/find</li>
+<li>/usr/bin/gdb</li>
+<li>/usr/bin/pico</li>
+<li>/usr/bin/nano</li>
+<li>/usr/bin/zip</li>
+<li>/usr/bin/vi</li>
+<li>/usr/sbin/lsof</li>
+<li>/bin/cat</li>
+<li>/usr/bin/vim</li>
+<li>/usr/bin/gvim</li>
+</ul>
+<p>The point with this list is that they should not really be setUID or setGID and they all have command options that could spawn a shell or otherwise engage in mischief.</p>
+<h3>The &#8220;remove&#8221; list</h3>
+<ul>
+<li>/usr/bin/rcp</li>
+<li>/usr/bin/rlogin</li>
+<li>/usr/bin/rsh</li>
+<li>/usr/libexec/openssh/ssh-keysign</li>
+<li>/usr/lib/openssh/ssh-keysign</li>
+<li>/sbin/netreport</li>
+<li>/usr/sbin/usernetctl</li>
+<li>/usr/sbin/userisdnctl</li>
+<li>/usr/sbin/pppd</li>
+<li>/usr/bin/lockfile</li>
+<li>/usr/bin/mail-lock</li>
+<li>/usr/bin/mail-unlock</li>
+<li>/usr/bin/mail-touchlock</li>
+<li>/usr/bin/dotlockfile</li>
+<li>/usr/bin/arping</li>
+<li>/usr/sbin/uuidd</li>
+<li>/usr/bin/mtr</li>
+<li>/usr/lib/evolution/camel-lock-helper-1.2</li>
+<li>/usr/lib/pt_chown</li>
+<li>/usr/lib/eject/dmcrypt-get-device</li>
+<li>/usr/lib/mc/cons.saver</li>
+</ul>
+<p>Consider removing as a good mitigation strategy.</p>
+<p>Here&#8217;s some others that are usually installed setUID, however, on a hardened system they can usually have their setUID/setGID bits removed:</p>
+<ul>
+<li>/bin/mount</li>
+<li>/bin/umount</li>
+<li>/usr/bin/at</li>
+<li>/usr/bin/newgrp</li>
+<li>/usr/bin/ssh-agent</li>
+<li>/sbin/mount.nfs</li>
+<li>/sbin/umount.nfs</li>
+<li>/sbin/mount.nfs4</li>
+<li>/sbin/umount.nfs4</li>
+<li>/usr/bin/crontab</li>
+<li>/usr/bin/wall</li>
+<li>/usr/bin/write</li>
+<li>/usr/bin/screen</li>
+<li>/usr/bin/mlocate</li>
+<li>/usr/bin/chage</li>
+<li>/usr/bin/chfn</li>
+<li>/usr/bin/chsh</li>
+<li>/bin/fusermount</li>
+<li>/usr/bin/Xorg</li>
+<li>/usr/bin/X</li>
+<li>/usr/lib/dbus-1.0/dbus-daemon-launch-helper</li>
+<li>/usr/lib/vte/gnome-pty-helper</li>
+<li>/usr/lib/libvte9/gnome-pty-helper</li>
+<li>/usr/lib/libvte-2.90-9/gnome-pty-helper</li>
+</ul>
+<h3>The &#8220;allowed&#8221; list</h3>
+<ul>
+<li>/bin/ping</li>
+<li>/bin/su</li>
+<li>/sbin/pam_timestamp_check</li>
+<li>/sbin/unix_chkpwd</li>
+<li>/usr/bin/gpasswd</li>
+<li>/usr/bin/locate</li>
+<li>/usr/bin/passwd</li>
+<li>/usr/libexec/utempter/utempter</li>
+<li>/usr/sbin/lockdev</li>
+<li>/usr/sbin/sendmail.sendmail</li>
+<li>/usr/bin/expiry</li>
+<li>/bin/ping6</li>
+<li>/usr/bin/traceroute6.iputils</li>
+<li>/usr/bin/pkexec</li>
+<li>/usr/bin/sudo</li>
+<li>/usr/bin/sudoedit</li>
+<li>/usr/sbin/postdrop</li>
+<li>/usr/sbin/postqueue</li>
+<li>/usr/sbin/suexec</li>
+<li>/usr/lib/squid/ncsa_auth</li>
+<li>/usr/lib/squid/pam_auth</li>
+<li>/usr/kerberos/bin/ksu</li>
+<li>/usr/sbin/ccreds_validate</li>
+</ul>
+<h2>Final words</h2>
+<p>It&#8217;s worth noting that we know these lists won&#8217;t work for everyone; systems are complex and behaviour is intertwined. That said, no matter what your opinion on the necessity or otherwise of a setUID/setGID bit on a given file, we&#8217;d like to think the approach of knowing which files have the setUID/setGID bit and why is something we can all get on board with.</p>
+<h3>Some good references</h3>
+<ul>
+<li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
+<li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

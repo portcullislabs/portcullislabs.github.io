@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; GCS</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/gcs/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Secrets of the motherboard</title>
+		<link>https://labs.portcullis.co.uk/presentations/secrets-of-the-motherboard/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/secrets-of-the-motherboard/#comments</comments>
+		<pubDate>Fri, 16 Feb 2018 10:13:07 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[44CON]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[hardhack]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6443</guid>
+		<description><![CDATA[<p>Presentation on &#8220;interesting&#8221; features of the Intel x86[_64] platform (as given at 44CON 2017). A lot of recent work has gone into the discovery, analysis, and (on occasion) marketing of hardware weaknesses in the Intel x86[_64] platform particularly with respect to how it is often implemented as part of specific motherboard designs. Some, such as [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/secrets-of-the-motherboard/">Secrets of the motherboard</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on &#8220;interesting&#8221; features of the Intel x86[_64] platform (as given at 44CON 2017).</p>
+<p>A lot of recent work has gone into the discovery, analysis, and (on occasion) marketing of hardware weaknesses in the Intel x86[_64] platform particularly with respect to how it is often implemented as part of specific motherboard designs. Some, such as the recent speculative execution borne attacks, are issues in the architecture itself. Other issues, however, affect individual implementations. This talk will take a wide-coverage &#8220;state of play&#8221; look at x86[_64] platform security covering:</p>
+<ul>
+<li>Architectural failings in hardware design</li>
+<li>Identifying security issues with modern computer hardware (treat it just like IoT devices!)</li>
+<li>Attempts at restoring privacy, ownership, and security</li>
+<li>Code and data persistence</li>
+<li>How secure hardware can be re-used</li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/44CSOTM.pptx" target="_blank" title="Download 44CSOTM"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/interactive.png" alt="44CSOTM" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/44CSOTM.pptx" title="Download 44CSOTM.pptx" target="_blank" id="wpfb-file-link-1">44CSOTM.pptx</a>
+    
+    <br />
+    February 16, 2018<br />
+    
+  </div>
+  <div class="info">
+    5.7 MiB<br />
+    MD5 hash: 912badf9570eef6597578674e52bbb9d <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>February 16, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/secrets-of-the-motherboard/">Secrets of the motherboard</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/secrets-of-the-motherboard/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Enforcing a write-xor-execute memory policy from usermode</title>
+		<link>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/</link>
+		<comments>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/#comments</comments>
+		<pubDate>Fri, 02 Feb 2018 02:21:20 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6399</guid>
+		<description><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck a W^X policy is in the first place, and I&#8217;m terrible at thinking of ways to start blog posts (case in point: this paragraph), so I guess we&#8217;ll start out there.<span id="more-6399"></span></p>
+<h2>What&#8217;s a W^X policy, anyway?</h2>
+<p>W^X is an exploit mitigation tactic in which memory pages that are, or have ever been, marked as writable can never be marked as executable during the process lifetime. The old exploit tactic of putting your exploit payload on the stack (or heap) and calling it directly was killed off with no-execute (NX, also known as hardware DEP on Windows) support, which made ret2libc/ROP approaches much more popular. ROP involves finding small pieces of existing executable code in the application and its libraries, chaining them together using the stack, with the goal of calling an API or two to allocate some executable memory for the payload to be copied into. On Windows this is usually done with a ROP chain to the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366887.aspx" title="VirtualAlloc">VirtualAlloc</a>() API, passing <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366786.aspx" title="PAGE_EXECUTE_READWRITE">PAGE_EXECUTE_READWRITE</a>() in order to allow for both writing the data in and executing it afterwards.</p>
+<p>Enforcing a W^X policy breaks this approach, as an exploit cannot allocate memory as RWX, or as RW and then later executable. Applications in Windows 8.1 and later can opt into a W^X policy, enforced by the kernel, this using the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088.aspx" title="SetProcessMitigationPolicy">SetProcessMitigationPolicy</a>() API with the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt706243.aspx" title="ProcessDynamicCodePolicy">ProcessDynamicCodePolicy</a>() argument. Of course, this is also the boring way (at least for this article).</p>
+<h2>The small print</h2>
+<p>I&#8217;m not going to make you read a sixty-eight page EULA and sign your life away on the dotted line, but there are things you should know before you gallivant away with some source code and a dream of securing your applications:</p>
+<ol>
+<li>I am a terrible C++ programmer. You should absolutely not use my code in production</li>
+<li>This is a proof-of-concept, so you still absolutely should not use it in production. And probably not any other context than &#8220;I want to learn how this works&#8221; or &#8220;I want to torture my eyes by reading wonky code&#8221;</li>
+<li>While some effort has been made to make the PoC thread-safe, there are some race conditions (probably security-critical ones) that exist and I haven&#8217;t done anything to fix for reasons of keeping the code fairly simple</li>
+<li>Only VirtualAlloc(), VirtualProtect(), and VirtualFree() are hooked. There are ways to get around this (e.g. calling `ntdll` functions directly, or using `Ex` suffix variants) so, again, don&#8217;t expect any concrete security from this</li>
+<li>In case you didn&#8217;t already get the memo, implementing this kind of security feature from usermode is colossally silly, particularly when the OS offers a proper version that is enforced in the kernel. An attacker who expects this usermode &#8220;protection&#8221; can tailor their exploit to bypass it in most cases
+</li>
+<li>Just like the kernelmode version, this breaks any application that uses JIT compilation. So that means all browsers, anything that uses Java, .NET, or a modern JavaScript engine. It also means things that embed a web frame</li>
+</ol>
+<p>Caveat emptor, and all that.</p>
+<h2>How does this thing work?</h2>
+<p>The actual approach is fairly simple:</p>
+<ol>
+<li>Hook APIs</li>
+<li>Reject calls that would result in a page being writable and executable at the same time</li>
+<li>Track calls that result in a page being writable, and deny future calls that would make those pages executable</li>
+</ol>
+<p>The grunt work involved with hooking APIs is fairly boring, so I enlisted the help of the <a href="https://github.com/martona/mhook" title="mhook library">mhook library</a> by Marton Anka. This library provides a really intuitive way of hooking APIs:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualAlloc,   HookedVirtualAlloc);
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualProtect, HookedVirtualProtect);
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualFree,    HookedVirtualFree);
+</pre>
+<p>Each call to Mhook_SetHook() takes a pointer to the original API as the first parameter, and a pointer to the hooked version you want to replace it with.</p>
+<h3>VirtualAlloc hook</h3>
+<p>The VirtualAlloc hook checks if flProtect is either PAGE_EXECUTE_READWRITE or PAGE_EXECUTE_WRITECOPY. The former is the general-case RWX protection, and the latter is used when the segment of memory is a memory-mapped file. If either of these protection options are detected, the operation is failed with an access denied error.</p>
+<p>Next, we perform the requested VirtualAlloc() call via OriginalVirtualAlloc. If this succeeds, we check to see if the requested allocation contained a writable flag (e.g. PAGE_READWRITE or PAGE_WRITECOPY) and, if so, add that allocation&#8217;s page address and allocation size to a tracking list. This allows us to later reject requests  to make these pages executable, as they have been tainted with the writable mark.</p>
+<h3>VirtualProtect hook</h3>
+<p>The VirtualProtect hook is the most involved. As with VirtualAlloc it first rejects RWX protections outright. It then checks to see if the requested protection is executable and, if so, checks if the page exists within the boundary of a tracked writable allocation, i.e. if it starts within one, ends within one, or starts before and ends after one. This prevents tricks like allocating a small chunk of writable memory inside a larger readonly block, then calling VirtualProtect() over the whole block to make it all executable.</p>
+<p>In order to protect against abuse of writable memory that was pre-allocated by the loader (e.g. the .data section) the code also calls VirtualQuery() to test the existing protection status of the memory, just in case we aren&#8217;t tracking it.</p>
+<p>Another case we need to handle is similar to the VirtualAlloc() call. If the call is making memory writable, we need to track it. First we check if the exact allocation is already present in our tracked list, then if it isn&#8217;t we add it. It doesn&#8217;t matter if we have overlapping tracking metadata for writable allocations &#8211; we handle this case in our hooked VirtualFree(). Speaking of which&#8230;</p>
+<h3>VirtualFree hook</h3>
+<p>This hook is fairly simple. We just iterate over every item in the tracked allocations and remove them if they cover the address being freed.</p>
+<h2>Testing</h2>
+<p>The initial driver for me writing this code, before I decided to implement a full W^X policy with it, was to test for cases where an application under test would attempt to allocate RWX buffers, and if they actually needed those buffers to be executable (i.e. swap RWX for RW and see if you get a crash). For fun, I injected this DLL into a bunch of different programs. Many (e.g. notepad, calc) just work without problems, as they don&#8217;t rely on RWX memory at all. A number of others (e.g. Chrome, Spotify) crash due to JIT code that runs inside the process. It was quite fun to watch these allocations occur in realtime via debug messages.</p>
+<h2>Bypasses</h2>
+<p>There are a number of ways to bypass the PoC as it stands. I thought about eliminating them, but I think it&#8217;s more fun to go through the code and identify the problems.</p>
+<p>The first and most obvious way is to ROP to GetModuleHandle() and find the original APIs that way, totally bypassing the checks. It is possible to fix this to some extent by hooking GetModuleHandle() and similar APIs, but this mostly ends up as a cat-and-mouse game. This is why you should implement this stuff in kernelmode.</p>
+<p>The second way is a race condition. In both VirtualAlloc and VirtualProtect hooks we call the original function, then lock the tracking list and add the new allocation to the tracked list. It is possible to call either of these functions twice. This can be fixed with a global allocation mutex.</p>
+<p>There&#8217;s also a potential <a href="https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use" title="TOCTOU">TOCTOU</a> race condition in our VirtualProtect hook, where we check the page protection using VirtualQuery and later potentially call VirtualAlloc based on the result. However, the attacker would have to get the application to call the unhooked VirtualProtect in order to exploit this particular issue.</p>
+<p>Finally there&#8217;s a really interesting case &#8211; marking a page as writable, filling it with data, freeing it, then re-allocating as read-execute and hoping that you get the same page back before it gets reset to zeroes by the OS. In fact, when I thought of this issue, I wondered whether I might have stumbled across a potential mitigation bypass in the real W^X implementation for Windows, and my eyes turned into dollar signs. Thankfully (or sadly) the clever folks at Microsoft thought of this already, and forced every released page to be reset.</p>
+<h2>Closing words</h2>
+<p>I hope that this ham-fisted approach to implementing W^X has been of some educational use, at least in terms of thinking about how the protection can be implemented in practice. If you&#8217;d like to follow along at home, the code can be found in the <a title="WXPolicyEnforcer" href="https://github.com/portcullislabs/WXPolicyEnforcer">WXPolicyEnforcer</a> project on the Portcullis Labs GitHub. It is released under MIT license.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL/TLS Hipsterism</title>
+		<link>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/#comments</comments>
+		<pubDate>Fri, 17 Nov 2017 10:44:40 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[Securi-Tay]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6147</guid>
+		<description><![CDATA[<p>Presentation on finding implementation* bugs outside the mainstream (as given at Securi-Tay 2017). A lot of fantastic work has gone into the discovery, analysis, and (on occasion) marketing of SSL/TLS vulnerabilities. Some, such as BEAST and LUCKY13, are issues in the protocol itself. Other bugs, however, affect individual implementations of this complicated and nuanced protocol. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/">SSL/TLS Hipsterism</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on finding implementation* bugs outside the mainstream (as given at Securi-Tay 2017).<span id="more-6147"></span></p>
+<p>A lot of fantastic work has gone into the discovery, analysis, and (on occasion) marketing of SSL/TLS vulnerabilities. Some, such as BEAST and LUCKY13, are issues in the protocol itself. Other bugs, however, affect individual implementations of this complicated and nuanced protocol. This talk will discuss an approach for identifying security bugs in SSL/TLS server implementations, outside the mainstream well-publicised issues that we all know so well.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a title="sslxray" href="https://github.com/portcullislabs/sslxray">sslxray</a></li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/STHST.pptx" target="_blank" title="Download STHST"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/interactive.png" alt="STHST" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/STHST.pptx" title="Download STHST.pptx" target="_blank" id="wpfb-file-link-2">STHST.pptx</a>
+    
+    <br />
+    November 16, 2017<br />
+    
+  </div>
+  <div class="info">
+    1.0 MiB<br />
+    MD5 hash: 503a77150111d59a0352c27a62195c4c <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 16, 2017</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/">SSL/TLS Hipsterism</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/ssltls-hipsterism/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>POODLE: Padding Oracle On Downgraded Legacy Encryption</title>
+		<link>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/</link>
+		<comments>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/#comments</comments>
+		<pubDate>Wed, 15 Oct 2014 16:35:06 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4767</guid>
+		<description><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566. The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566.</p>
+<p>The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or encryption are applied. This gives rise to a padding oracle bug, which is how BEAST worked too. <span id="more-4767"></span></p>
+<p>Block ciphers require plain-texts to be of a length divisible into fixed-size blocks, e.g. 128 bits in the case of AES. As normal messages don&#8217;t adhere to this (i.e. can be arbitrary in size) we use padding to ensure that the message is expanded to fit that requirement. Padding usually adds a minimum of 1 byte, and a maximum of one entire block. Its value is usually tied to the length of the padding, for example in PKCS#7 padding we would add 01 01 for two bytes, 02 02 02 for 3 bytes, 03 03 03 03 for 4 bytes, etc. However, instead of checking that all the bytes match, the SSLv3 specification states that only the last byte is to be validated. In some cases, in fact, client libraries mistakenly set the first padding bytes improperly &#8211; Oracle&#8217;s implementation has, in the past, used zeroes for all bytes but the last.</p>
+<p>Another requirement that block ciphers don&#8217;t provide on their own is securely encrypting more than a single block with the same key. This is important, because simply transforming each block independently with a cipher (this is known as Electronic Codebook, or ECB mode) results in equal blocks encrypting to equal cipher-texts, which is bad news because this leaks information! Instead, we use different constructions to ensure safety when encrypting multiple blocks &#8211; Cipher Block Chaining (CBC) is a very common one.</p>
+<p>In CBC, we take each previous cipher-text block and xor it with the current plaintext block before encryption. So for block 4, you take the encrypted block 3, xor it with the block 4 plaintext, then encrypt that value. The first block (block 0) has no previous cipher-text block, so we use an Initialisation Vector (IV). The IV is important, because it allows us to securely send the same full messages with the same key without their entire resulting cipher-texts being equal, as long as we don&#8217;t ever re-use an IV with the same key. Anyway, that detail isn&#8217;t important for this bug.</p>
+<p>To decrypt a CBC message, we decrypt a block, then xor the output with the previous block&#8217;s cipher-text, i.e:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub>, where M is the message, D<sub>k</sub> is a block decryption with a key k, C is the ciphertext, and ⊕ denotes an xor.</p>
+<p>It turns out that this construction is malleable, meaning that an attacker can modify the cipher-text in a way that causes meaningful things to happen to the plaintext when it gets decrypted. This has been known about for a long time, and underpins many modern SSL/TLS bugs, as well as bugs in other crypto-systems.</p>
+<p>Essentially, if you modify a block by xor&#8217;ing it with some value, the next block&#8217;s plaintext gets xor&#8217;ed with that value at the cost of the tweaked block being completely garbled. So if we want to attack block 4, we&#8217;d xor C<sub>3</sub> with a value t, so that the decryption becomes:</p>
+<p>D<sub>k</sub>(C<sub>4</sub>) ⊕ (C<sub>3</sub> ⊕ t) = M<sub>4</sub> ⊕ t</p>
+<p>This is really useful if you know any of the values of M<sub>4</sub>, because you can use xor to arbitrarily alter any value you know. This has a side-effect, though. Because C<sub>3</sub> is now C<sub>3</sub> ⊕ t, when decrypting C<sub>3</sub> it gets utterly garbled, destroying it entirely. This is fine in some cases, for example if your target application doesn&#8217;t check block authenticity and doesn&#8217;t read (or doesn&#8217;t care about) the data in the garbled block. Another trick in this avenue is to change the IV instead, so that:</p>
+<p>M<sub>0</sub> = D<sub>k</sub>(C<sub>0</sub>) ⊕ IV</p>
+<p>becomes</p>
+<p>D<sub>k</sub>(C<sub>0</sub>) ⊕ (IV ⊕ t) = M<sub>0</sub> ⊕ t</p>
+<p>This doesn&#8217;t have the block-garbling side effect, but you can only do it on the first block. This is particularly useful in systems where cipher-text blocks are authenticated but the IV isn&#8217;t.</p>
+<p>Anyway, you&#8217;re probably wondering what this has to do with POODLE. Remember all that padding stuff? Turns out that you can use that to work out the values of cookies.</p>
+<p>An attacker gets the victim to visit a page controlled by them. That page includes JavaScript that repeatedly requests a target site for which we want to steal cookies from. The request body will look something like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody
+</pre>
+<p>Which after padding and MAC looks like this:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
+</pre>
+<p>The attacker controls the URL and the request body. This allows them to force the cookie into a particular position in the request. Specifically, the attacker sends requests with different length URLs and body data until the observed encrypted message grows by one block, with an earlier block having its last byte as one unknown byte of cookie. This sounds hard, but it&#8217;s as simple as knowing that the Cookie header is in a certain position and tweaking the URL to block-align it, then sending a maximum of 16 requests with incrementing POST body sizes until the output grows by one block.</p>
+<p>The attacker knows that the final byte in the padding block will have a decimal value of 15 (i.e. 0x0F) because of the known padding size. He can then utilise the CBC malleability issue discussed above to replace the padding block with the target block (containing 1 byte of cookie at the end). Most of the time this will be rejected as invalid padding, but 1 in 256 times (on average) this will be accepted because the decrypted last byte will happen to be 15. This probability is due to the different key / IV used each time, so the cipher-text will be different (randomly) each time, so when the last block is decrypted it xors with the previous cipher-text block and has a chance of randomly producing 15 as the last byte.</p>
+<p>That&#8217;s a bit of a challenge to follow, so let&#8217;s look at it specifically in terms of the decryption:</p>
+<p>Mn = D<sub>k</sub>(C<sub>n</sub>) ⊕ C<sub>n-1</sub></p>
+<p>where C<sub>n</sub>, the final block, containing padding, is replaced with C<sub>i</sub>:</p>
+<p>M<sub>n</sub> = D<sub>k</sub>(C<sub>i</sub>) ⊕ C<sub>n-1</sub></p>
+<p>Because C<sub>i</sub> wasn&#8217;t intended to be xor&#8217;ed with C<sub>n-1</sub> the output is garbage. However, because C<sub>n-1</sub> is random, in roughly 1/256 cases the last byte of output will be 15, leading the padding to be falsely accepted as valid. When this occurs, the attacker can deduce that:</p>
+<p>D<sub>k</sub>(C<sub>i</sub>)[15] ⊕ C<sub>n-1</sub>[15] = 15</p>
+<p>Which, by doing a bit of bitwise algebra, gets us some plaintext:</p>
+<p>M<sub>i</sub>[15] = 15 ⊕ C<sub>n-1</sub>[15] ⊕ C<sub>i-1</sub>[15]
+<p>The above arises because C<sub>i</sub> was xor&#8217;ed with C<sub>i-1</sub> when the CBC encryption occurred.</p>
+<p>The C<sub>n-1</sub> and C<sub>i-1</sub> values are known to the attacker, so they just decrypted a single byte of the message, without knowing the key!</p>
+<p>The attack requirements are:</p>
+<ul>
+<li>Attacker can get the client to send HTTPS requests (easy via JS)</li>
+<li>Attacker is in a position to modify client traffic (&#8220;Man-In-The-Middle&#8221;)</li>
+<li>Connection uses a block cipher suite from SSLv3</li>
+</ul>
+<p>Now that last one is interesting. SSLv3 is still very widely supported by servers, but TLS is usually there too and clients should prefer it. However, due to all sorts of issues with client/server compatibility, it turns out that if a connection fails to properly negotiate TLS then in many clients it&#8217;ll downgrade to SSLv3. All an attacker needs to do, is sit in the middle and interfere with the handshake such that the client assumes there&#8217;s an incompatibility and renegotiates down to SSLv3.</p>
+<p>There are two fixes. The first is to just turn off SSLv3, or at least disable CBC cipher suites in SSLv3 (but that leads to other problems so isn&#8217;t recommended). There is also a client-side fix for the downgrade, which is to enable the TLS_FALLBACK_SCSV flag in the client hello &#8211; this is recommended within the original Google article. However, organisations should not rely upon all clients having this patch, or that some clients will not downgrade to SSLv3 for other reasons.</p>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Windows System Objects and Sophos Endpoint Security</title>
+		<link>https://labs.portcullis.co.uk/blog/windows-system-objects-and-sophos-endpoint-security/</link>
+		<comments>https://labs.portcullis.co.uk/blog/windows-system-objects-and-sophos-endpoint-security/#comments</comments>
+		<pubDate>Mon, 03 Feb 2014 11:30:42 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2014-1213]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[Sophos]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3359</guid>
+		<description><![CDATA[<p>Windows system objects are one of the interesting areas of binary application assessments that are often ignored or misunderstood. Many people don&#8217;t realise that abstract Windows application programming concepts such as mutexes, events, semaphores, shared memory sections, and jobs all come together under the purview of the Windows Object Manager. These objects, like those in [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-system-objects-and-sophos-endpoint-security/">Windows System Objects and Sophos Endpoint Security</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Windows system objects are one of the interesting areas of binary application assessments that are often ignored or misunderstood. Many people don&#8217;t realise that abstract Windows application programming concepts such as mutexes, events, semaphores, shared memory sections, and jobs all come together under the purview of the Windows Object Manager. These objects, like those in the filesystem and registry namespaces, have all sorts of interesting security impacts when not properly managed.<span id="more-3359"></span></p>
+<p>This blog post relates to an advisory. See <a title="CVE-2014-1213: Denial of Service in Sophos Anti-Virus" href="https://www.portcullis-security.com/security-research-and-downloads/security-advisories/cve-2014-1213/">CVE-2014-1213: Denial of Service in Sophos Anti-Virus</a> for the release.</p>
+<p>One of the major differences of the system object namespace, versus filesystem and registry namespaces, is the concept of a default Discretionary Access Control List (DACL). These DACLs are the cornerstone of the Windows security model, and are used to describe which entities (users, groups, etc.) have specific types of access to an object. When you view the permissions on a file or directory, you&#8217;re looking at a direct representation of the DACL for that object. Each rule within a DACL is called an Access Control Entry (ACE). When an object in any namespace is created and the application does not explicitly provide a DACL, the system looks at the parent container to see if it has any ACEs within its DACL that are marked as inheritable. If it finds some, it applies them across into a new DACL for the newly created object. There are special rules around inheritance for containers, but we won&#8217;t get into that here. If there are no inheritable ACEs, it resorts to applying the default DACL for the namespace. This is where things get interesting from a security perspective; the system object namespace, in contrast with registry and filesystem namespaces, has no default DACL. In this situation, the system applies an empty DACL, which allows everyone full access to the object.</p>
+<p>This is a corner-case that many developers fall foul of. Objects created in the local container (i.e. the system object container for the current session) inherit some ACEs from the session container, but the global container has no inheritable ACEs, and therefore objects within it that are created without an explicit DACL will end up with an empty DACL. We can see this in action by viewing the DACLs applied to the global and session containers, using a tool such as <a title="WinObj" href="http://technet.microsoft.com/en-gb/sysinternals/bb896657.aspx">WinObj</a>:</p>
+<div id="attachment_3364" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3360"><div class="lb-album"><a href="#image-3360"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/01/winobj_session_container_dacl-300x227.png" alt="DACL applied to session container in the Windows system object namespace." class="size-medium wp-image-3364"><span></span></a></div>              
+<a href="#imageclose-3360" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3360">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/01/winobj_session_container_dacl.png" alt="image-3360">
+                   </div></a><p class="wp-caption-text">DACL applied to session container in the Windows system object namespace.</p></div>
+<div id="attachment_3365" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3361"><div class="lb-album"><a href="#image-3361"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/01/winobj_global_container_dacl-300x227.png" alt="DACL applied to global container in the Windows system object namespace." class="size-medium wp-image-3365"><span></span></a></div>              
+<a href="#imageclose-3361" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3361">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/01/winobj_global_container_dacl.png" alt="image-3361">
+                   </div></a><p class="wp-caption-text">DACL applied to global container in the Windows system object namespace.</p></div>
+<p>Notice that all the ACEs in the global container are marked as &#8220;Inherit None&#8221;, meaning that child objects will not inherit them as part of their DACL. As such, if you create a system object such as a mutex or an event through the usual CreateMutex or CreateEvent API calls, and fail to explicitly provide a DACL, all users on the system will have unrestricted access to that object.</p>
+<p>Whilst digging into security issues around this common mistake, I found a number of vulnerabilities in a range of products. In general the impacts of being able to mess with these were low, usually causing the affected application to lock up or stop working in some way. In Sophos Endpoint Security, however, the impact was more interesting. Most anti-malware software consists of three major sections: a user-facing GUI for controlling and monitoring the product, a high privilege user-mode service for performing various scanning features, and one or more kernel-mode modules (commonly referred to as drivers) that provide filesystem filters, notification of new threads and processes, low-level memory access, hook detection, and other kernel-level functionality. Communicating quickly and reliably between these components is a daunting task, especially when your messages have to traverse across the user-mode / kernel-mode barrier. Enter global system objects. Mutexes, events, semaphores, and shared memory sections in the global container of the system object namespace are all directly accessible from both user-mode and kernel-mode. When combined properly, these object types allow a developer to create an inter-process communications framework that is fast, reliable, and thread-safe.</p>
+<p>One example of this might be a feature where a filesystem filter driver needs to notify the user-mode service that new data has been written to disk, so that it can scan it. Three named objects &#8211; an event, a mutex, and a shared memory section &#8211; are created within the global namespace, so that both components can access them. The event is used to signal that a write operation is pending, the mutex is used to ensure that the shared memory section is accessed by only one thread at a time, and the shared memory section is used to hold information about the event. The whole process is rather complex, and is best described in a diagram:</p>
+<div style="width: 725px" class="wp-caption alignnone"><img alt="Example IPC mechanism" src="http://i.imgur.com/RA3r5ZS.gif" width="715" height="338" /><p class="wp-caption-text">Diagram of an example IPC mechanism between a user-mode AV service and a kernel-mode file system driver.</p></div>
+<p>As you can see, the user-mode service is responsible for checking the write operations before they are allowed. The decision is passed back to the driver, which either completes the write or rejects it, issuing an appropriate error code.</p>
+<p>Now, imagine you let a low-privilege user interact with these objects. For one, they may be able to wait on the event object themselves and modify the shared memory section via a race condition. This can be somewhat mitigated by various integrity checks, but isn&#8217;t outside the realms of possibility. Another issue is that all of these components modify their state, and in some cases block execution, when the event and mutex objects are waited upon or signalled. Imagine that a malicious local user acquires the mutex, then signals the event. The user-mode service continues execution (step 7) and attempts to acquire the mutex (step 8), but since the malicious user has already acquired it, the service thread is now blocked. From this point on, the driver&#8217;s calls to have write operations checked go unheeded. Although the architecture is not identical, this is precisely the mechanism in which Sophos Endpoint Security failed.</p>
+<p>As <a title="the advisory" href="https://www.portcullis-security.com/security-research-and-downloads/security-advisories/cve-2014-1213/">the advisory</a> describes, CVE-2014-1213 relates to a lack of DACLs applied to system objects. As we discussed above, failure to explicitly supply a DACL when creating system objects results in the object being created with the default DACL for the namespace, which is null (i.e. empty). The impact is that a local low-privilege user can manipulate these objects as they wish. Since this can lead to disk IO requests being ignored, or at least heavily delayed, the system eventually cannot continue. In many cases it simply locks up and becomes unresponsive, as user-mode programs and subsystems (e.g. SMSS / CSRSS) cannot complete blocking disk operations. In some cases, the system will recognise the pattern of failures and forcefully terminate the system with a bugcheck (BSoD) in order to reduce the potential for permanent damage to the system state. Of course, this isn&#8217;t particularly interesting from a security perspective if you only consider a desktop environment, but imagine the impact on a terminal services system with hundreds or thousands of users.</p>
+<p>Sophos have now patched this issue in engine 3.50, which went live on the 21st of January. Portcullis have independently verified this fix as being effective after the update is applied and the system is rebooted.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-system-objects-and-sophos-endpoint-security/">Windows System Objects and Sophos Endpoint Security</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-system-objects-and-sophos-endpoint-security/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Securi-Tay 3 wrap-up</title>
+		<link>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/</link>
+		<comments>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/#comments</comments>
+		<pubDate>Fri, 24 Jan 2014 01:01:35 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[Securi-Tay]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3120</guid>
+		<description><![CDATA[<p>Of all the conferences I&#8217;ve been to, Securi-Tay has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Of all the conferences I&#8217;ve been to, <a title="Securi-Tay" href="http://securi-tay.co.uk/">Securi-Tay</a> has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student organised and lead conference, held annually by the Abertay Ethical Hacking Society at the University of Abertay, Dundee. This year&#8217;s event, held on January 15th (last week, at time of writing), marked the third instance of the conference.<span id="more-3120"></span></p>
+<p>I spoke at Securi-Tay last year (<a title="video" href="http://www.youtube.com/watch?v=ID5RxZc9EAk">video</a>), before I joined Portcullis, on the security threats posed by common office and datacenter devices such as photocopiers, printers, and UPSs. This year I decided to tackle a much more foreboding and monolithic topic: cryptography. I feel that one of the major obstacles to learning about cryptography is the stigma around it &#8211; it is often seen as obscenely complex, studied only by mathematicians with foot-long beards and a slew of three-letter acronyms trailing their surnames, detailing their accomplishments. Another obstacle is the lack of reputable, high quality, entry-level education in the subject outside of university courses and paid workshops. This aspect has improved somewhat, especially with the introduction of free online courses like Stanford&#8217;s, but free materials are certainly nowhere near the breadth and ubiquity we come to expect in other areas of security education. As such, I felt that I should do my part in rectifying this.</p>
+<p>My talk, entitled &#8220;Breaking crypto without breaking your brain&#8221;, aimed to give people a basic understanding of the common types of cryptography that I see in practical use as part of my day job, without needing an advanced degree in mathematics. In contrast to many introductions to the topic, I skipped the classic ciphers such as the Caesar cipher, simple alphabetic transposition and substitution ciphers, and other algorithms of that ilk, as I rarely find knowledge of them useful in the context of real security assessments. Instead, I focused upon one-time pads, modern stream and block ciphers, padding, block cipher modes, and demonstrated how seemingly strong encryption can often be broken trivially.</p>
+<p>The talk was recorded and should be available on YouTube within the next few weeks, via the <a title="AbertayHackers YouTube account" href="http://www.youtube.com/user/AbertayHackers">AbertayHackers YouTube account</a>. In the meantime, you can download the slides and both demo applications:</p>
+<ul>
+<li><a href="https://labs.portcullis.co.uk/download/BreakingCrypto.odp" >Slides - Breaking crypto without breaking your brain</a></li>
+<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo1.exe" >Demo 1 - OTP key re-use</a></li>
+<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo2.exe" >Demo 2 - ECB block-cipher mode weakness</a></li>
+</ul>
+<p>Aside from my own, there were a number of very good quality talks from both industry professionals and students. I thought it would be nice to write a short description of each that I saw, with some take-away points for each talk.</p>
+<p>Olly Whitehouse &#8211; &#8220;Real world threat modelling&#8221;</p>
+<p>This talk covered a range of topics around the concept of assessing a black-box appliance, with a view to building a threat model. Olly proposed that by building a threat model, pentesters can obtain greater coverage of targets during tests, primarily by answering simple questions that help us understand the system. He highlighted the need to understand underlying technologies, especially the operating system, in order to minimise the risk of missing key issues. Finally, he went on to discuss ways of building threat models, visualising them, and utilising feedback from security tests to improve upon existing models.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Go for the simplest attacks to reach your goal &#8211; elabourate and sexy tricks aren&#8217;t important</li>
+<li>Threat modelling can help both pentesters and the organisations that hire them</li>
+<li>Threat model discussions with security engineers, developers, and other technical staff can lead to real improvements in security posture</li>
+</ul>
+<p>Panagiotis Gkatziroulis &#8211; &#8220;Physical attacks: Walking past the egg shell perimeter&#8221;</p>
+<p>This talk gave a broad overview of the technological, structural, procedural, and human challenges that are involved in physical security. First, a range of security measures were discussed that fall into the building design and security technology category, including entry choke points, placement of receptionists and guards, use of CCTV cameras and electronic doors, as well as the training of the personnel involved. Panagiotis noted that reception staff are often not trained to act as security guards, despite the fact that fooling them may get you the &#8220;keys to the kingdom&#8221;. He went on to discuss four avenues of exploitation when dealing with human opponents: misrepresentation, obligation, authority, and emergency. Five key reasons why humans fail to act were proposed: a sense of obligation to business goals (not wanting to hinder productivity), employees feeling that they aren&#8217;t targets, anxiety of punishment if they mistakenly report something, a lack of confidence in challenging people, and a belief that security is someone else&#8217;s problem.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Physical security is meaningless if humans can be subverted into giving you access</li>
+<li>Often a lack of proactive security &#8211; changes are reactive, after the damage is done</li>
+<li>Once you get a pass from reception, you win. These people should be trained in security procedures</li>
+</ul>
+<p>Oren Benshabat &#8211; &#8220;DNS distress&#8221;</p>
+<p>Oren&#8217;s talk focused on the problems of DNS cache poisoning and DNS amplification attacks from the ground up, explaining the subject in detail. He began with cache poisoning &#8211; an attack that tricks a system into accepting a spoofed DNS response. He described bailiwick checking, a series of checks designed to enforce correct responses, and how this process can be subverted by flooding the target with reply packets containing different query IDs until one is accepted. He went on to cover Dan Kaminsky&#8217;s BIND attack, which spoofs an entire domain rather than just one hostname, by spoofing the nameserver of a domain to point at an authoritative DNS server under the attacker&#8217;s control. He proposed several fixes, including BIND patches, randomised source ports, DNSSEC, and pinning of nameserver IP addresses. He went on to discuss DNS amplification DoS attacks, which involve tricking open DNS servers into sending large reply packets to a target system. A range of DNS features that increase response packet size were discussed, including EDNS0, DNSSEC, as well as proprietary and custom DNS extensions. Finally, countermeasures such as IP source validation (mainly at the ISP level) and restriction of open recursion were suggested, with the caveat that there is no bullet-proof solution against DNS amplification attacks at the current time.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>There are multiple ways in which DNS can be abused, even when properly configured</li>
+<li>Some DNS security features (e.g. DNSSEC) help to fix one problem but also contribute to other problems</li>
+<li>There is no current practical solution to DNS amplification attacks</li>
+</ul>
+<p>Dom Cashley &#8211; &#8220;Security in SCADA&#8221;</p>
+<p>SCADA is a topic that I am personally interested in, but have very little knowledge of. As such, I was very happy to see someone approaching the subject at an entry level. Dom started the talk by explaining the traditional SCADA network design, including Human-Machine Interface, Master Terminal Unit, and Remote Terminal Unit devices, and how they are usually deployed in production facilities. Whilst the original design was focused on an air-gapped network, Dom noted that many modern SCADA devices are in fact no longer air-gapped, and are commonly available from the internet for remote access purposes. He went on to explain how off-the-shelf hardware was often used to network these devices and link them to IP networks, making an attacker&#8217;s job easier. Additional security issues were also noted, such as a lack of security training for engineers that are deploying equipment, general purpose computing platforms being used in field devices (including BYOD-style policies), and &#8220;SCADA in the cloud&#8221; management systems. Dom noted several problems with patching and updates, including long-standing hardware life spans, a reluctance to take down critical devices for patching, and use of old insecure protocols. A demo was also shown, using a special demo board and an exploit that causes the MTU to alter pump motor parameters without alerting the HMI user.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>SCADA is usually controlled by software on regular PCs, often running Windows</li>
+<li>Patching bugs is paradoxically problematic due to the critical nature of systems</li>
+<li>Systems are often not air-gapped and regularly appear on the internet, and may be found on SHODAN</li>
+</ul>
+<p>Paco Hope &amp; Ritesh Sinha &#8211; &#8220;The Colour of your box: The art and science of security testing&#8221;</p>
+<p>Along with Paco, Ritesh, and the usual exuberance we&#8217;ve come to expect, the stage was occupied with two rollercoasters built from k&#8217;nex, wrapped almost entirely in large cardboard boxes, exposing only the starting and finishing sections of track. These contraptions formed a metaphor for the core concept of their talk: black-box vs. white-box testing. A toy car was placed into each, which could be heard traversing the track, but the car did not appear at the other side. Two teams were invited from the audience to diagnose the fault, each given access to one rollercoaster each. This was described as the black-box test, where only inputs and outputs could be seen, functionality could be deduced, and some vision of the internal technologies was available. Each team reported that the system utilised k&#8217;nex, was meant to take a car in one side and send it through to the other, but did not work.</p>
+<p>The teams were then allowed to open flaps on the sides of the boxes to see inside, and propose one single fix that would solve the problem &#8211; essentially a white-box test. The &#8220;one issue&#8221; restriction was designed to emulate a true penetration test, where the customer receives a report and cannot be guaranteed to fix anything but the highlighted issues. Paco noted that reports needed to be clear, concise, and free of unnecessary technical jargon, stating that far too many reports end up reading somewhere along the lines of &#8220;bla bla bla owned you bla bla bla root shell bla bla bla Cross-site Scripting bla bla bla disaster!&#8221;. Now that the Teams had access to the internals, both began identifying potential problems with the design, and tried to come to a conclusion on what should be fixed. After some pointers from the presenters, the solution was eventually found: a piece was blocking the passage of the car and needed to be moved.</p>
+<p>The conclusion given was that both black-box and white-box approaches are necessary, as they both promote different types of thinking and analysis. Black-box tests tend to focus on the external attack surface that most attackers would see, whereas white-box tests tend to focus more on implementation details that may lead to potential issues. By combining the two methods, the presenters propose that a strong coverage of the target can be obtained.</p>
+<p>Three take-away points:</p>
+<ul>
+<li>Black-box makes you focus on external attack surface, white-box makes you focus on implementation details</li>
+<li>Reports need to be clear, concise, and explain the full spectrum of problems in order to facilitate improvements</li>
+<li>Combining both types of testing helps increase coverage during assessments</li>
+</ul>
+<p>The conclusion of Paco and Ritesh&#8217;s talk marked the end of the conference day, after which we all congregated in the student union bar for after-party drinks. I&#8217;d like to issue personal thanks to all involved with organising and running the conference, including all the speakers and sponsors.</p>
+<p>As I noted above, all talks were recorded and should hopefully be available on YouTube within the next few weeks.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

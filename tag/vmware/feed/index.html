@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; vmware</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/vmware/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>VMware vSphere basics &#8211; &#8220;The bits and pieces&#8221;</title>
+		<link>https://labs.portcullis.co.uk/blog/vmware-vsphere-basics-the-bits-and-pieces/</link>
+		<comments>https://labs.portcullis.co.uk/blog/vmware-vsphere-basics-the-bits-and-pieces/#comments</comments>
+		<pubDate>Fri, 21 Mar 2014 01:12:29 +0000</pubDate>
+		<dc:creator><![CDATA[FMD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[ESXi]]></category>
+		<category><![CDATA[vmware]]></category>
+		<category><![CDATA[vsphere]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4029</guid>
+		<description><![CDATA[<p>In this article, we will explore the various components that make up the VMware vSphere platform, and briefly touch on the most important of these from the perspective of the security professional. VMware vSphere Basics &#8211; &#8220;The bits and pieces&#8221; Everyone will have had some exposure to virtual technologies in their pentesting adventures. Due to [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/vmware-vsphere-basics-the-bits-and-pieces/">VMware vSphere basics &#8211; &#8220;The bits and pieces&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this article, we will explore the various components that make up the VMware vSphere platform, and briefly touch on the most important of these from the perspective of the security professional.<span id="more-4029"></span></p>
+<h2>VMware vSphere Basics &#8211; &#8220;The bits and pieces&#8221;</h2>
+<p>Everyone will have had some exposure to virtual technologies in their pentesting adventures. Due to the proliferation of this technology, it is hard to do a security assessment today without touching a virtualised component of some sort. The forerunner in this area is VMware with their vSphere platform. It has grown over the years into a rather large complicated beast. For those who have scoped or performed a security assessment of a VMware solution will know what I mean.</p>
+<p>The vSphere platform is not a single application, but rather a suite of different products that VMware sell under a single unified product called vSphere. The latest version of this product is vSphere 5.5, which was released in late 2013. The following components make up vSphere:</p>
+<ul>
+<li>VMware ESXi</li>
+<li>VMware vCenter Server</li>
+<li>VMware vSphere Client</li>
+<li>VMware vSphere Web Access</li>
+<li>VMware Virtual Machine File System (VMFS)</li>
+<li>VMware Virtual SMP</li>
+<li>VMware vMotion, and Storage vMotion</li>
+<li>VMware High Availability (HA)</li>
+<li>VMware Distributed Resource Scheduler (DRS)</li>
+<li>VMware vSphere SDK</li>
+<li>VMware Fault Tolerance</li>
+<li>VMware vNetwork Distribution Switch (VDS)</li>
+<li>VMware Host Profiles</li>
+<li>VMware Pluggable Storage Architecture (PSA)</li>
+</ul>
+<p>By far the largest and most important component of vSphere is the ESXi Hypervisor. This is the underlying Operating System (OS) called VMkernel. Whatever remains of the vSphere product suite interacts with this central core. VMware describe this component as:</p>
+<p>&#8220;a virtualisation layer run on physical servers that abstracts processor, memory, storage, and resources into multiple virtual machines&#8221;</p>
+<p>In short, creating multiple individual entities from a single pool of hardware resources. These entities are called &#8220;Virtual Machines&#8221; (VMs), and function as any hardware based server would, on the network fabric.</p>
+<p>The ESXi host is a purpose-build embedded system that looks and feels like a Linux system under the hood. Busybox is used as a lightweight shell that is able to interpret and execute common UNIX commands. It has no graphical environment of its own. Out of the box, access to the ESXi hypervisor is provided via a yellow and grey console called the &#8220;Direct Console User Interface (DCUI)&#8221;.  This is a very basic easy to use console for configuration, and the option of last resort for administrators when things go wrong. Access to the DCUI is restricted to the physical console and over the Secure Shell (SSH) interface. For this reason, the later versions of the vSphere product ship with SSH access disabled by default. As a security professional, if you manage to achieve interactive SSH access to the ESXi host, it is game over. A compromise at this level allows complete access to all resources and allows the user to power off the ESXi host, creating a DoS on a very large scale, depending on the number of hosted VMs of cause. So how can the ESXi hypervisor be administered safely? Answer, by using the vCentre Server and the vSphere client.</p>
+<p>The vSphere client refers to a Windows application that enables management of an ESXi hypervisor.  It can be used to connect to the ESXi hypervisor directly or to a vCenter Server. Depending on the access method configured on the ESXi hypervisor, an account configured directly on the ESXi host, or a Windows Domain account can be used to connect to the remote ESXi host. Once connected, the user, depending on privileges of the accounts used, is able to perform administrative operations such as create new VMs, administer existing VMs. Short of powering off the ESXi hypervisor, the user would have control to configure aspects of the ESXi hypervisor and complete control over the VMs that it hosts.</p>
+<p>The vCenter Server is a software product that can be installed onto the Windows based physical server or a VM (generally inside the same Virtual Pool) but VMware also ship a virtual appliance preconfigured with vCentre to allow easy deployment. vCentre cannot be installed onto a Linux Platform. Furthermore, when using vCentre on a Windows platform, an SQL database is required which hosts all the required Pool Data. This can either be MS SQL Express for small implementations or a full blown MS SQL installation. Needless to say, if you compromise SQL, you’ve compromised the whole vSphere deployment. VMware also support Oracle and DB2 databases. It is used to administer and manage multiple ESXi hypervisors in an enterprise wide vSphere implementation. vCenter Server is required for an organisation to use the enterprise features like vMotion, VMware High Availability, VMware Update Manager and VMware Distributed Resource Scheduler (DRS). Access to vCentre Server is possible through the vSphere Client or the vSphere Web Access component. When using the vSphere client to connect to the vCentre Server, the vCenter Server acts as a proxy that enables a user to administer multiple ESXi hypervisor hosts without the need to authenticate individually to each one. The level of access is much the same when compared to accessing the ESXi host via vSphere. The biggest difference between these two components is that the vCenter Server provides a broader level of access to the ESXi hypervisor estate of an organisation. This broad access opens up further possibilities, such as the ability to seamlessly migrate VMs between different ESXi hosts. This is managed by the VMware vMotion, and Storage vMotion components. The vSphere Web Access component on the other hand provides a web enabled application that can be accessed through the common desktop web browser. Web access is only made available after the deployment of vCentre. ESXi does not have a web access component. A typical URL for this service would be:</p>
+<ul>
+<li>https://&lt;ip/hostname of vCenter Server&gt;:9443/vsphere-client/</li>
+</ul>
+<p>vCentre, together with the Hosts in question need to be configured as part of a &#8220;VMware Cluster&#8221; of Hosts before they can be managed via the web interface. Seasoned VMware Technicians still use the full vSphere client to manage an estate as the vCentre web console is still quite clunky.</p>
+<p>In summary, we have briefly explored the most important components that make up the VMware vSphere product. The product line offers more diversity than it was possible to cover in this small article. To conclude, it would be fair to say that a good level of understanding of the vSphere product is necessary before one can perform an adequate security assessment. The good news is that there are many hardening guides out there that provide an insight into the various areas that should be covered during an assessment. The reader is directed to the hardening guides produced by VMware for further information.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/vmware-vsphere-basics-the-bits-and-pieces/">VMware vSphere basics &#8211; &#8220;The bits and pieces&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/vmware-vsphere-basics-the-bits-and-pieces/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

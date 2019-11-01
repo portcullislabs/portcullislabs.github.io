@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Vanilla good security practice vs. BadUSB | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Vanilla good security practice vs. BadUSB - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-4718 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-4718"  class="portcullis-post portcullis-article  post-4718 post type-post status-publish format-standard hentry category-blog tag-analysis tag-hardhack">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Vanilla good security practice vs. BadUSB</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="17:18">09/10/2014</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/brc/" title="View all posts by BRC">BRC</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>This post discusses the <a title="BadUSB research" href="https://srlabs.de/badusb/">BadUSB research</a> published by Karsten Nohl recently at <a title="Black Hat" href="https://www.blackhat.com/us-14/briefings.html#Nohl">Black Hat</a>. You might want to check out the <a title="slides" href="https://srlabs.de/blog/wp-content/uploads/2014/07/SRLabs-BadUSB-BlackHat-v1.pdf">slides</a> and/or <a title="video" href="https://www.youtube.com/watch?v=nuruzFqMgIw">video</a> before reading on.<span id="more-4718"></span></p>
+<p>It&#8217;s also worth noting that more recently Adam Caudill and Brandon Wilson figured out how to implement the attacks and have published <a title="proof-of-concept code" href="https://github.com/adamcaudill/Psychson">proof-of-concept code</a> which makes the challenges of defending against the original research seem somewhat more acute.</p>
+<p>The challenges of defending against the attacks presented in the BadUSB talk largely break down into two areas:</p>
+<ul>
+<li>Defending USB devices from tampering</li>
+<li>Defending workstations and servers from bad USB devices</li>
+</ul>
+<p>In this post only the latter will be discussed. However, with regard to the former, applaud the work done by Karsten Nohl. You should now be pretty wary about all your USB devices being subverted by attackers. Next time you use a keyboard or mouse that&#8217;s left lying around, you should be thinking about this research. Next time someone hands a USB stick to you, you should think if it has been reprogrammed to be a BadUSB stick. A word to our colleagues in the industry, we look forward to hearing from the USB device manufacturers about devices that can&#8217;t be tampered with in the way the researchers describe.</p>
+<p>In the remainder of this post it has been considered how computer systems can defend or mitigate against malicious USB devices using vanilla good security practice and to what extent this is sufficient. It should be understood that this wasn&#8217;t the main crux of the research done, but as a security industry member, you should admit that it is quite interesting to consider the different USB-based attack vectors that could be used in order to gain access to computer systems as well which could be used to access a security researcher&#8217;s machine.</p>
+<h2>Defending workstations and servers from bad USB devices</h2>
+<p>If someone can plug a USB device into a workstation/laptop/server, there&#8217;s a chance that the employed USB device can subvert its normal workflow in a very clever way. The researchers Karsten Nohl and Jakob Lell presented some example attacks that were pretty innovative. Some they&#8217;ve proved work, some are just ideas for further development in this area.</p>
+<p>The following examples can be summarised to illustrate some of the ideas outlined from their research:</p>
+<ul>
+<li>If the USB device pretends to be a USB network interface and abuses DHCP to set a default route or a target DNS server, network traffic can be diverted to the bad guys</li>
+<li>If the USB device pretends to be a keyboard it can start sending commands to a computer controlled by an attacker</li>
+<li>If the USB device is left connected when the computer reboots, the computer could be attacked as it boots. The target machine may boot off it &#8211; and if the USB device is cleverly configured, the user or system administrator might not be able to detect that the device is capable of being a boot disk. Alternatively, the device might send keystrokes to modify the boot order or even modify the BIOS configuration</li>
+<li>If the USB device pretends to be a USB display, it might be able to scrape what&#8217;s on a computer screen and make it available to attackers</li>
+</ul>
+<p>Some of the attacks weren&#8217;t new (e.g. the <a title="Rubber Ducky" href="https://hakshop.myshopify.com/products/usb-rubber-ducky-deluxe">Rubber Ducky</a> has been pretending to be a keyboard for some time), but presenting these ideas together made a pretty compelling case that USB is bad.</p>
+<p>Should we really be worried about protecting our computers from bad USB devices?</p>
+<p>In short, yes. In some attack scenarios, these ideas really are quite worrying and and they&#8217;re pretty hard to fix or mitigate, but not in all scenarios! Some of the attacks can be mitigated fairly easily by following existing vanilla good security practice which can be found below.</p>
+<h3>Defending the boot process</h3>
+<p>Firstly we&#8217;ll examine how to protect the boot process against malicious USB devices using vanilla good security practice.</p>
+<ul>
+<li>Configure the BIOS of computers to only boot from the internal hard disk</li>
+</ul>
+<p>This should stop attackers booting off USB devices. But the bad USB device might reconfigure your BIOS to boot off some other device &#8211; specifically if it sends keystrokes during system boot.</p>
+<ul>
+<li>Set a BIOS password to prevent modification of BIOS settings</li>
+</ul>
+<p>This should make it pretty hard for anyone to boot off a USB device whether or not they are using a bad USB device. So, in short I don&#8217;t think it&#8217;s necessary to worry about your users being tricked into booting off malicious devices in this context. It&#8217;s fairly simple to secure the boot process against the attack scenario described.</p>
+<h3>Defending servers</h3>
+<p>Clearly servers are key assets and physical security controls probably provide a good level of protection already. In my experience, server rooms are access controlled &#8211; so relatively few people are allowed in and those who are have their identities checked, an access log is maintained and they might even be vetted to a certain extent first. Once they&#8217;re in, their access is (sometimes at least) restricted to only the racks they need to work in. The racks prevent the poking of usb devices into other people&#8217;s servers. However, everything in the exposed racks is certainly vulnerable to potential USB attacks.</p>
+<p>Pragmatically, if the attacker has physical access to your server, you probably have bigger problems than a USB-based attack.</p>
+<ul>
+<li>How to protect against bad USB devices that pretend to be keyboards?</li>
+</ul>
+<p>Lock your laptop/workstation when it&#8217;s not in use. Then all the fake keyboard can do is try to log in. If the the bad keyboard doesn&#8217;t know your password, you&#8217;re reasonably safe. It could conceivably lock out your account or other AD users, but that&#8217;s not an awfully compelling attack.</p>
+<ul>
+<li>How to protect laptops when they&#8217;re not being used?</li>
+</ul>
+<p>Use a full disk encryption solution and make sure that laptops are powered down when not in use. This will make sure that a password is required to boot/resume the OS. Some of the USB attacks discussed are effective even with the host booted and the screen locked. Specifically the USB network device intercepting your traffic. Full disk encryption (FDE) is pretty essential anyway for laptops in most companies. To get the full benefit from FDE, hosts should be powered down when not in use, so this lines up with our requirement of keeping hosts protected from USB attacks by not leaving hosts unnecessarily booted and therefore exposed to attack.</p>
+<ul>
+<li>How to protect workstations from fake keyboards?</li>
+</ul>
+<h3>Locking down the desktop environment</h3>
+<p>This is fairly difficult to do well, but good security practice can help to mitigate. Using lockdown technologies like group policy, SRP, app locker and kiosk software, devices can be restricted to only run the application they need to run. Clearly this is appropriate in some environments, but not in others. Corporate workstations can be and sometimes are locked down &#8211; you can&#8217;t run any old program, you can&#8217;t browse the C:\ drive, you can&#8217;t Start|Run or WindowsKey+R.</p>
+<p>How does this help? Well, the bad keyboard is probably going to send a series of keystrokes in order to download and run some malware. If a user&#8217;s login session has been restricted, the bad keyboard&#8217;s attempt to use Windows-key+R or launch IE may not work at all.</p>
+<ul>
+<li>Anti-Virus, Content Checkers</li>
+</ul>
+<p>&#8230;and if the attacker&#8217;s going to be downloading malware, using a content checker for web traffic and having AV installed might (and I stress might) save the day.</p>
+<ul>
+<li>USB Lockdown</li>
+</ul>
+<p>This will be an interesting area to watch. Will there be a rush to buy third party software to block certain types / classes of USB device? Some vendors are claiming to protect against BadUSB attacks (but I haven&#8217;t tested their software, so am not linking to them from this post). Google for terms like &#8220;usb endpoint device control&#8221;, &#8220;usb endpoint protection&#8221; and possibly adding the term &#8220;badusb&#8221; should lead you towards what the market&#8217;s currently offering.</p>
+<p>The idea of some sort of USB Firewall is an attractive one, particularly one that ships as part of the OS. It remains to be seen how well this could be implemented, how easily it could be bypassed and to what extent is impairs business operations.</p>
+<p>As a closing thought, if you haven&#8217;t considered the perils of uncontrolled access to Firewire ports and PCI Express slots, maybe worry about those first.</p>
+<h2>Mitigations</h2>
+<h3>Windows</h3>
+<p>Windows can help to mitigate this issue by using <a title="GPO" href="http://en.wikipedia.org/wiki/Group_Policy">GPO</a> as IronGeek described in the following post <a title="Plug and Pray Malicious USB devies" href="http://www.irongeek.com/i.php?page=security%2Fplug-and-prey-malicious-usb-devices">Plug and Pray Malicious USB devices</a></p>
+<h3>GNU/Linux: udev rules</h3>
+<p>The BadUSB attack bases itself on the fact that computers allow and enable HID devices on all usb ports. On Linux, a temporarily fix could be employed using udev to temporarily disable the addition of new HID devices as described on StackExchange by user10008 . For preparation, create a file /etc/udev/rules.d/10-usbblock.rules with the content:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+    #ACTION==&quot;add&quot;, ATTR{bInterfaceClass}==&quot;03&quot; RUN+=&quot;/bin/sh -c 'echo 0 &gt;/sys$DEVPATH/../authorized'&quot;
+</pre>
+<p>To block other classes, It is needed to look up the class number and substitute copy the line, and change the class. To block all new HID devices the following command can be employed:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+    sed -i 's/#//' /etc/udev/rules.d/10-usbblock.rules; udevadm control --reload-rules
+</pre>
+<p>To unblock all new HID devices the following command can be employed:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+    sed -i 's/^/#/' /etc/udev/rules.d/10-usbblock.rules; udevadm control --reload-rules
+</pre>
+<p>Note that before powering off the system, It is required to remove the block as udev&#8217;s setting are persistent, and thusly legitimate HID devices would be rejected on boot.</p>
+<h3>FreeBSD</h3>
+<p>The people from FreeBSD already submitted a patch to remediate this issue. The patch files can be examined at <a title="FreeBSD SVN web" href="https://svnweb.freebsd.org/changeset/base/272733">FreeBSD SVN web</a>. This patch adds some system tunables that can be controlled by the well known sysctl.</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate" title="">
+hw.usb.disable_enumeration: 0
+dev.uhub.0.disable_enumeration: 0
+dev.uhub.1.disable_enumeration: 0
+[...]
+</pre>
+<p>It should be noted that these system tunables can be also set through /boot/loader.conf</p>
+<h2>Conclusion</h2>
+<p>So with these potential mitigations in mind, let&#8217;s restate the attacks above and review how concerned we should be:</p>
+<p>It could pretend to be a USB network interface and abuse DHCP to set your default route or your DNS server. Either way, you could end up with network traffic being diverted to the bad guys.</p>
+<p>I am pretty worried about this attack. But it only works when my computer is booted. It even works when my screen is locked. The attacker obviously requires physical access, but that&#8217;s entirely possible in a corporate environment.</p>
+<p>If the USB device pretends to be a keyboard it can start sending commands to your computer &#8211; as if you typed them.</p>
+<p>This one is worth bearing in mind. It&#8217;s possible to mitigate to an extent if you prevent users from running unnecessary programs. It remains possible that your bad USB device might suddenly become a keyboard when you&#8217;re least expecting it.</p>
+<p>Limiting the amount of time your USB device is connected narrows the attack window. But that doesn&#8217;t really fix the problem. Your keyboard and mouse are plugged in all the time, right? And are you sure they haven&#8217;t been tampered with?</p>
+<p>If the USB device is left connected when the computer reboots, you computer could be attacked as it boots. The computer may boot off it &#8211; and if the USB device is cleverly configured, you might not be able to tell the device is capable of being a boot disk. Alternatively, the device might send keystrokes to modify the boot order or even modify the BIOS.</p>
+<p>I&#8217;m not worried about this really. It&#8217;s possible to secure the boot process against these attacks.</p>
+<p>If the USB device pretends to be a USB display, it might be able to scrape what&#8217;s on your screen and make it available to the bad guys.</p>
+<p>I&#8217;m fairly worried about this one. Obviously my screen can&#8217;t be locked for this attack &#8211; if it were the attacker doesn&#8217;t really win by screenshotting the log in screen. However, if my screen is unlocked &#8211; maybe someone passes me a USB stick, this could really work.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-1IBu1aNMi4mJRxa" class="g-recaptcha-explicit-id"><div id="g-recaptcha-1IBu1aNMi4mJRxa"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.088 seconds. -->
+</div>
+</body>
+</html>
+

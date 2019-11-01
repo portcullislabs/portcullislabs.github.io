@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Using Intel Pin tools for binary instrumentation | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Using Intel Pin tools for binary instrumentation - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-4131 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-4131"  class="portcullis-post portcullis-article  post-4131 post type-post status-publish format-standard hentry category-blog tag-analysis tag-auditing tag-binary tag-reversing">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Using Intel Pin tools for binary instrumentation</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="16:03">04/11/2014</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/brc/" title="View all posts by BRC">BRC</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
+<h2>Yama LSM</h2>
+<p>In this post, the basics of coding <a title="Intel Pin" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel Pin</a> tools will be presented, but before we discuss this, you should be aware that a <a title="Linux Security Module" href="http://en.wikipedia.org/wiki/Linux_Security_Modules">Linux Security Module</a> exists that prevents binary instrumentation by default. <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a> is a Linux Security Module that collects a number of system-wide <a title="DAC" href="http://en.wikipedia.org/wiki/Discretionary_access_control">DAC</a> security protections that are not handled by the core kernel itself. Yama is controlled using sysctl. A description of some of the possible values for /proc/sys/kernel/yama/ptrace_scope is provided below:</p>
+<ul>
+<li>0 =&gt; Classic ptrace: a process can PTRACE_ATTACH to any other process running under the same uid, as long as it is dumpable.</li>
+<li>1 =&gt; Restricted ptrace: a process can only PTRACE_ATTACH only its descendants although an inferior can call prctl(PR_SET_PTRACER, debugger, &#8230;) to allow the debugger to call PTRACE_ATTACH.</li>
+<li>2 =&gt; Admin-only attach: only processes with CAP_SYS_PTRACE may use ptrace with PTRACE_ATTACH</li>
+<li>3 =&gt; No attach: no processes may use ptrace with PTRACE_ATTACH nor via PTRACE_TRACEME.</li>
+</ul>
+<p>For detailed information, visit the Linux kernel documentation about <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a>.</p>
+<p>Continuing with the Pin topic, it should be noted that if a Pin tool is executed without setting /proc/sys/kernel/yama/ptrace_scope to 0, the following message will appear:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ../pin/pin -t obj-intel64/check_pc_sections.so -- /bin/ls
+E:Attach to pid 9495 failed.
+E:  The Operating System configuration prevents Pin from using the default (parent) injection mode.
+E:  To resolve this, either execute the following (as root):
+E:  $ echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
+E:  Or use the &quot;-injection child&quot; option.
+E:  For more information, regarding child injection, see Injection section in the Pin User Manual.
+E:
+Terminado (killed)
+</pre>
+<p>To allow debugging of inferior processes the value of /proc/sys/kernel/yama/ptrace_scope needs to be changed using sysctl:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+# sysctl kernel.yama.ptrace_scope=0
+kernel.yama.ptrace_scope = 0
+</pre>
+<h3>Pin tools</h3>
+<p>The Pin tools are the tools created using Pin and used to perform program analysis on user space. Pin tools that perform the binary instrumentation have two key components:</p>
+<ol>
+<li>The instrumentation callback routine: a mechanism that decides if and where to inject calls to analysis functions; and</li>
+<li>The analysis function: code to execute at insertion points.</li>
+</ol>
+<p>Note that the Pin tools are able to control a program starting with the very first instruction, meaning that it is possible even to inspect the linker&#8217;s code of a binary loading shared libraries. This could be utilised to perform run-time bug hunting in the operating system linker. Also, when programming Pin tools, it should be kept in mind that as the <a title="Pin documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/index.html#Pin">Pin documentation</a> specifies, it is more important to tune the analysis code than the instrumentation code. This is because the instrumentation is executed once, but analysis code is called many times.</p>
+<h2>Executable Images and Sections</h2>
+<p>Pin provides access to the binary&#8217;s images and image sections using linked lists. Those lists can be traversed using the API calls APP_ImgHead(), App_ImgTail(), IMG_Valid(IMG x), IMG_Next(IMG x) and IMG_Previous(IMG x); additionally, a number a API functions exist for accessing image properties such as name, size, type, start address, etc. A detailed view of the image API can be examined in the <a title="image documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/group__IMG__BASIC__API.html">image API documentation</a>.</p>
+<p>The image sections have the equivalent API functions to traverse the linked list: IMG_SecHead(IMG x),IMG_SecTail(IMG x), SEC_Valid(sec x), SEC_Prev(sec x), SEC_Next(sec x), SEC_Address (SEC sec), SEC_Valid (SEC x), etc. The complete list can be found in the <a title="section API documentation" href="http://software.intel.com/sites/landingpage/pintool/docs/58423/Pin/html/group__SEC__BASIC__API.html">section API documentation</a>.</p>
+<p>To illustrate the usage of the image and section API an example is provided:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">
+#include &quot;pin.H&quot;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string.h&gt;
+
+// =====================================================================
+// Usage
+// =====================================================================
+
+INT32 Usage()
+{
+    cerr &lt;&lt; &quot;[*] This Pin tool prints the images and section names of a binary when loading&quot; &lt;&lt; endl;
+    return -1;
+}
+
+// =====================================================================
+// Analysis routines
+// =====================================================================
+
+// Prints image and section name, type and address
+VOID loadImageSec(IMG img, VOID *v)
+{
+    UINT64 sec_cont = 0;
+    string img_type;
+    string sec_type;
+
+    switch (IMG_Type(img)){
+        case IMG_TYPE_STATIC:
+            img_type = &quot;static&quot;;
+            break;
+        case IMG_TYPE_SHARED:
+            img_type = &quot;shared&quot;;
+            break;
+        case IMG_TYPE_SHAREDLIB:
+            img_type = &quot;shared library&quot;;
+            break;
+        case IMG_TYPE_RELOCATABLE:
+            img_type = &quot;relocatable&quot;;
+            break;
+        default:
+            img_type = &quot;unknown&quot;;
+    }
+
+    cout &lt;&lt; &quot;[*] Loading image &quot; &lt;&lt; IMG_Name(img).c_str();
+    cout &lt;&lt; &quot; @ &quot; &lt;&lt; StringFromAddrint(IMG_StartAddress(img));
+    cout &lt;&lt; &quot; type &quot; &lt;&lt; img_type &lt;&lt; endl;
+
+    for (SEC sec=IMG_SecHead(img); SEC_Valid(sec); sec=SEC_Next(sec)) {
+        if (strcmp(SEC_Name(sec).c_str(),&quot;&quot;)) {
+
+            switch (SEC_Type(sec)){
+                case SEC_TYPE_REGREL:
+                    sec_type = &quot;relocations&quot;;
+                    break;
+                case SEC_TYPE_DYNREL:
+                    sec_type = &quot;dynamic relocations&quot;;
+                    break;
+                case SEC_TYPE_EXEC:
+                    sec_type = &quot;code&quot;;
+                    break;
+                case SEC_TYPE_DATA:
+                    sec_type = &quot;initialized data&quot;;
+                    break;
+                case SEC_TYPE_BSS:
+                    sec_type = &quot;unitialized data&quot;;
+                    break;
+                case SEC_TYPE_LOOS:
+                    sec_type = &quot;operating system specific&quot;;
+                    break;
+                case SEC_TYPE_USER:
+                    sec_type = &quot;user application specific&quot;;
+                    break;
+                default:
+                    sec_type = &quot;unknown&quot;;
+            }
+
+            cout &lt;&lt; &quot;\t =&gt; Loading section &quot; &lt;&lt; SEC_Name(sec).c_str();
+            cout &lt;&lt; &quot; @ &quot; &lt;&lt; StringFromAddrint(SEC_Address(sec));
+            cout &lt;&lt; &quot; type &quot; &lt;&lt; sec_type &lt;&lt; endl;
+
+            sec_cont++;
+        }
+    }
+
+    cout &lt;&lt; &quot;[*] Done loading &quot; &lt;&lt; IMG_Name(img).c_str() &lt;&lt; &quot;: &quot; &lt;&lt; sec_cont &lt;&lt; &quot; sections&quot; &lt;&lt; endl;
+
+}
+
+// =====================================================================
+// Main
+// =====================================================================
+
+int main(int argc, char *argv[])
+{
+
+    if(PIN_Init(argc,argv)) {
+        return Usage();
+    }
+
+    cout &lt;&lt; &quot;[*] Executing Pin tool&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;[*] Adding instrumentation functions&quot; &lt;&lt; endl;
+    IMG_AddInstrumentFunction(loadImageSec, 0);
+
+    cout &lt;&lt; &quot;[*] Executing target program&quot; &lt;&lt; endl;
+    PIN_StartProgram();
+
+    return 0;
+}
+// EOF
+</pre>
+<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+~/mytools $ ./build.sh
+[*] Building load_bin_img_sec.cpp
+g++ -DBIGARRAY_MULTIPLIER=1 -DUSING_XED -Wall -Werror -Wno-unknown-pragmas -fno-stack-protector -DTARGET_IA32E -DHOST_IA32E -fPIC -DTARGET_LINUX  -I../pin/source/include/pin -I../pin/source/include/pin/gen -I../pin/extras/components/include -I../pin/extras/xed2-intel64/include -I../pin/source/tools/InstLib -O3 -fomit-frame-pointer -fno-strict-aliasing   -c -o obj-intel64/load_bin_img_sec.o load_bin_img_sec.cpp
+g++ -shared -Wl,--hash-style=sysv -Wl,-Bsymbolic -Wl,--version-script=../pin/source/include/pin/pintool.ver    -o obj-intel64/load_bin_img_sec.so obj-intel64/load_bin_img_sec.o  -L../pin/intel64/lib -L../pin/intel64/lib-ext -L../pin/intel64/runtime/glibc -L../pin/extras/xed2-intel64/lib -lpin -lxed -ldwarf -lelf -ldl
+[*] Exec ../pin/pin -t obj-intel64/load_bin_img_sec.so -- &lt;program&gt;
+</pre>
+<p>The binary /bin/ls is taken as example target binary for the execution of compiled Pin tool:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+~/mytools $ ../pin/pin -t obj-intel64/load_bin_img_sec.so -- /bin/ls /tmp/
+[*] Executing PIN tool
+[*] Adding instrumentation functions
+[*] Executing target program
+[*] Loading image /usr/bin/ls @ 0x00007f55b8798000 type shared
+	 =&gt; Loading section .interp @ 0x0000000000400238 type initialized data
+	 =&gt; Loading section .note.ABI-tag @ 0x0000000000400254 type initialized data
+	 =&gt; Loading section .note.gnu.build-id @ 0x0000000000400274 type initialized data
+	 =&gt; Loading section .dynsym @ 0x0000000000400350 type unknown
+	 =&gt; Loading section .dynstr @ 0x0000000000400f50 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x0000000000401670 type relocations
+	 =&gt; Loading section .rela.plt @ 0x0000000000401718 type relocations
+	 =&gt; Loading section .init @ 0x0000000000402180 type code
+	 =&gt; Loading section .plt @ 0x00000000004021a0 type code
+	 =&gt; Loading section .text @ 0x00000000004028a0 type code
+	 =&gt; Loading section .fini @ 0x0000000000411d4c type code
+	 =&gt; Loading section .rodata @ 0x0000000000411d60 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x0000000000416e7c type initialized data
+	 =&gt; Loading section .eh_frame @ 0x0000000000417588 type initialized data
+	 =&gt; Loading section .init_array @ 0x0000000000619df0 type initialized data
+	 =&gt; Loading section .fini_array @ 0x0000000000619df8 type initialized data
+	 =&gt; Loading section .jcr @ 0x0000000000619e00 type initialized data
+	 =&gt; Loading section .dynamic @ 0x0000000000619e08 type unknown
+	 =&gt; Loading section .got @ 0x0000000000619ff8 type unknown
+	 =&gt; Loading section .got.plt @ 0x000000000061a000 type initialized data
+	 =&gt; Loading section .data @ 0x000000000061a3a0 type initialized data
+	 =&gt; Loading section .bss @ 0x000000000061a600 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/bin/ls: 24 sections
+[*] Loading image /lib64/ld-linux-x86-64.so.2 @ 0x00007f55b8788000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55cb9201c8 type initialized data
+	 =&gt; Loading section .hash @ 0x00007f55cb9201f0 type unknown
+	 =&gt; Loading section .dynsym @ 0x00007f55cb920470 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55cb920710 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55cb920988 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55cb920ac0 type relocations
+	 =&gt; Loading section .plt @ 0x00007f55cb920b50 type code
+	 =&gt; Loading section .text @ 0x00007f55cb920bc0 type code
+	 =&gt; Loading section .rodata @ 0x00007f55cb939100 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55cb93d300 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55cb93d950 type initialized data
+	 =&gt; Loading section .data.rel.ro @ 0x00007f55cbb40ba0 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55cbb40e10 type unknown
+	 =&gt; Loading section .got @ 0x00007f55cbb40fa0 type unknown
+	 =&gt; Loading section .data @ 0x00007f55cbb41000 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55cbb41fa0 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .symtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .strtab @ 0x0000000000000000 type unknown
+[*] Done loading /lib64/ld-linux-x86-64.so.2: 20 sections
+[*] Loading image /usr/lib/libcap.so.2 @ 0x00007f55b7c50000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b84a8190 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b84a82b0 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b84a8898 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b84a8c30 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b84a9080 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b84a9350 type code
+	 =&gt; Loading section .plt @ 0x00007f55b84a9370 type code
+	 =&gt; Loading section .text @ 0x00007f55b84a9560 type code
+	 =&gt; Loading section .fini @ 0x00007f55b84aac54 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b84aac60 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b84aaf48 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b84ab060 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b86ab648 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b86ab650 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b86ab658 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b86ab660 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b86ab840 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b86ab870 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b86ab980 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b86abac8 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libcap.so.2: 22 sections
+[*] Loading image /usr/lib/libacl.so.1 @ 0x00007f55b7c48000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b82881c8 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b82884f8 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b8288ed0 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b8289580 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b8289700 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b8289cb8 type code
+	 =&gt; Loading section .plt @ 0x00007f55b8289ce0 type code
+	 =&gt; Loading section .text @ 0x00007f55b828a0c0 type code
+	 =&gt; Loading section .fini @ 0x00007f55b828dea4 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b828deb0 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b828e154 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b828e380 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b848fd98 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b848fda0 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b848fda8 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b848fdb0 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b848ffb0 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b8490000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b8490200 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b8490270 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libacl.so.1: 22 sections
+[*] Loading image /usr/lib/libc.so.6 @ 0x00007f55b7a68000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b7ee0270 type initialized data
+	 =&gt; Loading section .note.ABI-tag @ 0x00007f55b7ee0294 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b7ee3d28 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b7ef0d78 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b7ef7b10 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b7eff298 type relocations
+	 =&gt; Loading section .plt @ 0x00007f55b7eff3c0 type code
+	 =&gt; Loading section .text @ 0x00007f55b7eff490 type code
+	 =&gt; Loading section __libc_freeres_fn @ 0x00007f55b8028bc0 type code
+	 =&gt; Loading section __libc_thread_freeres_fn @ 0x00007f55b80299b0 type code
+	 =&gt; Loading section .rodata @ 0x00007f55b8029ba0 type initialized data
+	 =&gt; Loading section .interp @ 0x00007f55b804b790 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b804b7b0 type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b80521e0 type initialized data
+	 =&gt; Loading section .gcc_except_table @ 0x00007f55b807a954 type initialized data
+	 =&gt; Loading section .hash @ 0x00007f55b807ad18 type unknown
+	 =&gt; Loading section .tdata @ 0x00007f55b827e718 type initialized data
+	 =&gt; Loading section .tbss @ 0x00007f55b827e728 type unitialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b827e728 type initialized data
+	 =&gt; Loading section __libc_subfreeres @ 0x00007f55b827e730 type initialized data
+	 =&gt; Loading section __libc_atexit @ 0x00007f55b827e820 type initialized data
+	 =&gt; Loading section __libc_thread_subfreeres @ 0x00007f55b827e828 type initialized data
+	 =&gt; Loading section .data.rel.ro @ 0x00007f55b827e860 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b8281b80 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b8281d70 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b8282000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b8282080 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b8283740 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sigstack @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sigreturn @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.siggetmask @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tmpnam @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tmpnam_r @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.tempnam @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sys_errlist @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sys_nerr @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.gets @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getpw @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.re_max_failures @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.lchmod @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getwd @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.sstk @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.revoke @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.mktemp @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.gtty @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.stty @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.chflags @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fchflags @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.bdflush @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.__gets_chk @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_space @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_init @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_append @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_alloc @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_next @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.inet6_option_find @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.getmsg @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.putmsg @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fattach @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.fdetach @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .gnu.warning.setlogin @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .symtab @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .strtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libc.so.6: 65 sections
+[*] Loading image /usr/lib/libattr.so.1 @ 0x00007f55b7c50000 type shared library
+	 =&gt; Loading section .note.gnu.build-id @ 0x00007f55b7cd81c8 type initialized data
+	 =&gt; Loading section .dynsym @ 0x00007f55b7cd8378 type unknown
+	 =&gt; Loading section .dynstr @ 0x00007f55b7cd8930 type unknown
+	 =&gt; Loading section .rela.dyn @ 0x00007f55b7cd8ce8 type relocations
+	 =&gt; Loading section .rela.plt @ 0x00007f55b7cd8dc0 type relocations
+	 =&gt; Loading section .init @ 0x00007f55b7cd9198 type code
+	 =&gt; Loading section .plt @ 0x00007f55b7cd91c0 type code
+	 =&gt; Loading section .text @ 0x00007f55b7cd9460 type code
+	 =&gt; Loading section .fini @ 0x00007f55b7cdb4ac type code
+	 =&gt; Loading section .rodata @ 0x00007f55b7cdb4b5 type initialized data
+	 =&gt; Loading section .eh_frame_hdr @ 0x00007f55b7cdb56c type initialized data
+	 =&gt; Loading section .eh_frame @ 0x00007f55b7cdb668 type initialized data
+	 =&gt; Loading section .init_array @ 0x00007f55b7edbdc8 type initialized data
+	 =&gt; Loading section .fini_array @ 0x00007f55b7edbdd0 type initialized data
+	 =&gt; Loading section .jcr @ 0x00007f55b7edbdd8 type initialized data
+	 =&gt; Loading section .dynamic @ 0x00007f55b7edbde0 type unknown
+	 =&gt; Loading section .got @ 0x00007f55b7edbfd0 type unknown
+	 =&gt; Loading section .got.plt @ 0x00007f55b7edc000 type initialized data
+	 =&gt; Loading section .data @ 0x00007f55b7edc160 type initialized data
+	 =&gt; Loading section .bss @ 0x00007f55b7edc168 type unitialized data
+	 =&gt; Loading section .comment @ 0x0000000000000000 type unknown
+	 =&gt; Loading section .shstrtab @ 0x0000000000000000 type unknown
+[*] Done loading /usr/lib/libattr.so.1: 22 sections
+PKGBUILD      plugtmp  test-kernel-security.py  yaourt-tmp-user
+~/mytools $
+</pre>
+<p>As you can see, Intel Pin tool provides a rich API to inspect the different parts of a binary, including sections, images, functions, registers, etc, which could help security researchers to detect an anomalies such us:</p>
+<ul>
+<li>Whether the instruction pointer points to a memory address outside the code segment?</li>
+<li>Are parts of the memory getting overwritten by user input?</li>
+<li>Whether there are too many RETs getting executed within a small part of the code</li>
+</ul>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-7lGfVkt9PqGiGlA" class="g-recaptcha-explicit-id"><div id="g-recaptcha-7lGfVkt9PqGiGlA"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.086 seconds. -->
+</div>
+</body>
+</html>
+

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; BDA</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/bda/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>MS08-067 check</title>
+		<link>https://labs.portcullis.co.uk/tools/ms08-067-check/</link>
+		<comments>https://labs.portcullis.co.uk/tools/ms08-067-check/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:36:13 +0000</pubDate>
+		<dc:creator><![CDATA[BDA]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=206</guid>
+		<description><![CDATA[<p>MS08-067 check is python script which can anonymously check if a target machine or a list of target machines are affected by MS08-067 vulnerability. This tool can be used to anonymously check if a target machine or a list of target machines are affected by MS08-067 issue (Vulnerability in Server Service Could Allow Remote Code Execution). Usage [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/ms08-067-check/">MS08-067 check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>MS08-067 check is python script which can anonymously check if a target machine or a list of target machines are affected by MS08-067 vulnerability.<span id="more-206"></span></p>
+<p>This tool can be used to anonymously check if a target machine or a list of target machines are affected by <a title="MS08-067" href="http://www.microsoft.com/technet/security/Bulletin/ms08-067.mspx">MS08-067</a> issue (Vulnerability in Server Service Could Allow Remote Code Execution).</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python ms08-067_check.py -h
+Usage: ms08-067_check.py [option] {-t |-l }
+
+Options:
+  --version   show program's version number and exit
+  -h, --help  show this help message and exit
+  -d          show description and exit
+  -t TARGET   target IP or hostname
+  -l LIST     text file with list of targets
+  -s          be silent
+</pre>
+<h2>Example output</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python ms08-067_check.py -t 192.168.123.30
+192.168.123.30: VULNERABLE
+</pre>
+<h2>Note</h2>
+<p>On Windows XP Service Pack 2 and Windows XP Service Pack 3 this check might lead to a race condition and heap corruption in the svchost.exe process, but it may not crash the service immediately: it can trigger later on inside any of the shared services in the process.</p>
+<h2>References</h2>
+<ul>
+<li>BID: <a href="http://www.securityfocus.com/bid/31874">31874</a></li>
+<li>CVE: <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4250">2008-4250</a></li>
+<li><a href="http://blogs.technet.com/swi/archive/2008/10/25/most-common-questions-that-we-ve-been-asked-regarding-ms08-067.aspx">http://blogs.technet.com/swi/archive/2008/10/25/most-common-questions-that-we-ve-been-asked-regarding-ms08-067.aspx</a></li>
+<li><a href="http://www.microsoft.com/technet/security/advisory/958963.mspx">http://www.microsoft.com/technet/security/advisory/958963.mspx</a></li>
+<li><a href="http://www.phreedom.org/blog/2008/decompiling-ms08-067/">http://www.phreedom.org/blog/2008/decompiling-ms08-067/</a></li>
+<li><a href="http://metasploit.com/dev/trac/browser/framework3/trunk/modules/exploits/windows/smb/ms08_067_netapi.rb">http://metasploit.com/dev/trac/browser/framework3/trunk/modules/exploits/windows/smb/ms08_067_netapi.rb</a></li>
+<li><a href="http://blog.threatexpert.com/2008/10/gimmiva-exploits-zero-day-vulnerability.html">http://blog.threatexpert.com/2008/10/gimmiva-exploits-zero-day-vulnerability.html</a></li>
+<li><a href="http://blogs.securiteam.com/index.php/archives/1150">http://blogs.securiteam.com/index.php/archives/1150</a></li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ms08-067_check-0.6.tar.gz" target="_blank" title="Download Ms08-067 Check-0.6 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ms08-067 Check-0.6 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ms08-067_check-0.6.tar.gz" title="Download ms08-067_check-0.6.tar.gz" target="_blank" id="wpfb-file-link-1">ms08-067_check-0.6.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    8.9 KiB<br />
+    MD5 hash: 0e32ab4ded903ea2db5421065e8deb57 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/ms08-067_check-0.5.tar.gz" target="_blank" title="Download Ms08-067 Check-0.5 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Ms08-067 Check-0.5 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/ms08-067_check-0.5.tar.gz" title="Download ms08-067_check-0.5.tar.gz" target="_blank" id="wpfb-file-link-2">ms08-067_check-0.5.tar.gz</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    8.9 KiB<br />
+    MD5 hash: 31822828427307147c242cda7d12ed5e <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/ms08-067-check/">MS08-067 check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/ms08-067-check/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; DEM</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/dem/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Introduction to Bash Bunny</title>
+		<link>https://labs.portcullis.co.uk/blog/introduction-to-bash-bunny/</link>
+		<comments>https://labs.portcullis.co.uk/blog/introduction-to-bash-bunny/#comments</comments>
+		<pubDate>Fri, 14 Jul 2017 16:07:00 +0000</pubDate>
+		<dc:creator><![CDATA[DEM]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[red team]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5892</guid>
+		<description><![CDATA[<p>The Bash Bunny is the most recent attack tool released by Hak5 for use by penetration testers. Although the primary focus of the tool is red/black/purple team engagements, it is a dynamic device allowing reconfiguration to suit the scope of work. The Bash Bunny is a Human Interface Device (HID), ethernet &#38; mass storage attack [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/introduction-to-bash-bunny/">Introduction to Bash Bunny</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The Bash Bunny is the most recent attack tool released by <a title="Hak5" href="https://www.hak5.org/">Hak5</a> for use by penetration testers. Although the primary focus of the tool is red/black/purple team engagements, it is a dynamic device allowing reconfiguration to suit the scope of work.<span id="more-5892"></span></p>
+<p>The Bash Bunny is a Human Interface Device (HID), ethernet &amp; mass storage attack tool all packaged up into one device which allows for multiple types of attack to be performed in same payload.</p>
+<p>Payloads are primarily written in Bash Scripts and there is also support for the previous Ducky Scripts that are used for the USB Rubber Ducky and there is no longer an encoder needed as all the payloads are written in text files.</p>
+<p>Additional tools (such as Responder and Nmap) can also be installed on the inbuilt 8GB SSD storage.</p>
+<p>Strong considerations should be made in regards to situations in which the Bash Bunny is used. For example, it takes approximately 7 seconds for the device to initialise prior to executing the payload. Therefore, advance knowledge of the target systems would greatly reduce the need of having to avoid reconfiguring payloads in the midst of the attack.</p>
+<p>When performing data extraction using the Bash Bunny, consideration should also be taken into account with the amount of time that files take to transfer and the amount of space that will be consumed. In order to switch payloads, the Bash Bunny needs to be unplugged from the victim machine and as a result, an additional 7 seconds will be required for for reinitialisation &#8211; so you may need to stall victims slightly longer!</p>
+<h2>What are Bunny Scripts?</h2>
+<p>Bunny Script is text-based language that provides inbuilt commands specific to the hardware that can be used alongside standard bash scripting. Ducky Script can also be used without an encoder and can be stored in separate files for easy management of payload elements. Additional platform scripts can be used and executed as well these can include PowerShell, batch files and shell scripts.</p>
+<h2>Key elements of Bunny Scripts</h2>
+<p>Attack Modes:</p>
+<ul>
+<li>RNDIS_ETHERNET (Windows)</li>
+<li>ECM_ETHERNET (Mac/Linux)</li>
+<li>STORAGE</li>
+<li>SERIAL</li>
+</ul>
+<p>The attack modes tell the device what functionality to enable upon initialization. You can use multiple modes at the same time.</p>
+<p>LED usage can assist you at a glance to know the status of your attack and when it is safe to remove the device upon completion, there are multiple options for these from simple colours to complex patterns.</p>
+<h2>Serial console</h2>
+<p>The Bash Bunny features a dedicated serial console from its arming mode. From serial, its Linux shell may be accessed.</p>
+<p>On Linux this will be:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sudo screen /dev/ttyACM0 115200&lt;/code&gt; or &lt;code&gt;sudo screen /dev/ttyUSB0 115200
+</pre>
+<p>On OS X this will be:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+sudo screen /dev/tty.usbmodemch000001 115200
+</pre>
+<p>On Windows, you need to find the COM# use PowerShell and the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[System.IO.Ports.SerialPort]::getportnames()
+</pre>
+<p>Then use Putty or similar tool to connect to the COM Port:</p>
+<p><a name="imageclose-5893"><div class="lb-album"><a href="#image-5893"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture1-300x296.png" alt="Picture1" class="alignnone size-medium wp-image-5906"><span></span></a></div>              
+<a href="#imageclose-5893" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5893">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture1.png" alt="image-5893">
+                   </div></a></p>
+<h2>Ethernet mode</h2>
+<p>As we have already mentioned, one of the main uses of the Bash Bunny is as a hardware implant for use during red team engagements. In such scenarios, allowing your Bash Bunny and main testing device to share an Internet connection can be very useful. For Linux, Hak5 provide a useful script to assist with this which can be found here:</p>
+<ul>
+<li><a title="bashbunny.com/bb.sh" href="http://bashbunny.com/bb.sh" title="bashbunny.com/bb.sh">bashbunny.com/bb.sh</a></li>
+</ul>
+<p>A similar approach can be taken when your main testing device uses OS X, however this requires some manual steps to be performed as below:</p>
+<p>Firstly, configure a payload.txt with the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ATTACKMODE ECM_ETHERNET
+</pre>
+<p>Internet sharing is easy with the Sharing tab in system preferences. I selected sharing WiFi (or select how you&#8217;re connected to the internet) with the RNDIS/Ethernet Gadget and then executed the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict-add SharingNetworkNumberStart 172.16.64.10
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict-add SharingNetworkNumberEnd 172.16.64.200
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict-add SharingNetworkMask 255.255.255.0
+defaults read /Library/Preferences/SystemConfiguration/com.apple.nat
+</pre>
+<p><a name="imageclose-5894"><div class="lb-album"><a href="#image-5894"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture3-300x200.png" alt="Picture3" class="alignnone size-medium wp-image-5904"><span></span></a></div>              
+<a href="#imageclose-5894" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5894">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture3.png" alt="image-5894">
+                   </div></a></p>
+<h3>SSH access in ethernet mode</h3>
+<p>SSH access can also be used to gain access to the device and provides access to the Linux operating system.</p>
+<h2>Recovery mode</h2>
+<p>Given that the device generally is presented as mass storage during arming and as required by payloads, it is possible that you can ruin your configuration by deleting files amongst others.</p>
+<p>Luckily there is a recovery mode and the option to reformat the mass storage.</p>
+<p><a name="imageclose-5895"><div class="lb-album"><a href="#image-5895"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture2-300x150.png" alt="Picture2" class="alignnone size-medium wp-image-5905"><span></span></a></div>              
+<a href="#imageclose-5895" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5895">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/Picture2.png" alt="image-5895">
+                   </div></a></p>
+<h2>Additional information</h6>
+<p>Should you wish to discover more about the Bash Bunny yourself, we can thoroughly recommend the the following community resources:</p>
+<ul>
+<li><a title="Bash Bunny wite" href="https://hakshop.com/products/bash-bunny">Bash Bunny site</li>
+<li><a title="Bash Bunny wiki" href="https://wiki.bashbunny.com/">Bunny Site wiki</a></li>
+<li><a title="Bash Bunny forum" href="https://forums.hak5.org/index.php?/forum/92-bash-bunny/">Bash Bunny forum</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/introduction-to-bash-bunny/">Introduction to Bash Bunny</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/introduction-to-bash-bunny/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

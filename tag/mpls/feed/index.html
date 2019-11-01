@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; MPLS</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/mpls/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>This way to 10.10.10.1: Playing with labelled switching</title>
+		<link>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/</link>
+		<comments>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/#comments</comments>
+		<pubDate>Fri, 17 Apr 2015 15:28:45 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[fuzzing]]></category>
+		<category><![CDATA[MPLS]]></category>
+		<category><![CDATA[networking]]></category>
+		<category><![CDATA[routing]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5080</guid>
+		<description><![CDATA[<p>As a pentester, there are days when you&#8217;ll get asked to look at the ordinary, and there are days that you&#8217;ll be asked to look at something more challenging. This week was full of days that met the latter criteria and not the former. Whilst I can&#8217;t share the scope, Portcullis was asked to examine [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>As a pentester, there are days when you&#8217;ll get asked to look at the ordinary, and there are days that you&#8217;ll be asked to look at something more challenging. This week was full of days that met the latter criteria and not the former. Whilst I can&#8217;t share the scope, Portcullis was asked to examine a network implementation using the MPLS protocol and comment on the security, or otherwise, of it.<span id="more-5080"></span></p>
+<p>I suspect that the reasons why I was selected to lead this task were two fold: one I happen to co-own <a title="AS28792" href="http://bgp.he.net/AS28792">AS28792</a> and am not therefore an Internet n00b and two, rumour has it that I once &#8220;heckled&#8221; a talk on just this subject. Rumours can be unfair and I don&#8217;t recall the full details but, as I remember it, I simply answered a question from a fellow audience member on how MPLS labels are meant to be processed.</p>
+<p>For those of you that may not have heard of it, MPLS is not a commonly used protocol, at least not outside of tier 1 networks. The purpose of this blog post isn&#8217;t to discuss the ins and outs of the protocol, but rather to show how we used the Scapy framework to quickly craft MPLS labelled packets and to highlight why it is important that testers can code.</p>
+<p>Given the testing requirements, the Team examined the options available to complete the assessment. There are few, if any, tools that can be used to appropriately test MPLS implementations. The toolset I had in mind (having previously used it) was no longer available and whilst Google has a &#8220;not yet mainline&#8221; <a title="MPLS implementation" href="https://code.google.com/p/opensource-lsr/">MPLS implementation</a> for the Linux kernel, it seemed an inefficient use of time to get that running. In such circumstances, we would need to develop our own code quickly.</p>
+<p>Scouring the Internet, I came across a post on the use of <a title="Scapy to craft MPLS packets" href="http://permalink.gmane.org/gmane.comp.security.scapy.general/4314">Scapy to craft MPLS packets</a>. The code has a couple of bugs (IMO), around misnaming the bottom of stack marker bitfield and the author&#8217;s choice of default TTL, but otherwise it does the trick.</p>
+<p>Consider the following code, taken from the post:</p>
+<pre class="brush: python; gutter: false; title: ; notranslate">
+class MPLS(Packet):
+        name = "MPLS"
+        fields_desc =  [
+                BitField("label", 3, 20),
+                BitField("experimental_bits", 0, 3),
+                BitField("bottom_of_label_stack", 1, 1), # Now we're at the bottom
+                ByteField("TTL", 255)
+        ]
+</pre>
+<p>This snippet specifies an MPLS class which, given Packet, will add 4 fields worth of data. The fields in question map on to the 32-bits of an MPLS header. I&#8217;ll leave you to read up on what the header will actually look like, but suffice it to say, label affects where packets go, TTL affects how far they go and bottom_of_label_stack and experimental_bits affect how the labels are processed along the way by routers (technically it&#8217;s a bit more complicated than that, but it will do as a starting point). The label has a length of 20 bits and a default value of 3 (a special <a title="reserved label" href="http://www.iana.org/assignments/mpls-label-values/mpls-label-values.xhtml">reserved label</a> meaning Implicit NULL Label), whilst the bottom_of_label_stack marker has a length of 1 bit and a default value of 1. As a byte field, TTL has an implicit length of 8 bits.</p>
+<p>Next we have the following:</p>
+<pre class="brush: python; gutter: false; title: ; notranslate">
+bind_layers(Ether, MPLS, type = 0x8847) # Marks MPLS
+bind_layers(MPLS, MPLS, bottom_of_label_stack = 0) # We're not at the bottom yet
+bind_layers(MPLS, IP)
+</pre>
+<p>In Scapy, we use bind_layers() to specify how various headers can be ordered within the overall packet. What this says is that an MPLS header can follow either an Ethernet header (with a type of 0&#215;8847) or another MPLS header. In the latter case we should set the previous MPLS header&#8217;s bottom_of_label_stack marker to 0, to indicate that there is at least one further label header. Finally, we must follow our MPLS layer headers up with an IP header, before traversing into the more traditional TCP or UDP packet structure.</p>
+<p>To craft a MPLS labelled packet, we can then call the following Python code:</p>
+<pre class="brush: python; gutter: false; title: ; notranslate">
+p = Ether(src = &quot;&lt;my MAC address&gt;&quot;, dst = &quot;&lt;next hop MAC address&gt;&quot;) / MPLS(label = 255, TTL = 255) / IP(src = &quot;&lt;my IP address&gt;&quot;, dst = &quot;&lt;target IP address&gt;&quot;) / TCP(dport = 80)
+p.show()
+sendp(p, iface=&quot;eth0&quot;)
+</pre>
+<p>In layman&#8217;s terms, this means we will create an Ethernet frame, containing an MPLS header, with a label and TTL of 255, with an IP header and finally a TCP header.</p>
+<p>Having shown how we can craft a TCP packet, let us look at the minimum set of MPLS protocol vulnerabilities we need to test for. The client had obviously read some papers on MPLS security, or at least <a title="RFC 4381" href="https://tools.ietf.org/html/rfc4381">RFC 4381</a>, since the aims of the assessment identified the main points of concern as follows:</p>
+<ul>
+<li>Test for rejection of MPLS labelled packets on a P(provider) E(dge) interface</li>
+<li>Test for rejection of MPLS labelled packets with no bottom_of_label_stack marker</li>
+<li>Test for rejection of MPLS labelled packets with an early bottom_of_label_stack marker</li>
+<li>Test for rejection of MPLS labelled packets with large numbers of labels</li>
+</ul>
+<p>The first test is about ensuring that the PE router cannot be tricked into misdirecting malicious packets, whilst the latter 3 are a minimum test set designed to ensure that it does not misprocess the packets in a way that may lead to Denial of Service or worse. A correct implementation will therefore gracefully reject MPLS packets in each of these cases.</p>
+<p>There are of course more test cases that we could consider, and indeed the Team ended up using p.fuzz() to create infinite malformed packets, but let&#8217;s look at these test cases which formed the basis of our assessment.</p>
+<p>An analogy for those of you that are unfamiliar with MPLS would be 802.11q tagging and whether a switch will accept a pre-tagged packet with a spoofed VLAN ID. In the VLAN world, acceptance of a spoofed ID would place the attacker on a VLAN for which they have not been authorised. In the case of MPLS, acceptance of a spoofed MPLS label might give the attacker access to another customer&#8217;s private virtual network. MPLS networks, and the P routers from which they are constructed, inherently trust the labels, so if you gain access beyond the PE, all bets are off.</p>
+<p>In order to answer our client&#8217;s questions, we need to determine whether our MPLS labelled packets are rejected. <a title="RFC 4364" href="https://tools.ietf.org/html/rfc4364#page-37">RFC 4364</a> states that &#8220;a backbone router does not accept labelled packets over a particular data link, unless it is known that that data link attaches only to trusted systems&#8221;. In this instance, the client&#8217;s MPLS core was fiber and it was not possible to connect a testing laptop directly to it, either to simulate the PE router itself or indeed to simulate any of the inner P routers that made up the core. We could however mimic a C(ustomer) E(dge) router and see the PE router which gave us some ideas on how determining acceptance could be achieved.</p>
+<p>Firstly, the client was able to configure a spanning port on the PE router. This gave us the ability to visually inspect the traffic as it passed through and confirm that our crafted packets never left the incoming CE to PE interface. The second solution was a bit less reliable but avoided the need for the PE router (or indeed the client&#8217;s collaboration, in this instance). The Team had already observed that the PE router itself had an SSH service listening on a loopback interface for management and that it was possible to route to and indeed connect to this. The Team hypothesised that, if a TCP packet was sent (with the SYN flag set) and if the packets were labelled with MPLS headers, then the connection would fail and no response would be seen from the SSH service on the router. As expected, both approaches proved successful and the Team was able to show that our labelled packets were ignored by the PE router.</p>
+<p>One last note and something our Technical Director commented upon. Isn&#8217;t it nice when implementations actually follow design? Hats off to the various MPLS RFC authors for producing a set of standards that can be followed by both the developers of these routers and the administrators who ultimately commission them.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

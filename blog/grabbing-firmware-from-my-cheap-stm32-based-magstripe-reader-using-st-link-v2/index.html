@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2) | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2) - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/stlink1-300x300.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-300x228.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-300x168.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pins-300x100.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-markup-300x168.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-Copy-Copy-300x227.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/fine-300x115.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st-300x189.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st3-300x213.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/0connect-to-target-300x148.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/1read-273x300.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/2save-300x91.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/4program-300x92.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/04/5program2-300x205.png'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-6583 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-6583"  class="portcullis-post portcullis-article  post-6583 post type-post status-publish format-standard hentry category-blog tag-hardhack tag-training">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2)</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="09:00">20/07/2018</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>In my <a title="previous post" href="/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/">previous post</a>, I worked around the fact that the card reader could only read credit cards &#8211; when I wanted to read other types of magstripes. I&#8217;d thought at the time that it would theoretically be possible to replace the firmware. In this post I don&#8217;t get as far as writing new firmware, but I to present an easy way to download and upload firmware: The ST-Link v2 USB device (hardware) and associated ST-Link Utility (software).<span id="more-6583"></span></p>
+<h2>Inspiration</h2>
+<p>I&#8217;d been watching YouTube videos about microcontrollers, when I stumbled across <a title="How to Set up the ST-Link v2 Programmer Tutorial for ARM Microcontrollers" href="https://www.youtube.com/watch?v=QgC_6R1_R-o">How to Set up the ST-Link v2 Programmer Tutorial for ARM Microcontrollers</a>. I hadn&#8217;t come across this method of programming microcontrollers before. Previously, I&#8217;d only programmed my Arduino via UART.</p>
+<p>I got straight on eBay and bought a programmer from a local supplier, so it would arrive quickly. The same thing is also available for about £2 from China.</p>
+<div id="attachment_6608" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6584"><div class="lb-album"><a href="#image-6584"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/stlink1-300x300.png" alt="ST-Link v2 on eBay" class="size-medium wp-image-6608"><span></span></a></div>              
+<a href="#imageclose-6584" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6584">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/stlink1.png" alt="image-6584">
+                   </div></a><p class="wp-caption-text">ST-Link v2 on eBay</p></div>
+<h2>Pinout</h2>
+<p>The chip I wanted to program/read was the STM32F102C8 from my cheap magstripe reader:</p>
+<div id="attachment_6601" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6585"><div class="lb-album"><a href="#image-6585"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-300x228.jpg" alt="Chip on card reader" class="size-medium wp-image-6601"><span></span></a></div>              
+<a href="#imageclose-6585" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6585">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip.jpg" alt="image-6585">
+                   </div></a><p class="wp-caption-text">Chip on card reader</p></div>
+<p>The <a title="datasheet (pdf)" href="http://www.st.com/resource/en/datasheet/stm32f102c8.pdf">datasheet (pdf)</a> showed the pinout information I needed:</p>
+<div id="attachment_6602" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6586"><div class="lb-album"><a href="#image-6586"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-300x168.png" alt="Pinout from STM32 datasheet" class="size-medium wp-image-6602"><span></span></a></div>              
+<a href="#imageclose-6586" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6586">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout.png" alt="image-6586">
+                   </div></a><p class="wp-caption-text">Pinout from STM32 datasheet</p></div>
+<p>The pins I needed to locate were the Serial Wire Debug (SWD) pins. Specifically SWDIO and SWCLK:</p>
+<div id="attachment_6605" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6587"><div class="lb-album"><a href="#image-6587"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pins-300x100.png" alt="Locations of SWDIO/SWCLK pins" class="size-medium wp-image-6605"><span></span></a></div>              
+<a href="#imageclose-6587" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6587">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pins.png" alt="image-6587">
+                   </div></a><p class="wp-caption-text">Locations of SWDIO/SWCLK pins</p></div>
+<p>Marking up the previous diagrams, we have identified the pins we need:</p>
+<div id="attachment_6603" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6588"><div class="lb-album"><a href="#image-6588"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-markup-300x168.png" alt="Location of the pins we need" class="size-medium wp-image-6603"><span></span></a></div>              
+<a href="#imageclose-6588" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6588">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-markup.png" alt="image-6588">
+                   </div></a><p class="wp-caption-text">Location of the pins we need</p></div>
+<div id="attachment_6610" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6589"><div class="lb-album"><a href="#image-6589"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-Copy-Copy-300x227.jpg" alt="Pin locations marked" class="size-medium wp-image-6610"><span></span></a></div>              
+<a href="#imageclose-6589" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6589">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-Copy-Copy.jpg" alt="image-6589">
+                   </div></a><p class="wp-caption-text">Pin locations marked</p></div>
+<p>In case you&#8217;re wondering, if you connect your oscilloscope to the SWDIO and SWCLK pins while the device is powered up, you don&#8217;t see any signals. But this doesn&#8217;t mean the pins are disabled &#8211; as we&#8217;ll show below.</p>
+<h2>Soldering</h2>
+<p>After successfully soldering some enamelled copper wire to the pins, then almost ripping the pins off accidentally, I used some hot clue as strain relief. The other end of the wire was connected to some 0.1&#8243; headers so I could use dupont cables to connect to the ST-Link.</p>
+<div id="attachment_6612" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6590"><div class="lb-album"><a href="#image-6590"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/fine-300x115.jpg" alt="Connections soldered to pins" class="size-medium wp-image-6612"><span></span></a></div>              
+<a href="#imageclose-6590" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6590">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/fine.jpg" alt="image-6590">
+                   </div></a><p class="wp-caption-text">Connections soldered to pins</p></div>
+<p>I was pretty pleased with my soldering as it was the first time I&#8217;d soldered to pins with such fine pitch. I found that by tinning the wire very slightly, then resting the wire on the pin as I gently lowered the soldering iron (no solder on the iron), I was able to avoid spreading solder onto the nearby pins.</p>
+<h2>Connecting to ST-Link</h2>
+<p>Using dupont connectors we need to make 3 connections between the ST-Link device and the target board: SWDIO, SWCLK and Ground. The ST-Link clearly labels the various pins:</p>
+<div id="attachment_6622" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6591"><div class="lb-album"><a href="#image-6591"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st-300x189.jpg" alt="ST-Link and magstripe reader connected" class="size-medium wp-image-6622"><span></span></a></div>              
+<a href="#imageclose-6591" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6591">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st.jpg" alt="image-6591">
+                   </div></a><p class="wp-caption-text">ST-Link and magstripe reader connected</p></div>
+<p>Below the required connections have been made using the Black (SWDIO), Grey (SWCLK) and White (ground) connectors &#8211; though it&#8217;s hard to see and a bit confusing because of all the unrelated wires:</p>
+<div id="attachment_6623" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6592"><div class="lb-album"><a href="#image-6592"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st3-300x213.jpg" alt="Relevant connections highlighted between ST-Link and target" class="size-medium wp-image-6623"><span></span></a></div>              
+<a href="#imageclose-6592" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6592">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st3.jpg" alt="image-6592">
+                   </div></a><p class="wp-caption-text">Relevant connections highlighted between ST-Link and target</p></div>
+<p>Now we just need to load up the software and connect using the button shown below:</p>
+<div id="attachment_6620" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6593"><div class="lb-album"><a href="#image-6593"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/0connect-to-target-300x148.png" alt="Connect button" class="size-medium wp-image-6620"><span></span></a></div>              
+<a href="#imageclose-6593" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6593">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/0connect-to-target.png" alt="image-6593">
+                   </div></a><p class="wp-caption-text">Connect button</p></div>
+<p>Then we can read the firmware. I tweaked the start address and length to values that seemed to get me the whole firmware. The start address can be either 0&#215;00000000 or 0&#215;8000000:</p>
+<div id="attachment_6621" style="width: 283px" class="wp-caption alignnone"><a name="imageclose-6594"><div class="lb-album"><a href="#image-6594"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/1read-273x300.png" alt="Successful Firmware Read" class="size-medium wp-image-6621"><span></span></a></div>              
+<a href="#imageclose-6594" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6594">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/1read.png" alt="image-6594">
+                   </div></a><p class="wp-caption-text">Successful firmware read</p></div>
+<p>To save to a file (always good to have a backup), use the button shown:</p>
+<div id="attachment_6615" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6595"><div class="lb-album"><a href="#image-6595"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/2save-300x91.png" alt="Save Firmware To a .bin file" class="size-medium wp-image-6615"><span></span></a></div>              
+<a href="#imageclose-6595" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6595">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/2save.png" alt="image-6595">
+                   </div></a><p class="wp-caption-text">Save firmware to a .bin File</p></div>
+<p>Once the file has been saved, it can be written back using the &#8220;Program Verify&#8221; button:</p>
+<div id="attachment_6617" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6596"><div class="lb-album"><a href="#image-6596"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/4program-300x92.png" alt="Button to Program Target with a Local .bin File" class="size-medium wp-image-6617"><span></span></a></div>              
+<a href="#imageclose-6596" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6596">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/4program.png" alt="image-6596">
+                   </div></a><p class="wp-caption-text">Button to program target with a local .bin File</p></div>
+<div id="attachment_6618" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6597"><div class="lb-album"><a href="#image-6597"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/5program2-300x205.png" alt="Programming Options" class="size-medium wp-image-6618"><span></span></a></div>              
+<a href="#imageclose-6597" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6597">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/5program2.png" alt="image-6597">
+                   </div></a><p class="wp-caption-text">Programming options</p></div>
+<p>After writing, I reset the magstripe reader to check it still worked. It did.</p>
+<p>So, with very little effort we were able to read and write firmware to the device.</p>
+<h2>Conclusion</h2>
+<p>YouTube videos can be educational as well as fun. Sometimes, reading the firmware can be a lot easier than you&#8217;d ever expect. Checking if pins are active using only an oscilloscope wasn&#8217;t appropriate in this instance. We actually needed to try communicating with the device.</p>
+<h2>Where next?</h2>
+<p>If I was minded to create something rather than to take things apart all the time, I&#8217;d probably connect the STM32 to my Arduino software and see if I could write a sketch to read the input pins that connect to the magnetic read heads (via the op amps). Then I&#8217;d figure out to do HID emulation (as the original firmware did) so I could read arbitrary magstripes rather than just payment cards.</p>
+<p>I got as far as tracing out the 3 input pins using the continuity testing feature on my multimeter.</p>
+<p>I was also interested to know if I could have figured out the input pins from looking at the firmware. I loaded up the firmware in Hopper &#8211; which was surprisingly easy. But haven&#8217;t yet understood it to the extent where I could figure out input pins used. Apparently the assembler code to read of each pin is pretty distinctive, so this certainly seems possible to search for &#8211; once you&#8217;ve understood the datasheet enough to know what to search for exactly. Checkout 4m30s onwards in this <a title="LiveOverflow YouTube video" href="https://www.youtube.com/watch?v=hyoPAOTrUMc">LiveOverflow YouTube video</a>.</p>
+<p>It might be possible to write some nefarious firmware that seems to operate as normal, but secretly logs card numbers to the internal flash. Alternatively, maybe it just waits until midnight before it plays a load of malicious keystrokes to the host computer. Or maybe it only plays malicious keystrokes out when an attacker&#8217;s creditcard is swiped.</p>
+<p>You might want to check out the <a title="stm32duino / Blue Pill" href="http://wiki.stm32duino.com/index.php?title=Blue_Pill">stm32duino / Blue Pill</a>, which uses the same family of microprocessors and the <a title="Pill Duck" href="https://github.com/satoshinm/pill_duck">Pill Duck</a> project which is essentially a <a title="USB Rubber Ducky" href="https://hakshop.com/products/usb-rubber-ducky-deluxe">USB Rubber Ducky</a> type device that uses the Blue Pill hardware. Take care when Googling for blue pills, though.</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-yWaOoYQOa8ThUN1" class="g-recaptcha-explicit-id"><div id="g-recaptcha-yWaOoYQOa8ThUN1"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.085 seconds. -->
+</div>
+</body>
+</html>
+

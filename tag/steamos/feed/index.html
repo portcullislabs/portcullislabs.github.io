@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; SteamOS</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/steamos/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Evaluating SteamOS&#8217;s security posture (a first look)</title>
+		<link>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/</link>
+		<comments>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/#comments</comments>
+		<pubDate>Mon, 16 Dec 2013 08:47:54 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[SteamOS]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2620</guid>
+		<description><![CDATA[<p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the beta tree of [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the <a href="http://repo.steampowered.com/steamos/dists/alchemist_beta/" title="beta tree of SteamOS">beta tree of SteamOS</a>, a new, &#8220;open&#8221; games platform from the developers at Valve.<span id="more-2620"></span></p>
+<p>Whilst we did contact them to ask about getting a physical system to look at, they weren&#8217;t forthcoming. Instead, I spent Friday night impatiently clicking refresh, waiting the release of their packages so that I could build a virtual machine and take it for a spin. It should therefore be noted that the system I evaluated is not an official release. Notably, the official image only supports EFI based hardware with an Nvidia graphics card. Since I opted to perform the install under VMware, certain hacks were needed to be performed to get it to function. Notably, I needed to bootstrap the install from an existing Debian system.</p>
+<p>To explain how I performed my build, I took a base install of Debian wheezy, updated the sources.list file to point at Valve&#8217;s SteamOS repository and performed a dist-upgrade. I then installed all remaining packages available within the USB install image and ran the supplied post_install.sh script. Finally, I sanity checked and removed any packages not in the <a href="http://repo.steampowered.com/steamos/conf/packagelist.txt" title="package list">package list</a>.</p>
+<p>Having installed SteamOS, I decided to examine what packages were installed and whether any had known vulnerabilities. In the long run, Valve are going to have to deal with a constantly shifting target as new vulnerabilities are announced. Whilst they may well benefit from the work done by the Debian security team, this isn&#8217;t assured given Valve&#8217;s decision to rebuild all the packages. Having said this, it appears that Valve have, for now at least, published packages covering all known security updates that have been published by the Debian security team. Whilst we didn&#8217;t perform an exhaustive search, it appears that the last relevant security update that had been applied at the point where this evaluation was performed was <a title="DSA-2788" href="http://www.debian.org/security/2013/dsa-2788">DSA-2788</a>. Readers should note however that it is unlikely that any non-Debian security team supported patches will have been applied. Packages of note, included:</p>
+<ul>
+<li>apache-2.2-bin &#8211; appears unused at this time</li>
+<li>bluez</li>
+<li>iceweasel</li>
+<li>netcat-traditional</li>
+<li>openssh-server</li>
+<li>openssh-client</li>
+<li>steam-launcher</li>
+<li>steam-autoupdate</li>
+<li>steamos-compositor</li>
+<li>valve-archive-keyring</li>
+<li>valve-bugreporter</li>
+<li>Firmware for various proprietary technology including NVidia and ATI graphics cards and Broadcom&#8217;s wireless NICs</li>
+</ul>
+<p>As mentioned above, the Apache web server does not appear to be functional at this moment in time although it does pull in mod_dnssd which might give a clue as to its ultimate purpose. There are a limited number of services which do listen on all network interfaces, namely sshd, dhclient, avahi-daemon and ntpd. In fact, it&#8217;s probably just as well that the number of services is limited for now, since there is no host-based firewall configured.</p>
+<p>In order to understand the threat models exposed by Valve&#8217;s design decisions, it is necessary to examine the contexts under which code can be executed. In addition to the traditional accounts found on UNIX like systems which are provided for the purposes of executing daemons and other system functions, the following accounts are present:</p>
+<table>
+<tr>
+<td>Username</td>
+<td>Password</td>
+<td>Access</td>
+<td>Privileges</td>
+</tr>
+<tr>
+<td>root</td>
+<td>n/a</td>
+<td>No direct access</td>
+<td></td>
+</tr>
+<tr>
+<td>steam</td>
+<td>steam</td>
+<td>SSH, Steam desktop</td>
+<td>groups: desktop, audio, dip, video, polkit, plugdev, netdev, bluetooth; polkit: access NetworkManager based on netdev membership; sudo: run bugreport.sh as steam, run steamos-update as root</td>
+</tr>
+<tr>
+<td>desktop</td>
+<td></td>
+<td>SSH (once a password has been set), GNOME desktop</td>
+<td>sudo: run bugreport.sh as steam, run steamos-update as root, become root (once a password has been set)</td>
+</tr>
+</table>
+<p>As you can see, other than preventing direct access to the UNIX account, SteamOS takes a naive approach. All user access be performed as either the steam or desktop users, neither of which have strong passwords. This contrasts starkly with operating systems such as Android on which each and every user application executes within a different context. Whilst applications could still be executed within with isolated contexts through the use of a non-discretionary access control model such as that provided SELinux, as we will see later, Valve have not as yet enabled this. What this means in practice, is that if a user executes malicious code, either from Steam itself or by way of side loading, then access to the system as a whole is relatively uncontrolled. Given the expected user base, SteamOS may prove an attractive target for attackers in due course. In particular, you should note the steam account has a weak, predictable password set and is therefore available over the network via SSH with minimal effort.</p>
+<p>In terms of privileged access, as you can see, there are two scripts which the desktop user can execute. bugreport.sh which can be run via sudo as the steam user and steamos-update which can be run as any user including root. In my experience such scripts are an obvious point of weakness in UNIX like systems, indeed, when testing our clients, it is rare that we do not find scripts such as these which cannot be exploited to escalate ones privileges. They therefore require further analysis.</p>
+<p>Firstly, I looked at bugreport.sh. This script takes a screenshot and then calls valve-bugreport. The latter is a Python GUI application which allows users to report their issue to Valve via a web exposed API. The script allows users to send Valve a fair bit of additional information about the bug including the software that has been installed, the contents of /tmp/dumps and ~/.steam/logs. The API is secured using SSL and basic authentication however it appears that the users Steam credentials are cached in ~/.valve-bugreporter.cfg:</p>
+<pre class="brush: python; gutter: false; title: ; notranslate">
+g_configFile = os.path.expanduser('~/.valve-bugreporter.cfg')
+g_config = ConfigParser.SafeConfigParser({'username':'', 'password':'', 'steamid':''})
+</pre>
+<p>Note: It appears a <a href="https://github.com/ValveSoftware/SteamOS/issues/19" title="bug">bug</a> has already been opened for this &#8220;feature&#8221;.</p>
+<p>Screenshot filenames are constructed using mktemp which is of course (in principal*) vulnerable to <a href="http://cwe.mitre.org/data/definitions/363.html" title="TOCTOU">TOCTOU</a> attacks.</p>
+<p>Given the hassle Canonical have had with their privacy invading tweaks, I wonder whether similar concerns will be raised around SteamOS, however it is worth bearing in mind that this data is only sent when you file a bug report and it is sent over SSL to Atlassian. SSL Labs gives Atlassian a <a href="https://www.ssllabs.com/ssltest/analyze.html?d=valvesoftware.atlassian.net" title="B">B</a> for their current configuration.</p>
+<p>Secondly, I looked at steamos-update which is used to update SteamOS. This script makes use of the standard Debian update tools to update the main OS. Again, we see a potential* TOCTOU attack in the creation of /tmp/steamos-update.pid, which is of concern because steamos-update can be run as the root user, but as with the screenshots, the attack is thwarted due to the mitigations present in the Linux kernel. The script also calls steam which is Valve&#8217;s Steam client application. There are more TOCTOU of use violations with steam itself, but since they&#8217;re not exploitable we&#8217;ll leave them be except to point out that /tmp/dumps probably doesn&#8217;t want to be created &#8220;777&#8243;.</p>
+<p>Speaking of kernel level exploit mitigations, I observed that the following settings are set:</p>
+<table>
+<tr>
+<td>Kernel mitigation</td>
+<td>Value</td>
+<td>Implication</td>
+</tr>
+<tr>
+<td>kernel.kptr_restrict</td>
+<td>0</td>
+<td>Kernel symbols can be trivially resolved</td>
+</tr>
+<tr>
+<td>kernel.randomize_va_space</td>
+<td>2</td>
+<td>ASLR applied to all parts of process memory layout</td>
+</tr>
+<tr>
+<td>vm.mmap_min_addr</td>
+<td>65536</td>
+<td>Prevents processes mapping near-to-NULL pages as part of an in-kernel privilege escalation</td>
+</tr>
+<tr>
+<td>SELinux</td>
+<td>not configured</td>
+<td>no process context isolation</td>
+</tr>
+<tr>
+<td>kernel.yama.ptrace_scope</td>
+<td>0</td>
+<td>Process owners can debug processes</td>
+</tr>
+<tr>
+<td>fs.suid_dumpable</td>
+<td>0</td>
+<td>SetUID processes are not dumpable</td>
+</tr>
+<tr>
+<td>fs.protected_symlinks</td>
+<td>1</td>
+<td>Symlink TOCTOU attacks (such as *) limited as described in <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=800179c9b8a1e796e441674776d11cd4c05d61d7" title="commit">commit</a></td>
+</tr>
+<tr>
+<td>fs.protected_hardlinks</td>
+<td>1</td>
+<td>Hardlink TOCTOU attacks limited as described in <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=800179c9b8a1e796e441674776d11cd4c05d61d7" title="commit">commit</a></td>
+</tr>
+<tr>
+<td>kernel.modules_disabled</td>
+<td>0</td>
+<td>Kernel modules can be loaded</td>
+</tr>
+<tr>
+<td>kernel.modprobe</td>
+<td>/sbin/modprobe</td>
+<td>Kernel module loading helper enabled</td>
+</tr>
+<tr>
+<td>kernel.poweroff_cmd</td>
+<td>/sbin/poweroff</td>
+<td>Poweroff helper enabled</td>
+</tr>
+<tr>
+<td>net.*.conf.*.accept_redirects</td>
+<td>1</td>
+<td>ICMP redirects are accepted</td>
+</tr>
+<tr>
+<td>net.*.conf.*.secure_redirects</td>
+<td>1</td>
+<td>ICMP redirects should only come from the default nexthop router</td>
+</tr>
+<tr>
+<td>net.ipv4.tcp_syncookies</td>
+<td>1</td>
+<td>TCP syncookies are enabled</td>
+</tr>
+</table>
+<p>Examining the 72 userland processes running at the time these stats were collected, there is practically no use of any compile time mitigations:</p>
+<table>
+<tr>
+<td>Kernel mitigation</td>
+<td>In use in</td>
+<td>Implication</td>
+</tr>
+<tr>
+<td>PIE</td>
+<td>14</td>
+<td>Only programs built as Position Independent Executables (PIE) can take advantage of the exec ASLR which protects against return-to-* during memory corruption attacks</td>
+</tr>
+<tr>
+<td>RELRO</td>
+<td>13</td>
+<td>Only programs built with RELRO can benefit from their relocation table being marked as read-only which protects against GOT-overwrites</td>
+</tr>
+<tr>
+<td>Stack Smashing Protection</td>
+<td>17</td>
+<td>Only programs compiled with Stack Smashing Protection utilise a randomized stack canary that protects against stack overflows</td>
+</tr>
+</table>
+<p>As an aside, the permissions on /usr/local are still as I described in my &#8220;Breaking the linker: Exploiting the linker paper&#8221;. Whilst SteamOS doesn&#8217;t utilise the staff group, which limits this as an avenue for attack, it&#8217;s interesting to see that Valve didn&#8217;t make any attempt to audit the permissions they inherited from Debian.</p>
+<p>This concludes our evaluation of SteamOS&#8217;s security posture. SteamOS has not been significantly hardened by Valve. With respect to both kernel and userland hardening, it largely appears unchanged from stock Debian, something I believe is a missed opportunity. Whilst Debian needs to be all things to all people (it runs on 11 different hardware architectures for a start), this is clearly not the case for Valve and it would therefore have been nice to see them improve the security boundaries of the offering. In a future article, I hope to examine the Steam client application and hopefully shed some light on Valve&#8217;s Security Development Lifecycle.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

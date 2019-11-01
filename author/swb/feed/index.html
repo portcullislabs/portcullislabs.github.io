@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; SWB</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/swb/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>URL shorteners: What link are you really clicking?</title>
+		<link>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/</link>
+		<comments>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/#comments</comments>
+		<pubDate>Wed, 08 Jan 2014 06:40:41 +0000</pubDate>
+		<dc:creator><![CDATA[SWB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2705</guid>
+		<description><![CDATA[<p>URL shorteners are a main-stay of Internet use these days, helping users to cut down unsightly long URLs to concise links that can be easily shared. Social media has helped to fuel the popularity of the various services available, but how do you know if you can trust the link you&#8217;re clicking? I&#8217;ve always been [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/">URL shorteners: What link are you really clicking?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>URL shorteners are a main-stay of Internet use these days, helping users to cut down unsightly long URLs to concise links that can be easily shared. Social media has helped to fuel the popularity of the various services available, but how do you know if you can trust the link you&#8217;re clicking? I&#8217;ve always been wary of shortened links and decided I&#8217;d take a look at how you can check what it is you&#8217;re actually clicking on.<span id="more-2705"></span></p>
+<p>It&#8217;s worth noting that there are numerous browser extensions that will attempt to lengthen short URLs in-situ. While this is probably works well most of the time, it could be open to exploitation (if the extension is coded badly) or subversion. One piece of functionality I&#8217;ve seen in such an extension was to replace the link with the meta data title for the page. This doesn&#8217;t really help if the link leads you to a convincing looking phishing site, complete with fake meta-data.</p>
+<p>I&#8217;ve picked out a sample of what seem to be the most popular shortening services. They are (in no particular order):</p>
+<ul>
+<li>bit.ly</li>
+<li>tinyurl.com</li>
+<li>goo.gl</li>
+<li>is.gd</li>
+<li>tiny.cc</li>
+<li>ow.ly</li>
+</ul>
+<p>I&#8217;ve come up with this list as a result of a quick search and those I&#8217;ve had previous experience with. There are a couple of notable exclusions from the list such as t.co and fb.me, the services run by Twitter and Facebook respectively. I&#8217;ve excluded these (as well as others) as they&#8217;re only used by themselves.</p>
+<p>Twitter&#8217;s shortener, t.co, is only accessible when using twitter it seems and doesn&#8217;t provide any kind of dedicated front-end to view information for a given link. It does however replace some of the text in-line and provides the original URL in the link title which you can see by hovering over the URL.<br />
+Facebook&#8217;s version seems a little&#8230; undocumented. I couldn&#8217;t find a great deal of information on it other than it seems to be used largely for mobile users and (from what little I checked) is only used for linking back to Facebook. One feature I did find however was that it can be used to link to any Facebook page given its alias. For example, <a title="http://fb.me/PortcullisCSL" href="http://fb.me/PortcullisCSL">fb.me/PortcullisCSL</a>.</p>
+<p>I&#8217;ve also only chosen services which are free to use and for obvious reasons I&#8217;m excluding any that you can create using your own domain (Coke has one for example &#8211; cokeurl.com).</p>
+<p>For this post, we&#8217;re going to use https://labs.portcullis.co.uk as our long URL to put through the shorteners.</p>
+<p>Here&#8217;s a list of how our shortened links come out and the associated ways of previewing the actual destination:</p>
+<table>
+<tbody>
+<tr>
+<td>Service</td>
+<td>Short link</td>
+<td>Preview link</td>
+</tr>
+<tr>
+<td>bit.ly</td>
+<td><a title="http://bit.ly/2cx5kA" href="http://bit.ly/2cx5kA">http://bit.ly/2cx5kA</a></td>
+<td><a title="http://bit.ly/2cx5kA+" href="http://bit.ly/2cx5kA+">http://bit.ly/2cx5kA+</a></td>
+</tr>
+<tr>
+<td>tinyurl.com</td>
+<td><a title="http://tinyurl.com/nt79ln4" href="http://tinyurl.com/nt79ln4">http://tinyurl.com/nt79ln4</a></td>
+<td><a title="http://preview.tinyurl.com/nt79ln4" href="http://preview.tinyurl.com/nt79ln4">http://preview.tinyurl.com/nt79ln4</a></td>
+</tr>
+<tr>
+<td>goo.gl</td>
+<td><a title="http://goo.gl/cgc0Wb" href="http://goo.gl/cgc0Wb">http://goo.gl/cgc0Wb</a></td>
+<td><a title="http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time" href="http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time">http://goo.gl/#analytics/goo.gl/cgc0Wb/all_time</a></td>
+</tr>
+<tr>
+<td>is.gd</td>
+<td><a title="http://is.gd/ObGfiX" href="http://is.gd/ObGfiX">http://is.gd/ObGfiX</a></td>
+<td><a title="http://is.gd/ObGfiX-" href="http://is.gd/ObGfiX-">http://is.gd/ObGfiX-</a></td>
+</tr>
+<tr>
+<td>tiny.cc</td>
+<td><a title="http://tiny.cc/43z67w" href="http://tiny.cc/43z67w">http://tiny.cc/43z67w</a></td>
+<td><a title="http://tiny.cc/43z67w~" href="http://tiny.cc/43z67w~">http://tiny.cc/43z67w~</a></td>
+</tr>
+<tr>
+<td>ow.ly</td>
+<td><a title="http://ow.ly/rObWZ" href="http://ow.ly/rObWZ">http://ow.ly/rObWZ</a></td>
+<td>Couldn&#8217;t find a way to expand the URL.</td>
+</tr>
+</tbody>
+</table>
+<p>In summary; bit.ly, is.gd and tiny.cc all have nice simple ways of taking a look, you just have to add a character onto the end (providing you pick the right one). Google&#8217;s service seems like the most complicated requiring the knowledge of the correct runes, and I couldn&#8217;t find a way to preview ow.ly.</p>
+<p>When writing this post, I was pointed at a bit of quick Perl that <a title="Tim" href="/author/tmb/">Tim</a> wrote a little while ago to assist in a test which will follow a short link and print out each redirect it encounters along the way. This is particularly useful if your chosen link leads you to yet another URL shortener service.</p>
+<pre class="brush: perl; title: ; notranslate">
+#!/usr/bin/perl
+
+use strict;
+use LWP;
+
+my $url;
+my $redirectflag;
+my $httphandle;
+my $requesthandle;
+my $responsehandle;
+
+sub usage {
+        die &quot;usage: &quot; . basename($0) . &quot; &quot;;
+}
+
+if (@ARGV != 1) {
+        usage();
+}
+$url = shift;
+$httphandle = LWP::UserAgent-&gt;new(max_redirect =&gt; 0);
+$httphandle-&gt;agent(&quot;Mozilla/5.0 (compatible; resolveurl.pl 0.1)&quot;);
+$redirectflag = 1;
+while ($redirectflag == 1) {
+        $redirectflag = 0;
+        $requesthandle = HTTP::Request-&gt;new(HEAD =&gt; $url);
+        $responsehandle = $httphandle-&gt;request($requesthandle);
+        if ($responsehandle-&gt;is_redirect) {
+                $url = $responsehandle-&gt;header(&quot;location&quot;);
+                print $url . &quot;\n&quot;;
+                $redirectflag = 1;
+        }
+}
+</pre>
+<p>Lastly, I&#8217;ve decided to make a quick mention of adf.ly which was pointed out to me by a colleague. This is a service for presenting ads before sending users onto the end URL. From a quick look, there didn&#8217;t appear any way in which to preview the URL you were being sent to. Given that following one of their links will present you with a third party ad could have its own implications. But that&#8217;s for another post.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/">URL shorteners: What link are you really clicking?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/url-shorteners-what-link-are-you-really-clicking/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

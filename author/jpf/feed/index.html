@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; JPF</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/jpf/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>rmiInfo</title>
+		<link>https://labs.portcullis.co.uk/tools/rmiinfo/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rmiinfo/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 18:29:41 +0000</pubDate>
+		<dc:creator><![CDATA[JPF]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=191</guid>
+		<description><![CDATA[<p>A tool for extracting information from Java Remote Method Invocation (RMI) services. rmiInfo is a tool to help extract information from Java Remote Method Invocation (RMI) services, which can then be used to find possible security vulnerabilities. The main aim being to identify the location of the RMI stub. If one is able to find [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rmiinfo/">rmiInfo</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>A tool for extracting information from Java Remote Method Invocation (RMI) services.<span id="more-191"></span></p>
+<p>rmiInfo is a tool to help extract information from Java Remote Method Invocation (RMI) services, which can then be used to find possible security vulnerabilities. The main aim being to identify the location of the RMI stub. If one is able to find the stub, then this is the first step in being able to construct java code to talk directly to the RMI service.</p>
+<p>rmiInfo is able to not only extract information from RMI registries but also RMI services as well.</p>
+<h2>Key features</h2>
+<p>From a registry it is able to extract the following information:</p>
+<ul>
+<li>Name of attached services.</li>
+<li>Location of the service (IP address and port number).</li>
+<li>Name of the stub interface.</li>
+</ul>
+<p>From an RMI service it is able to extract the following information:</p>
+<ul>
+<li>Location of remotely deployed code.</li>
+</ul>
+<p>Thus if you combine the information for the service and the registry, you are able to determine the location and name of remotely deployed stubs.</p>
+<p>Other features of rmiInfo:</p>
+<ul>
+<li>If it finds an RMI registry, it will recursively scan all the services identified.</li>
+<li>Platform independent (Java based).</li>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3.zip" target="_blank" title="Download RmiInfo"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RmiInfo" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3.zip" title="Download rmiInfo-0.3.zip" target="_blank" id="wpfb-file-link-1">rmiInfo-0.3.zip</a>
+    
+    <br />
+    April 26, 2013<br />
+    Version: 0.3<br />
+  </div>
+  <div class="info">
+    4.7 KiB<br />
+    MD5 hash: 62c44ff67ee6ec6e414cc0fc13d1e2bd <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3.tar.bz2" target="_blank" title="Download RmiInfo-0.3 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RmiInfo-0.3 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3.tar.bz2" title="Download rmiInfo-0.3.tar.bz2" target="_blank" id="wpfb-file-link-2">rmiInfo-0.3.tar.bz2</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    5.0 KiB<br />
+    MD5 hash: 3cec7060f4c61ee0c40fec9e85ad8550 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3-src.tar.bz2" target="_blank" title="Download RmiInfo-0.3-src Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RmiInfo-0.3-src Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/rmiInfo-0.3-src.tar.bz2" title="Download rmiInfo-0.3-src.tar.bz2" target="_blank" id="wpfb-file-link-3">rmiInfo-0.3-src.tar.bz2</a>
+    
+    <br />
+    April 26, 2013<br />
+    
+  </div>
+  <div class="info">
+    3.2 KiB<br />
+    MD5 hash: 85e2d795570474c1d7fbc90e3cdaf824 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 26, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rmiinfo/">rmiInfo</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rmiinfo/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

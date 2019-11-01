@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; IKE</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/ike/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>iker</title>
+		<link>https://labs.portcullis.co.uk/tools/iker/</link>
+		<comments>https://labs.portcullis.co.uk/tools/iker/#comments</comments>
+		<pubDate>Mon, 27 Jan 2014 12:12:52 +0000</pubDate>
+		<dc:creator><![CDATA[JGO]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[IKE]]></category>
+		<category><![CDATA[scanner]]></category>
+		<category><![CDATA[VPN]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3177</guid>
+		<description><![CDATA[<p>iker is a Python tool to analyse the security of the key exchange phase in IPsec based VPNs. Key features Discover VPN services running Fingerprint based on vendor IDs (VID) Guess implementation basing on responses analysis (backoff) Enumerate supported transforms in Main Mode Check for Aggressive Mode Enumerate supported transforms in this Aggressive Mode Enumerate [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/iker/">iker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>iker is a Python tool to analyse the security of the key exchange phase in IPsec based VPNs.<span id="more-3177"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Discover VPN services running</li>
+<li>Fingerprint based on vendor IDs (VID)</li>
+<li>Guess implementation basing on responses analysis (backoff)</li>
+<li>Enumerate supported transforms in Main Mode</li>
+<li>Check for Aggressive Mode</li>
+<li>Enumerate supported transforms in this Aggressive Mode</li>
+<li>Enumerate valid client/group IDs in Aggressive Mode</li>
+<li>Allow for rate limiting</li>
+<li>Analyse results to list actual issues</li>
+<li>Export results in 2 different formats</li>
+<li>Load IPs from command line or text files</li>
+<li>Determine support for IKEv2</li>
+</ul>
+<h2>Overview</h2>
+<p>iker scans and analyses the Internet Key Exchange (IKE) protocol, identifying common misconfigurations in VPN concentrators. It is based on ike-scan.</p>
+<p>It discovers and try to fingerprint the VPNs in a first step. Later, it tries to enumerates valid transforms in Main Mode and in Aggressive Mode if it is supported. Finally, it will try to enumerate group IDs if a dictionary was provided.</p>
+<p>iker implements two ways of enumerating valid group IDs:</p>
+<ul>
+<li><a title="Cisco IPSec VPN Implementation Group Name Enumeration Vulnerability" href="http://www.cisco.com/en/US/products/csr/cisco-sr-20101124-vpn-grpname.html" target="_blank">Cisco IPSec VPN Implementation Group Name Enumeration Vulnerability</a></li>
+<li>Responses analysis</li>
+</ul>
+<p>Once all the tests have been launched, iker analyses the results and generates a report with the issues found.</p>
+<h2>Requirements</h2>
+<ul>
+<li><a title="ike-scan" href="http://www.nta-monitor.com/tools-resources/security-tools/ike-scan" target="_blank">ike-scan</a></li>
+<li><a title="Python" href="http://www.python.org/" target="_blank">Python</a></li>
+</ul>
+<p>In addition, the following Python packages are used (they usually are included with normal Python installations):</p>
+<ul>
+<li>subprocess</li>
+<li>argparse</li>
+</ul>
+<h2>Installation</h2>
+<p>Download iker from the link below and uncompress it.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py -h
+
+iker v. 1.0
+
+The ike-scan based script which checks for security flaws in IPsec-based VPNs.
+
+                               by Julio Gomez ( jgo@portcullis-security.com )
+
+usage: iker.py [-h] [-v] [-d DELAY] [-i INPUT] [-o OUTPUT] [-x XML]
+               [--encalgs ENCALGS] [--hashalgs HASHALGS]
+               [--authmethods AUTHMETHODS] [--dhgroups DHGROUPS] [--fullalgs]
+               [--ikepath IKEPATH] [-c CLIENTIDS]
+               [target]
+
+positional arguments:
+  target                The IP address or the network (CIDR notation) to scan.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Be verbose.
+  -d DELAY, --delay DELAY
+                        Delay between requests (in milliseconds). Default: 0
+                        (No delay).
+  -i INPUT, --input INPUT
+                        An input file with an IP address/network per line.
+  -o OUTPUT, --output OUTPUT
+                        An output file to store the results.
+  -x XML, --xml XML     An output file to store the results in XML format.
+                        Default: output.xml
+  --encalgs ENCALGS     The encryption algorithms to check. Default: DES,
+                        3DES, AES/128, AES/192 and AES/256. Example:
+                        --encalgs=&quot;1 5 7/128 7/192 7/256&quot;
+  --hashalgs HASHALGS   The hash algorithms to check. Default: MD5 and SHA1.
+                        Example: --hashalgs=&quot;1 2&quot;
+  --authmethods AUTHMETHODS
+                        The authorization methods to check. Default: Pre-
+                        Shared Key, RSA Signatures, Hybrid Mode and XAUTH.
+                        Example: --authmethods=&quot;1 3 64221 65001&quot;
+  --dhgroups DHGROUPS   The Diffie-Hellman groups to check. Default: MODP 768,
+                        MODP 1024 and MODP 1536. Example: --dhgroups=&quot;1 2 5&quot;
+  --fullalgs            Equivalent to: --encalgs=&quot;1 2 3 4 5 6 7/128 7/192
+                        7/256 8&quot; --hashalgs=&quot;1 2 3 4 5 6&quot; --authmethods=&quot;1 2 3
+                        4 5 6 7 8 64221 64222 64223 64224 65001 65002 65003
+                        65004 65005 65006 65007 65008 65009 65010&quot;
+                        --dhgroups=&quot;1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+                        18&quot;
+  --ikepath IKEPATH     The FULL ike-scan path if it is not in the PATH
+                        variable and/or the name changed.
+  -c CLIENTIDS, --clientids CLIENTIDS
+                        A file (dictionary) with a client ID per line to
+                        enumerate valid client IDs in Aggressive Mode.
+                        Default: unset - This test is not launched by default.
+</pre>
+<h2>Examples</h2>
+<p>Loading the hosts/ranges to scan from a text file and saving the results into a text and an XML file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py -i ips.txt -o output.txt -x output.xml -v
+
+iker v. 1.0
+
+The ike-scan based script which checks for security flaws in IPsec-based VPNs.
+
+                               by Julio Gomez ( jgo@portcullis-security.com )
+
+Starting iker (https://labs.portcullis.co.uk/tools/) at Mon, 20 Jan 2014 14:34:15 +0000
+[*] Discovering IKE services, please wait...
+10.0.0.2 Notify message 14 (NO-PROPOSAL-CHOSEN)
+ HDR=(CKY-R=0000000000000000, msgid=f904f872)
+
+[*] Trying to fingerprint the devices. This proccess is going to take a while (1-5 minutes per IP). Be patient...
+[*] The device 10.0.0.2 could not been fingerprinted because no transform is known.
+
+[*] Looking for accepted transforms at 10.0.0.2
+[*] Transform found: Enc=3DES Hash=MD5 Auth=RSA_Sig Group=2:modp1024 LifeType=Seconds LifeDuration(4)=0x00007080
+[*] Vendor ID identified for IP 10.0.0.2 with transform Enc=3DES Hash=MD5 Auth=RSA_Sig Group=2:modp1024 LifeType=Seconds LifeDuration(4)=0x00007080: Firewall-1 NGX
+
+[*] Trying to fingerprint the devices (again). This proccess is going to take a while (1-5 minutes per IP). Be patient...
+[*] Implementation guessed for IP 10.0.0.2: Firewall-1 4.1/NG/NGX
+...
+</pre>
+<p>Specifying the encryption algorithms to check for supported transforms:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py --encalgs &quot;1 2 3 4 5 6 7/128 7/192 7/256 8&quot; 10.0.2.2
+[...]
+</pre>
+<p>Specifying that all the encryption algorithms, the hashing algorithms, the authentication methods and the DH groups must be checked:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo python iker.py --fullalgs 10.0.2.2
+[...]
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/iker_v1.1.tar" target="_blank" title="Download Iker"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Iker" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/iker_v1.1.tar" title="Download iker_v1.1.tar" target="_blank" id="wpfb-file-link-1">iker_v1.1.tar</a>
+    
+    <br />
+    July 17, 2014<br />
+    Version: 1.1<br />
+  </div>
+  <div class="info">
+    40.0 KiB<br />
+    MD5 hash: c255b6beffcf1e0a2026a9fd3faede8a <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>July 17, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/iker/">iker</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/iker/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

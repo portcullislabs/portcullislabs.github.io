@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<title>SSL &quot;Man-In-The-Middle&quot; attacks on RDP | Portcullis Labs</title>
+<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+
+
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/" />
+<meta property='og:locale' content='en_US'/>
+<meta property='og:type' content='article'/>
+<meta property='og:title' content='SSL &quot;Man-In-The-Middle&quot; attacks on RDP - Portcullis Labs'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/'/>
+<meta property='og:site_name' content='Portcullis Labs'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred-255x300.jpg'/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<![endif]-->
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+
+ 
+
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
+                    (function() {
+                      var first_load_interval_id = setInterval(function () {
+                        if (typeof window.addthis !== 'undefined') {
+                          window.clearInterval(first_load_interval_id);
+                          if (typeof window.addthis_layers !== 'undefined' && Object.getOwnPropertyNames(window.addthis_layers).length > 0) {
+                            window.addthis.layers(window.addthis_layers);
+                          }
+                          if (Array.isArray(window.addthis_layers_tools)) {
+                            for (i = 0; i < window.addthis_layers_tools.length; i++) {
+                              window.addthis.layers(window.addthis_layers_tools[i]);
+                            }
+                          }
+                        }
+                     },1000)
+                    }());
+                </script> <script data-cfasync="false" type="text/javascript"src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50cef03053621092" async="async"></script><meta name="norton-safeweb-site-verification" content="t4bvmzb47z4-fa69d4guwu4ud9-4fjyp-p5zu1zngnplt83xrfxxg18yea8ev95lh9h4vlzkclbcvyu37rz5etuoczh7z3827pjv3s73uannz0xkwzfw2iiu4ol7o83f" />
+</head>
+<body class="single single-post postid-1510 single-format-standard">
+
+<div id="portcullis-main">
+
+
+<!-- Cisco -->
+<div id="cisco">
+    <div id="cisco-container" class="clearfix">
+        <div class="left">
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+        </div>
+        <div class="right">
+            <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
+        </div>
+    </div>
+</div>
+<!-- /#cisco -->
+
+<header class="clearfix portcullis-header clickable">
+
+
+    <div class="portcullis-shapes">
+		<div class="portcullis-headline" data-left="14.6%">
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+</div>
+		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
+<div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
+
+<div class="portcullis-textblock portcullis-object1741532833" data-left="92.34%">
+    
+</div><div class="portcullis-textblock portcullis-object1269462037" data-left="97.93%">
+    
+</div>
+            </div>
+
+<nav class="portcullis-nav clearfix">
+    
+<ul class="portcullis-hmenu">
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	</li>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	</li>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	</li>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	</li>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	</li>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	</li>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	</li>
+</ul>
+ 
+    </nav>
+
+                    
+</header>
+
+<div class="portcullis-sheet clearfix">
+            <div class="portcullis-layout-wrapper clearfix">
+                <div class="portcullis-content-layout">
+                    <div class="portcullis-content-layout-row">
+                        <div class="portcullis-layout-cell portcullis-content clearfix">
+							<article id="post-1510"  class="portcullis-post portcullis-article  post-1510 post type-post status-publish format-standard hentry category-blog tag-mitm tag-rdp tag-ssl">
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">SSL &#8220;Man-In-The-Middle&#8221; attacks on RDP</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="09:30">04/03/2014</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/"></div><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><p>This post seeks to demonstrate why users learning to ignore those certificate warnings for SSL-based RDP connection could leave them open to &#8220;Man-In-The-Middle&#8221; attacks. The MiTM attack demonstrated displays keystrokes sent during an RDP session. We conclude with some advice on how to avoid being the victim of such an attack.<span id="more-1510"></span></p>
+<h2>Types of RDP connections</h2>
+<p>Before we start, let&#8217;s first clarify which of the various RDP connection types this post is about. There are 3 types of connection:</p>
+<ul>
+<li>RDP Security Layer</li>
+<li>SSL (TLS 1.0)</li>
+<li>CredSSP (SSL with NLA)</li>
+</ul>
+<p>It&#8217;s the middle one we&#8217;ll demonstrate an attack on in this post. On the Terminal Server, SSL is configured like this (with any NLA checkboxes unticked):</p>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a href="https://labs.portcullis.co.uk/?attachment_id=1492" rel="attachment wp-att-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="RDP configuration used" width="300" height="233" class="size-medium wp-image-1492" /></a><p class="wp-caption-text">RDP configuration used</p></div>
+<div id="attachment_1492" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1511"><div class="lb-album"><a href="#image-1511"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable-300x233.png" alt="2003-rdp-setting-not-vulnerable" class="size-medium wp-image-1492"><span></span></a></div>              
+<a href="#imageclose-1511" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1511">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-not-vulnerable.png" alt="image-1511">
+                   </div></a><p class="wp-caption-text">RDP configuration used</p></div>
+<p>Some connections may also be vulnerable if the server is set to &#8220;Negotiate&#8221; its Security Layer to &#8211; as that could result in SSL being used.</p>
+<h2>SSL certificate warning</h2>
+<p>If users are used to dismissing a warnings like this one each time they connect, then this post is relevant to them:</p>
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1512"><div class="lb-album"><a href="#image-1512"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<a href="#imageclose-1512" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1512">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1512">
+                   </div></a><p class="wp-caption-text">SSL warning that should not be routinely ignored</p></div>
+<h2>Attack overview</h2>
+<p>At a high level, the attack will proceed in a similar way to any SSL MiTM attack:</p>
+<ol>
+<li>Have the victim connect to a PoC tool (rdp-ssl-mitm.py) on our system instead of the RDP server they&#8217;re trying to reach</li>
+<li>Using the RDP protocol, our tool will negotiate the use of SSL</li>
+<li>At the point the connection is upgraded to SSL, our tool will negotiate an SSL connection with the RDP client using its own (untrusted) SSL certificate. This will give our tool access to data sent by the RDP client in cleartext</li>
+<li>Our tool also needs to create an SSL connection with the legitimate RDP server down which it will send data from the RDP client</li>
+</ol>
+<p>The only complication to this attack is that our tool has to talk the RDP protocol briefly before creating the required SSL connections.</p>
+<h3>1. Having the victim connect to us</h3>
+<p>In a real attack, we&#8217;d need to have the RDP client connect to our system instead of the target server. This could be achieved using ARP spoofing, DNS spoofing or some other method. Rather than cloud the demonstration with such details, we&#8217;ll assume this is step is possible and just type the IP address of the attacker system into the victim RDP client.</p>
+<p>On our attacker system (192.168.190.170), we start our PoC tool. We tell it forward connections to the legitimate RDP server 192.168.2.96:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389
+[+] Listening for connections on 0.0.0.0:3389
+</pre>
+<p>And we simply enter the IP address of the attacker system into the RDP client (the client connects from 192.168.190.1):</p>
+<div id="attachment_1495" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1513"><div class="lb-album"><a href="#image-1513"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" class="size-medium wp-image-1495"><span></span></a></div>              
+<a href="#imageclose-1513" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1513">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1513">
+                   </div></a><p class="wp-caption-text">We enter the attacker IP address to avoid the complexity of ARP spoofing</p></div>
+<h3>2. Talk RDP to the client to negotiate the use of SSL</h3>
+<p>The negotiation of SSL is quite short within the RDP protocol:</p>
+<p>Message #1: Client > MiTM > Server</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate" title="">
+03 00 00 13 0e e0 00 00 00 00 00 01 00 08 00 *03*
+00 00 00
+</pre>
+<p>This message is fairly static and our tool just passes it through to the server unaltered. The *03* means that the client supports RDP Security Layer, SSL and CredSSP.</p>
+<p>Message #2: Server > MiTM > Client</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate" title="">
+03 00 00 13 0e d0 00 00 12 34 00 02 00 08 00 *01*
+00 00 00
+</pre>
+<p>In the next message the server chooses the protocol to use. The *01* in this case means the the server has chosen SSL (not CredSSP which would be *02*). Again, we pass this message back to the client unaltered.</p>
+<p>Note that if the server were to select CredSSP (*02*), then the demonstration would fail. We&#8217;re attacking SSL, not CredSSP.</p>
+<h3>3. Create SSL connection with RDP client</h3>
+<p>Message #3: Client > MiTM</p>
+<p>The 3rd message is the start of an SSL connection. Here is the SSL Client Hello message beginning *16 03 01*&#8230; (03 01 being the version of SSL used: SSL 3.1 AKA TLS 1.0).</p>
+<pre class="brush: plain; gutter: false; highlight: [1]; title: ; notranslate" title="">
+*16 03 01* 00 5a 01 00 00 56 03 01 52 21 ac be 63
+20 ce de 4b a5 90 18 f0 66 97 ee 9d 54 14 e3 1c
+... snip ...
+</pre>
+<p>Our tool does not forward this data directly to the server. Instead it responds with a &#8220;SSL Server Hello&#8221; message and proceeds to complete the SSL connection with the client.</p>
+<p>The SSL certificate we present to the RDP client is issued to fred and this is displayed in the mstsc SSL warning shown to the user:</p>
+<div id="attachment_1517" style="width: 265px" class="wp-caption alignnone"><a name="imageclose-1514"><div class="lb-album"><a href="#image-1514"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred-255x300.jpg" alt="fred" class="size-medium wp-image-1517"><span></span></a></div>              
+<a href="#imageclose-1514" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-1514">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/fred.jpg" alt="image-1514">
+                   </div></a><p class="wp-caption-text">The certificate presented by our PoC tool causes this security warning</p></div>
+<p>The details of the SSL certificate differ to those the user would normally see &#8211; if the user were to check. To refine the attack we could make the certificate details match more closely, but we&#8217;d never get the signature to be the same as the normal certificate, so there&#8217;d always be a difference.</p>
+<h3>4. Create SSL connection with RDP server</h3>
+<p>Simultaneously, our tool also sends and SSL Client Hello to the RDP server and creates a second SSL connection.</p>
+<h2>Displaying key strokes</h2>
+<p>Our tool is now in a position to display the cleartext messages about keystrokes (for example) sent by the RDP client. It is relatively easy to determine what sort of message is sent when a key is pressed. The following two 4-byte messages are sent when the &#8216;p&#8217; key is pressed:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate" title="">
+44 04 00 19
+44 04 01 19
+</pre>
+<p>The 3rd byte is the direction of key (00 means key-down, 01 means key-up).  The 4th byte is the key scan code.  If we <a title="look up" href="http://msdn.microsoft.com/en-us/library/aa299374%28v=vs.60%29.aspx">look up</a> 0&#215;19 we find it corresponds to the p key.</p>
+<p>In the general case, the scan-code to character mapping depends which keyboard you&#8217;re using. In the PoC tool I implemented the mapping for for QWERTY keyboards, so if you have a UK/US keyboard, it should translate the majority of scan-codes to the correct characters. Note that we don&#8217;t get know whether characters are uppercase or lowercase. We&#8217;d have to manually track the status of CAPS Lock and SHIFT keys.</p>
+<p>Without getting too bogged down in the details, here&#8217;s some sample output from the PoC tool that shows keystrokes being logged &#8211; in particular an administrator logging in with username Administrator, password Password:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate" title="">
+$ ./rdp-ssl-mitm.py -r 192.168.2.96:3389 
+[+] Listening for connections on 0.0.0.0:3389
+[+] Incoming connection from 192.168.190.1:60370
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+[+] Incoming connection from 192.168.190.1:60374
+[+] New outgoing request to 192.168.2.96:3389 (SSL: 0)
+[+] Connected
+[+] Detected incoming SSL connection. Turning self into SSL socket
+&lt;LShift-down&gt;A&lt;LShift-up&gt;DMINISTRATOR&lt;Tab&gt;&lt;LShift-down&gt;P&lt;LShift-up&gt;ASSWORD&lt;Enter&gt;
+</pre>
+<h2>Conclusions</h2>
+<p>Learning to ignore SSL certificate warnings is as bad for RDP connection as it is for HTTPS web sites. The results are similar: users quickly become vulnerable to &#8220;Man-In-The-Middle&#8221; attacks. Such attacks can harvest usernames, passwords, keystrokes and other sensitive data.</p>
+<p>Using SSL certificates that are signed by a Certificate Authority the RDP client trusts will result in no warning under normal operation, so is highly recommended.</p>
+<p>This attack doesn&#8217;t work if the server mandates NLA, so using NLA is also highly recommended.</p>
+<p>It&#8217;s important to note that this isn&#8217;t a vulnerability in the RDP Client or Server software. Nor is this a  new discovery. It&#8217;s a weakness in way RDP is sometimes used which stems from users ignoring security warnings. At a technical level, this is a fairly vanilla SSL MiTM attack.</p>
+<p>It might be interesting to extend this work by recording screen captures; or by injecting images of login boxes to encourage users to part of with other credentials. There would also be an opportunity to attack any drives that the RDP client has mapped for drive redirection &#8211; see <a title="Attacking the RDP client" href="http://tombstone-bbs.co.uk/reverse-rdp/reverse-rdp.html">Attacking the RDP Clients</a> for inspiration. These would be pretty demanding coding challenges, though!</p>
+<br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="323" />
+<input type="hidden" name="_wpcf7_version" value="3.3.2" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f375-p238-o1" />
+<input type="hidden" name="_wpnonce" value="4c6cc9abab" />
+</div>
+<style>.portcullis-content .layout-item-0 { background: ; padding: 10px;  }
+.portcullis-content .layout-item-1 {  border-collapse: separate;  }
+.portcullis-content .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#C7C7C7;border-right-color:#C7C7C7;border-bottom-color:#C7C7C7;border-left-color:#C7C7C7; color: #1C1C1C; background: #FAFAFA url('https://www.portcullis-security.com/wp-content/uploads/2013/01/983aa2.png') scroll; padding: 10px; border-radius: 5px;  }
+.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+.ie6 .post .layout-cell {border:none !important; padding:0 !important; }</p>
+</style>
+<div class="portcullis-content-layout layout-item-1">
+<div class="portcullis-content-layout-row">
+<div class="portcullis-layout-cell layout-item-2" style="width: 80%" >
+</p>
+</p>
+<h3>Request to be added to the Portcullis Labs newsletter</h3>
+<p>
+ We will email you whenever a new tool, or post is added to the site.</p>
+<p>Your Name (required)<br />
+    <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" size="40" required="required" /></span> </p>
+<p>Your Email (required)<br />
+    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="your-email" value="" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" size="40" required="required" /></span> </p>
+<p><input type="hidden" name="porpoise" value="newsletter" /><br />
+<input type="hidden" name="contact_form_7_recaptcha" value="g-recaptcha-Ns0xUCeYF1gTx1Z" class="g-recaptcha-explicit-id"><div id="g-recaptcha-Ns0xUCeYF1gTx1Z"></div><span class="wpcf7-form-control-wrap g-recaptcha-explicit" data-sitekey="6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"></span></p>
+<p><input type="submit" value="Subscribe" class="wpcf7-form-control  wpcf7-submit" /></p>
+</div>
+</div>
+</div>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/ssl-man-in-the-middle-attacks-on-rdp/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+                                                                
+</article>
+				
+
+                        </div>
+                                            </div>
+                </div>
+            </div><footer class="portcullis-footer clearfix"><div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 33%">
+        <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
+        <ul>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+               </ul>
+        <p><br></p>
+    </div><div class="portcullis-layout-cell" style="width: 34%">
+        <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
+        <ul>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+        <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
+                </ul>
+        <br>
+    </div><div class="portcullis-layout-cell" style="width: 33%">
+       <span style="color: #ffffff;"><br>
+        <br>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p><br></p>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 100%">
+        <p><br></p>
+        <hr>
+    </div>
+    </div>
+</div>
+<div class="portcullis-content-layout">
+    <div class="portcullis-content-layout-row">
+    <div class="portcullis-layout-cell" style="width: 50%">
+      <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
+    </div><div class="portcullis-layout-cell" style="width: 50%">
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+    </div>
+    </div>
+</div></footer>
+
+    </div>
+</div>
+
+
+
+<div id="wp-footer">
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+	<!-- 63 queries. 0.085 seconds. -->
+</div>
+</body>
+</html>
+

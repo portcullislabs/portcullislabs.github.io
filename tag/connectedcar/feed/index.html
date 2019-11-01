@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; connectedcar</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/connectedcar/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Is your sign signed?</title>
+		<link>https://labs.portcullis.co.uk/blog/is-your-sign-signed/</link>
+		<comments>https://labs.portcullis.co.uk/blog/is-your-sign-signed/#comments</comments>
+		<pubDate>Thu, 03 Aug 2017 16:30:01 +0000</pubDate>
+		<dc:creator><![CDATA[ISA]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[biometrics]]></category>
+		<category><![CDATA[connectedcar]]></category>
+		<category><![CDATA[hardhack]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6002</guid>
+		<description><![CDATA[<p>Modern autonomous vehicles use a number of sensors to analyse their surroundings and act upon changes in their environment. A brilliant idea in theory, but how much of this sensory information can we actually trust? Cisco&#8217;s Security Advisory R&#38;D team, a.k.a. Portcullis Labs, decided to investigate further. Various researchers have documented attacks against vehicle sensors [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Modern autonomous vehicles use a number of sensors to analyse their surroundings and act upon changes in their environment. A brilliant idea in theory, but how much of this sensory information can we actually trust? Cisco&#8217;s Security Advisory R&amp;D team, a.k.a. Portcullis Labs, decided to investigate further.<span id="more-6002"></span></p>
+<p>Various researchers have documented attacks against vehicle sensors and cyber-physical systems resulting in the vehicle performing unwanted actions, such as falsifying alerts, malfunction and even causing the vehicle to crash. The very same sensors which are used to improve driver efficiency have been proven vulnerable to both spoofing and signal jamming attacks. In this blog entry, we will be focusing on the reliability of a vehicle&#8217;s underlying systems, it&#8217;s susceptibility to spoofing attacks, and in particular the vulnerabilities in the front-facing camera, to ascertain how these problems may be addressed.</p>
+<h2>The problem</h2>
+<p>Multiple cameras can be found in today&#8217;s vehicles, some of which provide a full 360 view of their surroundings. One of the most common uses for these cameras is for road traffic sign detection. The traffic sign is picked up by the vehicle&#8217;s camera and displayed at eye level within the instrument cluster for the driver&#8217;s convenience. This is designed to reduce the potential consequences of a driver failing to recognise a traffic sign.</p>
+<p>Professors from Zhejiang University and the University of South Carolina recently presented a whitepaper detailing the countless attack scenarios against vehicle sensors and front-facing cameras. With regards to vehicle cameras, their experiment focused on blinding the camera using multiple easily obtained light sources, which proved to be successful.</p>
+<p>Our experiment, on the other hand, looked into fooling the vehicle&#8217;s camera in order to present false information to the driver.</p>
+<p>We started off by printing different highway speed signs on plain paper, some of which contained arbitrary values, such as null bytes (%00) and letters. The print-outs were then held up by hand as our test vehicle closely drove past. As expected, the camera detected our improvised road signs and displayed the value to the driver. Spoofing speed values of up to 130 mph was possible, despite being way beyond the nation&#8217;s speed limit. Does this mean we can now exceed the speed limit? Naturally, abiding by the highway code still comes first, but it does beg the question of why something this farcical can still occur.</p>
+<p><img class="alignnone size-medium wp-image-6005" alt="Sign Signed" src="https://labs.portcullis.co.uk/wp-content/uploads/2017/08/Sign-Signed-268x300.png" width="268" height="300" /></p>
+<p>Although one could argue that the camera has done its job and detected what appears to be a valid road sign, there are no additional checks being performed to distinguish whether the detected sign is legitimate or even sensible.</p>
+<p>Other scenarios to consider involve the use of intelligent speed limiters which are now present in some vehicles. Both the front-facing camera and built in speed limiter are used to limit your driving speed to the speed sign recognised by the camera, preventing you from exceeding the limit even if you were to floor the accelerator. In a car with that functionality, what would happen if a 20 mph sign was spoofed onto the camera while driving on a 70 mph limit motorway? We are yet to test this specific scenario, but a potentially dangerous outcome is easy to imagine.</p>
+<h2>What could be done to mitigate this problem?</h2>
+<p>We need some form of validation against sensory input. If we review and compare the advancements in securing biometrics, specifically fingerprint authentication devices, we can see that these devices are constantly bettered by incorporating new features, such as &#8220;life detection&#8221;, which detects the subtle conductivity a finger possesses thus preventing spoofing and finger cloning attacks. Could we implement a similar approach to securing vehicle sensors? Proper validation of the authenticity of each detected road sign would enable us to prevent spoofing attacks from occurring, but of course it is easier said than done.</p>
+<p>What about introducing boundary detection? UK drivers know that 70mph is the absolute speed limit within the country, therefore the detection of speeds higher that this should be flagged as an error. A fixed boundary detection could, of course, prove unhelpful when driving in Europe, for example, where the speed limits are different, but this is easily fixed using GPS data or functionality enabling the driver to manually set the location as opposed to a global speed limit.</p>
+<p>Independent researchers have even suggested novel ways to improve road sign detection systems using neural networks in order to learn and distinguish properties of legitimate road signs.</p>
+<h2>Conclusion</h2>
+<p>We have demonstrated that front-facing vehicle cameras used for traffic sign detection can easily be fooled into recording a false speed limit. While cameras do have an essential place in autonomous vehicles, their integrity and availability properties present a great deal of room for improvement. Even simple features and configuration changes, such as boundary detection, could be applied to increase the accuracy and efficiency of these systems. Further research into securing vehicle cameras needs to be conducted to ensure that spoofing attacks cannot be carried out as trivially as is currently possible.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/is-your-sign-signed/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; debugging</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/debugging/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>An introduction to binary dynamic analysis</title>
+		<link>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/#comments</comments>
+		<pubDate>Tue, 13 May 2014 13:29:24 +0000</pubDate>
+		<dc:creator><![CDATA[BRC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[debugging]]></category>
+		<category><![CDATA[fuzzing]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3001</guid>
+		<description><![CDATA[<p>The term dynamic instrumentation refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs. Tools Several software solutions [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The term <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs.<br />
+<span id="more-3001"></span></p>
+<h2>Tools</h2>
+<p>Several software solutions exists to help the developers and researchers to commit this task of inspecting a program runtime behaviour, being some of the prominent the following ones:</p>
+<ul>
+<li><a title="mtrace" href="http://man7.org/linux/man-pages/man3/mtrace.3.html">mtrace</a></li>
+<li><a title="Valgrind" href="http://valgrind.org/">Valgrind</a></li>
+<li><a title="Intel PIN tool" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel PIN tool</a></li>
+<li><a title="DynamoRIO" href="http://code.google.com/p/dynamorio/">DynamoRIO</a></li>
+<li><a title="DynInst" href="http://www.dyninst.org/">DynInst</a></li>
+</ul>
+<p>Two of the the most widely used tool dynamic binary instrumentation tools are PIN and DynamoRIO. PIN is developed by Intel and provided by the University of Virginia whereas DynamoRIO is a collaboration between Hewlett-Packard and MIT. Both are free to use but only DynamoRIO is open source. PIN and DynamoRIO are both equally useful and usually the election is the result of personal taste.</p>
+<h3>mtrace</h3>
+<p><a title="mtrace" href="http://man7.org/linux/man-pages/man3/mtrace.3.html">mtrace</a> is the memory debugger included in the GNU C Library. The usage of mtrace(3) can be summarised as follows:</p>
+<ol>
+<li>Export the variable MALLOC_TRACE to point to the result logfile</li>
+<li>Include the header mcheck.h in the code</li>
+<li>Call to mtrace() before allocating memory</li>
+<li>Call untrace() at the end of the code (usually the main() function)</li>
+<li>Compile the program with debugging symbols (gcc prog.c -g)</li>
+<li>Read output using mtrace exec_file mtrace_output filename</li>
+</ol>
+<p>Following a example extracted from the mtrace(3) man page to clarify the usage:</p>
+<pre class="brush: cpp; title: ; notranslate">
+#include &lt;mcheck.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+int main()
+{
+   int j;
+
+   mtrace();
+
+   for (j = 0; j &lt; 2; j++)
+       malloc(100);            /* Never freed--a memory leak */
+
+   calloc(16, 16);             /* Never freed--a memory leak */
+   exit(EXIT_SUCCESS);
+}
+</pre>
+<p>A little script could be created in order to automate the compilation the analysis:</p>
+<pre class="brush: bash; title: ; notranslate">
+#!/bin/sh
+export MALLOC_TRACE=mtrace.log
+bin=prog
+src=mtrace.c
+gcc -g $src -o $bin
+./$bin
+mtrace $bin $MALLOC_TRACE
+</pre>
+<p>The execution will result in the following excerpt:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./mtrace.sh 
+
+Memory not freed:
+-----------------
+           Address     Size     Caller
+0x0000000002054460     0x64  at /home/user/mtrace.c:11 (discriminator 2)
+0x00000000020544d0     0x64  at /home/user/mtrace.c:11 (discriminator 2)
+0x0000000002054540    0x100  at /home/user/mtrace.c:15
+</pre>
+<p>As can be seen, mtrace(3) has detected the error absence of free(), resulting in a memory leak error.</p>
+<h3>Intel PIN tool</h3>
+<p>PIN is a framework for creating dynamic binary analysis tools for the i386 and x86-64 architectures that can be used to perform program analysis on user space applications in Linux and Windows at run time on the compiled binary files. Pin provides an API that abstracts the instruction set and the binary schema and allows to inspect register contents, program code and symbol and debug information.</p>
+<p>PIN performs instrumentation by taking control of the program just after it loads into memory and recompiling just-in-time sections of binary code just before they are run. Regarding the performance, PIN&#8217;s overhead is about 30 percent.PIN was originally created as a tool for computer architecture analysis, but its flexible API and an active community (called &quot;Pinheads&quot;) have created a diverse set of tools for security, emulation and parallel program analysis.</p>
+<p>A pin tool comprises of three types of routines: </p>
+<ol>
+<li>Instrumentation routines that enable the insertion of analysis routines</li>
+<li>Analysis routines which are called when the code they are associated is run</li>
+<li>Callback routines that called when specific conditions are met or when a certain event has occurred such as library loads, system calls, signals/exceptions and thread creation events</li>
+</ol>
+<p>PIN includes in the directories <strong>source/tools/ManualExamples</strong> and <strong>source/tools/SimpleExamples</strong>  several examples. Below can be seen the execution of the instruction counter and opcode mix profiler PIN tools:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cd pin-2.12-58423-gcc.4.4.7-linux
+$ ./pin -appdebug -t source/tools/ManualExamples/obj-ia32/inscount0.so -- `which evolution`
+</pre>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cd pin-2.12-58423-gcc.4.4.7-linux
+$ ./pin -t source/tools/SimpleExamples/obj-intel64/opcodemix.so -- /bin/ls
+</pre>
+<p>Another interesting example can be found on the imageload.cpp file. This example demonstrates the use of the API functions IMG_AddInstrumentFunction and IMG_AddUnloadFunction which are called when the binary images are loaded by the operating system:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cd source/tools/ManualExamples
+$ make -f makefile obj-intel64/imageload.so
+$ ../../../pin -t obj-intel64/imageload.so -- /bin/ls
+$ cat imageload.out
+	Loading /bin/ls, Image id = 1
+	Loading /lib64/ld-linux-x86-64.so.2, Image id = 2
+	Loading /lib/x86_64-linux-gnu/libselinux.so.1, Image id = 3
+	Loading /lib/x86_64-linux-gnu/librt.so.1, Image id = 4
+	Loading /lib/x86_64-linux-gnu/libacl.so.1, Image id = 5
+	Loading /lib/x86_64-linux-gnu/libc.so.6, Image id = 6
+	Loading /lib/x86_64-linux-gnu/libdl.so.2, Image id = 7
+	Loading /lib/x86_64-linux-gnu/libpthread.so.0, Image id = 8
+	Loading /lib/x86_64-linux-gnu/libattr.so.1, Image id = 9
+	Unloading /bin/ls
+	Unloading /lib64/ld-linux-x86-64.so.2
+	Unloading /lib/x86_64-linux-gnu/libselinux.so.1
+	Unloading /lib/x86_64-linux-gnu/librt.so.1
+	Unloading /lib/x86_64-linux-gnu/libacl.so.1
+	Unloading /lib/x86_64-linux-gnu/libc.so.6
+	Unloading /lib/x86_64-linux-gnu/libdl.so.2
+	Unloading /lib/x86_64-linux-gnu/libpthread.so.0
+	Unloading /lib/x86_64-linux-gnu/libattr.so.1	
+</pre>
+<p>A classification of some of the shipped PIN tools examples are:</p>
+<h4>Analysing instructions</h4>
+<ul>
+<li>inscount0.cpp: checks number of executed instructions of application program</li>
+<li>itrace.cpp: lists addresses of executed instructions of application program</li>
+<li>pinatrace.cpp: lists addresses of accessed memory and type of operation (read, write)</li>
+<li>opcodemix.cpp: lists opcodes of executed instructions with number of executions and category summary</li>
+<li>regmix.cpp: analyses the usage or program registers
+</ul>
+<h4>Analysing basic blocks</h4>
+<ul>
+<li>inscount1.cpp: counts all instructions of a basic block at once.</li>
+<li>edgcnt.cpp:lists addresses of jump instructions, type of jump (direct, indirect), and number of times performed</li>
+</ul>
+<h4>Analysing routines</h4>
+<ul>
+<li>proccount.cpp: counts number of times each routine is invoked and number of instructions in it</li>
+</ul>
+<h3>Analysing libraries</h3>
+<ul>
+<li>imageload.cpp: lists loading and unloading of dynamic libraries invoked by program</li>
+</ul>
+<h4>Developing the first PIN tool</h4>
+<p>PIN includes in source/tools/MyPinTool/ a sample tool that can be used as code code base to start creating basic PIN tools. To create, compile and execute a this basic example, the following commands could be used:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cp -r pin-2.12-58423-gcc.4.4.7-linux/source/tools/MyPinTool/ pin1/
+$ cd pin1
+$ make -f makefile mPIN_ROOT=../pin-2.12-58423-gcc.4.4.7-linux
+$ ls obj-intel64/
+MyPinTool.o  MyPinTool.so
+$ ../pin-2.12-58423-gcc.4.4.7-linux/pin -t obj-intel64/MyPinTool.so -- /bin/ls
+===============================================
+This application is instrumented by MyPinTool
+===============================================
+makefile  makefile.rules  MyPinTool.cpp  obj-intel64
+</pre>
+<p>To make things simple, a development directory &#8220;mytools&#8221; could be created outside the PIN directory hierarchy:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ls -l
+total 35636
+drwxr-xr-x 4 user users     4096 mar  9 22:39 mytools
+lrwxrwxrwx 1 user users       30 ago 24  2013 pin -&gt; pin-2.12-58423-gcc.4.4.7-linux
+drwxr-xr-x 7 user users     4096 mar 10 01:12 pin-2.12-58423-gcc.4.4.7-linux
+</pre>
+<p>The development directory will contain the tools source code and the objects:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate"> 
+$ ls -l mytools
+total 120
+-rw-r--r-- 1 user users  676 feb  3 2013 Makefile
+-rwxr-xr-x 1 user users  366 feb  3 2013 build.sh
+-rw-r--r-- 1 user users 6033 feb  9 05:08 check_pc_sections.cpp
+-rw-r--r-- 1 user users 7062 feb  9 03:27 check_secciones.cpp
+-rw-r--r-- 1 user users 7796 feb  9 04:44 detect_pc_noexec.cpp
+-rw-r--r-- 1 user users 5278 feb  9 02:30 load_unload_imag.cpp
+-rw-r--r-- 1 user users 5435 feb  9 02:44 load_unload_sec.cpp
+-rw-r--r-- 1 user users 2822 feb  4  2013 makefile.rules
+drwxr-xr-x 2 user users 4096 feb  3 18:46 obj-intel64
+</pre>
+<p>A script (build.sh) could be created in order to help the compilation of PIN tools that reside in the development directory. The code of the script could be as shown below:</p>
+<pre class="brush: bash; title: ; notranslate">
+#!/bin/sh
+PIN_ROOT=../pin
+dstdir=obj-intel64
+function negrita() { echo -e &amp;quot;&#92;&#48;33[1m${1}&#92;&#48;33[0m&amp;quot;; }
+
+test -d $dstdir || mkdir $dstdir
+
+for f in *.cpp; do
+    negrita &amp;quot;[*] Building $f&amp;quot;;
+    obj=`echo $f | sed -e 's/cpp/so/'`
+    make $dstdir/$obj PIN_ROOT=$PIN_ROOT
+    negrita &amp;quot;[*] Exec $PIN_ROOT/pin -t $dstdir/$obj -- &lt;program&gt;&amp;quot;
+done
+</pre>
+<p>This script can be used to compile or all tools contained in the &#8220;mytools&#8221; development directory at one. Also, some tricks could help when using this dynamic instrumentation framework:</p>
+<ul>
+<li>The option -appdebug tells PIN to start a GDB server to debug the application</li>
+<li>The -appdebug option can also be used to debug from IDA Pro any application using PIN using the remote GDB debugger</li>
+<li>It can&#8217;t be specified which port PIN will listen in as it will be randomly selected every time we execute PIN</li>
+<ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

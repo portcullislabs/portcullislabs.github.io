@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; ACD</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/acd/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Hardware hacking: How to train a team</title>
+		<link>https://labs.portcullis.co.uk/blog/hardware-hacking-how-to-train-a-team/</link>
+		<comments>https://labs.portcullis.co.uk/blog/hardware-hacking-how-to-train-a-team/#comments</comments>
+		<pubDate>Fri, 09 Mar 2018 00:28:42 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5930</guid>
+		<description><![CDATA[<p>This is the first in a proposed series of blog posts that plan to give an insight into the ways we devised to train up our team in hardware hacking tools and techniques. This first post acts as an introduction to the regime to show off each of the challenges we set up to train [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/hardware-hacking-how-to-train-a-team/">Hardware hacking: How to train a team</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This is the first in a proposed series of blog posts that plan to give an insight into the ways we devised to train up our team in hardware hacking tools and techniques. This first post acts as an introduction to the regime to show off each of the challenges we set up to train our team in the basics of hardware hacking. Subsequent posts will focus on how to solve some of the actual challenges used to train our consultants.<span id="more-5930"></span></p>
+<p>It is difficult to find freely available material around the web that takes a person from zero (or almost zero) knowledge up to a competent &#8220;hardware hacker&#8221;. There are plenty of individual resources for specific hardware out there, but they generally follow a walkthrough of what was done in that specific case and do not necessarily open the mind of the person following the guide on how to make those discoveries for themselves, or teach them to adapt to differing scenarios. The main hurdle is that this is a skill that requires physical devices and tools, which means investment. It also means trying to figure out exactly what hardware to buy and not necessarily having guarantees that it is interesting hardware or still available.</p>
+<p>This was a problem we came up against for training up our own team. Sure, we could send people on intensive training courses, but that is not always feasible and places limits on who can join in; it is also possibly too much for someone who wants to &#8216;test the waters&#8217; to see if hardware hacking is something they are passionate about.</p>
+<p>The problem came about when we realised only a subset of people knew &#8216;hardware hacking&#8217;, despite interest from other members of the Team, and that people could not really &#8216;get involved&#8217; easily without specific training sessions. Our solution was to set about developing our own internal training regime that is largely self-contained. Since it has been successful internally, we have decided to share the fundamentals of it with the wider world, so others can build on this foundation and join in with the hardware fun!</p>
+<h2>The training regime</h2>
+<p>The overarching approach for our training regime is relatively straightforward: provide the technical theory behind something and then have the learner apply that practically. Then repeat until a good enough general understanding of hardware is achieved, so that given an unknown (i.e. purchase of a random device to play with or a customer-facing engagement), the individual would know how to approach the assessment based off past experience of both security consultancy in general, and applied hardware knowledge.</p>
+<p>So really, it is just the tried and true &#8216;theory-practical&#8217; approach, working from the basics up to more complicated endeavors.</p>
+<p>At a really high level, the training regime looks like this:</p>
+<div id="attachment_6211" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5931"><div class="lb-album"><a href="#image-5931"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/training-regime-300x62.png" alt="Training plan" class="aligncenter size-medium wp-image-6211"><span></span></a></div>              
+<a href="#imageclose-5931" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5931">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/training-regime.png" alt="image-5931">
+                   </div></a><p class="wp-caption-text">Training plan</p></div>
+<p>To achieve skills in each of the above, we have a decent selection of largely &#8216;random&#8217; hardware, ranging from old production equipment, cheap items purchased specifically for our team to practice on, and even donated items. These devices have been played with and then &#8216;challenges&#8217; formed from them, each focusing on a specific attack vector. Here is a &#8211; pretty terrible &#8211; collage of some of the hardware devices we use for training purposes:</p>
+<div id="attachment_5970" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5932"><div class="lb-album"><a href="#image-5932"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/ALL-THE-THINGS-300x293.png" alt="Collage of hardware" class="aligncenter size-medium wp-image-5970"><span></span></a></div>              
+<a href="#imageclose-5932" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5932">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/ALL-THE-THINGS.png" alt="image-5932">
+                   </div></a><p class="wp-caption-text">Collage of hardware</p></div>
+<p>An astute hardware hacker may notice many of the devices are indeed of the cheaper off-brand variety. This is intentional for both cost purposes (especially replacement) and because they are usually easier to train people on, due to the more spartan and utilitarian design (cost efficiency) of cheap devices.</p>
+<p>While we do not set a strict timeline, we try and give those coming from a zero hardware knowledge background a week to finish the initial training challenges and any associated research/reading required to complete them. We then delve into this list below, explaining what each challenge is and the aims and objectives for the learner. Each challenge focuses on a key element of hardware hacking, meaning that by the end of the training the learner has a decent grasp of the basics of hardware hacking and they can go off and research more advanced techniques in their own time.</p>
+<p>In addition to the challenges described below, we have a fairly extensive wiki which covers the basic theory behind each element of the training, which can of course be bolstered by the individual doing their own research to expand on concepts we explain. With the theory in place, they tackle each challenge.</p>
+<h2>Hardware basics</h2>
+<p>The first foray into hardware hacking starts from first principals to teach some of the required core skills, such as:</p>
+<ul>
+<li>Initial device disassembly</li>
+<li>Reading a PCB &#8211; understanding components, layers and traces, silkscreen, markings, etc.</li>
+<li>Identifying points of interest &#8211; chip identification, basic searching techniques and pinouts/headers identification</li>
+<li>Individual pin identification (especially ground) and basic multimeter use (continuity and resistance testing)</li>
+<li>Basic electronics and safety &#8211; i.e. do not hold a board with fingers lodged around capacitors near the power input whilst a device is powered on (not that anyone on our team has ever done such a thing *cough*)</li>
+<li>Google Fu &#8211; this is especially useful in searching for things like datasheets for chip pinouts, available debug interfaces, etc.</li>
+</ul>
+<h3>The challenge</h3>
+<p>After reading the basics training, the related challenge involves giving an &#8216;unidentified&#8217; hardware device to an individual and asking them to threat model it, or put more simply, &#8216;tell us about it&#8217;. As expected, it roughly involves identifying and enumerating everything possible regarding the device: its features, components, datasheets, pinouts, what might be of interest to attack and how.</p>
+<p>For our challenge, we use a board once used as part of an access control system which has had any immediately identifiable labels removed, such as the one below:</p>
+<div id="attachment_5971" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5933"><div class="lb-album"><a href="#image-5933"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/identification-challenge-front-300x200.jpg" alt="Component dentification challenge" class="aligncenter size-medium wp-image-5971"><span></span></a></div>              
+<a href="#imageclose-5933" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5933">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/identification-challenge-front.jpg" alt="image-5933">
+                   </div></a><p class="wp-caption-text">Component identification challenge</p></div>
+<h2>UART training</h2>
+<p>UART (Universal Asynchonous Receive/Transmit) is a really simple interface to work with and if you are lucky enough to find the right device, it can be an easy win. It is also a relatively simple interface to talk to/get working &#8211; it is generally only a receive pin and a transmit pin (alongside ground of course). All that is required in addition is some sort of serial to USB adaptor (these are cheap), some jumper wires of the right kind and an application to talk over the USB-serial interface (screen, minicom, putty, etc).</p>
+<p>For these reasons, we think it makes a great introduction to the &#8216;hands on&#8217; part of hardware hacking, without too much complexity or struggling to figure out whether or not wires are connected properly or software has gone wrong. It can help build confidence in connecting things to boards without too many hurdles or complexities to consider. So essentially, the following is taught:</p>
+<ul>
+<li>Pin identification</li>
+<li>Pin connection techniques</li>
+<li>Serial-USB knowledge</li>
+<li>Basic multimeter use (mainly to identify ground and follow traces)</li>
+<li>The requirement for patience and trial and error. Quite often, connecting pins correctly can be fiddly</li>
+</ul>
+<h3>The challenge</h3>
+<p>The objective of our basic UART challenge is to identify, enumerate (figure out baud rate and pinout) and then connect to UART and get a root shell on an old VoIP phone. As the first hands-on session, the device we chose gives up its root shell very easily, once the correct connections are made.</p>
+<div id="attachment_5968" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5934"><div class="lb-album"><a href="#image-5934"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/uart-300x168.jpg" alt="UART challenge" class="aligncenter size-medium wp-image-5968"><span></span></a></div>              
+<a href="#imageclose-5934" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5934">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/uart.jpg" alt="image-5934">
+                   </div></a><p class="wp-caption-text">UART challenge</p></div>
+<p>A more advanced version of the challenge regards some modifications that are needed to &#8216;get access&#8217; via UART is planned, but that is very device specific and we are waiting to obtain a good device that would make a compelling challenge.</p>
+<h2>JTAG training</h2>
+<p>JTAG (Joint Task Action Group &#8211; yes the standard is named after the group who made it) is a good next-step in learning how to connect to points on a board. It is another serial debugging interface of sorts. It usually requires a bit more enumeration at the outset, due to the presence of more pins, but this can be easily tackled with the right equipment. On top of learning how to use some basic hardware tools, the real strength of JTAG is the potential for some on-chip/in memory debugging. Overall, for JTAG, we try to teach:</p>
+<ul>
+<li>Identifying and understanding JTAG</li>
+<li>JTAG pinout</li>
+<li>Using some basic hardware tools for enumeration (such as a JTAGulator or some other microcontroller running JTAGEnum)</li>
+<li>Basic on-chip/memory debugging via JTAG using OpenOCD and devices like the BusPirate and the Shikra as interfaces</li>
+</ul>
+<h3>The challenge</h3>
+<p>The challenge covers the points outlined above and is designed to build confidence in interfacing with boards at a hardware level. It involves locating and determining the pinout of a JTAG interface on a smart home controller, then enumerating the pinout using suitable hardware, followed by using OpenOCD with a suitable profile (which may require some google-fu). Finally, the user has to find and extract some specific data from memory to show the challenge has been completed.</p>
+<p>The below is a picture of the board we use for training. Can you spot the JTAG interface?</p>
+<div id="attachment_5969" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5935"><div class="lb-album"><a href="#image-5935"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/jtag-basics-challenge-front-300x200.jpg" alt="JTAG-smart-home-controller" class="aligncenter size-medium wp-image-5969"><span></span></a></div>              
+<a href="#imageclose-5935" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5935">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/jtag-basics-challenge-front.jpg" alt="image-5935">
+                   </div></a><p class="wp-caption-text">JTAG challenge</p></div>
+<h2>Pulling and rewriting/reversing firmware OTA (Over the air)</h2>
+<p>This part of the training focuses on some of the more software-focused skills and dealing with small embedded devices, specifically, it aims to teach:</p>
+<ul>
+<li>Familiarity of working with a small embedded device</li>
+<li>Performing &#8220;Man-In-The-Middle&#8221; attacks on an over-the-air (OTA) firmware update</li>
+<li>Simple modification of a firmware binary</li>
+<li>Subversion of simple firmware protection techniques</li>
+</ul>
+<p>Alongside this, skills for standard web application techniques in the context of IoT devices are also used/required, but not taught as part of our hardware hacking training.</p>
+<h3>The challenge</h3>
+<p>The objective is to rewrite the firmware on the device. This involves performing a MitM (&#8220;Man-In-The-Middle&#8221;) attack on an OTA firmware update, followed by grabbing the firmware from the server, reverse engineering it, figuring out where the protection is and subverting it. At this point, the trainee has to find a way to force the device to load a modified version of firmware.</p>
+<p>For this challenge, we use a small ESP 8266 styled microcontroller running a simple web server which could used for firmware updates, alongside a separate server hosted on our own network which is used to deliver the firmware update.</p>
+<p>8266&#8242;s look like this and are easy to both write firmware for and to configure with something like esptool:</p>
+<div id="attachment_6209" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5936"><div class="lb-album"><a href="#image-5936"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/IMG_20180108_173645-300x224.jpg" alt="ESP 8266 OTA update challenge" class="aligncenter size-medium wp-image-6209"><span></span></a></div>              
+<a href="#imageclose-5936" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5936">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/IMG_20180108_173645.jpg" alt="image-5936">
+                   </div></a><p class="wp-caption-text">ESP 8266 OTA update challenge</p></div>
+<h2>SPI flash training</h2>
+<p>Learning about SPI can open up a world of information gathering and modification to a hardware hacker, but it can be fiddly to get to grips with. We aim to teach:</p>
+<ul>
+<li>Tools and techniques to extract SPI flash, primarily via the BusPirate</li>
+<li>Learn how to read SPI flash contents</li>
+<li>SPI flash modification</li>
+</ul>
+<p>Soldering and de-soldering are covered in separate training.</p>
+<h3>The challenge</h3>
+<p>For this challenge, we use another ESP 8266 microcontroller. This time, however, it is connected to a breadboard with a SPI flash chip mounted separately for easy removal and reconnection. We do this so that we do not end up in a situation where everyone who wishes to do the training has to de-solder (and later reconnect/re-solder) a SPI flash chip at the risk of losing the device, which would be annoying for everyone and fill up a bin of broken hardware.</p>
+<p>The challenge requires the trainee to &#8216;dismount&#8217; the SPI chip, and connect it up to their laptop appropriately so that the contents of the chip can be read. The objective is to obtain credentials for the web server hosted on the device. Once obtained, the chip should be remounted and the credentials used to authenticate onto the web application of the ESP 8266 device.</p>
+<h2>SDR &amp; RF (Software Defined Radio &amp; Radio Frequency) Training</h2>
+<p>This part of the training regime focuses on radio wave bands and almost anything wire<br />
+less (not including WiFi, as we have a separate service for that). It aims to teach the trainee about the following:</p>
+<ul>
+<li>Use of SDR software and hardware such as Airspy and SDR#, various SDR dongles, HackRF and so on</li>
+<li>Understanding commonly used frequencies and how to monitor them</li>
+<li>Capturing and replaying attacks</li>
+<li>Understanding some of the most common modulation techniques in-use</li>
+</ul>
+<h3>The challenge</h3>
+<p>The challenge for this training is currently quite simple &#8211; a smart plug which can be turned on and off with a remote and a &#8216;smart&#8217; doorbell. The objective is to find the bands the devices use, capture the traffic and successfully replay the correct sequence to control the devices from a laptop. Primarily, this challenge was designed to get people used to the tool-chain used in these sorts of scenarios.</p>
+<p>Here is a picture of the devices. Hiding the doorbell in people&#8217;s belongings and then triggering it when they least expect it has become a fun (annoying) game in our office:</p>
+<div id="attachment_6210" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-5937"><div class="lb-album"><a href="#image-5937"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/IMG_20180108_173916-300x224.jpg" alt="RF challenge" class="aligncenter size-medium wp-image-6210"><span></span></a></div>              
+<a href="#imageclose-5937" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5937">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/07/IMG_20180108_173916.jpg" alt="image-5937">
+                   </div></a><p class="wp-caption-text">RF challenge</p></div>
+<h2>Soldering training</h2>
+<p>Soldering (and de-soldering) is often required as part of hardware hacking, though it can be fiddly to teach without a lot of time investment.</p>
+<p>For our training, we have some devices that are cheap and can be soldered on to &#8211; generally we will teach soldering on pins for connections. But perhaps more appropriately, trainees are encouraged to go and buy a project such as a DIY clock with numerous LEDs and practice on that. We also encourage the use of bread-boarding.</p>
+<p>To help with this, we keep some cheap soldering irons (to go along with our more expensive ones, which are reserved for trained hands) in the office. Overall, we attempt to teach the following:</p>
+<ul>
+<li>All the usual safety stuff</li>
+<li>Skills in soldering and de-soldering, primarily chips</li>
+<li>Understanding of soldering tools and techniques (flux, solder wire, different types of tips and temperatures, etc.)</li>
+<li>Basic bread-boarding and data extraction</li>
+<li>Hot air rework station use</li>
+<li>Gauge soldering skill, to know who has a deft hand at it (some people simply don not have steady hands; I count myself among them)</li>
+</ul>
+<p>We do not have a specific challenge to complete this training, instead relying on observing the soldering skills of an individual.</p>
+<h2>Next steps</h2>
+<p>After completing the training regime challenges, we hope our consultants go out and take apart interesting devices of their own accord (assuming they have permission). To help with this, we have a number of cheap hardware devices which are not part of the training, but make for good fun and practice. When a consultant feels comfortable and has solved enough challenges, they can be considered billable.</p>
+<h2>Other ideas</h2>
+<p>We have ideas for future improvements to the service, both in terms of training content and challenges. We keep our eyes peeled for interesting or unique devices we come across that we may consider as a more advanced challenge for our team. Devices lying around the office are often disassembled out of curiosity (permission granting). As with any organisation, we have internal pages for trainees to follow, which are continuously being updated by members of the Team.</p>
+<p>In the <a title="next part" href="/blog/uart-debugging-rooting-an-ip-phone-using-uart/">next part</a> of this series, one of our recent interns Dan, discusses how he went about solving the UART challenge.</p>
+<p>Happy hardware hacking!</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/hardware-hacking-how-to-train-a-team/">Hardware hacking: How to train a team</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/hardware-hacking-how-to-train-a-team/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Biometrics: Forever the &#8220;next big thing&#8221;</title>
+		<link>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/</link>
+		<comments>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/#comments</comments>
+		<pubDate>Thu, 06 Jul 2017 10:08:30 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[biometrics]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5806</guid>
+		<description><![CDATA[<p>It&#8217;s not every day we get to assess biometric systems from a security perspective, they are still somewhat esoteric and testing them doesn&#8217;t quite fit with the usual slew of things that come along with being a security consultant. Recent engagements reminded us of just how interesting this facet of the industry can be and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>It&#8217;s not every day we get to assess biometric systems from a security perspective, they are still somewhat esoteric and testing them doesn&#8217;t quite fit with the usual slew of things that come along with being a security consultant. Recent engagements reminded us of just how interesting this facet of the industry can be and so we decided to write up a little something around biometrics. This article will cover some of the history and the basics of biometrics and some of the biometric-centric attacks you may come across&#8230;<span id="more-5806"></span></p>
+<h2>Biometrics aren&#8217;t new</h2>
+<p>They have been around for, well, as long as we have. There is evidence that cavemen used to sign paintings with a handprint as a way to confirm authorship. Traders used to keep ledgers with physical descriptions of trade partners. Police started keeping &#8220;biometric databases&#8221; of criminals hundreds of years ago.</p>
+<p>Even digital biometrics have been around for decades. Digitised systems, especially for voice, writing and fingerprints, started coming in to being in the 1970&#8242;s and 1980&#8242;s, largely funded by government and law enforcement agencies such as the FBI.</p>
+<p>Somewhere around the 1990&#8242;s is when biometrics as we know them today came in to form: fully digitised and automated systems, automatic facial recognition in CCTV, biometric passports, etc&#8230; Since then it has largely been about miniaturisation, increasing sensor/template accuracy and finding new, novel things to measure such as ear biometrics &#8211; which I&#8217;m going to go on a whim and say nobody needs or wants.</p>
+<p>Recently, biometrics have started to make their way directly in to the lives of consumers on a larger scale, thanks to increasing adoption of fingerprint and facial/retina scanners amongst smartphone and laptop manufacturers.</p>
+<p>But what happens when a user enrols their finger &#8211; or any other appendage &#8211; on a biometric device?</p>
+<p><a name="imageclose-5807"><div class="lb-album"><a href="#image-5807"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25-300x191.jpg" alt="A pixelated finger (probably)." class="alignnone size-medium wp-image-5858"><span></span></a></div>              
+<a href="#imageclose-5807" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5807">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25.jpg" alt="image-5807">
+                   </div></a></p>
+<p>The biometric device makes an acquisition using whatever sensor is installed, for example a CCD or optical sensor like in a camera, or a capacitance scanner, even potentially an ultrasound scanner. This scan is then analysed for &#8220;interesting&#8221; things, or minutia. These important bits of the biometric are isolated and saved in a binary template, the rest of the reading is generally discarded.</p>
+<p>Of course, manufacturers have their own algorithms for creating templates and matching. But in general, each template boils down to something akin to coordinates. For template matching, a number of different comparison algorithms are used, with hamming distances being the most common that I&#8217;ve seen. At a simple level, hamming distances measure the differences between two equal [length] strings [presented templates].</p>
+<p>To explain this a bit clearer: when a user puts their finger on a fingerprint scanner, they don&#8217;t always put it in the exact same place or at the exact same angle. By using an algorithm such as hamming distances to calculate the difference, biometric devices can judge the presented biometric based on a number of different factors, such as the distances between each minutia detected with those of stored templates.</p>
+<h2>But it&#8217;s not all about fingertips and eyeballs</h2>
+<p><a name="imageclose-5808"><div class="lb-album"><a href="#image-5808"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/tableu1.png" alt="A table showing common biometrics and their attributes" class="aligncenter size-full wp-image-5857"><span></span></a></div>              
+<a href="#imageclose-5808" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5808">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/tableu1.png" alt="image-5808">
+                   </div></a></p>
+<p>The above table is by no means a complete list of biometrics, it merely covers the ones people hear of or encounter the most. It is also by no means 100% representative, it is meant as a general guideline.</p>
+<p>Accuracy in the table is how unique to an individual that biometric is and therefore the scan too. So for example hand geometry is not very accurate or unique &#8211; usually all that happens is the acquisition device takes a measurement of the key points of the hand (tips and grooves of the fingers and the width). Iris and retina are considered high accuracy because they are unique traits, even between identical twins and relatively high-quality acquisitions can be made. Just to clarify: the iris is the nice colourful part at the front of the eye which controls the eye&#8217;s aperture and the retina refers to the nerves near the back of the eye which collect that light, specifically in Biometrics, we refer to the veins.</p>
+<p>Security is how safe the biometric is in terms of potential to being inadvertently &#8220;stolen&#8221;. So for example fingerprints aren&#8217;t very secure at all, people leave them all over the place, almost like leaving post-it notes with their passwords everywhere. The Retina is the only one that is considered high on this list because it is the only truly &#8220;internal&#8221; trait listed, so it isn&#8217;t something that can be seen or copied easily.</p>
+<p>The final column is Usability, this is how easy it is to actually use the system. Fingerprint scanners are easy, just plop the finger on the acquisition sensor and away you go. Iris and face require the user to stand still in front of a camera so are a bit more awkward. Retina is the most difficult, because it&#8217;s an internal trait and difficult to scan. To use it the user has to place their eye right up the sensor and have a relatively unpleasant bright light shone in to their eye. Not particularly pleasant.</p>
+<p>Finger vein and palm vein scanning are two types of biometrics I haven&#8217;t listed here but are quite promising and gaining increased traction. They both offer a sensible alternative to fingerprints &#8211; they retain most of the usability of fingerprints while removing the weakness of using an external trait. I&#8217;d personally really like to see a smartphone with an IR-based palm vein reader on the back, but maybe I&#8217;m just a little bit crazy.</p>
+<h2>Attack vectors</h2>
+<p>Just as with any other system, biometrics expose a slew of network and local attack vectors. From replaying old templates, modifying data in transit, modifying or theft from the backend database, brute force attacks etc. The security industry knows of these attacks all-to-well and we also know how to defend against them. What we are more interested in is the attack vectors a bit more specific biometrics: so attacking the input device (sensor) and the templates themselves.</p>
+<p>Over the years, a number of techniques to achieve a successful authentication illegitimately have come to light, we&#8217;ll cover a few of the more common ones below:</p>
+<h3>Reverse engineering</h3>
+<p>We&#8217;ll start with the templates themselves. Imagine that we have acquired a template somehow (i.e. we have compromised a database containing biometric templates) and now need to get past an actual biometric scanner.</p>
+<p>At some point in time, it was thought reverse engineering biometric templates back in to a presentable appendage wasn&#8217;t possible. After all, templates are just a few bytes of data which don&#8217;t contain enough information to reconstruct the original biometric from. This technique is essentially the biometric equivalent of &#8220;password cracking&#8221;.</p>
+<p>As we already know, templates generally list the coordinates of the minutia in a biometric. This means that realistically the key information is already there, it just needs to be worked out in terms of a mappable grid and then add in all the &#8216;uninteresting&#8217; data so that it resembles an actual trait.</p>
+<p>This is something that sounds easier in theory than it is in practise, I&#8217;ve only ever seen it achieved successfully in lab environments.</p>
+<p>A specific case-study that comes to mind is around iris reverse engineering, found in the &#8220;Handbook of Iris Recognition&#8221;.</p>
+<p>The team used an open source system developed by Libor Masek to create an initial group of reconstructed irises which were then tested against the system. The closest matches from the initial group were then combined along with some new, random generation data. This repeated until a match was found. In over 90% of the cases the attack succeeded eventually.</p>
+<h3>Hillclimbing attacks</h3>
+<p>This class of attack is similar to a reverse engineering attack, except the attack starts <em>without</em> a template to work off of. Instead, the attacker would have to rely on the biometric system doing something stupid, such as returning the match percentage of any authentication attempt. Most of the security-conscious systems today do not do this, but there are still some edge-cases and older devices which do.</p>
+<p>Against a system which does not return data about how close the match was to the sensor, the attacker would simply have to resort to brute-force attacks. Much like the equivalent for password cracking, it would just be a matter of trying a large number of templates [hashes] and comparing them against the real one. And just as with password brute-forcing, it&#8217;s much easier to do that with a stolen template than it is on a live system which may have anti-automation features such as account lockouts, rate limiting, etc.</p>
+<h3>Spoofed physical biometrics</h3>
+<p>Spoofed biometrics get a large amount of attention compared to other methods, especially when it comes to fingerprints and creating replicas. So how easy is it to take someone&#8217;s fingerprint and produce a working model from it?</p>
+<p>The short answer is that it is relatively easy to do with the right equipment and a good fingerprint to work off of.</p>
+<p>Possibly the most well-known and widely used method is the one known as &#8220;cyanoacrylate [superglue] fuming&#8221;.</p>
+<p>Cyanoacrylate, when it evaporates, has a remarkable tendency to be attracted to grease (i.e. latent fingerprints left on things) in humid environments. Once it settles on the grease it re-solidifies, leaving a nice rigid and clearly marked fingerprint where before there was only grease. These prints are much more durable and defined, which makes them easier to extract and create a spoofed print from.</p>
+<p>Superglue fuming is actually remarkably easy to do: all that is required is a container to put the thing you want to extract a fingerprint from in (such as a box or small fish tank), along with a small amount of superglue on some foil. Usually a heat source under the superglue (to help it evaporate quicker) and a small cup of water (to aid with humidity) are also added, for extra efficiency. Then simply wait a while.</p>
+<p>After the print has settled nicely, it is simply a matter of extracting it and inverting it. There are many ways to do this, such as dental mould, high-resolution scans, even high-quality clear tape. Most professionals will attempt to further enhance a print at various stages, using things such as fine powders etc. But this post is meant as an overview, not an in-depth guide on how to extract prints.</p>
+<p>The image below shows all the basic materials required for fingerprint extraction and superglue fuming:</p>
+<p><a name="imageclose-5809"><div class="lb-album"><a href="#image-5809"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/superglue-fuming2-300x168.jpg" alt="superglue fuming" class="alignnone size-medium wp-image-5901"><span></span></a></div>              
+<a href="#imageclose-5809" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5809">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/superglue-fuming2.jpg" alt="image-5809">
+                   </div></a></p>
+<p>In addition to extracting latent prints, back in 2014 a demonstration by a speaker at CCC in Germany showed that it is possible to spoof a fingerprint scanner on a smartphone starting with just a high-enough resolution photo of a person&#8217;s finger. If we put this in a &#8220;worst-case&#8221; context: when you use a fingerprints for authentication, not only are you potentially leaving copies of your unchangeable &#8216;password&#8217; in places, you&#8217;re also carrying it around with you in plain sight.</p>
+<h3>Other biometrics</h3>
+<p>Voice-based biometrics are another area on the rise, especially as a way to &#8216;verify&#8217; someone quickly and remotely (i.e. over the phone) &#8211; often touted as a way to reduce phone support overheads and costs via automation.</p>
+<p>The primary attack vector is as one would expect here: replay attacks &#8211; so recording someone enrolling or authenticating and then replay the recording later &#8211; are surprisingly easy to execute and most voice biometric systems only appear to have very limited or non-existent abilities to detect or prevent replays.</p>
+<p>To put this in a more traditional &#8216;password&#8217; context, it&#8217;s like saying your password out loud for everyone to hear every time you use it. It doesn&#8217;t take an exceptional amount of skill to place a recording device. Voice distinction is also a limiting factor in voice biometrics. Imitating the speech pattern (mainly pitch, inflection of phonemes and cadence) of others is not hugely difficult with a bit of practise and thought.</p>
+<h2>Summary</h2>
+<p>The attacks described here are not all particularly mature, but they have not needed to be. Biometrics aren&#8217;t widely adopted and therefore are not a high-priority target. If there was real demand, we&#8217;d all keep biometric template cracking and reconstruction software on our machines.</p>
+<p>Imagine a world where passwords were replaced by biometrics, once a breach happens &#8211; and lets be honest, sooner or later a breach always happens &#8211; you would spend the rest of your life wondering if it is game over for your all your logins that use your finger (or whatever) and it would be out of your control. There is often a lot of grumbling around passwords, but at least passwords are easily changed should the worst happen. Get a password manager and the trouble of remembering them all even largely goes away (I wish major OS&#8217;s would start incorporating decent password-managers when shipped, to get people in to this habit).</p>
+<p>Of course, there is the third major option amongst all this: &#8220;something you have&#8221; &#8211; access cards of varying types. RFID, NFC, even cards with PKI certificates. All have their pros and cons and are part of a larger debate which I won&#8217;t bother going in to here. Ultimately, the industry has already decided that multi-factor authentication is the way to go for situations where security is prioritised. Biometrics fit in to this as part of the &#8220;multi&#8221; &#8211; use them alongside something else. And no, I don&#8217;t mean alongside a username/ID, that is not private information. An access token and/or a password.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Windows Named Pipes: There and back again</title>
+		<link>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/</link>
+		<comments>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/#comments</comments>
+		<pubDate>Fri, 20 Nov 2015 14:04:20 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5378</guid>
+		<description><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a means to exchange data between running processes in a semi-persistent manner.<span id="more-5378"></span></p>
+<p>On Windows, named pipes operate in a server-client model and can make use of the Windows Universal Naming Convention (UNC) for both local and remote connections.</p>
+<p>Named pipes on Windows use what is known as the Named Pipe File System (NPFS). The NPFS is a hidden partition which functions just like any other; files are written, read and deleted using the same mechanisms as a standard Windows file system. So named pipes are actually just files on a hard drive which persist until there are no remaining handles to the file, at which point the file is deleted by Windows.</p>
+<p>The named pipe directory is located at: \\&lt;machine_address&gt;\pipe\&lt;pipe_name&gt;</p>
+<p>There are many easy ways to read the contents of the local NPFS: Powershell, Microsoft SysInternals Process Explorer and Pipelist as well as numerous third party tools.</p>
+<p>It&#8217;s also very easy to implement in a language such as C#, with a basic read all of the named pipes directory being as simple as:</p>
+<pre class="brush: csharp; gutter: false; title: ; notranslate">
+System.IO.Directory.GetFiles(@&quot;\\.\pipe\&quot;);
+</pre>
+<h2>Exploitation of named pipes</h2>
+<p>Named pipes were introduced with NT and have been known to be vulnerable to a number of attacks over the years, especially once full support was adopted with Windows 2000. For example, the Service Control Manager (SCM) of Windows was discovered to be vulnerable to race conditions related to Named Pipes in 2000, more recently, a predictable named pipe used by Google Chrome could be exploited to help escape from the browser sandbox.</p>
+<p>To date,the most common way to exploit named pipes to gain privileges on a system has been to abuse the impersonation token granted to the named pipe server to act on behalf of a connected client.</p>
+<p>If the named pipe server is already running this is not particularly useful as we cannot create the primary server instance which clients will connect to, so it is generally required to preemptively create a named pipe server using the same name as the vulnerable service would normally create. This means that the user needs to know the name of the pipe before the vulnerable service is started and then wait for a client to connect. Ideal targets are services which run at administrator or SYSTEM level privileges, for the obvious reasons.</p>
+<p>The problem with impersonation tokens begins when a client is running at a higher permission level than the server it is connecting to. If impersonation is allowed, the server can use the impersonation token to act on the client&#8217;s behalf.</p>
+<p>The level of impersonation a server can perform depends on the level of consent a client provides. The client specifies a security quality of service (SQOS) when connecting to the server. The level of impersonation provided to the server by the SQOS can be one of the following four flags, which in the case of named pipes are provided as part of the connection process when calling the CreateFile function:</p>
+<ul>
+<li>SECURITY_ANONYMOUS &#8211; no impersonation allowed at all. The server cannot even identify the client</li>
+<li>SECURITY_IDENTIFICATION &#8211; tmpersonation is not allowed, but the server can identify the client</li>
+<li>SECURITY_IMPERSONATION &#8211; the client can be both identified and impersonated, but only locally (default)</li>
+<li>SECURITY_DELEGATION &#8211; the client can be identified and impersonated, both locally and remotely</li>
+</ul>
+<p>When granted, impersonation tokens can be converted to primary security tokens with ease by calling the DuplicateTokenEx() function. From here it is just a matter of calling the CreateProcessAsUser() function to spawn a process (let’s say cmd.exe) using the new primary token which has the security context of the client.</p>
+<p>Numerous Metasploit modules are available for exploiting named pipe vulnerabilities which have cropped up over the years. For example, the getsystem module in Metasploit makes use of named pipes to escalate to SYSTEM level privileges from Administrator.</p>
+<p>Metasploit includes 2 different techniques which use named pipes to &#8216;get system&#8217;. The first one works by starting a named pipe server and then using administrator privileges to schedule a service to run as SYSTEM. This service connects as a named pipe client to the recently created server. The server impersonates the client and uses this to spawn a SYSTEM process for the meterpreter client.</p>
+<p>The second technique is similar to the first, but instead a DLL is dropped to the hard drive which is then scheduled to run as SYSTEM, this technique is evidently not as clean as the first technique.</p>
+<p>Thanks to Cristian Mikehazi for his prior research in to Metasploit&#8217;s getsystem module which made this section easier to write.</p>
+<h2>Security considerations for Named Pipes / How to make safe pipes</h2>
+<p>The security of named pipes is largely down to the developer and how they choose to implement the server and client sides of the application.</p>
+<p>This is by no means an exhaustive list, but below details some of the good practices which should be considered whenever named pipes are to be deployed.</p>
+<h3>Server side security</h3>
+<p>The named pipe server is responsible for creating and managing a named pipe and its connected clients. Therefore, the most important element is to ensure that the named pipe server is indeed the correct server.</p>
+<p>In this effect, there is an important flag which should be set when attempting to start new named pipe server: FILE_FLAG_FIRST_PIPE_INSTANCE.</p>
+<p>By setting this flag it ensures that if the instance the server is attempting to create is not the first instance of the named pipe, it does not create the instance. In other words, it can give an indication as to whether another process has already created a named pipe server with this name and can allow for corrective action. This could be in the form of creating the server with an alternate name or stopping execution entirely.It is also a good idea that any intended clients are also made aware, if possible, that the server instance is not valid or has been changed so that they do not attempt to connect.</p>
+<p>Further to this, creation of a named pipe server with a pseudo-randomly generated name can assist in ensuring any attempt by an attacker to preemptively create the server process will be unsuccessful. This is an approach the Google Chrome browser uses to help thwart unintended processes from creating the named pipe servers it uses for communication.</p>
+<p>Another important server element is the maximum number of client instances allowed at any one time. If the maximum number of potential clients which will connect is known, a hard figure should be set to ensure that no further clients can connect. The flag which defines the maximum number of concurrent pipe instances is set as an integer value between 1 and 255 at invocation. To allow unlimited connections, the flag is set to PIPE_UNLIMITED_INSTANCES.</p>
+<h3>Client side security</h3>
+<p>Whenever a client pipe is under development, it is extremely important to consider carefully the level of privileges the pipe needs to do its job and to run it at the minimum level required.</p>
+<p>The primary source of exploits against named pipes is through the  impersonation of client privileges by the named pipe server. The easiest and most direct way to prevent a named pipe client from being impersonated is disallow pipe impersonation when connecting to a server. This can be achieved by setting the SECURITY_IDENTIFICATION flag or the SECURITY_ANONYMOUS flag when calling the CreateFile() function as part of the client connection process.</p>
+<p>In cases where impersonation is necessary, there are a number of other ways to ensure that only a legitimate client connects to a server. For example, in a simple application a specific sequence of information could be exchanged between the server and the client (a handshake) before any actual data is exchanged. For more advanced protection, encryption could be used. While not natively supported, public key cryptography (PKI) could be used if implemented correctly. These mechanisms are beyond the scope of this post but are worth bearing in mind.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>A year in the world of security advisories</title>
+		<link>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/</link>
+		<comments>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/#comments</comments>
+		<pubDate>Thu, 18 Dec 2014 10:57:11 +0000</pubDate>
+		<dc:creator><![CDATA[ACD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[advisory]]></category>
+		<category><![CDATA[disclosure]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4498</guid>
+		<description><![CDATA[<p>Security researchers find vulnerabilities in products; it’s an important and almost inevitable part of the job. One of the side effects of these discoveries is that often new, unfixed zero day vulnerabilities are identified which the affected vendor may not be aware of. This can present a somewhat difficult situation: What should be done with [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/">A year in the world of security advisories</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Security researchers find vulnerabilities in products; it’s an important and almost inevitable part of the job. One of the side effects of these discoveries is that often new, unfixed zero day vulnerabilities are identified which the affected vendor may not be aware of. This can present a somewhat difficult situation: What should be done with a new vulnerability that nobody else knows about yet?<span id="more-4498"></span></p>
+<p>This year I was tasked with helping to revitalise Portcullis vulnerability disclosure processes and then manage the day-to-day affairs of the resulting security advisory process.</p>
+<p>This article focuses on what it is like to deal with advisories and vendors on a regular basis. My hope is that this post sheds some light on our industry’s attitude towards advisories while including some (hopefully) interesting statistics correlated from my own experiences.</p>
+<h2>Portcullis disclosure policy</h2>
+<p>While every individual and organization differs, if discovering new security vulnerabilities is a frequent occurrence, it is a good idea to have some sort of disclosure policy.</p>
+<p>Here at Portcullis we follow what is generally labelled as a co-ordinated disclosure policy.</p>
+<p>In brief, a co-ordinated disclosure policy is based around attempting to co-operate with the vendor of the affected product to help ensure that a patch, or at least some mitigation of the vulnerability, can be implemented prior to public disclosure &#8211; which is usually a mutually agreed date.</p>
+<p>Our policy is fully documented and is always sent along with initial contact to a vendor, it can be read online here:</p>
+<p><a href="https://www.portcullis-security.com/co-ordinated-disclosure-policy/">https://www.portcullis-security.com/co-ordinated-disclosure-policy/</a>.</p>
+<h2>Inside the process</h2>
+<h3>Establishing contact</h3>
+<p>As you can imagine, responses to security advisories are far from uniform. They range from communicating with an automated CMS (and no surprise that you would usually be dealing with a CMS vendor when that happens) through to the overly hostile, or incredibly friendly individuals.</p>
+<p>In most situations, Portcullis would initiate contact by sending a simple initial contact e-mail after checking that the vulnerability has not already been disclosed. This message does not include any details of the vulnerability, it primarily serves to ensure we’re talking to the right person and to establish whether the vendor would like to use PGP.</p>
+<p>Many larger vendors have a procedure in place and, if we’re lucky, there is even a dedicated e-mail address and PGP key. However, when looking at reporting a vulnerability for a small project, finding an appropriate contact address can sometimes be difficult. If no other avenues were available to us we would resort to contacting RFC-2142 designated e-mail addresses such as security@, support@ and admin@.</p>
+<p>The good news is, approximately 70% of the time we, at minimum, manage to open a dialogue with vendors and in the majority of these cases we do manage to co-ordinate the disclosure.</p>
+<p>Initial response times from vendors are typically fairly prompt too; on average we get a response within 2 days and the vendor working on the fix within a week of initial contact.</p>
+<h3>The patching process</h3>
+<p>Most advisories spend a significant amount of time in this stage of the process, as patch turnaround times vary massively. We ask that vendors keep us appraised of their progress so that we can ensure that they are still committed to attempting to fix the issue.</p>
+<p>Many larger vendors have scheduled release cycles (think patch Tuesday equivalent) which means that it can be months before any publication co-ordination can take place.</p>
+<p>What I have personally found is that, unsurprisingly, the smallest vendors are often the quickest to deal with at this point in the process. This is because you are usually talking directly to the person in control of many or all aspects of the affected product, so they can create the fix and push it live with minimal time and few complications. There is the added benefit that smaller companies generally do not have a formalised policy so the conversations can feel less sterile.</p>
+<p>The average turnaround time (from initial contact to publication) of our advisories is calculated at 45 days. This number drops by 6 days if we calculate from when the vendor begins working on a patch and it falls to just over 30 days if we remove some of the atypical, extreme examples of turnaround times, for a more accurate average.</p>
+<p>In the extreme examples, we have had vendor contact last for over half a year while vendors attempt to coordinate fixes across multiple development teams for varying platforms or products and then add them to a release cycle. On the other end of the spectrum we have had the process from initial contact to patch released completed within a single working week on multiple occasions when dealing with smaller teams (or even individuals).</p>
+<p>There are a few other interesting points worth mentioning regarding contact which are not specifically related to the process:</p>
+<p>In about half of the cases, larger companies use the &lt;firstname&gt;.&lt;lastname&gt;@ convention for employee e-mail addresses. If you combine some simple social media searching with this knowledge, you can potentially avoid several extraneous steps and talk directly to the relevant person straight away. Smaller vendors are more likely to use varied e-mail naming conventions. In the majority of cases, vendors sign their e-mails with their full name.</p>
+<p>On multiple occasions we have been asked to provide Proof-of-Concept (PoC) exploits for the vulnerabilities we report. We have even been asked for compiled exe’s&#8230; (To be clear, we don’t provide compiled exploit code to vendors under any circumstance &#8211; primarily to prevent any potential legal ramifications and secondly, if a vendor needs a compiled exploit in order to replicate the issue then this is probably indicates a deeper cause for concern.)</p>
+<h3>Forced disclosure</h3>
+<p>Forced disclosure is triggered when a vendor does not co-operate for one reason or another.</p>
+<p>It is a fine line balancing the difference between us giving a vendor reasonable opportunity to address a vulnerability and disclosing without making sufficient effort to open a dialogue.</p>
+<p>We always attempt to contact a vendor on at least two occasions using different methods and giving around a two week gap between each attempt. Other reasons why we may end up forcing disclosure include if we believe a vendor is making no progress towards a fix after a reasonable amount of time, if a vendor has no interest in patching or actively dismisses our vulnerability.</p>
+<p>While forced disclosure does mean that an unpatched vulnerability becomes public; we do ultimately believe that this is a good thing for the security of the products and their users overall.</p>
+<p>The longer a vulnerability remains unpatched, the more likely someone else is to find it and eventually many individuals could be actively exploiting it. Without a platform to make this vulnerability as public as possible there is a good chance that systems administrators never become aware that a product is vulnerable and therefore no appropriate mitigations are put in place.</p>
+<p>Disclosure also helps to highlight which vendors take their security seriously. A product with a large quantity of unpatched exploits is something to seriously consider avoiding. That is not to say that a vendor with no disclosed vulnerabilities is the safest option, it could merely mean that nobody has taken an interest!</p>
+<p>Sometimes forced publication of a vulnerability can cause a vendor to suddenly take action and quickly produce a fix too (yes, we’ve had that happen).</p>
+<h2>Summary</h2>
+<p>While most larger vendors have a good procedure in place (at least in theory) for handling security advisories, many vendors we encounter leave much to be desired.</p>
+<p>In my opinion, one of the most helpful things a vendor can do is have a web page dedicated to product security which outlines the company’s policy, lists relevant contact details and, ideally, a PGP key to help secure privacy and simultaneously promote good e-mail security practices.</p>
+<p>The individual responsible for that e-mail address should know what security advisories are and how to handle them.</p>
+<p>It is not too much effort to create a static page with a rough procedure for dealing with vulnerabilities and it does demonstrate that the vendor takes the security of their products seriously.</p>
+<p>Editor’s note: Since this post was written, Portcullis have updated their disclosure process to require a suggested remediation step from the reporting researcher. We believe this is particularly critical in the case of uncoordinated disclosures.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/">A year in the world of security advisories</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/a-year-in-the-world-of-security-advisories/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

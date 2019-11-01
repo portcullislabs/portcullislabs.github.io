@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; ROD</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/rod/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Could Sophos Anti-Virus Web Protection cause a privacy concern for your organisation?</title>
+		<link>https://labs.portcullis.co.uk/blog/could-sophos-antivirus-web-protection-cause-a-privacy-concern-for-your-organisation/</link>
+		<comments>https://labs.portcullis.co.uk/blog/could-sophos-antivirus-web-protection-cause-a-privacy-concern-for-your-organisation/#comments</comments>
+		<pubDate>Mon, 02 Jun 2014 13:43:41 +0000</pubDate>
+		<dc:creator><![CDATA[ROD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[privacy]]></category>
+		<category><![CDATA[Sophos]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2458</guid>
+		<description><![CDATA[<p>Sophos provide Anti-Virus solutions for a number of platforms, including Windows, Mac and various flavors of Linux and Unix. This blog post however details a potential privacy concern when the &#8220;Web Protection&#8221; component is enabled within the Sophos Endpoint Security and Control software, which features within Sophos Anti-Virus for Windows (version 10.3.x). This is not [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/could-sophos-antivirus-web-protection-cause-a-privacy-concern-for-your-organisation/">Could Sophos Anti-Virus Web Protection cause a privacy concern for your organisation?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Sophos provide Anti-Virus solutions for a number of platforms, including Windows, Mac and various flavors of Linux and Unix. This blog post however details a potential privacy concern when the &#8220;Web Protection&#8221; component is enabled within the Sophos Endpoint Security and Control software, which features within Sophos Anti-Virus for Windows (version 10.3.x).<span id="more-2458"></span></p>
+<p>This is not something new, however I personally only discovered this recently whilst looking at the product and thought that others may benefit from the information.</p>
+<p>At this point I would also like to state that Sophos have informed Portcullis that they are aware of this issue and will be addressing it in a future version.</p>
+<h2>What is &#8220;Web Protection&#8221;?</h2>
+<p>&#8220;Web Protection&#8221; is described as follows within Sophos Anti-Virus Help:</p>
+<p>&#8220;Sophos Web Protection provides enhanced protection against web threats by preventing access to locations that are known to host malware. It blocks endpoints access to such sites by performing a real-time lookup against Sophos&#8217;s online database of malicious web sites.&#8221; (Sophos Endpoint Security and Control Help / About Sophos Endpoint Security and Control).</p>
+<h2>Why can enabling &#8220;Web Protection&#8221; cause a potential privacy concern?</h2>
+<p>When it is enabled and a user visits a web site, the URL is sent to Sophos&#8217; online database where a check is performed to determine if the site is known to be malicious. If the web site is not deemed to be a known malicious web site then the user will not be prevented from accessing it, however if the web site is found to be malicious Sophos will block access and provide the user with a page similar to that shown below:</p>
+<div id="attachment_2460" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-2459"><div class="lb-album"><a href="#image-2459"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/siteBlockedBySophosAV-300x120.png" alt="Site Blocked By Sophos Anti-Virus" class="wp-image-2460 "><span></span></a></div>              
+<a href="#imageclose-2459" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2459">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/siteBlockedBySophosAV.png" alt="image-2459">
+                   </div></a><p class="wp-caption-text">Sophos Anti-Virus detects malicious web site</p></div>
+<p>As a result of this, if your organization is more concerned about privacy than a check being performed to determine if a web site being visiting is known to be malicious or not, then `Web Protection&#8217; should be disabled. This is due to the fact that whilst &#8220;Web Protection&#8221; is enabled, Sophos will have knowledge of the web sites that you are visiting.</p>
+<h2>How is this information sent to Sophos?</h2>
+<p>When a user visits a web site a subsequent GET request is automatically sent to Sophos&#8217; online database containing the URL that the user is attempting to visit. However, the URL is encoded using ROT13, a simple letter substitution that replaces letters with those that are 13 positions ahead in the alphabet.</p>
+<p>Lets take a look at an example.</p>
+<p>When a user browses to https://labs.portcullis.co.uk, the following request is then automatically sent to Sophos&#8217; online database to confirm that the web site is safe to access:</p>
+<ul>
+<li>http://http.00.s.sophosxl.net/V3/01/ynof.cbegphyyvf.pb.hx.w/</li>
+</ul>
+<p>The initial part of the above URL &#8220;http://http.00.s.sophosxl.net/V3/01/&#8221; and the end of the URL &#8220;.w&#8221; remain static when these requests are submitted to Sophos. It is only the part of the URL between these static points which contains the ROT13 encoded version of the URL that the user is attempting to access. Let&#8217;s decode the ROT13 encoded part of this URL, using the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ echo ynof.cbegphyyvf.pb.hx | gcipher -C Rot -k 13
+labs.portcullis.co.uk
+</pre>
+<p>The response from Sophos, as shown below, indicates that the site is not malicious and therefore allows the user to continue to the web site:</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+HTTP/1.1 200 OK
+Content-Length: 20
+
+w l h 06 109100713
+</pre>
+<p>If however the user browses to a malicious web site, for example the Sophos test web site located at http://sophostest.com/malware/index.html, the response will look similar to the following and will result in the user being blocked from accessing the web site (and will be shown a page similar to that depicted in the screenshot shown earlier within this post):</p>
+<pre class="brush: plain; gutter: false; title: ; notranslate">
+HTTP/1.1 200 OK
+Content-Length: 28
+
+w h p 13 101 Mal/HTMLGen-A
+</pre>
+<p>It is noted that all requests submitted automatically to Sophos when &#8220;Web Protection&#8221; is enabled are sent over the plain text protocol HTTP. This includes SSL links that the user is attempting to visit. For example a user visiting https://www.hotmail.com would result in the following request being submitted to Sophos http://http.00.s.sophosxl.net/V3/01/jjj.ubgznvy.pbz.w/. If you wish you can decode this URL yourself using the method described earlier in this post!</p>
+<p>Finally, it is noted that requests submitted to Sophos do not appear to include query parameters, however I have observed directory names included within requests.</p>
+<h2>How to disable &#8220;Web Protection&#8221;</h2>
+<p>Before detailing the steps that can be taken to disable &#8220;Web Protection&#8221; it is worth pointing out that Sophos do not advise disabling this feature, as they believe this will reduce the level of protection provided by their product. It is therefore advised that a risk assessment be conducted to ensure that the benefits of disabling this feature outweigh the risk of keeping it enabled for your particular environment.</p>
+<p>The following steps can be taken to disable &#8220;Web Protection&#8221;:</p>
+<ol>
+<li>Open Sophos Endpoint Security And Control</li>
+<li>Click &#8220;Configure&#8221; in the menu bar and select &#8220;Anti-Virus &gt; Web Protection&#8221;</li>
+<li>A new window will appear, as pictured below</li>
+<li>Ensure &#8220;Block access to malicious web sites&#8221; is set to Off</li>
+<li>Click &#8220;OK&#8221;</li>
+<li>
+<div id="attachment_2459" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-2460"><div class="lb-album"><a href="#image-2460"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/webProtection-300x190.png" alt="&quot;Web Protection&quot; Dialogue Box" class="size-medium wp-image-2459"><span></span></a></div>              
+<a href="#imageclose-2460" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2460">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/webProtection.png" alt="image-2460">
+                   </div></a><p class="wp-caption-text">&#8220;Web Protection&#8221; is now disabled</p></div></li>
+</ol>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/could-sophos-antivirus-web-protection-cause-a-privacy-concern-for-your-organisation/">Could Sophos Anti-Virus Web Protection cause a privacy concern for your organisation?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/could-sophos-antivirus-web-protection-cause-a-privacy-concern-for-your-organisation/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Are you considering using Microsoft Group Policy Preferences?&#8230; Think again!</title>
+		<link>https://labs.portcullis.co.uk/blog/are-you-considering-using-microsoft-group-policy-preferences-think-again/</link>
+		<comments>https://labs.portcullis.co.uk/blog/are-you-considering-using-microsoft-group-policy-preferences-think-again/#comments</comments>
+		<pubDate>Wed, 06 Nov 2013 08:57:45 +0000</pubDate>
+		<dc:creator><![CDATA[ROD]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2239</guid>
+		<description><![CDATA[<p>Windows 2008 Server introduced a new feature known as Group Policy Preferences that allows administrators to deploy specific configurations that affect computers/users within a domain. This post details a serious problem associated with the use of Group Policy Preferences, specifically when a policy includes a username and encrypted password, which can result in a normal [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/are-you-considering-using-microsoft-group-policy-preferences-think-again/">Are you considering using Microsoft Group Policy Preferences?&#8230; Think again!</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Windows 2008 Server introduced a new feature known as <a href="http://www.microsoft.com/en-us/download/details.aspx?id=24449">Group Policy Preferences</a> that allows administrators to deploy specific configurations that affect computers/users within a domain. This post details a serious problem associated with the use of Group Policy Preferences, specifically when a policy includes a username and encrypted password, which can result in a normal user being able to escalate their level of privilege on their local desktop/laptop and potentially compromise the security of the entire domain.<span id="more-2239"></span></p>
+<p>I would like to point out that I did not discover this vulnerability and it is not something new, in fact it has been <a href="http://www.rapid7.com/db/modules/post/windows/gather/credentials/gpp">well</a> <a href="http://obscuresecurity.blogspot.co.uk/2012/05/gpp-password-retrieval-with-powershell.html">documented</a> on the Internet for over a year. It is however clear that not all systems administrators are aware of the associated risks when using Group Policy Preferences, as I continue to see their use.</p>
+<h2>What are Group Policy Preferences?</h2>
+<p>Group Policy Preferences were introduced in Windows Server 2008 and provide additional functionality over Group Policy Objects (GPOs). Group Policy Preferences allow administrators to deploy specific configurations that can be configured to affect all computers/users within a domain, or target specific users/groups of users only.</p>
+<p>Configured within the Group Policy Management Console, Group Policy Preferences allow administrators to push out a ultitude of policies, such as automatically Mapping a Network Drive when a user logs into their computer, updating the username of the Built-in Administrator account, or making changes to the Registry.</p>
+<p>Group Policy Preferences can also be used with earlier versions of Windows, however additional client-side extensions are required to be installed. Further details can be obtained via the <a title="Microsoft Group Policy Preferences Getting Started Guide" href="http://technet.microsoft.com/en-us/library/cc731892%28v=ws.10%29.aspx" target="_blank">Microsoft Group Policy Preferences Getting Started Guide</a>.</p>
+<h2>Group Policy Preference Example XML Configuration File</h2>
+<p>In this post I am not going to detail the steps taken to create and deploy a new policy through Group Policy Preferences, however the following provides an example of a Group Policy Preference XML configuration file that I have created to update the name and password of the Built-in Administrator account across all systems on which it is deployed:</p>
+<p><a name="imageclose-2240"><div class="lb-album"><a href="#image-2240"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/groups-content2-300x110.png" alt="groups-content2" class="alignnone size-medium wp-image-2240"><span></span></a></div>              
+<a href="#imageclose-2240" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2240">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/groups-content2.png" alt="image-2240">
+                   </div></a></p>
+<p>You should be able to see that this policy will rename the Built-in Administrator account to &#8220;locadm&#8221;. The password that we have set on this account is however encrypted within the &#8220;cpassword&#8221; attribute.</p>
+<h2>Why using Group Policy Preferences is a bad idea</h2>
+<p>So far there does not seem to be too much wrong with the use of Group Policy Preferences. They are easy to configure/deploy and any password contained within a policy is encrypted within the Group Policy Preference XML configuration file, so what is the problem?</p>
+<p>When a Group Policy Preference is deployed on a Domain Member, in this example on a Windows 7 client, a sub-directory is automatically added within &#8220;C:\Users\All Users\Microsoft\Group Policy\History&#8221;, which contains the Group Policy Preference XML configuration file. The full path to the history configuration file that I detailed earlier, the one that will rename the Built-in Administrator account and change its password, is shown below as an example:</p>
+<ul>
+<li>C:\Users\All Users\Microsoft\Group Policy\History\{A1C0C41B-D2F8-401B-A5D1-437DA197A809}\Machine\Preferences\Groups\Groups.xml</li>
+</ul>
+<p>The history file is readable by any authenticated user, as shown below:</p>
+<p><a name="imageclose-2241"><div class="lb-album"><a href="#image-2241"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/history-permissions-300x75.png" alt="history-permissions" class="alignnone size-medium wp-image-2241"><span></span></a></div>              
+<a href="#imageclose-2241" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2241">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/history-permissions.png" alt="image-2241">
+                   </div></a></p>
+<p>The same Group Policy Preference XML configuration file is also accessible via the following UNC path on the Domain Controller, again by any authenticated user:</p>
+<ul>
+<li>\\Domain_Controller\sysvol\Domain_Name\Policies\{A1C0C41B-D2F8-401B-A5D1-437DA197A809}\Machine\Preferences\Groups\Groups.xml</li>
+</ul>
+<p>The problem is that although the password is encrypted within the Group Policy Preference XML configuration file, using 256-bit AES encryption, <a href="http://msdn.microsoft.com/en-us/library/cc422924.aspx">the 32-byte AES key is openly document by Microsoft</a>. As a result, any authenticated user with access to the Group Policy Preference XML configuration file can easily decrypt the password stored within the &#8220;cpassword&#8221; attribute, using tools that are freely available on the Internet.</p>
+<p>A user that decrypts the password stored within the &#8220;cpassword&#8221; attribute of my example Group Policy Preference XML configuration, would then have the username and password of the renamed Built-in Administrator account &#8220;locadm&#8221;, enabling then to log into their computer as this user. They would also be able to connect to other systems within the network where the credentials have been reused.</p>
+<p>In the event of a domain administrator account being used within a Group Policy Preference policy, the user would be able to compromise the security of the entire domain.</p>
+<p>Can unauthenticated users obtain access to this information?</p>
+<p>Yes. Any user on the network that is able to monitor the network traffic between a Domain Controller and a system on which a Group Policy Preference is being deployed would be able to view the XML configuration file as plain text, as it is traverses the network unencrypted via the Server Message Block (SMB) protocol. The following screenshot shows an example of a captured SMB2 packet using wireshark, which contains the Group Policy Preference XML configuration file:</p>
+<p><a name="imageclose-2242"><div class="lb-album"><a href="#image-2242"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/wiresharkGPPcapture-300x163.png" alt="wiresharkGPPcapture" class="alignnone size-medium wp-image-2242"><span></span></a></div>              
+<a href="#imageclose-2242" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2242">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/wiresharkGPPcapture.png" alt="image-2242">
+                   </div></a></p>
+<h2>Proof of concept: Decrypting the password</h2>
+<p>To decrypt the password stored within the &#8216;cpassword&#8217; attribute of a Group Policy Preference XML configuration file, I make use of the Ruby script published on the <a href="http://carnal0wnage.attackresearch.com/2012/10/group-policy-preferences-and-getting.html" target="_blank">carnal0wnage web site</a>.</p>
+<p>The following screenshot shows the Ruby script that I have updated to include the encrypted password from the &#8220;cpassword&#8221; attribute of my example Group Policy Preference XML configuration file (line 5 contains the encrypted password I want to decrypt):</p>
+<p><a name="imageclose-2243"><div class="lb-album"><a href="#image-2243"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/decrypt-example-300x106.png" alt="decrypt-example" class="alignnone size-medium wp-image-2243"><span></span></a></div>              
+<a href="#imageclose-2243" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2243">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/decrypt-example.png" alt="image-2243">
+                   </div></a></p>
+<p>Now lets decrypt the password&#8230;</p>
+<p><a name="imageclose-2244"><div class="lb-album"><a href="#image-2244"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/decrypt-example-password-300x25.png" alt="decrypt-example-password" class="alignnone size-medium wp-image-2244"><span></span></a></div>              
+<a href="#imageclose-2244" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2244">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/decrypt-example-password.png" alt="image-2244">
+                   </div></a></p>
+<h2>Can the History files be easily removed from Domain Members?</h2>
+<p>Yes. History files for individual Group Policy Preferences are automatically removed from Domain Members once they perform a Group Policy update (i.e. &#8220;gpupdate&#8221;), but only after &#8220;link enabled&#8221; is unchecked against the specific policy within Group Policy Management on the Domain Controller. It is imperative to unlink the policy and not simply delete it, as deleting the policy will not result in the corresponding History files being deleted on Domain Members. Instead, they will remain present until manually deleted.</p>
+<p>However, it should not be considered sufficient to only delete the History files from Domain Members and then disable the policies on the Domain Controller and think all is well. Instead it should be assumed that any credentials used within deployed Group Policy Preferences have been compromised and therefore the password to each account should be updated.</p>
+<p>The screenshot below shows the &#8216;link enabled&#8217; option being unchecked:</p>
+<p><a name="imageclose-2245"><div class="lb-album"><a href="#image-2245"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/ensure-history-files-removed-from-domain-members-300x141.png" alt="ensure-history-files-removed-from-domain-members" class="alignnone size-medium wp-image-2245"><span></span></a></div>              
+<a href="#imageclose-2245" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-2245">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/11/ensure-history-files-removed-from-domain-members.png" alt="image-2245">
+                   </div></a></p>
+<h2>To Summarise</h2>
+<p>Lets quickly recap why Group Policy Preferences should not be used when there is a requirement for the policy to contain a user credentials:</p>
+<ul>
+<li>Any authenticated user within the domain can trivially obtain access to the Group Policy Preference XML configuration files either locally on their computer, or via the sysvol folder on the Domain Controller. They can then decrypt any password contained within the &#8220;cpassword&#8221; attribute of a Group Policy Preference XML configuration file and escalate their level of privilege and obtain an unauthorised level of access to any resource within the network on which the credentials are accepted</li>
+<li>Any unauthenticated user on the network (e.g. an unauthorised user who connects a laptop to the network) that is able to sniff network traffic would be able to capture Server Message Block packets that contain the Group Policy Preference XML configuration file. They could then decrypt the password contained within the &#8220;cpassword&#8221; attribute, enabling them to obtain unauthorised access to any resource on which the credentials are accepted</li>
+</ul>
+<p>So, do you still want to utilise Group Policy Preferences to deploy configurations within your domain?&#8230;.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/are-you-considering-using-microsoft-group-policy-preferences-think-again/">Are you considering using Microsoft Group Policy Preferences?&#8230; Think again!</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/are-you-considering-using-microsoft-group-policy-preferences-think-again/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

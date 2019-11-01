@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; cisco</title>
+	<atom:link href="https://labs.portcullis.co.uk/tag/cisco/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Accessing Cisco kit politely</title>
+		<link>https://labs.portcullis.co.uk/blog/accessing-cisco-kit-politely/</link>
+		<comments>https://labs.portcullis.co.uk/blog/accessing-cisco-kit-politely/#comments</comments>
+		<pubDate>Fri, 30 May 2014 08:23:24 +0000</pubDate>
+		<dc:creator><![CDATA[RUS]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[cisco]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4223</guid>
+		<description><![CDATA[<p>We were recently asked to assess a risk adverse environment in which there was (I don&#8217;t know the collective noun) a &#8220;chunk&#8221; of Cisco kit, comprising both switches and ASA firewalls. We needed to make sure it was being accessed in a secure manner. The client had decided for this small isolated environment that implementing [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/accessing-cisco-kit-politely/">Accessing Cisco kit politely</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We were recently asked to assess a risk adverse environment in which there was (I don&#8217;t know the collective noun) a &#8220;chunk&#8221; of Cisco kit, comprising both switches and ASA firewalls. We needed to make sure it was being accessed in a secure manner.<span id="more-4223"></span></p>
+<p>The client had decided for this small isolated environment that implementing a centralised authentication system was inappropriate and costly, and to be fair, I can see that it was a fair decision.</p>
+<p>Local authentication, given the scale and scope of the solution was the appropriate option and, in keeping with good security practices the client had disabled Telnet and only permitted SSH access, of the appropriate flavour. Furthermore, access to the management interface was only possible from specific IP addresses. Lovely.</p>
+<p>However something sparked our attention: the administrative users would SSH in as level 15. Forgive me for expanding on this: level 15 is privileged EXEC mode, i.e. the superuser. And going straight in as a superuser is bad, kids.</p>
+<p>Ordinarily for systems such as this, we would suggest logging in as a low privilege user (in Cisco terms that would be &#8220;level 0&#8243;, or user EXEC mode), and then to elevate privileges via the use of secondary authentication.</p>
+<p>However we debated the use of a shared enable (level 15 access) password, which in theory could potentially erode security and the ability to audit commands being executed on the devices.</p>
+<p>The solution we proposed to the client ended up being the use of the user definable privilege levels (1-14) which can be set up to permit users access to administrator defined commands and configuration options.</p>
+<p>So, for instance, in this environment we recommended that, for the 3 users that had access to the Cisco devices, the accounts would be configured as follows with policies that would be put in place to the following effect:</p>
+<ul>
+<li>Each of them would, by default be granted level 0 privilege when SSH-ing in</li>
+<li>Each of them would have individual credentials assigned to custom privilege levels (1,2,3) which would enable commonly used administrative commands consummate with their duties</li>
+<li>In extremis the level 15 privilege mode password would be made available for use, and would then be changed</li>
+</ul>
+<p>In essence a kind of clumsy sudoers approach to accessing the devices.</p>
+<p>For example user Bob would be configured with level 0 access upon SSH-ing in. And then assign to Bob his level 1 password.</p>
+<p>Then we would define the usual commands he would be likely to need to administer the device:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+device(config)#privilege interface level 1 ip address
+device(config)#privilege configure level 1 interface
+device(config)#privilege exec level 1 show running-config
+device(config)#enable secret level 1 BobL!kesSecu)ty
+</pre>
+<p>In order to elevate to the level 1 privileged account, Bob then simply has to use the following command:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+enable 1
+</pre>
+<p>The interesting side-effect of this is that if Bob were to show the running configuration, he would only see the configuration of the commands that he has that privilege level to alter.</p>
+<p>Which is nice.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/accessing-cisco-kit-politely/">Accessing Cisco kit politely</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/accessing-cisco-kit-politely/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

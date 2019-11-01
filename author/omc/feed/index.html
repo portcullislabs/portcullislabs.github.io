@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portcullis Labs &#187; OMC</title>
+	<atom:link href="https://labs.portcullis.co.uk/author/omc/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
+	<description>Research and Development</description>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.5</generator>
+	<item>
+		<title>Graham &#8220;@gsuberland&#8221; Sutherland&#8217;s 44CON presentation</title>
+		<link>https://labs.portcullis.co.uk/blog/graham-gsuberland-sutherlands-44con-presentation/</link>
+		<comments>https://labs.portcullis.co.uk/blog/graham-gsuberland-sutherlands-44con-presentation/#comments</comments>
+		<pubDate>Fri, 11 Sep 2015 13:16:32 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[44CON]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5264</guid>
+		<description><![CDATA[<p>Graham recently gave a presentation at 44CON&#8217;s community night entitled &#8220;GET IN THE RING0&#8243; on the subject of Windows kernel drivers. His talk covered: Same basic concepts as writing usermode apps Some additional bits Talking between usermode / kernelmode Major functions, IRPs, IOCTLs Special concepts like IRQLs (mostly) officially documented on MSDN! (most of) the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/graham-gsuberland-sutherlands-44con-presentation/">Graham &#8220;@gsuberland&#8221; Sutherland&#8217;s 44CON presentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>Graham recently gave a presentation at 44CON&#8217;s community night entitled &#8220;GET IN THE RING0&#8243; on the subject of Windows kernel drivers.<span id="more-5264"></span></p>
+<p>His talk covered:</p>
+<ul>
+<li>Same basic concepts as writing usermode apps</li>
+<li>Some additional bits
+<ul>
+<li>Talking between usermode / kernelmode</li>
+<li>Major functions, IRPs, IOCTLs</li>
+<li>Special concepts like IRQLs</li>
+</ul>
+</li>
+<li>(mostly) officially documented on MSDN!</li>
+<li>(most of) the rest is reverse engineered</li>
+</ul>
+<p>You can find the slides <a href="https://labs.portcullis.co.uk/presentations/get-in-the-ring0/" title="here">here</a>.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/graham-gsuberland-sutherlands-44con-presentation/">Graham &#8220;@gsuberland&#8221; Sutherland&#8217;s 44CON presentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/graham-gsuberland-sutherlands-44con-presentation/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Burp Extension</title>
+		<link>https://labs.portcullis.co.uk/blog/burp-extension/</link>
+		<comments>https://labs.portcullis.co.uk/blog/burp-extension/#comments</comments>
+		<pubDate>Wed, 26 Aug 2015 12:09:36 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[training]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5225</guid>
+		<description><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>At Portcullis, one of the more frequent assessments we perform are web application assessments. One of the main challenges we face during these assessments is to look for information that can either help escalate our privileges or allow us to gain access to different functionalities of the web application. Unauthorised access to functionality can often be considered an issue however, testing for this can also lead to information about the type of web server an application is running on, the underlying host and its version.<span id="more-5225"></span></p>
+<p>To check whether an application is out-of-date or is there are any known vulnerabilities associated with said version we must first obtain the server and version information. This can often prove time consuming and can be subject to human error. To improve effectiveness and reduce occurrence of human error we developed a <a href="https://portswigger.net/burp/">BurpSuite</a> extension that checks whether the server discloses any information within the response headers and automatically adds the issue to an issues list.</p>
+<p>In addition to checking for disclosed information, the extension with also make a request to the web server’s main page for the latest version and compare this to the application in question to confirm that the application in question is the most up to date available. The most common web servers, and some others, are already bundled with the extension. However, the extension also provides a configuration tab in which the headers that are checked for information disclosure can be modified, removed or added. This also applies to the software, URLs and REGEX used to access the latest versions.</p>
+<p style="text-align: left;"><a name="imageclose-5226"><div class="lb-album"><a href="#image-5226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION-300x254.png" alt="BURPEXTENSION" class="size-medium wp-image-5231 aligncenter"><span></span></a></div>              
+<a href="#imageclose-5226" class="css3lightbox-close">
+				   <div class="lb-overlay" id="image-5226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/08/BURPEXTENSION.png" alt="image-5226">
+                   </div></a></p>
+<p>In the above image, you will see that there are two other pieces of functionality bundled with the extension. The first, following the same line of enquiry as the previous (checking the server’s response headers), the extension is also able to check for missing security headers. As before, whilst most of the security headers are already bundled with the extension, it is possible to add more/alternative headers to be check for. Additionally, there is an option to add an informational issue if any of the security headers are found.</p>
+<p>The second functionality is a default burp state restorer. Following good practice, a new assessment would start with a clean burp state. To improve efficiency, instead of repeatedly loading the same path state, you can use the extension to load a state file from any chosen path. This will save you at least 4 clicks and you won’t forget to configure anything when starting burp.</p>
+<p>Finally, the last piece of functionality provided by the extension is a new tab on the request and response editor window that parses a JSON object and prints it with indentation, making it easier to read. This will prove useful when dealing with web services or AJAX requests with JSON responses.</p>
+<p>It should be noted that when reporting the information disclosure and the missing headers issues, only one issue is reported per host. In cases where different finding appear in later responses, further issues will be added with the new findings.</p>
+<p>The source code of the application can be found at : <a href="https://github.com/eonlight/BurpExtenderHeaderChecks">https://github.com/eonlight/BurpExtenderHeaderChecks</a></p>
+<p><em>This blog post was written by Ruben</em></p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/burp-extension/">Burp Extension</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/burp-extension/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>EMF Camp 2014 talk</title>
+		<link>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/</link>
+		<comments>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/#comments</comments>
+		<pubDate>Thu, 28 Aug 2014 17:15:14 +0000</pubDate>
+		<dc:creator><![CDATA[OMC]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[analysis]]></category>
+		<category><![CDATA[auditing]]></category>
+		<category><![CDATA[conference]]></category>
+		<category><![CDATA[emfcamp2014]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[root]]></category>
+		<category><![CDATA[SDL]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4646</guid>
+		<description><![CDATA[<p>We recently announced our sponsorship of EMF Camp 2014, were ready to go Portcullis flags in tow and will be heading on over to Milton Keynes to help get EMF ready. While there we will not only be sponsoring the Lounge where people can come and enjoy a space to relax and drink beer and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/">EMF Camp 2014 talk</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We recently announced our sponsorship of EMF Camp 2014, were ready to go Portcullis flags in tow and will be heading on over to Milton Keynes to help get EMF ready.</p>
+<p>While there we will not only be sponsoring the Lounge where people can come and enjoy a space to relax and drink beer and setting up Portcullis Village where people can visit us and exchange ideas but we will be having members of Portcullis hosting talks throughout the weekend.<span id="more-4646"></span></p>
+<h2>How Many Bugs Can A Time Server Have? Friday 29th @ 14:00PM Stage B</h2>
+<p>Portcullis members Tim Brown and Mike Emery will be talking about a number of new advisories to be released by Portcullis during the event including remote root in a network device. The attack surface area will be broken down, with the bugs in each area exposed. The impact of the finding as a whole will then be discussed, with the consequences potentially reaching far beyond the compromised device itself!</p>
+<h2>Minimal Effort Web Application Security (a.k.a. how to make my job harder) Sunday 31st @ 12:00 Stage C</h2>
+<p>Portcullis member Graham Sutherland will be presenting his quick tips on making your web applications more resistant to common attack vectors, without putting a lot of effort in. Graham says &#8220;In some cases, simply adding a like to a configuration file can completely prevent entire classes of attack from being viable&#8221;. Graham will take a look at hardening against XSS, SQL injection, click jacking, password cracking, and a few other bits if there’s time. &#8220;With any luck, you’ll make my job a lot harder!&#8221;</p>
+<p>For those spoilt for choice both talks will be featured in our EMF blog to be posted after the event.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/">EMF Camp 2014 talk</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/emf-camp-2014-talk/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>
