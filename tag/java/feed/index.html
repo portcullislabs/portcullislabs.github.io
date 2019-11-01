@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; Java</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/java/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/java/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Building a sandpit</title>
-		<link>https://labs.portcullis.co.uk/blog/building-a-sandpit/</link>
-		<comments>https://labs.portcullis.co.uk/blog/building-a-sandpit/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/building-a-sandpit/</link>
+		<comments>https://portcullislabs.github.io/blog/building-a-sandpit/#comments</comments>
 		<pubDate>Tue, 18 Nov 2014 16:55:02 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -28,8 +28,8 @@
 		<category><![CDATA[SDL]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1108</guid>
-		<description><![CDATA[<p>Today I was looking at how plugins could safely be incorporated into a J2EE application server. The plugins in this instance are executed server side, rather than on the client and are, in the main, provided by 3rd parties (digital advertising agencies etc). The aim was to limit the scope in which they operate. The [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/building-a-sandpit/">Building a sandpit</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1108</guid>
+		<description><![CDATA[<p>Today I was looking at how plugins could safely be incorporated into a J2EE application server. The plugins in this instance are executed server side, rather than on the client and are, in the main, provided by 3rd parties (digital advertising agencies etc). The aim was to limit the scope in which they operate. The [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/building-a-sandpit/">Building a sandpit</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Today I was looking at how plugins could safely be incorporated into a J2EE application server. The plugins in this instance are executed server side, rather than on the client and are, in the main, provided by 3rd parties (digital advertising agencies etc). The aim was to limit the scope in which they operate. The implementation I looked at is pretty much the first instance where I&#8217;ve seen these techniques used, so I thought it was worth sharing.<span id="more-1108"></span></p>
 <p>Let&#8217;s begin by enumerating the techniques can be used:</p>
 <ul>
@@ -45,8 +45,8 @@
 <p>Whilst the developers we worked with chose to implement their own security manager, I feel that there is benefit in discussing an alternate approach. Underneath the surface of the default access controller present within the JVM are a series of permissions which can be assigned or modified by the use of a custom security policy. Indeed, it would be possible to make use of these permissions within the developers custom security manager as an alternative to implementing the checks as code. In my mind, utilising a security policy is preferable since much of the complexity is abstracted away however it gives less fine grained access controls since you&#8217;re limited to the policy language as implemented within the JRE.</p>
 <p>Remember that whilst privilege escalation vulnerabilities are relatively common in the JRE as a whole (hence the raft of remote code execution bugs we&#8217;ve seen with applets), what we&#8217;ve looked at here is a security in depth measure that can be applied to so-called trusted code supplied by a 3rd party developer that runs in a server environment. Thankfully, the threat actors in a position to exploit any bugs you may leave behind is significantly reduced.</p>
 <p>In conclusion, the concepts I&#8217;ve touched on in this blog post are are quite complex and leave a fair degree of discretion to developers which may allow for vulnerabilities to be introduced. If you&#8217;re interested in implementing such a solutions, I would strongly recommend that you acquire a copy of <a title="Java Security" href="http://www.amazon.co.uk/Java-Security-Series-Scott-Oaks/">Java Security</a> which covers these and other concepts in far greater depth. Useful too, is the security research of <a title="Security Explorations" href="http://www.security-explorations.com/en/index.html">Security Explorations</a>, a Polish research company who have had a lot of fun with Java.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/building-a-sandpit/">Building a sandpit</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/building-a-sandpit/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/building-a-sandpit/">Building a sandpit</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/building-a-sandpit/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

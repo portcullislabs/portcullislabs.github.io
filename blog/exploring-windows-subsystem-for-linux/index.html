@@ -6,35 +6,35 @@
 <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+<link rel="stylesheet" href="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.css" media="screen" />
 
 
 <!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
-<link rel="canonical" href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/" />
+<link rel="canonical" href="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/" />
 <meta property='og:locale' content='en_US'/>
 <meta property='og:type' content='article'/>
 <meta property='og:title' content='Exploring Windows Subsystem for Linux - Portcullis Labs'/>
-<meta property='og:url' content='https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/'/>
+<meta property='og:url' content='https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/'/>
 <meta property='og:site_name' content='Portcullis Labs'/>
 <!-- / Yoast WordPress SEO plugin. -->
 
-<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
-<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
-<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
-<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
-<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
-<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://portcullislabs.github.io/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://portcullislabs.github.io/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//portcullislabs.github.io/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://portcullislabs.github.io/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://portcullislabs.github.io/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
 <!--[if lte IE 7]>
-<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
 <![endif]-->
-<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
 
  
 
-<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<link rel="shortcut icon" href="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
 <script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
                     (function() {
                       var first_load_interval_id = setInterval(function () {
@@ -62,8 +62,8 @@
 <div id="cisco">
     <div id="cisco-container" class="clearfix">
         <div class="left">
-            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
-            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
         </div>
         <div class="right">
             <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
@@ -77,7 +77,7 @@
 
     <div class="portcullis-shapes">
 		<div class="portcullis-headline" data-left="14.6%">
-    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
+    <a href="https://portcullislabs.github.io/">Portcullis Labs</a>
 </div>
 		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
 <div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
@@ -92,19 +92,19 @@
 <nav class="portcullis-nav clearfix">
     
 <ul class="portcullis-hmenu">
-	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
+	<li class="menu-item-268"><a href="https://portcullislabs.github.io" title="Home">Home</a>
 	</li>
-	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
+	<li class="menu-item-6568"><a href="https://portcullislabs.github.io/advisories/" title="Advisories">Advisories</a>
 	</li>
-	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
+	<li class="menu-item-83"><a href="https://portcullislabs.github.io/blog/" title="Blog">Blog</a>
 	</li>
-	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
+	<li class="menu-item-66"><a href="https://portcullislabs.github.io/presentations/" title="Presentations">Presentations</a>
 	</li>
-	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
+	<li class="menu-item-62"><a href="https://portcullislabs.github.io/tools/" title="Tools">Tools</a>
 	</li>
-	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
+	<li class="menu-item-64"><a href="https://portcullislabs.github.io/whitepapers/" title="Whitepapers">Whitepapers</a>
 	</li>
-	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
+	<li class="menu-item-59"><a href="https://portcullislabs.github.io/downloads/" title="Downloads">Downloads</a>
 	</li>
 </ul>
  
@@ -119,7 +119,7 @@
                     <div class="portcullis-content-layout-row">
                         <div class="portcullis-layout-cell portcullis-content clearfix">
 							<article id="post-5869"  class="portcullis-post portcullis-article  post-5869 post type-post status-publish format-standard hentry category-blog tag-analysis tag-linux tag-root tag-windows">
-                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Exploring Windows Subsystem for Linux</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="10:00">27/07/2017</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/tmb/" title="View all posts by TMB">TMB</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/"></div><!-- AddThis Button BEGIN -->
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Exploring Windows Subsystem for Linux</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="10:00">27/07/2017</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://portcullislabs.github.io/author/tmb/" title="View all posts by TMB">TMB</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/"></div><!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
 </div><p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new <a title="Windows Subsystem for Linux" href="https://msdn.microsoft.com/en-gb/commandline/wsl/about">Windows Subsystem for Linux</a> (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from <a title="Alex Ionescu" href="https://github.com/ionescu007/lxss">Alex Ionescu</a>), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take it for a spin.<span id="more-5869"></span></p>
 <p>The first thing I did once I had it installed was look at how the Windows process tree had changed. Running it results in two new branches to your process tree. The first contains the Windows bash.exe instance which hosts your new terminal:</p>
@@ -177,7 +177,7 @@ Linux DESKTOP-L4857K3 3.4.0+ #1 PREEMPT Thu Aug 1 17:06:05 CST 2013 x86_64 x86_6
 	  bash      2 Partial RELRO     Canary found           NX enabled    No PIE
 </pre>
 <h2>Shared memory</h2>
-<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://labs.portcullis.co.uk/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
+<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://portcullislabs.github.io/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate" title="">
 root@DESKTOP-L4857K3:~# ipcs
 
@@ -296,7 +296,7 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 </div>
 <div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
-</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
                                                                 
 </article>
 				
@@ -316,25 +316,25 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
     <div class="portcullis-layout-cell" style="width: 33%">
         <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
         <ul>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
-        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/downloads/">Downloads</a><br></span></li>
                </ul>
         <p><br></p>
     </div><div class="portcullis-layout-cell" style="width: 34%">
         <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
         <ul>
-       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://portcullislabs.github.io/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
         <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
                 </ul>
         <br>
     </div><div class="portcullis-layout-cell" style="width: 33%">
        <span style="color: #ffffff;"><br>
         <br>
-        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://portcullislabs.github.io/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
         <p><br></p>
     </div>
     </div>
@@ -352,7 +352,7 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
     <div class="portcullis-layout-cell" style="width: 50%">
       <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
     </div><div class="portcullis-layout-cell" style="width: 50%">
-        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/privacy-and-cookies/">Privacy and Cookies</a></span></p>
     </div>
     </div>
 </div></footer>
@@ -363,14 +363,14 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 
 
 <div id="wp-footer">
-	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
+	<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
 <script type='text/javascript'>
 	(function(){
 		var corecss = document.createElement('link');
 		var themecss = document.createElement('link');
-		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		var corecssurl = "https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
 		if ( corecss.setAttribute ) {
 				corecss.setAttribute( "rel", "stylesheet" );
 				corecss.setAttribute( "type", "text/css" );
@@ -380,7 +380,7 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 				corecss.href = corecssurl;
 		}
 		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
-		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		var themecssurl = "https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
 		if ( themecss.setAttribute ) {
 				themecss.setAttribute( "rel", "stylesheet" );
 				themecss.setAttribute( "type", "text/css" );
@@ -400,20 +400,20 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
 	SyntaxHighlighter.all();
 </script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
-var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+var _wpcf7 = {"loaderUrl":"https:\/\/portcullislabs.github.io\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
 /* ]]> */
 </script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
 <script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
 var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
 /* ]]> */
 </script>
-<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
 	<!-- 63 queries. 0.086 seconds. -->
 </div>
 </body>

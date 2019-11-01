@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; reversing</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/reversing/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/reversing/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Using Intel Pin tools for binary instrumentation</title>
-		<link>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/</link>
-		<comments>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/</link>
+		<comments>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/#comments</comments>
 		<pubDate>Tue, 04 Nov 2014 16:03:01 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -29,9 +29,9 @@
 		<category><![CDATA[binary]]></category>
 		<category><![CDATA[reversing]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4131</guid>
-		<description><![CDATA[<p>This article is continues the topic on dynamic instrumentation that it was presented before in a previous article. Yama LSM In this post, the basics of coding Intel Pin tools will be presented, but before we discuss this, you should be aware that a Linux Security Module exists that prevents binary instrumentation by default. Yama [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4131</guid>
+		<description><![CDATA[<p>This article is continues the topic on dynamic instrumentation that it was presented before in a previous article. Yama LSM In this post, the basics of coding Intel Pin tools will be presented, but before we discuss this, you should be aware that a Linux Security Module exists that prevents binary instrumentation by default. Yama [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
 <h2>Yama LSM</h2>
 <p>In this post, the basics of coding <a title="Intel Pin" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel Pin</a> tools will be presented, but before we discuss this, you should be aware that a <a title="Linux Security Module" href="http://en.wikipedia.org/wiki/Linux_Security_Modules">Linux Security Module</a> exists that prevents binary instrumentation by default. <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a> is a Linux Security Module that collects a number of system-wide <a title="DAC" href="http://en.wikipedia.org/wiki/Discretionary_access_control">DAC</a> security protections that are not handled by the core kernel itself. Yama is controlled using sysctl. A description of some of the possible values for /proc/sys/kernel/yama/ptrace_scope is provided below:</p>
 <ul>
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 }
 // EOF
 </pre>
-<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
+<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 ~/mytools $ ./build.sh
 [*] Building load_bin_img_sec.cpp
@@ -390,8 +390,8 @@ PKGBUILD      plugtmp  test-kernel-security.py  yaourt-tmp-user
 <li>Are parts of the memory getting overwritten by user input?</li>
 <li>Whether there are too many RETs getting executed within a small part of the code</li>
 </ul>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

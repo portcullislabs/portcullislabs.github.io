@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; LNE</title>
-	<atom:link href="https://labs.portcullis.co.uk/author/lne/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/author/lne/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Locating SAT based C&amp;Cs</title>
-		<link>https://labs.portcullis.co.uk/blog/locating-sat-based-ccs/</link>
-		<comments>https://labs.portcullis.co.uk/blog/locating-sat-based-ccs/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/locating-sat-based-ccs/</link>
+		<comments>https://portcullislabs.github.io/blog/locating-sat-based-ccs/#comments</comments>
 		<pubDate>Wed, 28 Oct 2015 11:45:47 +0000</pubDate>
 		<dc:creator><![CDATA[LNE]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -32,12 +32,12 @@
 		<category><![CDATA[seaairandland]]></category>
 		<category><![CDATA[Turla]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5280</guid>
-		<description><![CDATA[<p>Recently, Kaspersky published a research about how a russian APT group use hijacked satellite links to anonymise their malware command-and-control (C&#38;C) servers (Satellite Turla: APT Command and Control in the Sky). As they say in their blog post, I researched and published how to abuse satellite DVB-S/2 internet communications, the technique used during the Epic [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/locating-sat-based-ccs/">Locating SAT based C&#038;Cs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5280</guid>
+		<description><![CDATA[<p>Recently, Kaspersky published a research about how a russian APT group use hijacked satellite links to anonymise their malware command-and-control (C&#38;C) servers (Satellite Turla: APT Command and Control in the Sky). As they say in their blog post, I researched and published how to abuse satellite DVB-S/2 internet communications, the technique used during the Epic [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/locating-sat-based-ccs/">Locating SAT based C&#038;Cs</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Recently, Kaspersky published a research about how a russian APT group use hijacked satellite links to anonymise their malware command-and-control (C&amp;C) servers (<a title="Satellite Turla: APT Command and Control in the Sky" href="https://securelist.com/blog/research/72081/satellite-turla-apt-command-and-control-in-the-sky/">Satellite Turla: APT Command and Control in the Sky</a>). As they say in their blog post, I researched and published <a title="how to abuse satellite DVB-S/2 internet communications" href="https://www.blackhat.com/presentations/bh-dc-10/Nve_Leonardo/BlackHat-DC-2010-Nve-Playing-with-SAT-1.2-slides.pdf">how to abuse satellite DVB-S/2 internet communications</a>, the technique used during the <a title="Epic Turla operation" href="https://securelist.com/analysis/publications/65545/the-epic-turla-operation/">Epic Turla operation</a>.<span id="more-5280"></span></p>
 <h2>Short explanation</h2>
 <p>Satellite DVB-S/2 connections are, sometimes, unencrypted so with cheap hardware and some free software the downlink can be sniffed. By using the satellite as the downlink of an Internet connection, an attacker can use another connection which let to spoof IP address as a uplink and then have a hijacked IP from the satellite provider to use as a normal one and almost completely anonymous.</p>
-<p><a name="imageclose-5281"><div class="lb-album"><a href="#image-5281"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg8-300x167.png" alt="Anonymous satellite-based Internet" class="alignnone size-medium wp-image-5301"><span></span></a></div>              
+<p><a name="imageclose-5281"><div class="lb-album"><a href="#image-5281"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg8-300x167.png" alt="Anonymous satellite-based Internet" class="alignnone size-medium wp-image-5301"><span></span></a></div>              
 <a href="#imageclose-5281" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5281">
                    <img src="/wp-content/uploads/2015/09/rimg8.png" alt="image-5281">
@@ -48,7 +48,7 @@
 <p>What to do when these connections are being used for &#8220;bad things&#8221;? I have also tried to research about different ways to locate these rogue connections. Here are a few ideas on how to solve this challenge:</p>
 <h3>The attacker connection is also vulnerable to attacks</h3>
 <p>If an attacker is using a connection vulnerable to sniffing and &#8220;Man-In-The-Middle&#8221; attacks, the communication stay vulnerable, so we can attack these:</p>
-<p><a name="imageclose-5282"><div class="lb-album"><a href="#image-5282"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg2-300x167.png" alt="Sniffing Information" class="alignnone size-medium wp-image-5307"><span></span></a></div>              
+<p><a name="imageclose-5282"><div class="lb-album"><a href="#image-5282"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg2-300x167.png" alt="Sniffing Information" class="alignnone size-medium wp-image-5307"><span></span></a></div>              
 <a href="#imageclose-5282" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5282">
                    <img src="/wp-content/uploads/2015/09/rimg2.png" alt="image-5282">
@@ -60,7 +60,7 @@
 <p>Definitely these attacks can provide us information about the attacker but, most probably, not an address or a name.</p>
 <h3>Attack the network</h3>
 <p>Let&#8217;s redraw again the network diagram:</p>
-<p><a name="imageclose-5283"><div class="lb-album"><a href="#image-5283"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg7-300x167.png" alt="Bigger net diagram" class="alignnone size-medium wp-image-5302"><span></span></a></div>              
+<p><a name="imageclose-5283"><div class="lb-album"><a href="#image-5283"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg7-300x167.png" alt="Bigger net diagram" class="alignnone size-medium wp-image-5302"><span></span></a></div>              
 <a href="#imageclose-5283" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5283">
                    <img src="/wp-content/uploads/2015/09/rimg7.png" alt="image-5283">
@@ -84,17 +84,17 @@
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 # hping3 -1 IPsat -a 10.30.16.41
 </pre>
-<p><a name="imageclose-5284"><div class="lb-album"><a href="#image-5284"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg4-300x167.png" alt="Send spoofed PING" class="alignnone size-medium wp-image-5305"><span></span></a></div>              
+<p><a name="imageclose-5284"><div class="lb-album"><a href="#image-5284"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg4-300x167.png" alt="Send spoofed PING" class="alignnone size-medium wp-image-5305"><span></span></a></div>              
 <a href="#imageclose-5284" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5284">
                    <img src="/wp-content/uploads/2015/09/rimg4.png" alt="image-5284">
                    </div></a></li>
-<li>The target system send a ping response to 10.30.16.41:<a name="imageclose-5285"><div class="lb-album"><a href="#image-5285"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg5-300x168.png" alt="Ping response from target host" class="alignnone size-medium wp-image-5304"><span></span></a></div>              
+<li>The target system send a ping response to 10.30.16.41:<a name="imageclose-5285"><div class="lb-album"><a href="#image-5285"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg5-300x168.png" alt="Ping response from target host" class="alignnone size-medium wp-image-5304"><span></span></a></div>              
 <a href="#imageclose-5285" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5285">
                    <img src="/wp-content/uploads/2015/09/rimg5.png" alt="image-5285">
                    </div></a></li>
-<li>Traffic to 10.30.16.41 is not allowed so the packet is rejected by R1 to IPsat, so we can sniff that packet and know the IP of R1:<a name="imageclose-5286"><div class="lb-album"><a href="#image-5286"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg6-300x167.png" alt="ICMP Dest Unreachable" class="alignnone size-medium wp-image-5303"><span></span></a></div>              
+<li>Traffic to 10.30.16.41 is not allowed so the packet is rejected by R1 to IPsat, so we can sniff that packet and know the IP of R1:<a name="imageclose-5286"><div class="lb-album"><a href="#image-5286"><img src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg6-300x167.png" alt="ICMP Dest Unreachable" class="alignnone size-medium wp-image-5303"><span></span></a></div>              
 <a href="#imageclose-5286" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5286">
                    <img src="/wp-content/uploads/2015/09/rimg6.png" alt="image-5286">
@@ -102,15 +102,15 @@
 </ol>
 <p>Some problems we find to use this technique:</p>
 <p>What private IP addresses are rejected? We have to send several packets to the IP of the target, 69781, one packet per private C range or 17891228 which is the number of all private IP addressed.</p>
-<p><img class="alignnone  wp-image-5300" title="Private IPs" alt="Private IPs" src="https://labs.portcullis.co.uk/wp-content/uploads/2015/09/rimg9-1024x188.png" width="574" height="106" /></p>
+<p><img class="alignnone  wp-image-5300" title="Private IPs" alt="Private IPs" src="https://portcullislabs.github.io/wp-content/uploads/2015/09/rimg9-1024x188.png" width="574" height="106" /></p>
 <p>What if the private IP addressed are filtered and not rejected? Bad luck.</p>
 <p>The target host filter packets which come from private IP addresses via satellite interface? Bad luck.</p>
 <p>What if the target host have filtered the ICMP ping? Please&#8230;</p>
 <p>The idea of the target sending traffic to internal IP addresses can be exploited from several angles, for example, injecting malicious JavaScript on the targets browsers if he use it. Imagination! Imagination! Imagination!</p>
 <h2>Conclusion</h2>
 <p>So, if the attacker who is hijacking the satellite Internet connection is clever enough, this kind of connections are still anonymous. But, as I thought some attacks to break the anonymity, sure you people can follow this way.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/locating-sat-based-ccs/">Locating SAT based C&#038;Cs</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/locating-sat-based-ccs/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/locating-sat-based-ccs/">Locating SAT based C&#038;Cs</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/locating-sat-based-ccs/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

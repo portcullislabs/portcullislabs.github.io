@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; fuzzing</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/fuzzing/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/fuzzing/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>This way to 10.10.10.1: Playing with labelled switching</title>
-		<link>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/</link>
-		<comments>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/</link>
+		<comments>https://portcullislabs.github.io/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/#comments</comments>
 		<pubDate>Fri, 17 Apr 2015 15:28:45 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -30,8 +30,8 @@
 		<category><![CDATA[networking]]></category>
 		<category><![CDATA[routing]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5080</guid>
-		<description><![CDATA[<p>As a pentester, there are days when you&#8217;ll get asked to look at the ordinary, and there are days that you&#8217;ll be asked to look at something more challenging. This week was full of days that met the latter criteria and not the former. Whilst I can&#8217;t share the scope, Portcullis was asked to examine [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5080</guid>
+		<description><![CDATA[<p>As a pentester, there are days when you&#8217;ll get asked to look at the ordinary, and there are days that you&#8217;ll be asked to look at something more challenging. This week was full of days that met the latter criteria and not the former. Whilst I can&#8217;t share the scope, Portcullis was asked to examine [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>As a pentester, there are days when you&#8217;ll get asked to look at the ordinary, and there are days that you&#8217;ll be asked to look at something more challenging. This week was full of days that met the latter criteria and not the former. Whilst I can&#8217;t share the scope, Portcullis was asked to examine a network implementation using the MPLS protocol and comment on the security, or otherwise, of it.<span id="more-5080"></span></p>
 <p>I suspect that the reasons why I was selected to lead this task were two fold: one I happen to co-own <a title="AS28792" href="http://bgp.he.net/AS28792">AS28792</a> and am not therefore an Internet n00b and two, rumour has it that I once &#8220;heckled&#8221; a talk on just this subject. Rumours can be unfair and I don&#8217;t recall the full details but, as I remember it, I simply answered a question from a fellow audience member on how MPLS labels are meant to be processed.</p>
 <p>For those of you that may not have heard of it, MPLS is not a commonly used protocol, at least not outside of tier 1 networks. The purpose of this blog post isn&#8217;t to discuss the ins and outs of the protocol, but rather to show how we used the Scapy framework to quickly craft MPLS labelled packets and to highlight why it is important that testers can code.</p>
@@ -76,14 +76,14 @@ sendp(p, iface=&quot;eth0&quot;)
 <p>In order to answer our client&#8217;s questions, we need to determine whether our MPLS labelled packets are rejected. <a title="RFC 4364" href="https://tools.ietf.org/html/rfc4364#page-37">RFC 4364</a> states that &#8220;a backbone router does not accept labelled packets over a particular data link, unless it is known that that data link attaches only to trusted systems&#8221;. In this instance, the client&#8217;s MPLS core was fiber and it was not possible to connect a testing laptop directly to it, either to simulate the PE router itself or indeed to simulate any of the inner P routers that made up the core. We could however mimic a C(ustomer) E(dge) router and see the PE router which gave us some ideas on how determining acceptance could be achieved.</p>
 <p>Firstly, the client was able to configure a spanning port on the PE router. This gave us the ability to visually inspect the traffic as it passed through and confirm that our crafted packets never left the incoming CE to PE interface. The second solution was a bit less reliable but avoided the need for the PE router (or indeed the client&#8217;s collaboration, in this instance). The Team had already observed that the PE router itself had an SSH service listening on a loopback interface for management and that it was possible to route to and indeed connect to this. The Team hypothesised that, if a TCP packet was sent (with the SYN flag set) and if the packets were labelled with MPLS headers, then the connection would fail and no response would be seen from the SSH service on the router. As expected, both approaches proved successful and the Team was able to show that our labelled packets were ignored by the PE router.</p>
 <p>One last note and something our Technical Director commented upon. Isn&#8217;t it nice when implementations actually follow design? Hats off to the various MPLS RFC authors for producing a set of standards that can be followed by both the developers of these routers and the administrators who ultimately commission them.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/">This way to 10.10.10.1: Playing with labelled switching</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/this-way-to-10-10-10-1-playing-with-labeled-switching/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>An introduction to binary dynamic analysis</title>
-		<link>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/</link>
-		<comments>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/</link>
+		<comments>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/#comments</comments>
 		<pubDate>Tue, 13 May 2014 13:29:24 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -91,8 +91,8 @@ sendp(p, iface=&quot;eth0&quot;)
 		<category><![CDATA[debugging]]></category>
 		<category><![CDATA[fuzzing]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3001</guid>
-		<description><![CDATA[<p>The term dynamic instrumentation refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs. Tools Several software solutions [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3001</guid>
+		<description><![CDATA[<p>The term dynamic instrumentation refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs. Tools Several software solutions [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The term <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs.<br />
 <span id="more-3001"></span></p>
 <h2>Tools</h2>
@@ -279,22 +279,22 @@ done
 <li>The -appdebug option can also be used to debug from IDA Pro any application using PIN using the remote GDB debugger</li>
 <li>It can&#8217;t be specified which port PIN will listen in as it will be randomly selected every time we execute PIN</li>
 <ul>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Crash</title>
-		<link>https://labs.portcullis.co.uk/tools/crash/</link>
-		<comments>https://labs.portcullis.co.uk/tools/crash/#comments</comments>
+		<link>https://portcullislabs.github.io/tools/crash/</link>
+		<comments>https://portcullislabs.github.io/tools/crash/#comments</comments>
 		<pubDate>Tue, 17 Dec 2013 16:08:23 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Tools]]></category>
 		<category><![CDATA[fuzzing]]></category>
 		<category><![CDATA[OSX]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2672</guid>
-		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=2672</guid>
+		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/tools/crash/">Crash</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer.<span id="more-2672"></span></p>
 <h2>Key features</h2>
 <ul>
@@ -408,9 +408,9 @@ bff6ded0: bff6df38  8...
 --------------------------------------------------------------
 </pre>
 <div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
-  <div class="icon"><a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
+  <div class="icon"><a href="https://portcullislabs.github.io/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://portcullislabs.github.io/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
   <div class="filetitle">
-    <a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
+    <a href="https://portcullislabs.github.io/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
     
     <br />
     December 17, 2013<br />
@@ -435,8 +435,8 @@ bff6ded0: bff6df38  8...
   </div>
  <div style="clear: both;"></div>
 </div>
-<p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/tools/crash/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/tools/crash/">Crash</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/tools/crash/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

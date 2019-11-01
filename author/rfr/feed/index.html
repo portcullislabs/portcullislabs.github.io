@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; RFR</title>
-	<atom:link href="https://labs.portcullis.co.uk/author/rfr/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/author/rfr/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,16 +19,16 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>PowerOPS: PowerShell for Offensive Operations</title>
-		<link>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/</link>
-		<comments>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/</link>
+		<comments>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/#comments</comments>
 		<pubDate>Fri, 03 Jun 2016 12:17:41 +0000</pubDate>
 		<dc:creator><![CDATA[RFR]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[red team]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5467</guid>
-		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5467</guid>
+		<description><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. Sometimes we find harsh group policy restrictions in place [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>At Portcullis, one of the most frequent assessments we perform are breakouts. One of the main challenges we face during these assessments is to get command execution that can either help escalate our privileges or allow us to gain access to different systems on the network. <span id="more-5467"></span></p>
 <p>Sometimes we find harsh group policy restrictions in place that block access to the Windows Command Prompt, PowerShell, among others. These, however, are not always properly implemented, i.e. they do not block access to all executables (and allow only certain programs to run).</p>
 <p>After getting command execution, we want to attack other systems on the network. However it isn&#8217;t always easy to get a flexible toolbox in the system that allow us to gather information and launch further attacks. PowerShell is our preferred post-exploitation language and powershell.exe access is usually blocked (as .ps1 scripts). However since the block is often incorrectly implemented, i.e. the DLLs used by PowerShell aren&#8217;t usually blocked, this can open some doors. On top of that some AVs started implementing some basic signatures that will pick some well known PowerShell scripts. The bypass is trivial but we want to be as stealthy as possible and it still delay us a bit. </p>
@@ -379,14 +379,14 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /Lo
 </pre>
 <h4>Credits</h4>
 <p>PowerOPS was inspired by <a title="Cn33liz/p0wnedShell" href="https://github.com/Cn33liz/p0wnedShell">Cn33liz/p0wnedShell</a>, and basically consists of work from <a title="Nikhil Mittal" href="http://www.labofapenetrationtester.com/">Nikhil Mittal</a> of Nishang, <a title="mattifiestation" href="https://twitter.com/mattifestation">mattifiestation</a> of PowerSploit and <a title="sixdub" href="https://twitter.com/sixdub">sixdub</a>, <a title="engima0x3" href="https://twitter.com/enigma0x3">engima0x3</a> and <a title="harmj0y" href="https://twitter.com/HarmJ0y">harmj0y</a> of Empire.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/">PowerOPS: PowerShell for Offensive Operations</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/powerops-powershell-for-offensive-operations/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Sandbox detection: Pafish overview</title>
-		<link>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/</link>
-		<comments>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/sandbox-detection-pafish-overview/</link>
+		<comments>https://portcullislabs.github.io/blog/sandbox-detection-pafish-overview/#comments</comments>
 		<pubDate>Mon, 14 Mar 2016 20:15:03 +0000</pubDate>
 		<dc:creator><![CDATA[RFR]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -394,8 +394,8 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\&gt; InstallUtil.exe /logfile= /Lo
 		<category><![CDATA[blue team]]></category>
 		<category><![CDATA[red team]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5415</guid>
-		<description><![CDATA[<p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5415</guid>
+		<description><![CDATA[<p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Here at Portcullis, we are frequently involved in &#8220;red team&#8221; exercises, which means we subject an organisation&#8217;s information security systems to rigorous testing and analysis. The opposite of a red team is a &#8220;blue team&#8221;. A blue team attempts to identify and stop the red team from compromising systems. One of the techniques used when red teaming is to write malicious code to test the security systems of our clients. One of the issues we face resides in the fact that we need to bypass sandbox systems that analyse our files in real-time to identify if the potentially malicious file should be blocked and Indicators Of Compromise (IOCs) generated or if the files are benign and safe. At the same time, blue teams that catch our files will try to reverse engineer them in order to understand how we may be compromising systems. Even though the last point is not really relevant for us (ultimately we&#8217;re not the bad guys), the first point is.<span id="more-5415"></span></p>
 <p>In order to be able to mitigate this issue, our code needs to be able to detect if it is being run inside a debugger, a Virtual Machine (VM) or a sandbox. There are some well known open source projects that are able to achieve this that are often used by malware writers. One of the most well known is called Pafish, Paranoid Fish, the code for which can be found in the <a title="Pafish GitHub repo" href="https://github.com/a0rtega/pafish/">Pafish GitHub repo</a>. So I decided to take a look at the code and go through all the tricks Pafish has in order to assess if they should be incorporated in to our exercises. If our code is running inside a debugger, VM or sandbox it should deviate from it&#8217;s original path and do something legitimate or terminate immediately. If it isn&#8217;t running in any of these environments it should run it&#8217;s malicious code and infect the system.</p>
 <p>Pafish is written in C and can be built with MinGW (gcc + make) as it says on its official GitHub web site.</p>
@@ -744,21 +744,21 @@ int wine_reg_key1() {
 <li>Process and file checks</li>
 <li>Hardware</li>
 </ul>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/sandbox-detection-pafish-overview/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/sandbox-detection-pafish-overview/">Sandbox detection: Pafish overview</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/sandbox-detection-pafish-overview/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>VENOM vulnerability</title>
-		<link>https://labs.portcullis.co.uk/blog/venom-vulnerability/</link>
-		<comments>https://labs.portcullis.co.uk/blog/venom-vulnerability/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/venom-vulnerability/</link>
+		<comments>https://portcullislabs.github.io/blog/venom-vulnerability/#comments</comments>
 		<pubDate>Thu, 14 May 2015 10:12:24 +0000</pubDate>
 		<dc:creator><![CDATA[RFR]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[analysis]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5134</guid>
-		<description><![CDATA[<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5134</guid>
+		<description><![CDATA[<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>VENOM (Virtualised Environment Neglected Operations Manipulation) is a vulnerability that could allow an attacker to escape a guest virtual machine and access the host system, along with other virtual machines running on this system, and access their data. This could potentially allow an attacker to steal sensitive data on any of these virtual machines and gain elevated access to the host’s local network and its systems.<span id="more-5134"></span></p>
 <p>VENOM (<a title="CVE-2015-3456" href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-3456">CVE-2015-3456</a>) takes advantage of the floppy drive emulation code of the open-source hypervisor QEMU, installed by default in a number of virtualisation infrastructures such as Xen hypervisors, the QEMU client, and Kernel-based Virtual Machine (KVM).</p>
 <h2>What is it?</h2>
@@ -780,8 +780,8 @@ int wine_reg_key1() {
 <p>There are no reports of any attackers actively exploiting this vulnerability yet. QEMU and other vendors were informed of the bug prior to its disclosure and have already released patches to fix the issue.</p>
 <p>Portcullis recommends an upgrade to the latest version/patch of your virtualisation software, and checking for information from your vendor. In addition to this, if you are a cloud provider customer check if they have applied a patch for the VENOM vulnerability. Administrators of VM systems who rely on Xen, KVM, or the native QEMU client should apply the VENOM patches as soon as possible. If your organisation operates an affected virtualisation infrastructure for external customers, you should patch immediately.</p>
 <p>To mitigate the overall risk of this vulnerability, only grant privileged guest access to trusted users.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/venom-vulnerability/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/venom-vulnerability/">VENOM vulnerability</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/venom-vulnerability/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

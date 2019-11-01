@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; SteamOS</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/steamos/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/steamos/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Evaluating SteamOS&#8217;s security posture (a first look)</title>
-		<link>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/</link>
-		<comments>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/evaluating-steamos-s-security-posture-a-first-look/</link>
+		<comments>https://portcullislabs.github.io/blog/evaluating-steamos-s-security-posture-a-first-look/#comments</comments>
 		<pubDate>Mon, 16 Dec 2013 08:47:54 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -28,8 +28,8 @@
 		<category><![CDATA[hardhack]]></category>
 		<category><![CDATA[SteamOS]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2620</guid>
-		<description><![CDATA[<p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the beta tree of [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=2620</guid>
+		<description><![CDATA[<p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the beta tree of [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Security researchers love the new shiny and whilst some like playing games too, I am not one of those. That being said, I have researched UNIX like OS for a number of years and I&#8217;m constantly thrilled by the new uses people find for it. This security evaluation was performed against the <a href="http://repo.steampowered.com/steamos/dists/alchemist_beta/" title="beta tree of SteamOS">beta tree of SteamOS</a>, a new, &#8220;open&#8221; games platform from the developers at Valve.<span id="more-2620"></span></p>
 <p>Whilst we did contact them to ask about getting a physical system to look at, they weren&#8217;t forthcoming. Instead, I spent Friday night impatiently clicking refresh, waiting the release of their packages so that I could build a virtual machine and take it for a spin. It should therefore be noted that the system I evaluated is not an official release. Notably, the official image only supports EFI based hardware with an Nvidia graphics card. Since I opted to perform the install under VMware, certain hacks were needed to be performed to get it to function. Notably, I needed to bootstrap the install from an existing Debian system.</p>
 <p>To explain how I performed my build, I took a base install of Debian wheezy, updated the sources.list file to point at Valve&#8217;s SteamOS repository and performed a dist-upgrade. I then installed all remaining packages available within the USB install image and ran the supplied post_install.sh script. Finally, I sanity checked and removed any packages not in the <a href="http://repo.steampowered.com/steamos/conf/packagelist.txt" title="package list">package list</a>.</p>
@@ -190,8 +190,8 @@ g_config = ConfigParser.SafeConfigParser({'username':'', 'password':'', 'steamid
 </table>
 <p>As an aside, the permissions on /usr/local are still as I described in my &#8220;Breaking the linker: Exploiting the linker paper&#8221;. Whilst SteamOS doesn&#8217;t utilise the staff group, which limits this as an avenue for attack, it&#8217;s interesting to see that Valve didn&#8217;t make any attempt to audit the permissions they inherited from Debian.</p>
 <p>This concludes our evaluation of SteamOS&#8217;s security posture. SteamOS has not been significantly hardened by Valve. With respect to both kernel and userland hardening, it largely appears unchanged from stock Debian, something I believe is a missed opportunity. Whilst Debian needs to be all things to all people (it runs on 11 different hardware architectures for a start), this is clearly not the case for Valve and it would therefore have been nice to see them improve the security boundaries of the offering. In a future article, I hope to examine the Steam client application and hopefully shed some light on Valve&#8217;s Security Development Lifecycle.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/evaluating-steamos-s-security-posture-a-first-look/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/evaluating-steamos-s-security-posture-a-first-look/">Evaluating SteamOS&#8217;s security posture (a first look)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/evaluating-steamos-s-security-posture-a-first-look/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

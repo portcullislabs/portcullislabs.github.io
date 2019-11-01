@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; cryptography</title>
-	<atom:link href="https://labs.portcullis.co.uk/tag/cryptography/feed/" rel="self" type="application/rss+xml" />
-	<link>https://labs.portcullis.co.uk</link>
+	<atom:link href="https://portcullislabs.github.io/tag/cryptography/feed/" rel="self" type="application/rss+xml" />
+	<link>https://portcullislabs.github.io</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Downgrading RDP connections and how to avoid it</title>
-		<link>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
-		<comments>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/</link>
+		<comments>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/#comments</comments>
 		<pubDate>Fri, 22 Apr 2016 15:18:17 +0000</pubDate>
 		<dc:creator><![CDATA[MRL]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -30,8 +30,8 @@
 		<category><![CDATA[red team]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1488</guid>
-		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1488</guid>
+		<description><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely. We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here. [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>This post describes how Remote Desktop Protocol (RDP) connections can be vulnerable to a downgrade attack if Terminal Servers are configured insecurely.<span id="more-1488"></span></p>
 <p>We&#8217;re not aware of this issue being discussed before &#8211; googling only found pages about installing an earlier version of the RDP client, not about downgrading the protocol in the way described here.  We suspect that it&#8217;s a known limitation of the protocol.  But it&#8217;s one that we though would be interesting to post about.</p>
 <p>In this post we provide a demonstration of such a downgrade attack using the aptly named PoC tool rdp-downgrade.py.</p>
@@ -49,31 +49,31 @@
 <p>The various warnings displayed by the Terminal Services client, mstsc.exe can be used as a crude way to identify which protocol is being used.</p>
 <h3>Classic RDP</h3>
 <p>Note that the warning message about not being able to authenticate the server tallies with the MiTM attack described above.</p>
-<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
 <a href="#imageclose-1489" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1489">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
                    </div></a><p class="wp-caption-text">Warning For Classic RDP Connections</p></div>
 <h3>SSL</h3>
 <p>Unless you&#8217;ve configured your host to trust the SSL certificate of the RDP server, you&#8217;ll see a certificate warning like this one:</p>
-<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
+<div id="attachment_1496" style="width: 267px" class="wp-caption alignnone"><a name="imageclose-1490"><div class="lb-album"><a href="#image-1490"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/ssl-warning-257x300.png" alt="ssl-warning" class="size-medium wp-image-1496"><span></span></a></div>              
 <a href="#imageclose-1490" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1490">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/ssl-warning.png" alt="image-1490">
                    </div></a><p class="wp-caption-text">Warning for (Non-CredSSP) SSL Connections</p></div>
 <h3>CredSSP (NLA + SSL)</h3>
 <p>You get prompted for your username and password by a pop-up window &#8211; whereas Classic RDP and SSL both use a full Windows Desktop for password entry.</p>
-<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
+<div id="attachment_1498" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1491"><div class="lb-album"><a href="#image-1491"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/gaejegba-300x255.png" alt="gaejegba" class="size-medium wp-image-1498"><span></span></a></div>              
 <a href="#imageclose-1491" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1491">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/gaejegba.png" alt="image-1491">
                    </div></a><p class="wp-caption-text">Dialogue Box For NLA Connections</p></div>
 <h2>Vulnerable configuration</h2>
 <p>Terminal Servers set to negotiate their Security Layer are potentially vulnerable to a downgrade attack. Here we view the settings on a Windows 2003 server, but this also holds for newer versions of Windows:</p>
-<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
+<p><a name="imageclose-1492"><div class="lb-album"><a href="#image-1492"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable-300x235.png" alt="2003-rdp-setting-vulnerable" class="alignnone size-medium wp-image-1491"><span></span></a></div>              
 <a href="#imageclose-1492" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1492">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/2003-rdp-setting-vulnerable.png" alt="image-1492">
                    </div></a></p>
 <h2>The downgrade attack</h2>
 <p>We will connect to a Windows 2003 RDP server configured to &#8220;Negotiate&#8221; its Security Layer.  We&#8217;ll connect from a modern windows system that supports Classic RDP, SSL and NLA. This server only supports Classic RDP and SSL. As we&#8217;d hope, the two will normally negotiate the most secure option supported by both: SSL.</p>
@@ -96,10 +96,10 @@ $ python rdp-downgrade.py 192.168.2.96
 [Proxy] Listening for connections on 0.0.0.0:3389
 </pre>
 <p>Rather than actually doing ARP-spoofing, I just connect directly to the &#8220;Man-In-The-Middle&#8221; in this demo:</p>
-<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
+<div style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1493"><div class="lb-album"><a href="#image-1493"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/rdp-attack-prior-to-logon-300x177.jpg" alt="rdp-attack-prior-to-logon" ><span></span></a></div>              
 <a href="#imageclose-1493" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1493">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/rdp-attack-prior-to-logon.jpg" alt="image-1493">
                    </div></a><p class="wp-caption-text">Attacker IP Address Is Entered</p></div>
 <p>Back in our PoC tool, we then see an incoming connection from the RDP client (192.168.190.1) and the proxy making an outgoing connection to the target server:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
@@ -122,24 +122,24 @@ $ python rdp-downgrade.py 192.168.2.96
 ...snip...
 </pre>
 <p>mstsc shows us the warning message corresponding to a Classic RDP connection, proving that the downgrade has been successful &#8211; remember that we would normally expect a certificate warning for the SSL-wrapped RDP connection.</p>
-<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
+<div id="attachment_1497" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-1489"><div class="lb-album"><a href="#image-1489"><img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp-300x180.jpg" alt="classic-rdp" class="size-medium wp-image-1497"><span></span></a></div>              
 <a href="#imageclose-1489" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-1489">
-                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
+                   <img src="https://portcullislabs.github.io/wp-content/uploads/2013/08/classic-rdp.jpg" alt="image-1489">
                    </div></a><p class="wp-caption-text">Warning Message For Classic RDP Connection</p></div>
 <h2>Conclusion</h2>
 <p>Configuring the Terminal Server to use SSL for it security layer instead of &#8220;Negotiate&#8221; prevents such a downgrade attack.</p>
 <h2>Vendor contact</h2>
 <p>We were not sure if Microsoft would consider this worthy of a security advisory. We didn&#8217;t think so, but sent them a preview of this post before publishing and asked.</p>
 <p>Microsoft who responded swiftly to confirm that &#8220;After researching the issue, we consider this behavior to be By Design&#8221;. They thanked us for our commitment to co-ordinated disclosure and gave their blessing to proceed with publication.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/">Downgrading RDP connections and how to avoid it</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/downgrading-rdp-connections-and-how-to-avoid-it/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>RPDscan</title>
-		<link>https://labs.portcullis.co.uk/tools/rpdscan/</link>
-		<comments>https://labs.portcullis.co.uk/tools/rpdscan/#comments</comments>
+		<link>https://portcullislabs.github.io/tools/rpdscan/</link>
+		<comments>https://portcullislabs.github.io/tools/rpdscan/#comments</comments>
 		<pubDate>Thu, 06 Nov 2014 19:46:13 +0000</pubDate>
 		<dc:creator><![CDATA[FC]]></dc:creator>
 				<category><![CDATA[Tools]]></category>
@@ -148,8 +148,8 @@ $ python rdp-downgrade.py 192.168.2.96
 		<category><![CDATA[RDP]]></category>
 		<category><![CDATA[UNIX]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4408</guid>
-		<description><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations. Key features Finds every Remmina configuration file and preferences Decrypts every saved password for every user it finds Python based for easy access and speed Overview Remmina is a well used Linux based RDP connection software, as many people [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4408</guid>
+		<description><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations. Key features Finds every Remmina configuration file and preferences Decrypts every saved password for every user it finds Python based for easy access and speed Overview Remmina is a well used Linux based RDP connection software, as many people [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>RPDscan (Remmina Password Decrypt Scanner) is a tool to find and decrypt saved passwords in Remmina RDP configurations.<span id="more-4408"></span></p>
 <h2>Key features</h2>
 <ul>
@@ -203,9 +203,9 @@ domain=
 </pre>
 <p>Here you can see that RPDscan has found two saved password files and extracted all the data you need to connect.</p>
 <div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
-  <div class="icon"><a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" target="_blank" title="Download RPDscan Py"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="RPDscan Py" /></a></div>
+  <div class="icon"><a href="https://portcullislabs.github.io/download/RPDscan.py.tgz" target="_blank" title="Download RPDscan Py"><img align="middle" src="https://portcullislabs.github.io/wp-includes/images/crystal/archive.png" alt="RPDscan Py" /></a></div>
   <div class="filetitle">
-    <a href="https://labs.portcullis.co.uk/download/RPDscan.py.tgz" title="Download RPDscan.py.tgz" target="_blank" id="wpfb-file-link-1">RPDscan.py.tgz</a>
+    <a href="https://portcullislabs.github.io/download/RPDscan.py.tgz" title="Download RPDscan.py.tgz" target="_blank" id="wpfb-file-link-1">RPDscan.py.tgz</a>
     
     <br />
     April 16, 2014<br />
@@ -230,14 +230,14 @@ domain=
   </div>
  <div style="clear: both;"></div>
 </div>
-<p>The post <a href="https://labs.portcullis.co.uk/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/tools/rpdscan/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/tools/rpdscan/">RPDscan</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/tools/rpdscan/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>POODLE: Padding Oracle On Downgraded Legacy Encryption</title>
-		<link>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/</link>
-		<comments>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/</link>
+		<comments>https://portcullislabs.github.io/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/#comments</comments>
 		<pubDate>Wed, 15 Oct 2014 16:35:06 +0000</pubDate>
 		<dc:creator><![CDATA[GCS]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -245,8 +245,8 @@ domain=
 		<category><![CDATA[cryptography]]></category>
 		<category><![CDATA[SSL]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4767</guid>
-		<description><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566. The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4767</guid>
+		<description><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566. The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Last night, researchers from Google released details of a new attack that they have called the Padding Oracle On Downgrade Legacy Encryption (POODLE) attack which has been assigned CVE-2014-3566.</p>
 <p>The summary is, essentially, that SSLv3 uses a MAC-then-encrypt construction, which doesn&#8217;t authenticate the padding as it is applied on the plaintext message before padding or encryption are applied. This gives rise to a padding oracle bug, which is how BEAST worked too. <span id="more-4767"></span></p>
 <p>Block ciphers require plain-texts to be of a length divisible into fixed-size blocks, e.g. 128 bits in the case of AES. As normal messages don&#8217;t adhere to this (i.e. can be arbitrary in size) we use padding to ensure that the message is expanded to fit that requirement. Padding usually adds a minimum of 1 byte, and a maximum of one entire block. Its value is usually tied to the length of the padding, for example in PKCS#7 padding we would add 01 01 for two bytes, 02 02 02 for 3 bytes, 03 03 03 03 for 4 bytes, etc. However, instead of checking that all the bytes match, the SSLv3 specification states that only the last byte is to be validated. In some cases, in fact, client libraries mistakenly set the first padding bytes improperly &#8211; Oracle&#8217;s implementation has, in the past, used zeroes for all bytes but the last.</p>
@@ -291,15 +291,15 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 </ul>
 <p>Now that last one is interesting. SSLv3 is still very widely supported by servers, but TLS is usually there too and clients should prefer it. However, due to all sorts of issues with client/server compatibility, it turns out that if a connection fails to properly negotiate TLS then in many clients it&#8217;ll downgrade to SSLv3. All an attacker needs to do, is sit in the middle and interfere with the handshake such that the client assumes there&#8217;s an incompatibility and renegotiates down to SSLv3.</p>
 <p>There are two fixes. The first is to just turn off SSLv3, or at least disable CBC cipher suites in SSLv3 (but that leads to other problems so isn&#8217;t recommended). There is also a client-side fix for the downgrade, which is to enable the TLS_FALLBACK_SCSV flag in the client hello &#8211; this is recommended within the original Google article. However, organisations should not rely upon all clients having this patch, or that some clients will not downgrade to SSLv3 for other reasons.</p>
-<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/feed/</wfw:commentRss>
+<p>Our <a title="SSL good practice guide" href="https://portcullislabs.github.io/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that SSLv3 be disabled for some time now, which prevents this attack. We&#8217;ve also updated the <a title="SSL cipher suite enum" href="https://portcullislabs.github.io/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to include a check for POODLE, so you can test your configuration.</p>
+<p>The post <a href="https://portcullislabs.github.io/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/">POODLE: Padding Oracle On Downgraded Legacy Encryption</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/poodle-padding-oracle-on-downgraded-legacy-encryption/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>EMF Camp 2014 USB scavenger hunt</title>
-		<link>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/</link>
-		<comments>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/emf-camp-2014-usb-scavenger-hunt/</link>
+		<comments>https://portcullislabs.github.io/blog/emf-camp-2014-usb-scavenger-hunt/#comments</comments>
 		<pubDate>Tue, 26 Aug 2014 14:52:27 +0000</pubDate>
 		<dc:creator><![CDATA[MWE]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -307,8 +307,8 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 		<category><![CDATA[cryptography]]></category>
 		<category><![CDATA[emfcamp2014]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4620</guid>
-		<description><![CDATA[<p>This year, Portcullis are running a USB Scavenger Hunt at EMF Camp. For those of you attending, we&#8217;ve written this post to give you all the instructions and rules you need to get underway. Good luck! Instructions This is a cross between a scavenger hunt and a CTF event. Each USB key will contain a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4620</guid>
+		<description><![CDATA[<p>This year, Portcullis are running a USB Scavenger Hunt at EMF Camp. For those of you attending, we&#8217;ve written this post to give you all the instructions and rules you need to get underway. Good luck! Instructions This is a cross between a scavenger hunt and a CTF event. Each USB key will contain a [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>This year, Portcullis are running a USB Scavenger Hunt at <a title="EMF Camp" href="https://www.emfcamp.org/">EMF Camp</a>. For those of you attending, we&#8217;ve written this post to give you all the instructions and rules you need to get underway. Good luck!<span id="more-4620"></span></p>
 <h2>Instructions</h2>
 <p>This is a cross between a scavenger hunt and a CTF event. Each USB key will contain a puzzle which has to be solved, giving the location of the next USB key. These puzzles aren&#8217;t security specific, so anyone technically minded should be able to take part. If you&#8217;d like to participate, come along to the <a title="Portcullis Village" href="https://wiki.emfcamp.org/wiki/Villages:Portcullis">Portcullis Village</a> and we&#8217;ll point you towards the first location.</p>
@@ -322,14 +322,14 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 </ul>
 <h2>Problems?</h2>
 <p>If you have any issues, think something is wrong, or just need some help, please come and find us at the village!</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/emf-camp-2014-usb-scavenger-hunt/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/emf-camp-2014-usb-scavenger-hunt/">EMF Camp 2014 USB scavenger hunt</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/emf-camp-2014-usb-scavenger-hunt/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Portcullis security consultants to present at BSides London</title>
-		<link>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/</link>
-		<comments>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/portcullis-security-consultants-to-present-at-bsides-london/</link>
+		<comments>https://portcullislabs.github.io/blog/portcullis-security-consultants-to-present-at-bsides-london/#comments</comments>
 		<pubDate>Fri, 25 Apr 2014 16:48:06 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -339,8 +339,8 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 		<category><![CDATA[cryptography]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4438</guid>
-		<description><![CDATA[<p>We are pleased to announce that two of our security consultants, Graham Sutherland and Tim Brown, will be presenting at the upcoming BSides London security conference on the 29th of April. BSides London is an annual community-driven security conference which, this year, will be taking place at the Kensington and Chelsea Town Hall in London. [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4438</guid>
+		<description><![CDATA[<p>We are pleased to announce that two of our security consultants, Graham Sutherland and Tim Brown, will be presenting at the upcoming BSides London security conference on the 29th of April. BSides London is an annual community-driven security conference which, this year, will be taking place at the Kensington and Chelsea Town Hall in London. [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>We are pleased to announce that two of our security consultants, Graham Sutherland and Tim Brown, will be presenting at the upcoming BSides London security conference on the 29th of April. </p>
 <p>BSides London is an annual community-driven security conference which, this year, will be taking place at the Kensington and Chelsea Town Hall in London.</p>
 <p>Graham’s talk coincides with the disclosure of a set of vulnerabilities in the administration features of the Citrix NetScaler appliance, which will be discussed in the talk.<span id="more-4438"></span></p>
@@ -350,14 +350,14 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 <p>While Tim will be presenting &#8220;Mobile application testing considerations&#8221; and has provided the following abstract for his workshop:</p>
 <h2>&#8220;Mobile Application testing considerations&#8221;</h2>
 <p>This workshop represents a quick dive into the world of mobile application testing, focusing on Android but with consideration for Windows Mobile, BB10 and iOS. It will be based on Portcullis’ mobile application testing methodology although it will cover much of the equivalent OWASP methodology of which I am a contributor. It will cover testing from a network perspective as well as how you assess the attack surface an application presents locally.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/portcullis-security-consultants-to-present-at-bsides-london/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/portcullis-security-consultants-to-present-at-bsides-london/">Portcullis security consultants to present at BSides London</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/portcullis-security-consultants-to-present-at-bsides-london/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Securi-Tay 3 wrap-up</title>
-		<link>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/</link>
-		<comments>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/#comments</comments>
+		<link>https://portcullislabs.github.io/blog/securi-tay-3-wrap-up/</link>
+		<comments>https://portcullislabs.github.io/blog/securi-tay-3-wrap-up/#comments</comments>
 		<pubDate>Fri, 24 Jan 2014 01:01:35 +0000</pubDate>
 		<dc:creator><![CDATA[GCS]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -365,16 +365,16 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 		<category><![CDATA[cryptography]]></category>
 		<category><![CDATA[Securi-Tay]]></category>
 
-		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3120</guid>
-		<description><![CDATA[<p>Of all the conferences I&#8217;ve been to, Securi-Tay has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3120</guid>
+		<description><![CDATA[<p>Of all the conferences I&#8217;ve been to, Securi-Tay has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Of all the conferences I&#8217;ve been to, <a title="Securi-Tay" href="http://securi-tay.co.uk/">Securi-Tay</a> has always been a favourite. I don&#8217;t know whether it&#8217;s the mix of security professionals and students, the relaxed atmosphere, or the balance between technical and non-technical talks, but it&#8217;s always a great time. For those of you that aren&#8217;t familiar with it, Securi-Tay is a student organised and lead conference, held annually by the Abertay Ethical Hacking Society at the University of Abertay, Dundee. This year&#8217;s event, held on January 15th (last week, at time of writing), marked the third instance of the conference.<span id="more-3120"></span></p>
 <p>I spoke at Securi-Tay last year (<a title="video" href="http://www.youtube.com/watch?v=ID5RxZc9EAk">video</a>), before I joined Portcullis, on the security threats posed by common office and datacenter devices such as photocopiers, printers, and UPSs. This year I decided to tackle a much more foreboding and monolithic topic: cryptography. I feel that one of the major obstacles to learning about cryptography is the stigma around it &#8211; it is often seen as obscenely complex, studied only by mathematicians with foot-long beards and a slew of three-letter acronyms trailing their surnames, detailing their accomplishments. Another obstacle is the lack of reputable, high quality, entry-level education in the subject outside of university courses and paid workshops. This aspect has improved somewhat, especially with the introduction of free online courses like Stanford&#8217;s, but free materials are certainly nowhere near the breadth and ubiquity we come to expect in other areas of security education. As such, I felt that I should do my part in rectifying this.</p>
 <p>My talk, entitled &#8220;Breaking crypto without breaking your brain&#8221;, aimed to give people a basic understanding of the common types of cryptography that I see in practical use as part of my day job, without needing an advanced degree in mathematics. In contrast to many introductions to the topic, I skipped the classic ciphers such as the Caesar cipher, simple alphabetic transposition and substitution ciphers, and other algorithms of that ilk, as I rarely find knowledge of them useful in the context of real security assessments. Instead, I focused upon one-time pads, modern stream and block ciphers, padding, block cipher modes, and demonstrated how seemingly strong encryption can often be broken trivially.</p>
 <p>The talk was recorded and should be available on YouTube within the next few weeks, via the <a title="AbertayHackers YouTube account" href="http://www.youtube.com/user/AbertayHackers">AbertayHackers YouTube account</a>. In the meantime, you can download the slides and both demo applications:</p>
 <ul>
-<li><a href="https://labs.portcullis.co.uk/download/BreakingCrypto.odp" >Slides - Breaking crypto without breaking your brain</a></li>
-<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo1.exe" >Demo 1 - OTP key re-use</a></li>
-<li><a href="https://labs.portcullis.co.uk/download/SecuriTayCryptoDemo2.exe" >Demo 2 - ECB block-cipher mode weakness</a></li>
+<li><a href="https://portcullislabs.github.io/download/BreakingCrypto.odp" >Slides - Breaking crypto without breaking your brain</a></li>
+<li><a href="https://portcullislabs.github.io/download/SecuriTayCryptoDemo1.exe" >Demo 1 - OTP key re-use</a></li>
+<li><a href="https://portcullislabs.github.io/download/SecuriTayCryptoDemo2.exe" >Demo 2 - ECB block-cipher mode weakness</a></li>
 </ul>
 <p>Aside from my own, there were a number of very good quality talks from both industry professionals and students. I thought it would be nice to write a short description of each that I saw, with some take-away points for each talk.</p>
 <p>Olly Whitehouse &#8211; &#8220;Real world threat modelling&#8221;</p>
@@ -421,8 +421,8 @@ POST /url\r\nCookie: name=value\r\n ... \r\n\r\nbody{20-byte MAC}{pad}
 </ul>
 <p>The conclusion of Paco and Ritesh&#8217;s talk marked the end of the conference day, after which we all congregated in the student union bar for after-party drinks. I&#8217;d like to issue personal thanks to all involved with organising and running the conference, including all the speakers and sponsors.</p>
 <p>As I noted above, all talks were recorded and should hopefully be available on YouTube within the next few weeks.</p>
-<p>The post <a href="https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://labs.portcullis.co.uk/blog/securi-tay-3-wrap-up/feed/</wfw:commentRss>
+<p>The post <a href="https://portcullislabs.github.io/blog/securi-tay-3-wrap-up/">Securi-Tay 3 wrap-up</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://portcullislabs.github.io/blog/securi-tay-3-wrap-up/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>
