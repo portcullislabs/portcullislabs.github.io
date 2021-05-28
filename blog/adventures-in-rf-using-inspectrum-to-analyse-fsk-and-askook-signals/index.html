@@ -6,53 +6,53 @@
 <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<link rel="stylesheet" href="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.css" media="screen" />
+<link rel="stylesheet" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.css" media="screen" />
 
 
 <!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.7 - http://yoast.com/wordpress/seo/ -->
-<link rel="canonical" href="https://portcullislabs.github.io/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/" />
+<link rel="canonical" href="https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/" />
 <meta property='og:locale' content='en_US'/>
 <meta property='og:type' content='article'/>
 <meta property='og:title' content='Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals - Portcullis Labs'/>
-<meta property='og:url' content='https://portcullislabs.github.io/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/'/>
+<meta property='og:url' content='https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/'/>
 <meta property='og:site_name' content='Portcullis Labs'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_135218-300x194.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1355141-300x157.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356051-300x145.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356351-300x174.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1357521-300x148.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1359001-300x156.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401121-300x177.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401241-300x168.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1402011-300x140.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1403371-300x109.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1404351-300x146.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1406371-300x113.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1408071-300x100.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162655-300x115.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162720-300x110.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162759-300x117.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_174402-300x109.png'/>
-<meta property='og:image' content='https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_185835-300x117.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_135218-300x194.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1355141-300x157.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356051-300x145.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356351-300x174.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1357521-300x148.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1359001-300x156.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401121-300x177.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401241-300x168.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1402011-300x140.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1403371-300x109.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1404351-300x146.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1406371-300x113.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1408071-300x100.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162655-300x115.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162720-300x110.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162759-300x117.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_174402-300x109.png'/>
+<meta property='og:image' content='https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_185835-300x117.png'/>
 <!-- / Yoast WordPress SEO plugin. -->
 
-<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://portcullislabs.github.io/feed/" />
-<link rel='stylesheet' id='TheStyleSheets-css'  href='https://portcullislabs.github.io/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
-<link rel='stylesheet' id='wpfb-css'  href='//portcullislabs.github.io/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
-<link rel='stylesheet' id='contact-form-7-css'  href='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
-<link rel='stylesheet' id='css3lightbox_style-css'  href='https://portcullislabs.github.io/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
-<link rel='stylesheet' id='addthis_all_pages-css'  href='https://portcullislabs.github.io/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
+<link rel="alternate" type="application/rss+xml" title="Portcullis Labs &raquo; Feed" href="https://labs.portcullis.co.uk/feed/" />
+<link rel='stylesheet' id='TheStyleSheets-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/asm-brush/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='wpfb-css'  href='//labs.portcullis.co.uk/wp-content/plugins/wp-filebase/wp-filebase.css?t=1475825177&#038;ver=3.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=3.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='css3lightbox_style-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/css3lightbox/assets/style.css?ver=3.8.5' type='text/css' media='all' />
+<link rel='stylesheet' id='addthis_all_pages-css'  href='https://labs.portcullis.co.uk/wp-content/plugins/addthis/frontend/build/addthis_wordpress_public.min.css?ver=3.8.5' type='text/css' media='all' />
 <!--[if lte IE 7]>
-<link rel='stylesheet' id='style.ie7.css-css'  href='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
+<link rel='stylesheet' id='style.ie7.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.ie7.css?ver=3.8.5' type='text/css' media='screen' />
 <![endif]-->
-<link rel='stylesheet' id='style.responsive.css-css'  href='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
+<link rel='stylesheet' id='style.responsive.css-css'  href='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/style.responsive.css?ver=3.8.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/jquery.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.js?ver=3.8.5'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/script.responsive.js?ver=3.8.5'></script>
 
  
 
-<link rel="shortcut icon" href="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
+<link rel="shortcut icon" href="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/favicon.ico" /><link rel='header_link' href='/' /><style type="text/css" id="syntaxhighlighteranchor"></style>
 <script data-cfasync="false" type="text/javascript">if (window.addthis_product === undefined) { window.addthis_product = "wpp"; } if (window.wp_product_version === undefined) { window.wp_product_version = "wpp-6.1.4"; } if (window.wp_blog_version === undefined) { window.wp_blog_version = "3.8.5"; } if (window.addthis_share === undefined) { window.addthis_share = {}; } if (window.addthis_config === undefined) { window.addthis_config = {"data_track_clickback":false,"ignore_server_config":true,"ui_atversion":300}; } if (window.addthis_layers === undefined) { window.addthis_layers = {}; } if (window.addthis_layers_tools === undefined) { window.addthis_layers_tools = []; } else {  } if (window.addthis_plugin_info === undefined) { window.addthis_plugin_info = {"info_status":"enabled","cms_name":"WordPress","plugin_name":"Share Buttons by AddThis","plugin_version":"6.1.4","plugin_mode":"WordPress","anonymous_profile_id":"wp-3219ffbb80dfd9f649eb0d9d76c4d2e4","page_info":{"template":"posts","post_type":""},"sharing_enabled_on_post_via_metabox":false}; } 
                     (function() {
                       var first_load_interval_id = setInterval(function () {
@@ -80,8 +80,8 @@
 <div id="cisco">
     <div id="cisco-container" class="clearfix">
         <div class="left">
-            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
-            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
+            <a href="http://www.cisco.com/" target="_blank"><img class="cisco-logo" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/portcullis_cisco_logo.png" alt=""></a>
+            <a href="http://www.cisco.com/web/about/ac49/ac0/ac1/ac259/portcullis.html" class="learnmore">Learn More <img src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/more-triangle.png" alt=""></a>
         </div>
         <div class="right">
             <div class="move-right"><a href="http://www.cisco.com/web/about/index.html" target="_blank" class="move-right">About Cisco</a></div>
@@ -95,7 +95,7 @@
 
     <div class="portcullis-shapes">
 		<div class="portcullis-headline" data-left="14.6%">
-    <a href="https://portcullislabs.github.io/">Portcullis Labs</a>
+    <a href="https://labs.portcullis.co.uk/">Portcullis Labs</a>
 </div>
 		<div class="portcullis-slogan" data-left="16.4%">Research and Development</div>
 <div class="logo"><a href="https://www.portcullis-security.com"><img style="border:none;" src="/wp-content/themes/Portcullisfinal/images/logo.png" /></a></div>
@@ -110,19 +110,19 @@
 <nav class="portcullis-nav clearfix">
     
 <ul class="portcullis-hmenu">
-	<li class="menu-item-268"><a href="https://portcullislabs.github.io" title="Home">Home</a>
+	<li class="menu-item-268"><a href="https://labs.portcullis.co.uk" title="Home">Home</a>
 	</li>
-	<li class="menu-item-6568"><a href="https://portcullislabs.github.io/advisories/" title="Advisories">Advisories</a>
+	<li class="menu-item-6568"><a href="https://labs.portcullis.co.uk/advisories/" title="Advisories">Advisories</a>
 	</li>
-	<li class="menu-item-83"><a href="https://portcullislabs.github.io/blog/" title="Blog">Blog</a>
+	<li class="menu-item-83"><a href="https://labs.portcullis.co.uk/blog/" title="Blog">Blog</a>
 	</li>
-	<li class="menu-item-66"><a href="https://portcullislabs.github.io/presentations/" title="Presentations">Presentations</a>
+	<li class="menu-item-66"><a href="https://labs.portcullis.co.uk/presentations/" title="Presentations">Presentations</a>
 	</li>
-	<li class="menu-item-62"><a href="https://portcullislabs.github.io/tools/" title="Tools">Tools</a>
+	<li class="menu-item-62"><a href="https://labs.portcullis.co.uk/tools/" title="Tools">Tools</a>
 	</li>
-	<li class="menu-item-64"><a href="https://portcullislabs.github.io/whitepapers/" title="Whitepapers">Whitepapers</a>
+	<li class="menu-item-64"><a href="https://labs.portcullis.co.uk/whitepapers/" title="Whitepapers">Whitepapers</a>
 	</li>
-	<li class="menu-item-59"><a href="https://portcullislabs.github.io/downloads/" title="Downloads">Downloads</a>
+	<li class="menu-item-59"><a href="https://labs.portcullis.co.uk/downloads/" title="Downloads">Downloads</a>
 	</li>
 </ul>
  
@@ -137,7 +137,7 @@
                     <div class="portcullis-content-layout-row">
                         <div class="portcullis-layout-cell portcullis-content clearfix">
 							<article id="post-6292"  class="portcullis-post portcullis-article  post-6292 post type-post status-publish format-standard hentry category-blog tag-hardhack tag-rf tag-training">
-                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="13:42">06/04/2018</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://portcullislabs.github.io/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://portcullislabs.github.io/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/"></div><!-- AddThis Button BEGIN -->
+                                <div class="portcullis-postmetadataheader"><h1 class="portcullis-postheader">Adventures in RF: Using Inspectrum to analyse FSK and ASK/OOK signals</h1></div>                                                <div class="portcullis-postheadericons portcullis-metadata-icons"><span class="portcullis-postdateicon"><span class="date">Published</span> <span class="entry-date" title="13:42">06/04/2018</span></span> | <span class="portcullis-postauthoricon"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://labs.portcullis.co.uk/author/mrl/" title="View all posts by MRL">MRL</a></span></span></div>                <div class="portcullis-postcontent clearfix"><div class="at-above-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/"></div><!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style "><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
 </div><p>In this post we&#8217;ll take a brief look at <a title="inspectrum" href="https://github.com/miek/inspectrum">inspectrum</a>, a graphical tool for analysing signals captured via software defined radio (SDR) receivers &#8211; like the <a title="RTL-SDR" href="https://www.rtl-sdr.com/about-rtl-sdr/">RTL-SDR</a> or <a title="HackRF One" href="https://greatscottgadgets.com/hackrf/">HackRF One</a>.<span id="more-6292"></span></p>
 <p>We&#8217;ll run through two examples of viewing digital signals. The first uses <a title="frequency shift keying (FSK)" href="https://en.wikipedia.org/wiki/Frequency-shift_keying">frequency shift keying (FSK)</a>. The second uses <a title="amplitude shift keying" href="https://en.wikipedia.org/wiki/Amplitude-shift_keying">amplitude shift keying</a> <a title="on-off keying" href="https://en.wikipedia.org/wiki/On-off_keying">on-off keying</a> (ASK/OOK). These are two very common types of <a title="modulation" href="https://en.wikipedia.org/wiki/Modulation">modulation</a>.</p>
@@ -152,88 +152,88 @@ apt-get install inspectrum
 <p>The signal for this demo is one captured from a car keyfob at 2 million samples per second. If you want to play along, plug in your RTL-SDR, HackRF One and capture a signal (e.g. using <a title="gqrx" href="http://gqrx.dk/">gqrx</a> or <a title="hackrf_transfer" href="https://github.com/mossmann/hackrf/blob/master/host/hackrf-tools/src/hackrf_transfer.c">hackrf_transfer</a>).</p>
 <p>By default inspectrum assumes 32-bit complex floating point samples, which what gqrx gives us. If you used hackrf_transfer, you&#8217;ll have signed 8-bit integers, so use the file extension .cs8 &#8211; inspectrum can read that format too.</p>
 <p>If you load your sample in inspectrum and set the sample rate, you&#8217;ll see something like this:</p>
-<div id="attachment_6372" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6293"><div class="lb-album"><a href="#image-6293"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_135218-300x194.png" alt="Signal viewed in Inspectrum" class="size-medium wp-image-6372"><span></span></a></div>              
+<div id="attachment_6372" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6293"><div class="lb-album"><a href="#image-6293"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_135218-300x194.png" alt="Signal viewed in Inspectrum" class="size-medium wp-image-6372"><span></span></a></div>              
 <a href="#imageclose-6293" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6293">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_135218.png" alt="image-6293">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_135218.png" alt="image-6293">
                    </div></a><p class="wp-caption-text">Signal viewed in Inspectrum</p></div>
 <p>We see 7 bursts of signal across 3 different frequencies.</p>
 <p>Note that setting the sample rate isn&#8217;t vital. If you don&#8217;t, it just means the scale on the time axis will be wrong &#8211; not something you&#8217;ll always care about.</p>
 <p>Next we&#8217;ll use the zoom slider to take a closer look at part of the signal. Hopefully we can see the 1&#8242;s and 0&#8242;s.</p>
-<div id="attachment_6373" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6294"><div class="lb-album"><a href="#image-6294"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1355141-300x157.png" alt="Zoom slider usage" class="size-medium wp-image-6373"><span></span></a></div>              
+<div id="attachment_6373" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6294"><div class="lb-album"><a href="#image-6294"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1355141-300x157.png" alt="Zoom slider usage" class="size-medium wp-image-6373"><span></span></a></div>              
 <a href="#imageclose-6294" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6294">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1355141.png" alt="image-6294">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1355141.png" alt="image-6294">
                    </div></a><p class="wp-caption-text">Zoom slider usage</p></div>
 <p>Hmm. We&#8217;re hoping to see something that looks a bit like a square wave, showing the 1&#8242;s and 0&#8242;s. Which we clearly can&#8217;t see yet. Let&#8217;s tweak a few more controls.</p>
 <p>Increase the &#8216;Power min&#8217; slider until the background noise becomes pure black:</p>
-<div id="attachment_6374" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6295"><div class="lb-album"><a href="#image-6295"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356051-300x145.png" alt="Decreasing Power Min slider to remove noise" class="size-medium wp-image-6374"><span></span></a></div>              
+<div id="attachment_6374" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6295"><div class="lb-album"><a href="#image-6295"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356051-300x145.png" alt="Decreasing Power Min slider to remove noise" class="size-medium wp-image-6374"><span></span></a></div>              
 <a href="#imageclose-6295" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6295">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356051.png" alt="image-6295">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356051.png" alt="image-6295">
                    </div></a><p class="wp-caption-text">Decreasing Power Min slider to remove noise</p></div>
 <p>Decrease the &#8216;Power max&#8217; slider until the strongest part of the signal is shown in red.</p>
-<div id="attachment_6362" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6296"><div class="lb-album"><a href="#image-6296"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356351-300x174.png" alt="Increasing Power max slider to turn signal red" class="size-medium wp-image-6362"><span></span></a></div>              
+<div id="attachment_6362" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6296"><div class="lb-album"><a href="#image-6296"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356351-300x174.png" alt="Increasing Power max slider to turn signal red" class="size-medium wp-image-6362"><span></span></a></div>              
 <a href="#imageclose-6296" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6296">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1356351.png" alt="image-6296">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1356351.png" alt="image-6296">
                    </div></a><p class="wp-caption-text">Increasing Power max slider to turn signal red</p></div>
 <p>This is useful because we&#8217;ve ignored the noise and shown the signal of interest in red. But it&#8217;s still not the square wave we wanted to see.</p>
 <p>The reason for this is that our FFT is showing us really good resolution in the frequncy domain (vertical axis), but really poor (fuzzy) resolution in the time domain (horizontal axis). When working with FFT plots is important to remember that you always sacrifice fidelity in one domain to improve the other. We&#8217;ll move the FFT slider to the left. This will squish our plot along the frequency axis, but stretch it along the time axis.</p>
-<div id="attachment_6363" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6297"><div class="lb-album"><a href="#image-6297"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1357521-300x148.png" alt="Using FFT slider to improve resolution in time domain" class="size-medium wp-image-6363"><span></span></a></div>              
+<div id="attachment_6363" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6297"><div class="lb-album"><a href="#image-6297"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1357521-300x148.png" alt="Using FFT slider to improve resolution in time domain" class="size-medium wp-image-6363"><span></span></a></div>              
 <a href="#imageclose-6297" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6297">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1357521.png" alt="image-6297">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1357521.png" alt="image-6297">
                    </div></a><p class="wp-caption-text">Using FFT slider to improve resolution in time domain</p></div>
 <p>That&#8217;s better. We can see the square wave we&#8217;d expect for an FSK signal now. It&#8217;s still a bit fuzzy, but this looks good enough to read 1&#8242;s and 0&#8242;s off. We can tweak the power settings to make things clearer:</p>
-<div id="attachment_6364" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6298"><div class="lb-album"><a href="#image-6298"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1359001-300x156.png" alt="Tweak power settings to improve clarity" class="size-medium wp-image-6364"><span></span></a></div>              
+<div id="attachment_6364" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6298"><div class="lb-album"><a href="#image-6298"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1359001-300x156.png" alt="Tweak power settings to improve clarity" class="size-medium wp-image-6364"><span></span></a></div>              
 <a href="#imageclose-6298" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6298">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1359001.png" alt="image-6298">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1359001.png" alt="image-6298">
                    </div></a><p class="wp-caption-text">Tweak power settings to improve clarity</p></div>
 <p>If we tick Enable cursors we can measure the duration of pulses.</p>
-<div id="attachment_6365" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6299"><div class="lb-album"><a href="#image-6299"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401121-300x177.png" alt="Using cursors" class="size-medium wp-image-6365"><span></span></a></div>              
+<div id="attachment_6365" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6299"><div class="lb-album"><a href="#image-6299"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401121-300x177.png" alt="Using cursors" class="size-medium wp-image-6365"><span></span></a></div>              
 <a href="#imageclose-6299" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6299">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401121.png" alt="image-6299">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401121.png" alt="image-6299">
                    </div></a><p class="wp-caption-text">Using cursors</p></div>
 <p>If we scroll around a bit, some of signal looks weak.</p>
-<div id="attachment_6366" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6300"><div class="lb-album"><a href="#image-6300"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401241-300x168.png" alt="Identifying weak parts of signal" class="size-medium wp-image-6366"><span></span></a></div>              
+<div id="attachment_6366" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6300"><div class="lb-album"><a href="#image-6300"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401241-300x168.png" alt="Identifying weak parts of signal" class="size-medium wp-image-6366"><span></span></a></div>              
 <a href="#imageclose-6300" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6300">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1401241.png" alt="image-6300">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1401241.png" alt="image-6300">
                    </div></a><p class="wp-caption-text">Identifying weak parts of signal</p></div>
 <p>Maybe we could still infer the square wave form, but lets see what we can do by tweaking the Power sliders again:</p>
-<div id="attachment_6367" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6301"><div class="lb-album"><a href="#image-6301"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1402011-300x140.png" alt="Tweaking power sliders" class="size-medium wp-image-6367"><span></span></a></div>              
+<div id="attachment_6367" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6301"><div class="lb-album"><a href="#image-6301"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1402011-300x140.png" alt="Tweaking power sliders" class="size-medium wp-image-6367"><span></span></a></div>              
 <a href="#imageclose-6301" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6301">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1402011.png" alt="image-6301">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1402011.png" alt="image-6301">
                    </div></a><p class="wp-caption-text">Tweaking power sliders</p></div>
 <p>Better, but still not a good representation. How about decreasing the FFT slider again?  This will give us better accuracy in the time domain. But will squish the 1 and 0 lines closer together.</p>
-<div id="attachment_6368" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6302"><div class="lb-album"><a href="#image-6302"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1403371-300x109.png" alt="Decreasing FFT slider" class="size-medium wp-image-6368"><span></span></a></div>              
+<div id="attachment_6368" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6302"><div class="lb-album"><a href="#image-6302"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1403371-300x109.png" alt="Decreasing FFT slider" class="size-medium wp-image-6368"><span></span></a></div>              
 <a href="#imageclose-6302" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6302">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1403371.png" alt="image-6302">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1403371.png" alt="image-6302">
                    </div></a><p class="wp-caption-text">Decreasing FFT slider</p></div>
 <p>That&#8217;s pretty good. We can still tell the difference between a 1 and 0 and we&#8217;ve got a really good representation of where each 1 and 0 starts in the time domain.</p>
 <p>Let&#8217;s briefly revisit our use of cursors:</p>
-<div id="attachment_6369" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6303"><div class="lb-album"><a href="#image-6303"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1404351-300x146.png" alt="Measuring a single pulse" class="size-medium wp-image-6369"><span></span></a></div>              
+<div id="attachment_6369" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6303"><div class="lb-album"><a href="#image-6303"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1404351-300x146.png" alt="Measuring a single pulse" class="size-medium wp-image-6369"><span></span></a></div>              
 <a href="#imageclose-6303" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6303">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1404351.png" alt="image-6303">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1404351.png" alt="image-6303">
                    </div></a><p class="wp-caption-text">Measuring a single pulse</p></div>
 <p>It&#8217;s hard to be accurate with just a single pulse (15.15Khz?), but we can easily span more than 1 pulse.</p>
-<div id="attachment_6370" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6304"><div class="lb-album"><a href="#image-6304"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1406371-300x113.png" alt="Measuring multiple pulses" class="size-medium wp-image-6370"><span></span></a></div>              
+<div id="attachment_6370" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6304"><div class="lb-album"><a href="#image-6304"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1406371-300x113.png" alt="Measuring multiple pulses" class="size-medium wp-image-6370"><span></span></a></div>              
 <a href="#imageclose-6304" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6304">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1406371.png" alt="image-6304">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1406371.png" alt="image-6304">
                    </div></a><p class="wp-caption-text">Measuring multiple pulses</p></div>
 <p>More like 15.58KHz.</p>
 <p>If you suspect you&#8217;ve got a <a title="Manchester Encoded" href="https://en.wikipedia.org/wiki/Manchester_code">Manchester Encoded</a> signal (as we seem to have here), you can expand the slider so that each segment covers two pulses.</p>
-<div id="attachment_6371" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6305"><div class="lb-album"><a href="#image-6305"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1408071-300x100.png" alt="Cursors used for Manchester Encoding" class="size-medium wp-image-6371"><span></span></a></div>              
+<div id="attachment_6371" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6305"><div class="lb-album"><a href="#image-6305"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1408071-300x100.png" alt="Cursors used for Manchester Encoding" class="size-medium wp-image-6371"><span></span></a></div>              
 <a href="#imageclose-6305" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6305">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_1408071.png" alt="image-6305">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_1408071.png" alt="image-6305">
                    </div></a><p class="wp-caption-text">Cursors used for Manchester Encoding</p></div>
 <p>As required for Manchester Encoding, each segment includes either a high-to-low transition or a low-to-high transition, but never high-to-high or low-to-low.</p>
 <p>That concludes a walkthrough of using inspectrum to look at FSK modulated signals. We&#8217;ve seen how to confirm we have an FSK signal by looking for square wave in the FFT plot &#8211; i.e. a signal that hops between two (or more) distinct frequencies. We showed how to tweak the sliders to get a nice clear view of the signal, trading off resolution in the frequency domain for resolution in the time domain. We used cursors to show we can take measurements of the baudrate of the signal.</p>
@@ -241,22 +241,22 @@ apt-get install inspectrum
 <p>For this example we use an RF remote for a mains remote.</p>
 <p>Having covered how to use inspectrum in the FSK section above, we&#8217;ll go into less detail in this section.</p>
 <p>Upon loading the capture file we&#8217;re presented with what looks like 8 repeating signals. We&#8217;ll drill into one of those and try to see the 1&#8242;s and 0&#8242;s:</p>
-<div id="attachment_6379" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6306"><div class="lb-album"><a href="#image-6306"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162655-300x115.png" alt="8 repeating signals?" class="size-medium wp-image-6379"><span></span></a></div>              
+<div id="attachment_6379" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6306"><div class="lb-album"><a href="#image-6306"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162655-300x115.png" alt="8 repeating signals?" class="size-medium wp-image-6379"><span></span></a></div>              
 <a href="#imageclose-6306" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6306">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162655.png" alt="image-6306">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162655.png" alt="image-6306">
                    </div></a><p class="wp-caption-text">8 repeating signals?</p></div>
 <p>Adjusting the Power slides as before we can filter out the background noise and more easily see our signal of interest:</p>
-<div id="attachment_6380" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6307"><div class="lb-album"><a href="#image-6307"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162720-300x110.png" alt="Filtering out background noise" class="size-medium wp-image-6380"><span></span></a></div>              
+<div id="attachment_6380" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6307"><div class="lb-album"><a href="#image-6307"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162720-300x110.png" alt="Filtering out background noise" class="size-medium wp-image-6380"><span></span></a></div>              
 <a href="#imageclose-6307" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6307">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162720.png" alt="image-6307">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162720.png" alt="image-6307">
                    </div></a><p class="wp-caption-text">Filtering out background noise</p></div>
 <p>Using the zoom feature, we can start to see the 1&#8242;s and 0&#8242;s pretty quickly.</p>
-<div id="attachment_6381" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6308"><div class="lb-album"><a href="#image-6308"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162759-300x117.png" alt="Locating 1' class="size-medium wp-image-6381"><span></span></a></div>              
+<div id="attachment_6381" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6308"><div class="lb-album"><a href="#image-6308"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162759-300x117.png" alt="Locating 1' class="size-medium wp-image-6381"><span></span></a></div>              
 <a href="#imageclose-6308" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6308">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_162759.png" alt="image-6308">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_162759.png" alt="image-6308">
                    </div></a><p class="wp-caption-text">Locating 1&#8242;s and 0&#8242;s with zoom slider</p></div>
 <p>In this case, though, unlike for FSK we&#8217;re not expecting to see a square wave, we&#8217;re expecting to see a single line with gaps in. Which is what we can already see. Furthermore we can start to figure out the 1&#8242;s and the o&#8217;s. Note that the signal above is composed of only the 2 patterns:</p>
 <ul>
@@ -265,16 +265,16 @@ apt-get install inspectrum
 </ul>
 <p>One is our 1 and the other is our 0. At this stage it doesn&#8217;t really matter which. Only that we&#8217;d be able to describe any signal using 1&#8242;s and 0&#8242;s the way we define them.</p>
 <p>This is easier to see if we use the cursor feature:</p>
-<div id="attachment_6382" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6309"><div class="lb-album"><a href="#image-6309"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_174402-300x109.png" alt="Using cursors to highlight 1' class="size-medium wp-image-6382"><span></span></a></div>              
+<div id="attachment_6382" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6309"><div class="lb-album"><a href="#image-6309"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_174402-300x109.png" alt="Using cursors to highlight 1' class="size-medium wp-image-6382"><span></span></a></div>              
 <a href="#imageclose-6309" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6309">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_174402.png" alt="image-6309">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_174402.png" alt="image-6309">
                    </div></a><p class="wp-caption-text">Using cursors to highlight 1&#8242;s and 0&#8242;s</p></div>
 <p>If you&#8217;ve read the FSK section above, you may have been tempted (as I was) to slide the FFT slider to the left to improve the resolution in the time domain. If you do this, you&#8217;re able to see that the long line is composed for 4 short lines &#8211; of slightly different lengths!  This makes it really hard to spot the pattern being used for a 1 or 0 (unless you already know it). It doesn&#8217;t matter to us how the long or short line are generated. The fact that they aren&#8217;t continuous lines doesn&#8217;t matter and just causes confusion.  So, in this case we&#8217;ve shown that when investigating ASK/OOK signals, it&#8217;s best to start with the FFT slider on the right (limited resolution in the time domain) and only move if to the left if we&#8217;re unable to spot the pattern used for 1&#8242;s and 0&#8242;s.</p>
-<div id="attachment_6383" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6310"><div class="lb-album"><a href="#image-6310"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_185835-300x117.png" alt="Confusing patterns found by sliding FFT slider too far" class="size-medium wp-image-6383"><span></span></a></div>              
+<div id="attachment_6383" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-6310"><div class="lb-album"><a href="#image-6310"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_185835-300x117.png" alt="Confusing patterns found by sliding FFT slider too far" class="size-medium wp-image-6383"><span></span></a></div>              
 <a href="#imageclose-6310" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6310">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/Screenshot_20180121_185835.png" alt="image-6310">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/Screenshot_20180121_185835.png" alt="image-6310">
                    </div></a><p class="wp-caption-text">Confusing patterns found by sliding FFT slider too far</p></div>
 <br /> <div class="wpcf7" id="wpcf7-f375-p238-o1"><form action="/contact/" method="post" class="wpcf7-form">
 <div style="display: none;">
@@ -309,7 +309,7 @@ apt-get install inspectrum
 </div>
 <div class="wpcf7-response-output wpcf7-display-none"></div></form></div></br ><div style="clear:both;"></div><!-- AddThis Advanced Settings above via filter on the_content --><!-- AddThis Advanced Settings below via filter on the_content --><!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_toolbox addthis_default_style addthis_32x32_style"><a class="addthis_button_email"><a class="addthis_button_twitter"></a><a class="addthis_button_reddit"></a></a>
-</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://portcullislabs.github.io/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
+</div><!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons above via filter on the_content --><!-- AddThis Share Buttons below via filter on the_content --><div class="at-below-post addthis_tool" data-url="https://labs.portcullis.co.uk/blog/adventures-in-rf-using-inspectrum-to-analyse-fsk-and-askook-signals/"></div><!-- AddThis Share Buttons generic via filter on the_content --></div>
                                                                 
 </article>
 				
@@ -329,25 +329,25 @@ apt-get install inspectrum
     <div class="portcullis-layout-cell" style="width: 33%">
         <p style="text-align: left;"><span style="font-size: 17px; padding-left:40px; font-family: Tahoma;"><span style="color: #ffffff;">Research and Development</span><br></span></p>
         <ul>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/advisories/">Advisories</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/blog/">Blog</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/presentations/">Presentations</a><br></span></li>
-        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/tools/">Tools</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/whitepapers/">Whitepapers</a><br></span></li>
-        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/downloads/">Downloads</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/advisories/">Advisories</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/blog/">Blog</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/presentations/">Presentations</a><br></span></li>
+        <li style="text-align: left; padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/tools/">Tools</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/whitepapers/">Whitepapers</a><br></span></li>
+        <li style="text-align: left;padding-left:50px;"><span style="font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/downloads/">Downloads</a><br></span></li>
                </ul>
         <p><br></p>
     </div><div class="portcullis-layout-cell" style="width: 34%">
         <p style="text-align: left;"><span style="font-size: 17px;"><span style="font-family: Tahoma;"><span style="font-weight: normal; color: #ffffff;">Company</span><br></span></span></p>
         <ul>
-       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://portcullislabs.github.io/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
+       <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/contact-us/">Contact Us</a><span style="font-size: 12px;"><br></span></span></li>
         <li style="text-align: left;"><span style="font-family: Tahoma;"><a href="https://www.portcullis-security.com">Portcullis Computer Security Services</a><span style="font-size: 12px;"><br></span></span></li>
                 </ul>
         <br>
     </div><div class="portcullis-layout-cell" style="width: 33%">
        <span style="color: #ffffff;"><br>
         <br>
-        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://portcullislabs.github.io/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://portcullislabs.github.io/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
+        <p style="text-align: left;"><span style="color: #ffffff; font-family: Tahoma;"><span style="color: #ffffff;"><span style="font-size: 15px; color: #ffffff;">Follow Us</span> <span style="font-weight: bold;"> <a href="http://www.twitter.com/portcullislabs" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Twitter" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/twitterfooter.png"></a> <a href="http://www.linkedin.com/company/portcullis?trk=hb_tab_compy_id_505813" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Linkedin" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/linkedinfooter.png"></a> <a href="http://www.facebook.com/PortcullisCSL" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Facebook" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/facebookfooter.png"></a> <a href="https://plus.google.com/114151721382021849037/posts" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Google Plus" class="" src="https://labs.portcullis.co.uk/wp-content/themes/Portcullisfinal/images/googleplusfooter.png"></a> <a href="/rss" target="_blank"><img width="16" height="16" style=" border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" alt="Portcullis Rss" class=""img src="https://labs.portcullis.co.uk/wp-content/uploads/2013/04/rss.png"></a></span></span></span></p>
         <p><br></p>
     </div>
     </div>
@@ -365,7 +365,7 @@ apt-get install inspectrum
     <div class="portcullis-layout-cell" style="width: 50%">
       <p style="text-align: left;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;">© Portcullis Computer Security Ltd & Portcullis Inc. All rights reserved. ® 1992 - 2017.</span></p>
     </div><div class="portcullis-layout-cell" style="width: 50%">
-        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://portcullislabs.github.io/privacy-and-cookies/">Privacy and Cookies</a></span></p>
+        <p style="text-align: right;"><span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/terms-of-use/">Terms of Use</a> </span>| <span style="color: #ffffff; font-size: 12px; font-family: Tahoma;"><a href="https://labs.portcullis.co.uk/privacy-and-cookies/">Privacy and Cookies</a></span></p>
     </div>
     </div>
 </div></footer>
@@ -376,13 +376,13 @@ apt-get install inspectrum
 
 
 <div id="wp-footer">
-	<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+	<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
 <script type='text/javascript'>
 	(function(){
 		var corecss = document.createElement('link');
 		var themecss = document.createElement('link');
-		var corecssurl = "https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		var corecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
 		if ( corecss.setAttribute ) {
 				corecss.setAttribute( "rel", "stylesheet" );
 				corecss.setAttribute( "type", "text/css" );
@@ -392,7 +392,7 @@ apt-get install inspectrum
 				corecss.href = corecssurl;
 		}
 		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
-		var themecssurl = "https://portcullislabs.github.io/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		var themecssurl = "https://labs.portcullis.co.uk/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
 		if ( themecss.setAttribute ) {
 				themecss.setAttribute( "rel", "stylesheet" );
 				themecss.setAttribute( "type", "text/css" );
@@ -412,20 +412,20 @@ apt-get install inspectrum
 	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
 	SyntaxHighlighter.all();
 </script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.23'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
-var _wpcf7 = {"loaderUrl":"https:\/\/portcullislabs.github.io\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+var _wpcf7 = {"loaderUrl":"https:\/\/labs.portcullis.co.uk\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
 /* ]]> */
 </script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=3.3.2'></script>
 <script type='text/javascript' src='https://www.google.com/recaptcha/api.js?onload=contact_form_7_recaptcha_callback&#038;render=explicit&#038;ver=1.0.0'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
 var contact_form_7_recaptcha_data = {"sitekey":"6LdFERITAAAAAJKGS2TEXuWsyOxc-KxvAZBC8zE2"};
 /* ]]> */
 </script>
-<script type='text/javascript' src='https://portcullislabs.github.io/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
+<script type='text/javascript' src='https://labs.portcullis.co.uk/wp-content/plugins/contact-form-7-recaptcha/script.js?ver=1.0.0'></script>
 	<!-- 63 queries. 0.090 seconds. -->
 </div>
 </body>

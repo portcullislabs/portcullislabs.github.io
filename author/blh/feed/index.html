@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; BLH</title>
-	<atom:link href="https://portcullislabs.github.io/author/blh/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/author/blh/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>MS SQL Server audit: Surface area reduction (part 2)</title>
-		<link>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-2/</link>
-		<comments>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-2/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/#comments</comments>
 		<pubDate>Thu, 15 Feb 2018 20:27:39 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -28,8 +28,8 @@
 		<category><![CDATA[SQL Server]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3384</guid>
-		<description><![CDATA[<p>Continuing on from part 1, we will look other benchmark settings that will help to reduce the surface area of attack. Other settings There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered: Set is_trustworthy settings for [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3384</guid>
+		<description><![CDATA[<p>Continuing on from part 1, we will look other benchmark settings that will help to reduce the surface area of attack. Other settings There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered: Set is_trustworthy settings for [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Continuing on from <a href="/blog/ms-sql-server-audit-surface-area-reduction-part-1/">part 1</a>, we will look other benchmark settings that will help to reduce the surface area of attack.<span id="more-3384"></span></p>
 <h2>Other settings</h2>
 <p>There are a number of other settings in the Center for Internet Security (CIS) Security Benchmark for SQL Server relating to surface area reduction that should be considered:</p>
@@ -54,10 +54,10 @@ SELECT name FROM sys.databases WHERE is_trustworthy_on = 1 AND name != 'msdb' AN
 <li>Right-click on each database under &#8216;Databases&#8217; and &#8216;Databases\System databases&#8217; and select properties</li>
 <li>Click on &#8220;Options&#8221; page and scroll down in the right pane to &#8220;Miscellaneous&#8221; where &#8220;Trustworthy&#8221; is seen</li>
 </ul>
-<div id="attachment_3562" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3385"><div class="lb-album"><a href="#image-3385"><img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/trustworthysqlstudio-300x210.png" alt="Trustworthy option for database in SQL Server Management Studio" class="size-medium wp-image-3562"><span></span></a></div>              
+<div id="attachment_3562" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3385"><div class="lb-album"><a href="#image-3385"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio-300x210.png" alt="Trustworthy option for database in SQL Server Management Studio" class="size-medium wp-image-3562"><span></span></a></div>              
 <a href="#imageclose-3385" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-3385">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/trustworthysqlstudio.png" alt="image-3385">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/trustworthysqlstudio.png" alt="image-3385">
                    </div></a><p class="wp-caption-text">Trustworthy option for database in SQL Server Management Studio</p></div>
 <h3>Disable unnecessary SQL Server protocols</h3>
 <p>Ideally the number of SQL Server protocols enabled should be reduced. It is noted that CIS Security Benchmark do not score this particular issue.</p>
@@ -275,14 +275,14 @@ WHERE sid = 0x01;
 <h2>Summary</h2>
 <p>In this article, you have seen a few more settings that can be used to configure to reduce the surface area of attack and improve the security of the SQL Server following good practices and the CIS Security Benchmark.</p>
 <p>You can audit manually looking at SQL Server Management Studio and SQL Server Configuration Manager. You can also create a query that will read the catalog information for the databases and the registry to gather the information about the server instance.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-2/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/">MS SQL Server audit: Surface area reduction (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-2/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>NOPC version 0.4.7 released</title>
-		<link>https://portcullislabs.github.io/blog/nopc-version-0-4-7-released/</link>
-		<comments>https://portcullislabs.github.io/blog/nopc-version-0-4-7-released/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/</link>
+		<comments>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/#comments</comments>
 		<pubDate>Wed, 28 Oct 2015 14:14:21 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -290,9 +290,9 @@ WHERE sid = 0x01;
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[UNIX]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5355</guid>
-		<description><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Updated features and bug fixes Improvements to the interactive mode (e.g. asking for what format for results [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our <a title="tools" href="https://portcullislabs.github.io/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-5355"></span></p>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5355</guid>
+		<description><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Updated features and bug fixes Improvements to the interactive mode (e.g. asking for what format for results [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline patch checker for Linux distributions and UNIX-based systems has had some changes made and been made available in our <a title="tools" href="https://labs.portcullis.co.uk/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-5355"></span></p>
 <h2>Updated features and bug fixes</h2>
 <ul>
 <li>Improvements to the interactive mode (e.g. asking for what format for results to be displayed)</li>
@@ -343,14 +343,14 @@ Where output type is one of:
 
 ** Entering no parameters will run this in wizard mode walking you through the data collection for your desired system
 </pre>
-<p>The post <a href="https://portcullislabs.github.io/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/nopc-version-0-4-7-released/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/">NOPC version 0.4.7 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/nopc-version-0-4-7-released/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>NOPC version 0.4.5 released</title>
-		<link>https://portcullislabs.github.io/blog/nopc-version-0-4-5-released/</link>
-		<comments>https://portcullislabs.github.io/blog/nopc-version-0-4-5-released/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/</link>
+		<comments>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/#comments</comments>
 		<pubDate>Fri, 12 Jun 2015 08:38:39 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -358,11 +358,11 @@ Where output type is one of:
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[UNIX]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3683</guid>
-		<description><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Introduction There have been some updates to the NOPC tool. The latest version is now 0.4.5. Updated features and bug fixes Added Output [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our <a title="tools" href="https://portcullislabs.github.io/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-3683"></span></p>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3683</guid>
+		<description><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our tools section. This article discusses the new features in detail and provides some working examples. Introduction There have been some updates to the NOPC tool. The latest version is now 0.4.5. Updated features and bug fixes Added Output [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>NOPC, the Nessus-based offline UNIX patch checker has had some changes made and been made available in our <a title="tools" href="https://labs.portcullis.co.uk/tools/">tools</a> section. This article discusses the new features in detail and provides some working examples.<span id="more-3683"></span></p>
 <h2>Introduction</h2>
-<p>There have been some updates to the <a title="NOPC tool" href="https://portcullislabs.github.io/tools/nopc/">NOPC tool</a>. The latest version is now 0.4.5.</p>
+<p>There have been some updates to the <a title="NOPC tool" href="https://labs.portcullis.co.uk/tools/nopc/">NOPC tool</a>. The latest version is now 0.4.5.</p>
 <h2>Updated features and bug fixes</h2>
 <ul>
 <li>Added Output CSV Format to display information of affected CVEs and CVSS scores</li>
@@ -491,14 +491,14 @@ $ nopc.sh -s 11
 <h2>Summary</h2>
 <p>This article presents the improvements and fixes to NOPC for the version 0.4.5 release. We have gone through examples and how to use it.</p>
 <p>If you find any bugs with this version, please let us know, particularly if you know you are reviewing a vulnerable system and NOPC generates no output or errors.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/nopc-version-0-4-5-released/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/">NOPC version 0.4.5 released</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/nopc-version-0-4-5-released/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>MS SQL Server Audit: Extended Stored Procedures / Table Privileges</title>
-		<link>https://portcullislabs.github.io/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/</link>
-		<comments>https://portcullislabs.github.io/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/#comments</comments>
 		<pubDate>Fri, 23 Jan 2015 16:24:17 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -506,8 +506,8 @@ $ nopc.sh -s 11
 		<category><![CDATA[SQL Server]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3385</guid>
-		<description><![CDATA[<p>(If you excuse the pun), everyone has a different view on Extended Stored Procedures: Some might say they are stored procedures with extra functionality Some might say they can cause problems to a database if misused Some simply say they are stored procedures with a prefix of xp_ This post will hopefully give a better [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3385</guid>
+		<description><![CDATA[<p>(If you excuse the pun), everyone has a different view on Extended Stored Procedures: Some might say they are stored procedures with extra functionality Some might say they can cause problems to a database if misused Some simply say they are stored procedures with a prefix of xp_ This post will hopefully give a better [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>(If you excuse the pun), everyone has a different view on Extended Stored Procedures:</p>
 <ul>
 <li>Some might say they are stored procedures with extra functionality</li>
@@ -548,10 +548,10 @@ Databases\System Databases\master\Programmability\Extended Stored Procedures\Sys
 <li>If the Grant checkbox for the Execute permission is checked, the Public role has Execute permission on the procedure</li>
 </ol>
 <p>You should remove the the public entry.</p>
-<div id="attachment_3566" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3386"><div class="lb-album"><a href="#image-3386"><img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/xp_dirtree-300x210.png" alt="Permissions for xp_dirtree" class="size-medium wp-image-3566"><span></span></a></div>              
+<div id="attachment_3566" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3386"><div class="lb-album"><a href="#image-3386"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/xp_dirtree-300x210.png" alt="Permissions for xp_dirtree" class="size-medium wp-image-3566"><span></span></a></div>              
 <a href="#imageclose-3386" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-3386">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/xp_dirtree.png" alt="image-3386">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/xp_dirtree.png" alt="image-3386">
                    </div></a><p class="wp-caption-text">Permissions for xp_dirtree</p></div>
 <p>A useful query can be constructed that gathers the permissions granted to public for all XP stored procedures. The query looks at the database permissions table and identifies the associated objects that are extended stored procedures (XP) with it assigned permissions which applies to PUBLIC.</p>
 <pre class="brush: sql; gutter: false; title: ; notranslate">
@@ -583,14 +583,14 @@ ORDER BY u.name, p.state_desc ASC, p.permission_name ASC'
 <h2>Summary</h2>
 <p>In this article, we have looked Extended Stored Procedures and how to identify them. In general, Extended Stored Procedures are not required for the running of a SQL Server and should be disabled from use. Good practices from Microsoft and CIS support this.<br />
 We also looked at constructing a query that can evaluate what permissions are assigned to users for objects that can be applied to sensitive data, such as tables, views, stored procedures and functions.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/">MS SQL Server Audit: Extended Stored Procedures / Table Privileges</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-extended-stored-procedures-table-privileges/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>MS SQL Server audit: Surface area reduction (part 1)</title>
-		<link>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-1/</link>
-		<comments>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-1/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/#comments</comments>
 		<pubDate>Wed, 26 Feb 2014 06:50:04 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -598,8 +598,8 @@ We also looked at constructing a query that can evaluate what permissions are as
 		<category><![CDATA[SQL Server]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3380</guid>
-		<description><![CDATA[<p>SQL Server has a number of components that allow clients to connect and communicate with it. Microsoft introduced the term, &#8220;Surface Area Reduction&#8221; as a security measure that involves stopping or disabling unused components. Like the name suggests, it reduces the number of ways that an attacker could try to interrogate the SQL Server. This [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3380</guid>
+		<description><![CDATA[<p>SQL Server has a number of components that allow clients to connect and communicate with it. Microsoft introduced the term, &#8220;Surface Area Reduction&#8221; as a security measure that involves stopping or disabling unused components. Like the name suggests, it reduces the number of ways that an attacker could try to interrogate the SQL Server. This [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>SQL Server has a number of components that allow clients to connect and communicate with it. Microsoft introduced the term, &#8220;Surface Area Reduction&#8221; as a security measure that involves stopping or disabling unused components. Like the name suggests, it reduces the number of ways that an attacker could try to interrogate the SQL Server.<span id="more-3380"></span></p>
 <p>This post discusses the following:</p>
 <ul>
@@ -663,10 +663,10 @@ Management\Policy Management\Facets
 </ul>
 <p>As seen in the following screenshot example:</p>
 <p><!--Image: Surface Area Configuration Facet--><br />
-<div id="attachment_3405" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3381"><div class="lb-album"><a href="#image-3381"><img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/surfaceareafacet-300x210.png" alt="Surface Area Configuration Facet in SQL Server Management Studio" class="size-medium wp-image-3405"><span></span></a></div>              
+<div id="attachment_3405" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3381"><div class="lb-album"><a href="#image-3381"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/surfaceareafacet-300x210.png" alt="Surface Area Configuration Facet in SQL Server Management Studio" class="size-medium wp-image-3405"><span></span></a></div>              
 <a href="#imageclose-3381" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-3381">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/surfaceareafacet.png" alt="image-3381">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/surfaceareafacet.png" alt="image-3381">
                    </div></a><p class="wp-caption-text">Surface Area Configuration Facet in SQL Server Management Studio</p></div>
 <h2>Services</h2>
 <p>Microsoft also recommend turning off any unneeded services by setting the service to either manual startup or disabled using SQL Server Configuration Manager.</p>
@@ -679,10 +679,10 @@ Management\Policy Management\Facets
 </ol>
 <p>As seen in the following screenshot example:</p>
 <p><!--Image: Disabling SQL services with SQL Server Configuration Manager--><br />
-<div id="attachment_3404" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3382"><div class="lb-album"><a href="#image-3382"><img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/disablesqlservices-300x223.png" alt="Disable SQL Services using SQL Server Configuration Manager" class="size-medium wp-image-3404"><span></span></a></div>              
+<div id="attachment_3404" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3382"><div class="lb-album"><a href="#image-3382"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/disablesqlservices-300x223.png" alt="Disable SQL Services using SQL Server Configuration Manager" class="size-medium wp-image-3404"><span></span></a></div>              
 <a href="#imageclose-3382" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-3382">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/disablesqlservices.png" alt="image-3382">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/disablesqlservices.png" alt="image-3382">
                    </div></a><p class="wp-caption-text">Disable SQL Services using SQL Server Configuration Manager</p></div>
 <h2>Summary</h2>
 <p>In this post, we have had a look at reducing surface area by:</p>
@@ -692,14 +692,14 @@ Management\Policy Management\Facets
 <li>Turning off unneeded SQL services</li>
 </ul>
 <p>In the second part of the article, we will look at other features and SQL queries that can be used to reduce the surface area and comply with good security practices.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ms-sql-server-audit-surface-area-reduction-part-1/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/">MS SQL Server audit: Surface area reduction (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-surface-area-reduction-part-1/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>MS SQL Server Audit: Introduction</title>
-		<link>https://portcullislabs.github.io/blog/ms-sql-server-audit-introduction/</link>
-		<comments>https://portcullislabs.github.io/blog/ms-sql-server-audit-introduction/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/#comments</comments>
 		<pubDate>Mon, 10 Feb 2014 06:20:21 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -707,8 +707,8 @@ Management\Policy Management\Facets
 		<category><![CDATA[SQL Server]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3371</guid>
-		<description><![CDATA[<p>MS SQL Server is Microsoft&#8217;s relational database management system with a large number of features and services. With this coverage, there is a large surface area for attack and vulnerabilities. Fortunately, there are a number of security benchmarks and good practice documents available. This article gives an introduction to the security guidelines available and an [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3371</guid>
+		<description><![CDATA[<p>MS SQL Server is Microsoft&#8217;s relational database management system with a large number of features and services. With this coverage, there is a large surface area for attack and vulnerabilities. Fortunately, there are a number of security benchmarks and good practice documents available. This article gives an introduction to the security guidelines available and an [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>MS SQL Server is Microsoft&#8217;s relational database management system with a large number of features and services. With this coverage, there is a large surface area for attack and vulnerabilities. Fortunately, there are a number of security benchmarks and good practice documents available. This article gives an introduction to the security guidelines available and an overview on what key areas to audit and lock down.<span id="more-3371"></span></p>
 <h2>Introduction</h2>
 <p>Microsoft has a <a title="SQL Server - Best Practices" href="http://technet.microsoft.com/en-gb/sqlserver/bb671430.aspx">SQL Server &#8211; Best Practices</a> section on their <a title="technet" href="http://technet.microsoft.com/">technet</a> web site. Specifically, a couple of good practice documents of interest are:</p>
@@ -782,14 +782,14 @@ Generally, you should look at:</p>
 </ul>
 <h2>Summary</h2>
 <p>As we have seen there are a number of security benchmark and guideline articles available. Examples include Microsoft, Center for Information Security (CIS) and Security Technical Implementation Guide (STIG). We looked at the general areas covered in these examples. In the next post, we shall look further at the first of these areas, reducing the surface area for vulnerabilities and attack.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ms-sql-server-audit-introduction/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/">MS SQL Server Audit: Introduction</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ms-sql-server-audit-introduction/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Audit services using Windows Programs only</title>
-		<link>https://portcullislabs.github.io/blog/audit-services-using-windows-programs-only/</link>
-		<comments>https://portcullislabs.github.io/blog/audit-services-using-windows-programs-only/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/audit-services-using-windows-programs-only/</link>
+		<comments>https://labs.portcullis.co.uk/blog/audit-services-using-windows-programs-only/#comments</comments>
 		<pubDate>Mon, 10 Feb 2014 06:00:04 +0000</pubDate>
 		<dc:creator><![CDATA[BLH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -797,8 +797,8 @@ Generally, you should look at:</p>
 		<category><![CDATA[training]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3307</guid>
-		<description><![CDATA[<p>There are many third-party tools in the security industry that can perform a security audit of your Windows system. Some are standalone executable, some are frameworks, some are free and some you have to shell out money for. But what if you these tools are not available to you, you are stuck with a Windows [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/audit-services-using-windows-programs-only/">Audit services using Windows Programs only</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3307</guid>
+		<description><![CDATA[<p>There are many third-party tools in the security industry that can perform a security audit of your Windows system. Some are standalone executable, some are frameworks, some are free and some you have to shell out money for. But what if you these tools are not available to you, you are stuck with a Windows [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/audit-services-using-windows-programs-only/">Audit services using Windows Programs only</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>There are many third-party tools in the security industry that can perform a security audit of your Windows system. Some are standalone executable, some are frameworks, some are free and some you have to shell out money for. But what if you these tools are not available to you, you are stuck with a Windows servers and essentially what Windows has given you. This article will look at executable programs under Windows that can be use audit services.<span id="more-3307"></span></p>
 <p>So you want to audit a Windows system with the credentials given. You may be able to download and install your own software but what if you are not permitted. What can you do?</p>
 <p>Windows have native programs on-board that can be used to gather information about your system, for example:</p>
@@ -990,8 +990,8 @@ goto:EOF
 </pre>
 <h2>Summary</h2>
 <p>It is possible to find out details of the Windows for auditing using the native Windows programs. In this article, we have managed to audit Windows services using WMIC, CACLS and some batch processing.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/audit-services-using-windows-programs-only/">Audit services using Windows Programs only</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/audit-services-using-windows-programs-only/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/audit-services-using-windows-programs-only/">Audit services using Windows Programs only</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/audit-services-using-windows-programs-only/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

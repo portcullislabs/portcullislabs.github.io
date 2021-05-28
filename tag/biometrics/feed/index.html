@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; biometrics</title>
-	<atom:link href="https://portcullislabs.github.io/tag/biometrics/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/tag/biometrics/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Is your sign signed?</title>
-		<link>https://portcullislabs.github.io/blog/is-your-sign-signed/</link>
-		<comments>https://portcullislabs.github.io/blog/is-your-sign-signed/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/is-your-sign-signed/</link>
+		<comments>https://labs.portcullis.co.uk/blog/is-your-sign-signed/#comments</comments>
 		<pubDate>Thu, 03 Aug 2017 16:30:01 +0000</pubDate>
 		<dc:creator><![CDATA[ISA]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -29,8 +29,8 @@
 		<category><![CDATA[connectedcar]]></category>
 		<category><![CDATA[hardhack]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6002</guid>
-		<description><![CDATA[<p>Modern autonomous vehicles use a number of sensors to analyse their surroundings and act upon changes in their environment. A brilliant idea in theory, but how much of this sensory information can we actually trust? Cisco&#8217;s Security Advisory R&#38;D team, a.k.a. Portcullis Labs, decided to investigate further. Various researchers have documented attacks against vehicle sensors [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6002</guid>
+		<description><![CDATA[<p>Modern autonomous vehicles use a number of sensors to analyse their surroundings and act upon changes in their environment. A brilliant idea in theory, but how much of this sensory information can we actually trust? Cisco&#8217;s Security Advisory R&#38;D team, a.k.a. Portcullis Labs, decided to investigate further. Various researchers have documented attacks against vehicle sensors [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Modern autonomous vehicles use a number of sensors to analyse their surroundings and act upon changes in their environment. A brilliant idea in theory, but how much of this sensory information can we actually trust? Cisco&#8217;s Security Advisory R&amp;D team, a.k.a. Portcullis Labs, decided to investigate further.<span id="more-6002"></span></p>
 <p>Various researchers have documented attacks against vehicle sensors and cyber-physical systems resulting in the vehicle performing unwanted actions, such as falsifying alerts, malfunction and even causing the vehicle to crash. The very same sensors which are used to improve driver efficiency have been proven vulnerable to both spoofing and signal jamming attacks. In this blog entry, we will be focusing on the reliability of a vehicle&#8217;s underlying systems, it&#8217;s susceptibility to spoofing attacks, and in particular the vulnerabilities in the front-facing camera, to ascertain how these problems may be addressed.</p>
 <h2>The problem</h2>
@@ -38,7 +38,7 @@
 <p>Professors from Zhejiang University and the University of South Carolina recently presented a whitepaper detailing the countless attack scenarios against vehicle sensors and front-facing cameras. With regards to vehicle cameras, their experiment focused on blinding the camera using multiple easily obtained light sources, which proved to be successful.</p>
 <p>Our experiment, on the other hand, looked into fooling the vehicle&#8217;s camera in order to present false information to the driver.</p>
 <p>We started off by printing different highway speed signs on plain paper, some of which contained arbitrary values, such as null bytes (%00) and letters. The print-outs were then held up by hand as our test vehicle closely drove past. As expected, the camera detected our improvised road signs and displayed the value to the driver. Spoofing speed values of up to 130 mph was possible, despite being way beyond the nation&#8217;s speed limit. Does this mean we can now exceed the speed limit? Naturally, abiding by the highway code still comes first, but it does beg the question of why something this farcical can still occur.</p>
-<p><img class="alignnone size-medium wp-image-6005" alt="Sign Signed" src="https://portcullislabs.github.io/wp-content/uploads/2017/08/Sign-Signed-268x300.png" width="268" height="300" /></p>
+<p><img class="alignnone size-medium wp-image-6005" alt="Sign Signed" src="https://labs.portcullis.co.uk/wp-content/uploads/2017/08/Sign-Signed-268x300.png" width="268" height="300" /></p>
 <p>Although one could argue that the camera has done its job and detected what appears to be a valid road sign, there are no additional checks being performed to distinguish whether the detected sign is legitimate or even sensible.</p>
 <p>Other scenarios to consider involve the use of intelligent speed limiters which are now present in some vehicles. Both the front-facing camera and built in speed limiter are used to limit your driving speed to the speed sign recognised by the camera, preventing you from exceeding the limit even if you were to floor the accelerator. In a car with that functionality, what would happen if a 20 mph sign was spoofed onto the camera while driving on a 70 mph limit motorway? We are yet to test this specific scenario, but a potentially dangerous outcome is easy to imagine.</p>
 <h2>What could be done to mitigate this problem?</h2>
@@ -47,22 +47,22 @@
 <p>Independent researchers have even suggested novel ways to improve road sign detection systems using neural networks in order to learn and distinguish properties of legitimate road signs.</p>
 <h2>Conclusion</h2>
 <p>We have demonstrated that front-facing vehicle cameras used for traffic sign detection can easily be fooled into recording a false speed limit. While cameras do have an essential place in autonomous vehicles, their integrity and availability properties present a great deal of room for improvement. Even simple features and configuration changes, such as boundary detection, could be applied to increase the accuracy and efficiency of these systems. Further research into securing vehicle cameras needs to be conducted to ensure that spoofing attacks cannot be carried out as trivially as is currently possible.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/is-your-sign-signed/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/is-your-sign-signed/">Is your sign signed?</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/is-your-sign-signed/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Biometrics: Forever the &#8220;next big thing&#8221;</title>
-		<link>https://portcullislabs.github.io/blog/biometrics-forever-the-next-big-thing/</link>
-		<comments>https://portcullislabs.github.io/blog/biometrics-forever-the-next-big-thing/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/</link>
+		<comments>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/#comments</comments>
 		<pubDate>Thu, 06 Jul 2017 10:08:30 +0000</pubDate>
 		<dc:creator><![CDATA[ACD]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[analysis]]></category>
 		<category><![CDATA[biometrics]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5806</guid>
-		<description><![CDATA[<p>It&#8217;s not every day we get to assess biometric systems from a security perspective, they are still somewhat esoteric and testing them doesn&#8217;t quite fit with the usual slew of things that come along with being a security consultant. Recent engagements reminded us of just how interesting this facet of the industry can be and [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5806</guid>
+		<description><![CDATA[<p>It&#8217;s not every day we get to assess biometric systems from a security perspective, they are still somewhat esoteric and testing them doesn&#8217;t quite fit with the usual slew of things that come along with being a security consultant. Recent engagements reminded us of just how interesting this facet of the industry can be and [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>It&#8217;s not every day we get to assess biometric systems from a security perspective, they are still somewhat esoteric and testing them doesn&#8217;t quite fit with the usual slew of things that come along with being a security consultant. Recent engagements reminded us of just how interesting this facet of the industry can be and so we decided to write up a little something around biometrics. This article will cover some of the history and the basics of biometrics and some of the biometric-centric attacks you may come across&#8230;<span id="more-5806"></span></p>
 <h2>Biometrics aren&#8217;t new</h2>
 <p>They have been around for, well, as long as we have. There is evidence that cavemen used to sign paintings with a handprint as a way to confirm authorship. Traders used to keep ledgers with physical descriptions of trade partners. Police started keeping &#8220;biometric databases&#8221; of criminals hundreds of years ago.</p>
@@ -70,19 +70,19 @@
 <p>Somewhere around the 1990&#8242;s is when biometrics as we know them today came in to form: fully digitised and automated systems, automatic facial recognition in CCTV, biometric passports, etc&#8230; Since then it has largely been about miniaturisation, increasing sensor/template accuracy and finding new, novel things to measure such as ear biometrics &#8211; which I&#8217;m going to go on a whim and say nobody needs or wants.</p>
 <p>Recently, biometrics have started to make their way directly in to the lives of consumers on a larger scale, thanks to increasing adoption of fingerprint and facial/retina scanners amongst smartphone and laptop manufacturers.</p>
 <p>But what happens when a user enrols their finger &#8211; or any other appendage &#8211; on a biometric device?</p>
-<p><a name="imageclose-5807"><div class="lb-album"><a href="#image-5807"><img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25-300x191.jpg" alt="A pixelated finger (probably)." class="alignnone size-medium wp-image-5858"><span></span></a></div>              
+<p><a name="imageclose-5807"><div class="lb-album"><a href="#image-5807"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25-300x191.jpg" alt="A pixelated finger (probably)." class="alignnone size-medium wp-image-5858"><span></span></a></div>              
 <a href="#imageclose-5807" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5807">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25.jpg" alt="image-5807">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/photo_2017-06-27_13-19-25.jpg" alt="image-5807">
                    </div></a></p>
 <p>The biometric device makes an acquisition using whatever sensor is installed, for example a CCD or optical sensor like in a camera, or a capacitance scanner, even potentially an ultrasound scanner. This scan is then analysed for &#8220;interesting&#8221; things, or minutia. These important bits of the biometric are isolated and saved in a binary template, the rest of the reading is generally discarded.</p>
 <p>Of course, manufacturers have their own algorithms for creating templates and matching. But in general, each template boils down to something akin to coordinates. For template matching, a number of different comparison algorithms are used, with hamming distances being the most common that I&#8217;ve seen. At a simple level, hamming distances measure the differences between two equal [length] strings [presented templates].</p>
 <p>To explain this a bit clearer: when a user puts their finger on a fingerprint scanner, they don&#8217;t always put it in the exact same place or at the exact same angle. By using an algorithm such as hamming distances to calculate the difference, biometric devices can judge the presented biometric based on a number of different factors, such as the distances between each minutia detected with those of stored templates.</p>
 <h2>But it&#8217;s not all about fingertips and eyeballs</h2>
-<p><a name="imageclose-5808"><div class="lb-album"><a href="#image-5808"><img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/tableu1.png" alt="A table showing common biometrics and their attributes" class="aligncenter size-full wp-image-5857"><span></span></a></div>              
+<p><a name="imageclose-5808"><div class="lb-album"><a href="#image-5808"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/tableu1.png" alt="A table showing common biometrics and their attributes" class="aligncenter size-full wp-image-5857"><span></span></a></div>              
 <a href="#imageclose-5808" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5808">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/tableu1.png" alt="image-5808">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/tableu1.png" alt="image-5808">
                    </div></a></p>
 <p>The above table is by no means a complete list of biometrics, it merely covers the ones people hear of or encounter the most. It is also by no means 100% representative, it is meant as a general guideline.</p>
 <p>Accuracy in the table is how unique to an individual that biometric is and therefore the scan too. So for example hand geometry is not very accurate or unique &#8211; usually all that happens is the acquisition device takes a measurement of the key points of the hand (tips and grooves of the fingers and the width). Iris and retina are considered high accuracy because they are unique traits, even between identical twins and relatively high-quality acquisitions can be made. Just to clarify: the iris is the nice colourful part at the front of the eye which controls the eye&#8217;s aperture and the retina refers to the nerves near the back of the eye which collect that light, specifically in Biometrics, we refer to the veins.</p>
@@ -110,10 +110,10 @@
 <p>Superglue fuming is actually remarkably easy to do: all that is required is a container to put the thing you want to extract a fingerprint from in (such as a box or small fish tank), along with a small amount of superglue on some foil. Usually a heat source under the superglue (to help it evaporate quicker) and a small cup of water (to aid with humidity) are also added, for extra efficiency. Then simply wait a while.</p>
 <p>After the print has settled nicely, it is simply a matter of extracting it and inverting it. There are many ways to do this, such as dental mould, high-resolution scans, even high-quality clear tape. Most professionals will attempt to further enhance a print at various stages, using things such as fine powders etc. But this post is meant as an overview, not an in-depth guide on how to extract prints.</p>
 <p>The image below shows all the basic materials required for fingerprint extraction and superglue fuming:</p>
-<p><a name="imageclose-5809"><div class="lb-album"><a href="#image-5809"><img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/superglue-fuming2-300x168.jpg" alt="superglue fuming" class="alignnone size-medium wp-image-5901"><span></span></a></div>              
+<p><a name="imageclose-5809"><div class="lb-album"><a href="#image-5809"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/superglue-fuming2-300x168.jpg" alt="superglue fuming" class="alignnone size-medium wp-image-5901"><span></span></a></div>              
 <a href="#imageclose-5809" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-5809">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2017/06/superglue-fuming2.jpg" alt="image-5809">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2017/06/superglue-fuming2.jpg" alt="image-5809">
                    </div></a></p>
 <p>In addition to extracting latent prints, back in 2014 a demonstration by a speaker at CCC in Germany showed that it is possible to spoof a fingerprint scanner on a smartphone starting with just a high-enough resolution photo of a person&#8217;s finger. If we put this in a &#8220;worst-case&#8221; context: when you use a fingerprints for authentication, not only are you potentially leaving copies of your unchangeable &#8216;password&#8217; in places, you&#8217;re also carrying it around with you in plain sight.</p>
 <h3>Other biometrics</h3>
@@ -124,8 +124,8 @@
 <p>The attacks described here are not all particularly mature, but they have not needed to be. Biometrics aren&#8217;t widely adopted and therefore are not a high-priority target. If there was real demand, we&#8217;d all keep biometric template cracking and reconstruction software on our machines.</p>
 <p>Imagine a world where passwords were replaced by biometrics, once a breach happens &#8211; and lets be honest, sooner or later a breach always happens &#8211; you would spend the rest of your life wondering if it is game over for your all your logins that use your finger (or whatever) and it would be out of your control. There is often a lot of grumbling around passwords, but at least passwords are easily changed should the worst happen. Get a password manager and the trouble of remembering them all even largely goes away (I wish major OS&#8217;s would start incorporating decent password-managers when shipped, to get people in to this habit).</p>
 <p>Of course, there is the third major option amongst all this: &#8220;something you have&#8221; &#8211; access cards of varying types. RFID, NFC, even cards with PKI certificates. All have their pros and cons and are part of a larger debate which I won&#8217;t bother going in to here. Ultimately, the industry has already decided that multi-factor authentication is the way to go for situations where security is prioritised. Biometrics fit in to this as part of the &#8220;multi&#8221; &#8211; use them alongside something else. And no, I don&#8217;t mean alongside a username/ID, that is not private information. An access token and/or a password.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/biometrics-forever-the-next-big-thing/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/">Biometrics: Forever the &#8220;next big thing&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/biometrics-forever-the-next-big-thing/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

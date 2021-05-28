@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; MTB</title>
-	<atom:link href="https://portcullislabs.github.io/author/mtb/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/author/mtb/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</title>
-		<link>https://portcullislabs.github.io/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/</link>
-		<comments>https://portcullislabs.github.io/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/#comments</comments>
 		<pubDate>Thu, 24 Sep 2015 14:26:26 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -30,9 +30,9 @@
 		<category><![CDATA[Flash]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5270</guid>
-		<description><![CDATA[<p>This document is a written form of a workshop and presentation I gave at Portcullis Labs in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov. Disclaimer: If [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>This document is a written form of a workshop and presentation I gave at <a title="Portcullis Labs" href="https://portcullislabs.github.io/">Portcullis Labs</a> in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov.<span id="more-5270"></span></p>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5270</guid>
+		<description><![CDATA[<p>This document is a written form of a workshop and presentation I gave at Portcullis Labs in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov. Disclaimer: If [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This document is a written form of a workshop and presentation I gave at <a title="Portcullis Labs" href="https://labs.portcullis.co.uk/">Portcullis Labs</a> in late July 2015. It is a beginner&#8217;s walkthrough to understand the recent Flash bug that was discovered in Hacking Team&#8217;s pocket and given the sweet name of CVE-2015-5119. It was found and exploited by Vitaliy Toropov.<span id="more-5270"></span></p>
 <p>Disclaimer: If you are already a confirmed reverse engineer xor a debugging ninja, this document is not for you, go hack something else :-).</p>
 <p>As a beginner software bug analysis is not a very easy task. It requires a fair amount of experience that you can only get with motivation, time, perseverance and someone to kick your but when you start to be discouraged. One may find easier to work on example codes, made-up proof of concept and other challenges. This is true as it surely helps to quickly understand some concepts but if you are willing to spend some time I suggest you&#8217;d rather work on real bugs. This way you will dive into one specific software product, you will start to understand its internals and eventually find your own bugs. Also, you will get that extra little feeling of compl33tness and the beloved one will eventually come back.</p>
 <p>In this article we will first start to reverse engineer the function that crashes. We will then dig around it to understand the circumstances of the crash. This will be done by recreating step by step the different pieces needed to produce the final proof of concept. Lastly, we will finish by identifying where the allocation and the freeing of the faulty memory block is performed.</p>
@@ -526,14 +526,14 @@ flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98ad:
 <h2>Conclusion</h2>
 <p>In order to exploit this vulnerability, before the patch was applied, you had to overwrite the freed location with a vector object and then overwrite the length value of the vector object. This way it is possible to read and write anywhere in the process memory.</p>
 <p>To conclude, exploiting vulnerabilities is the most enjoyable part for most of us but understanding a bug is a mandatory step to go further. Not only will it train you to be better at reversing code but it will help you to write more stable exploits. It is sad in a way that for this bug most of the people just ripped of the original exploit to simply replace it with their own shellcodes.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/">CVE-2015-5119 Flash ByteArray UaF: A beginner&#8217;s walkthrough</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2015-5119-flash-bytearray-uaf-a-beginners-walkthrough/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>CVE-2014-6271 (Shellshock): The story of a permissive parser</title>
-		<link>https://portcullislabs.github.io/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/</link>
-		<comments>https://portcullislabs.github.io/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/#comments</comments>
 		<pubDate>Mon, 29 Sep 2014 15:23:08 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -542,8 +542,8 @@ flashplayer_18_0_0_160!IAEModule_IAEKernel_UnloadModule+0x1c98ad:
 		<category><![CDATA[exploit]]></category>
 		<category><![CDATA[UNIX]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4663</guid>
-		<description><![CDATA[<p>Some bugs are so simple and so elegant that you wonder how it is possible that no one has found them until now. Those are my favorites. They are simple, they do not involve memory corruption and most of the time they do not even need an advanced exploit code to abuse it. Stéphane Chazelas&#8217; [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4663</guid>
+		<description><![CDATA[<p>Some bugs are so simple and so elegant that you wonder how it is possible that no one has found them until now. Those are my favorites. They are simple, they do not involve memory corruption and most of the time they do not even need an advanced exploit code to abuse it. Stéphane Chazelas&#8217; [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Some bugs are so simple and so elegant that you wonder how it is possible that no one has found them until now. Those are my favorites. They are simple, they do not involve memory corruption and most of the time they do not even need an advanced exploit code to abuse it. Stéphane Chazelas&#8217; Bash bug is one of these bugs.<span id="more-4663"></span></p>
 <p>Note: Many other bugs related to Bash parser were discovered in the past few days such as CVE-2014-6277, CVE-2014-7169, CVE-2014-7186, CVE-2014-7187 and some others that have not yet been made public. This article is only about CVE-2014-6271.</p>
 <h2>Bash and functions</h2>
@@ -566,7 +566,7 @@ uid=1000(user) gid=1000(user) groups=1000(user),4(adm),24(cdrom),27(sudo),30(dip
 <p>Indeed, when the myfunc function is called, the id command is executed.</p>
 <h2>Installing a testing environment</h2>
 <p>First install Ubuntu 14.04.1 LTS available here: http://releases.ubuntu.com/14.04/.</p>
-<p>Make sure you have a vulnerable bash version <img src="https://portcullislabs.github.io/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+<p>Make sure you have a vulnerable bash version <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 # wget http://security.ubuntu.com/ubuntu/pool/main/b/bash/bash_4.3-6ubuntu1_amd64.deb
 # dpkg -i bash_4.3-6ubuntu1_amd64.deb
@@ -628,22 +628,22 @@ For instance:</p>
 <li>dhclient with a custom domain-name</li>
 <li>Many more to find</li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/">CVE-2014-6271 (Shellshock): The story of a permissive parser</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2014-6271-shellshock-the-story-of-a-permissive-parser/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Crash</title>
-		<link>https://portcullislabs.github.io/tools/crash/</link>
-		<comments>https://portcullislabs.github.io/tools/crash/#comments</comments>
+		<link>https://labs.portcullis.co.uk/tools/crash/</link>
+		<comments>https://labs.portcullis.co.uk/tools/crash/#comments</comments>
 		<pubDate>Tue, 17 Dec 2013 16:08:23 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Tools]]></category>
 		<category><![CDATA[fuzzing]]></category>
 		<category><![CDATA[OSX]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=2672</guid>
-		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/tools/crash/">Crash</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2672</guid>
+		<description><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer. Key features Catch OS X application&#8217;s crashes Display CPU registers Display disassembled code at the [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The purpose of this tool is to catch crashes from OS X applications and print debugging information such as registers, disassembled code and a memory dump of the stack. The intended use is with the conjunction of an application fuzzer.<span id="more-2672"></span></p>
 <h2>Key features</h2>
 <ul>
@@ -757,9 +757,9 @@ bff6ded0: bff6df38  8...
 --------------------------------------------------------------
 </pre>
 <div class="wpfilebase-file-default" onclick="if('undefined' == typeof event.target.href) document.getElementById('wpfb-file-link-1').click();">
-  <div class="icon"><a href="https://portcullislabs.github.io/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://portcullislabs.github.io/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
+  <div class="icon"><a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" target="_blank" title="Download Crash-1.0 Tar"><img align="middle" src="https://labs.portcullis.co.uk/wp-includes/images/crystal/archive.png" alt="Crash-1.0 Tar" /></a></div>
   <div class="filetitle">
-    <a href="https://portcullislabs.github.io/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
+    <a href="https://labs.portcullis.co.uk/download/crash-1.0.tar.bz2" title="Download crash-1.0.tar.bz2" target="_blank" id="wpfb-file-link-1">crash-1.0.tar.bz2</a>
     
     <br />
     December 17, 2013<br />
@@ -784,14 +784,14 @@ bff6ded0: bff6df38  8...
   </div>
  <div style="clear: both;"></div>
 </div>
-<p>The post <a href="https://portcullislabs.github.io/tools/crash/">Crash</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/tools/crash/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/tools/crash/">Crash</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/tools/crash/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</title>
-		<link>https://portcullislabs.github.io/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/</link>
-		<comments>https://portcullislabs.github.io/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/#comments</comments>
 		<pubDate>Tue, 10 Dec 2013 06:02:00 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -800,8 +800,8 @@ bff6ded0: bff6df38  8...
 		<category><![CDATA[exploit]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=2478</guid>
-		<description><![CDATA[<p>The purpose of this document is to present a technical report of the CVE-2013-5065 vulnerability. A few days ago, FireEye identified a 0 day kernel exploit embedded within a PDF document actively used in the wild. The vulnerability itself is present in the NDProxy kernel driver. Whilst this is present in all versions of Windows, [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=2478</guid>
+		<description><![CDATA[<p>The purpose of this document is to present a technical report of the CVE-2013-5065 vulnerability. A few days ago, FireEye identified a 0 day kernel exploit embedded within a PDF document actively used in the wild. The vulnerability itself is present in the NDProxy kernel driver. Whilst this is present in all versions of Windows, [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The purpose of this document is to present a technical report of the <a title="CVE-2013-5065" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-5065">CVE-2013-5065</a> vulnerability. A few days ago, FireEye identified a 0 day kernel exploit embedded within a PDF document actively used in the wild. The vulnerability itself is present in the NDProxy kernel driver. Whilst this is present in all versions of Windows, the vulnerability itself is only present in Windows 2003 and XP. The NDProxy driver is responsible for interfacing NDISWAN and CoNDIS WAN drivers to the TAPI services.<span id="more-2478"></span></p>
 <h2>Binary Information</h2>
 <table>
@@ -981,14 +981,14 @@ cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00010202
 <li>FireEye blog post: <a title="FireEye blog post" href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/ms-windows-local-privilege-escalation-zero-day-in-the-wild.html">http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/ms-windows-local-privilege-escalation-zero-day-in-the-wild.html</a></li>
 </ul>
 <p>Editor’s note: We&#8217;ve corrected a slight ambiguity around which versions of Windows are affected, the initial post did not clearly differentiate between versions of Windows that had NDProxy and those that are actually vulnerable.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/">CVE-2013-5065: NDProxy array indexing error unpatched vulnerability</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-5065-ndproxy-array-indexing-error-unpatched-vulnerability/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</title>
-		<link>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/</link>
-		<comments>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/#comments</comments>
 		<pubDate>Tue, 15 Oct 2013 06:28:21 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -997,8 +997,8 @@ cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00010202
 		<category><![CDATA[CVE-2013-0640]]></category>
 		<category><![CDATA[exploit]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1906</guid>
-		<description><![CDATA[<p>The purpose of this document is to present the second part of a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. Warning: All function names in this article are purely fictional and were chosen [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1906</guid>
+		<description><![CDATA[<p>The purpose of this document is to present the second part of a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. Warning: All function names in this article are purely fictional and were chosen [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The purpose of this document is to present the second part of a technical report of the <a title="CVE-2013-0640" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-0640">CVE-2013-0640</a> vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild.<span id="more-1906"></span></p>
 <pre>Warning: All function names in this article are purely fictional and were chosen based on what was understood during the reverse engineering. Even if it could resemble true names, it is most likely a coincidence. Obviously no pieces of code were harmed during the reverse engineering.</pre>
 <h2>Binary Information</h2>
@@ -1450,14 +1450,14 @@ cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00210206
 <li>Download target version: <a title="Adobe Acrobat 10 for Windows" href="http://www.adobe.com/support/downloads/product.jsp?product=10&amp;platform=Windows">Adobe Acrobat 10 for Windows</a></li>
 <li><a title="XFA Specification" href="http://partners.adobe.com/public/developer/en/xml/xfa_spec_2_5.pdf">XFA Specification</a></li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 2)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-2/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</title>
-		<link>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/</link>
-		<comments>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/</link>
+		<comments>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/#comments</comments>
 		<pubDate>Thu, 26 Sep 2013 06:28:52 +0000</pubDate>
 		<dc:creator><![CDATA[MTB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -1466,8 +1466,8 @@ cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00210206
 		<category><![CDATA[CVE-2013-0640]]></category>
 		<category><![CDATA[exploit]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1529</guid>
-		<description><![CDATA[<p>This document aims to present a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. This is the first article of a set. It covers the full detailed analysis of the bug. Adobe Reader is [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1529</guid>
+		<description><![CDATA[<p>This document aims to present a technical report of the CVE-2013-0640 vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. This is the first article of a set. It covers the full detailed analysis of the bug. Adobe Reader is [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>This document aims to present a technical report of the <a title="CVE-2013-0640" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-0640">CVE-2013-0640</a> vulnerability targeting Adobe Reader version 9, 10 and 11. It was first spotted in February 2013 and has been used actively in the wild. This is the first article of a set. It covers the full detailed analysis of the bug.<span id="more-1529"></span></p>
 <p>Adobe Reader is an application software developed by Adobe Systems to view files in Portable Document Format (PDF).</p>
 <p>Adobe XML forms architecture (XFA) are XML specifications for forms to be embedded in a PDF document. There were first introduced in the PDF 1.5 file format specification. They are not compatible with AcroForms. The form itself is saved internally in the PDF. There is a bug when dealing with the forms in a specific way.</p>
@@ -1649,8 +1649,8 @@ Start();
 <li>Download target version: <a title="Adobe Acrobat 10 for Windows" href="http://www.adobe.com/support/downloads/product.jsp?product=10&amp;platform=Windows">Adobe Acrobat 10 for Windows</a></li>
 <li><a title="XFA Specification" href="http://partners.adobe.com/public/developer/en/xml/xfa_spec_2_5.pdf">XFA Specification</a></li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/">CVE-2013-0640: Adobe Reader XFA oneOfChild Un-initialized memory vulnerability (part 1)</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/cve-2013-0640-adobe-reader-xfa-oneofchild-un-initialized-memory-vulnerability-part-1/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

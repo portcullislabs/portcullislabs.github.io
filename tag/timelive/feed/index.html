@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; TimeLive</title>
-	<atom:link href="https://portcullislabs.github.io/tag/timelive/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/tag/timelive/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Investigating the TimeLive application</title>
-		<link>https://portcullislabs.github.io/blog/investigating-the-timelive-application/</link>
-		<comments>https://portcullislabs.github.io/blog/investigating-the-timelive-application/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/investigating-the-timelive-application/</link>
+		<comments>https://labs.portcullis.co.uk/blog/investigating-the-timelive-application/#comments</comments>
 		<pubDate>Fri, 04 Apr 2014 12:13:07 +0000</pubDate>
 		<dc:creator><![CDATA[RGH]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -30,15 +30,15 @@
 		<category><![CDATA[exploit]]></category>
 		<category><![CDATA[TimeLive]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3493</guid>
-		<description><![CDATA[<p>Some time ago I was on an internal infrastructure pentest job where I found a web server that hosted the TimeLive application. I had never heard of this application, and since I was looking at a login page, I opened a browser to my favourite search engine. The following is a brief explanation of things [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/investigating-the-timelive-application/">Investigating the TimeLive application</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3493</guid>
+		<description><![CDATA[<p>Some time ago I was on an internal infrastructure pentest job where I found a web server that hosted the TimeLive application. I had never heard of this application, and since I was looking at a login page, I opened a browser to my favourite search engine. The following is a brief explanation of things [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/investigating-the-timelive-application/">Investigating the TimeLive application</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Some time ago I was on an internal infrastructure pentest job where I found a web server that hosted the TimeLive application. I had never heard of this application, and since I was looking at a login page, I opened a browser to my favourite search engine. The following is a brief explanation of things that I shouldn&#8217;t have found.<span id="more-3493"></span></p>
 <p>According to the vendor web site (<a href="http://www.livetecs.com/" title="http://www.livetecs.com/">http://www.livetecs.com/</a>): &#8220;TimeLive Web timesheet suite is an integrated suite for time record, time tracking and time billing software.&#8221;</p>
 <p>My local default password list did not have an entry for this software so my next search query was to look for default credentials.  Sadly I didn&#8217;t find any, but I did find a reference (and a handy screen shot, shown below) that referred to the URI /home/systemsetting.aspx. </p>
-<div id="attachment_3500" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3494"><div class="lb-album"><a href="#image-3494"><img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/System_Settings-300x145.jpg" alt="/home/systemsetting.aspx" class="size-medium wp-image-3500"><span></span></a></div>              
+<div id="attachment_3500" style="width: 310px" class="wp-caption alignnone"><a name="imageclose-3494"><div class="lb-album"><a href="#image-3494"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/System_Settings-300x145.jpg" alt="/home/systemsetting.aspx" class="size-medium wp-image-3500"><span></span></a></div>              
 <a href="#imageclose-3494" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-3494">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2014/02/System_Settings.jpg" alt="image-3494">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2014/02/System_Settings.jpg" alt="image-3494">
                    </div></a><p class="wp-caption-text">/home/systemsetting.aspx</p></div>
 <p>A close look at the screenshot showed a database connection string so I thought I would check the server&#8230;</p>
 <p>I was able to access the URI without any authentication and was presented with a page that looked very similar to the screen shot. In fact the only difference I noticed was the database connection string. Time to fire up a database tool&#8230;</p>
@@ -52,7 +52,7 @@
 <p>I remembered what my client contact had set about having to modify the underlying Operating System (OS) file ACL permissions to prevent access, so I had a look at the ACLs on several application files. Any local user logged into the host had full permissions on all files belonging to the application, with the exception of the actual database files (which are created by the database engine). Within one of those files I found the database connection string displayed in the web browser, so configuring the web server to block access to /home/systemsetting.aspx would not prevent local host users from being able to elevate their privileges. </p>
 <p>I had a quick play with the options offered by systemsettings.aspx and was able to make changes without being logged in. These settings included an email address (presumably where system alerts are sent) and the authentication options for the application. Looks like it can hook into Active Directory (either Microsoft&#8217;s or OpenLDAP), so a bad guy could either specify a non-existent login server (to cause a Denial of Service condition), or presumably set up their own that replies to all logins as OK, while capturing those usernames and passwords for later use.</p>
 <p>As an added bonus, the application defaults to HTTP and not HTTPS, meaning that any data transmitted over the network between clients and the server is not encrypted.</p>
-<p>As I was browsing the application files I noticed the word upload. I though &#8220;that&#8217;s worth a quick look&#8221; <img src="https://portcullislabs.github.io/wp-includes/images/smilies/icon_wink.gif" alt=";-)" class="wp-smiley" /> </p>
+<p>As I was browsing the application files I noticed the word upload. I though &#8220;that&#8217;s worth a quick look&#8221; <img src="https://labs.portcullis.co.uk/wp-includes/images/smilies/icon_wink.gif" alt=";-)" class="wp-smiley" /> </p>
 <p>I thought I would look for horizontal privilege escalation so I created two different low-level user accounts to see if user1 could access files from user2. Not being familiar with the application I had to play around with the application before I found where a user could upload files. </p>
 <p>After uploading a test file (there was no limitation on file types as the upload feature was for generic project resources) I searched for the file on the file system and checked the ACL settings. Thanks to inherited permissions, uploaded files had &#8220;Read and Execute&#8221; enabled.</p>
 <p>I found that it was possible to upload a .aspx file (as a low-level user) that included VisualBasic code to run calc.exe. When I browsed to the uploaded file, it happily ran it, running under the NETWORK_SERVICE account (which is what the web server was configured to use for applications). It turns out that you don&#8217;t need to be logged into the application to access that page, so if a user uploads a maliciously crafted file (by being tricked by an attacker, via malware or by that user being malicious) an unauthenticated attacker simply needs to browse to that content to trigger the coded behaviour.</p>
@@ -60,8 +60,8 @@
 <p>* CVE-2014-1217<br />
 * CVE-2014-2042</p>
 <p>The moral of this story is that it is important to examine the properties of files installed by an application, as well as the configuration settings used by default. A quick Internet search for the application name and terms like default password or configuration might reveal some interesting results and so is also worth doing.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/investigating-the-timelive-application/">Investigating the TimeLive application</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/investigating-the-timelive-application/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/investigating-the-timelive-application/">Investigating the TimeLive application</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/investigating-the-timelive-application/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

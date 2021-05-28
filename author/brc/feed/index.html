@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; BRC</title>
-	<atom:link href="https://portcullislabs.github.io/author/brc/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/author/brc/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Using Intel Pin tools for binary instrumentation</title>
-		<link>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/</link>
-		<comments>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/</link>
+		<comments>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/#comments</comments>
 		<pubDate>Tue, 04 Nov 2014 16:03:01 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -29,9 +29,9 @@
 		<category><![CDATA[binary]]></category>
 		<category><![CDATA[reversing]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4131</guid>
-		<description><![CDATA[<p>This article is continues the topic on dynamic instrumentation that it was presented before in a previous article. Yama LSM In this post, the basics of coding Intel Pin tools will be presented, but before we discuss this, you should be aware that a Linux Security Module exists that prevents binary instrumentation by default. Yama [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4131</guid>
+		<description><![CDATA[<p>This article is continues the topic on dynamic instrumentation that it was presented before in a previous article. Yama LSM In this post, the basics of coding Intel Pin tools will be presented, but before we discuss this, you should be aware that a Linux Security Module exists that prevents binary instrumentation by default. Yama [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>This article is continues the topic on <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> that it was presented before in a <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>.<span id="more-4131"></span></p>
 <h2>Yama LSM</h2>
 <p>In this post, the basics of coding <a title="Intel Pin" href="http://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool">Intel Pin</a> tools will be presented, but before we discuss this, you should be aware that a <a title="Linux Security Module" href="http://en.wikipedia.org/wiki/Linux_Security_Modules">Linux Security Module</a> exists that prevents binary instrumentation by default. <a title="Yama" href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama</a> is a Linux Security Module that collects a number of system-wide <a title="DAC" href="http://en.wikipedia.org/wiki/Discretionary_access_control">DAC</a> security protections that are not handled by the core kernel itself. Yama is controlled using sysctl. A description of some of the possible values for /proc/sys/kernel/yama/ptrace_scope is provided below:</p>
 <ul>
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 }
 // EOF
 </pre>
-<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
+<p>To compile the Pin tool, save the code as load_bin_img_sec.cpp and execute the following cmd line on the custom development directory as explained in the <a title="previous article" href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis">previous article</a>:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 ~/mytools $ ./build.sh
 [*] Building load_bin_img_sec.cpp
@@ -390,22 +390,22 @@ PKGBUILD      plugtmp  test-kernel-security.py  yaourt-tmp-user
 <li>Are parts of the memory getting overwritten by user input?</li>
 <li>Whether there are too many RETs getting executed within a small part of the code</li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/using-intel-pin-tools-for-binary-instrumentation/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/">Using Intel Pin tools for binary instrumentation</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/using-intel-pin-tools-for-binary-instrumentation/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Vanilla good security practice vs. BadUSB</title>
-		<link>https://portcullislabs.github.io/blog/vanilla-good-security-practice-vs-badusb/</link>
-		<comments>https://portcullislabs.github.io/blog/vanilla-good-security-practice-vs-badusb/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/</link>
+		<comments>https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/#comments</comments>
 		<pubDate>Thu, 09 Oct 2014 16:18:10 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[analysis]]></category>
 		<category><![CDATA[hardhack]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=4718</guid>
-		<description><![CDATA[<p>This post discusses the BadUSB research published by Karsten Nohl recently at Black Hat. You might want to check out the slides and/or video before reading on. It&#8217;s also worth noting that more recently Adam Caudill and Brandon Wilson figured out how to implement the attacks and have published proof-of-concept code which makes the challenges [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/vanilla-good-security-practice-vs-badusb/">Vanilla good security practice vs. BadUSB</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=4718</guid>
+		<description><![CDATA[<p>This post discusses the BadUSB research published by Karsten Nohl recently at Black Hat. You might want to check out the slides and/or video before reading on. It&#8217;s also worth noting that more recently Adam Caudill and Brandon Wilson figured out how to implement the attacks and have published proof-of-concept code which makes the challenges [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/">Vanilla good security practice vs. BadUSB</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>This post discusses the <a title="BadUSB research" href="https://srlabs.de/badusb/">BadUSB research</a> published by Karsten Nohl recently at <a title="Black Hat" href="https://www.blackhat.com/us-14/briefings.html#Nohl">Black Hat</a>. You might want to check out the <a title="slides" href="https://srlabs.de/blog/wp-content/uploads/2014/07/SRLabs-BadUSB-BlackHat-v1.pdf">slides</a> and/or <a title="video" href="https://www.youtube.com/watch?v=nuruzFqMgIw">video</a> before reading on.<span id="more-4718"></span></p>
 <p>It&#8217;s also worth noting that more recently Adam Caudill and Brandon Wilson figured out how to implement the attacks and have published <a title="proof-of-concept code" href="https://github.com/adamcaudill/Psychson">proof-of-concept code</a> which makes the challenges of defending against the original research seem somewhat more acute.</p>
 <p>The challenges of defending against the attacks presented in the BadUSB talk largely break down into two areas:</p>
@@ -501,14 +501,14 @@ dev.uhub.1.disable_enumeration: 0
 <p>I&#8217;m not worried about this really. It&#8217;s possible to secure the boot process against these attacks.</p>
 <p>If the USB device pretends to be a USB display, it might be able to scrape what&#8217;s on your screen and make it available to the bad guys.</p>
 <p>I&#8217;m fairly worried about this one. Obviously my screen can&#8217;t be locked for this attack &#8211; if it were the attacker doesn&#8217;t really win by screenshotting the log in screen. However, if my screen is unlocked &#8211; maybe someone passes me a USB stick, this could really work.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/vanilla-good-security-practice-vs-badusb/">Vanilla good security practice vs. BadUSB</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/vanilla-good-security-practice-vs-badusb/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/">Vanilla good security practice vs. BadUSB</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/vanilla-good-security-practice-vs-badusb/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>An introduction to binary dynamic analysis</title>
-		<link>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/</link>
-		<comments>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/</link>
+		<comments>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/#comments</comments>
 		<pubDate>Tue, 13 May 2014 13:29:24 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -516,8 +516,8 @@ dev.uhub.1.disable_enumeration: 0
 		<category><![CDATA[debugging]]></category>
 		<category><![CDATA[fuzzing]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3001</guid>
-		<description><![CDATA[<p>The term dynamic instrumentation refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs. Tools Several software solutions [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3001</guid>
+		<description><![CDATA[<p>The term dynamic instrumentation refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs. Tools Several software solutions [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>The term <a title="dynamic instrumentation" href="http://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29">dynamic instrumentation</a> refers to the act of monitoring the execution of a program in order to extract debug information, to measure code performance or to detect errors. Dynamic instrumentation can be used to generate measures of functions properties such as execution time, call counts, registers status or call graphs.<br />
 <span id="more-3001"></span></p>
 <h2>Tools</h2>
@@ -704,23 +704,23 @@ done
 <li>The -appdebug option can also be used to debug from IDA Pro any application using PIN using the remote GDB debugger</li>
 <li>It can&#8217;t be specified which port PIN will listen in as it will be randomly selected every time we execute PIN</li>
 <ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/an-introduction-to-binary-dynamic-analysis/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/">An introduction to binary dynamic analysis</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/an-introduction-to-binary-dynamic-analysis/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>Checking RDP support across an internal network</title>
-		<link>https://portcullislabs.github.io/blog/checking-rdp-across-an-internal-network/</link>
-		<comments>https://portcullislabs.github.io/blog/checking-rdp-across-an-internal-network/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/</link>
+		<comments>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/#comments</comments>
 		<pubDate>Mon, 10 Feb 2014 06:32:00 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[RDP]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=3051</guid>
-		<description><![CDATA[<p>We&#8217;ve recently added some new features to rdp-sec-check, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the rdp-sec-check page. The following new features were added to rdp-sec-check: Support for targets file Support for saving the tool output to a specified logfile [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
-				<content:encoded><![CDATA[<p>We&#8217;ve recently added some new features to <a title="rdp-sec-check" href="https://portcullislabs.github.io/tools/rdp-sec-check/">rdp-sec-check</a>, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the <a title="rdp-sec-check" href="https://portcullislabs.github.io/tools/rdp-sec-check/">rdp-sec-check</a> page.<span id="more-3051"></span></p>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=3051</guid>
+		<description><![CDATA[<p>We&#8217;ve recently added some new features to rdp-sec-check, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the rdp-sec-check page. The following new features were added to rdp-sec-check: Support for targets file Support for saving the tool output to a specified logfile [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
+				<content:encoded><![CDATA[<p>We&#8217;ve recently added some new features to <a title="rdp-sec-check" href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a>, which is a Perl script to enumerate security settings of an RDP Service (AKA Terminal Services). The tool download is available in the <a title="rdp-sec-check" href="https://labs.portcullis.co.uk/tools/rdp-sec-check/">rdp-sec-check</a> page.<span id="more-3051"></span></p>
 <p>The following new features were added to rdp-sec-check:</p>
 <ul>
 <li>Support for targets file</li>
@@ -731,7 +731,7 @@ done
 <h2>rdp-sec-check command line help</h2>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 $ rdp-sec-check.pl
-Starting rdp-sec-check v0.9-beta ( https://portcullislabs.github.io/application/rdp-sec-check/ )
+Starting rdp-sec-check v0.9-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ )
 Copyright (C) 2014 Mark Lowe (mrl@portcullis-security.com)
 
 /usr/local/bin/rdp-sec-check.pl [ options ]  ( --file hosts.txt | host | host:port )
@@ -757,7 +757,7 @@ Example:
 <p>The following is an example of a single machine scan using 3 seconds as timeout for connections and responses and output saving using the file named out.log:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 $ ./rdp-sec-check.pl --outfile out.log --timeout 3 192.168.13.13
-Starting rdp-sec-check v0.9-beta ( https://portcullislabs.github.io/application/rdp-sec-check/ ) at Thu Jan 23 12:16:26 2014
+Starting rdp-sec-check v0.9-beta ( https://labs.portcullis.co.uk/application/rdp-sec-check/ ) at Thu Jan 23 12:16:26 2014
 
 [+] Scanning 1 hosts
 
@@ -818,14 +818,14 @@ $ ./rdp-sec-check.pl --file targets.txt --outfile out.log --timeout 3 --retries 
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 $ ./rdp-sec-check.pl --file targets.txt --outfile out.log --timeout 15 --retries 5
 </pre>
-<p>The post <a href="https://portcullislabs.github.io/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/checking-rdp-across-an-internal-network/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/">Checking RDP support across an internal network</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/checking-rdp-across-an-internal-network/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</title>
-		<link>https://portcullislabs.github.io/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/</link>
-		<comments>https://portcullislabs.github.io/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/#comments</comments>
 		<pubDate>Tue, 05 Nov 2013 14:38:10 +0000</pubDate>
 		<dc:creator><![CDATA[BRC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -834,8 +834,8 @@ $ ./rdp-sec-check.pl --file targets.txt --outfile out.log --timeout 15 --retries
 		<category><![CDATA[conference]]></category>
 		<category><![CDATA[OHM2013]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=1458</guid>
-		<description><![CDATA[<p>One interesting talk I&#8217;ve attended on OHM 2013 was titled &#8220;Returning Signals for fun and profit&#8221;. This talk was given by Erik Bosman. The talk refers to a new way exploiting binaries using the Linux signal&#8217;s stack frame. This post could be summarised with the following words: Return oriented programming has been proven to be [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=1458</guid>
+		<description><![CDATA[<p>One interesting talk I&#8217;ve attended on OHM 2013 was titled &#8220;Returning Signals for fun and profit&#8221;. This talk was given by Erik Bosman. The talk refers to a new way exploiting binaries using the Linux signal&#8217;s stack frame. This post could be summarised with the following words: Return oriented programming has been proven to be [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>One interesting talk I&#8217;ve attended on OHM 2013 was titled &#8220;Returning Signals for fun and profit&#8221;. This talk was given by Erik Bosman. The talk refers to a new way exploiting binaries using the Linux signal&#8217;s stack frame.<span id="more-1458"></span></p>
 <p>This post could be summarised with the following words:</p>
 <p><a title="Return oriented programming" href="http://en.wikipedia.org/wiki/Return-oriented_programming">Return oriented programming</a> has been proven to be a very effective way of circumventing data execution prevention features like <a title="ASLR" href="http://en.wikipedia.org/wiki/Address_space_layout_randomization">ASLR</a> present in modern operating systems, but the attacker needs to know the binary structure of the target executable in order to extract the so-called <a href="http://users.suse.com/~krahmer/no-nx.pdf‎">borrowed chunks of code</a>. Here a generic binary exploitation technique will be covered which in some cases requires no knowledge about the running program.</a></p>
@@ -1187,8 +1187,8 @@ static int __setup_rt_frame(int sig, struct k_sigaction *ka, siginfo_t *info,
 <li><a title="Wikipedia - Getcontext" href="http://en.wikipedia.org/wiki/Getcontext">Wikipedia &#8211; Getcontext</a></li>
 <li><a title="Wikipedia - Setcontext" href="http://en.wikipedia.org/wiki/Setcontext">Wikipedia &#8211; Setcontext</a></li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/">OHM 2013: Review of &#8220;Returning signals for fun and profit&#8221;</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ohm-2013-review-of-returning-signals-for-fun-and-profit/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

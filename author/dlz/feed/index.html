@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; DLZ</title>
-	<atom:link href="https://portcullislabs.github.io/author/dlz/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/author/dlz/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,62 +19,62 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>UART Debugging: Rooting an IP Phone using UART</title>
-		<link>https://portcullislabs.github.io/blog/uart-debugging-rooting-an-ip-phone-using-uart/</link>
-		<comments>https://portcullislabs.github.io/blog/uart-debugging-rooting-an-ip-phone-using-uart/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/</link>
+		<comments>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/#comments</comments>
 		<pubDate>Fri, 23 Mar 2018 09:07:45 +0000</pubDate>
 		<dc:creator><![CDATA[DLZ]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[hardhack]]></category>
 		<category><![CDATA[training]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=6220</guid>
-		<description><![CDATA[<p>In this post I share my solution to an internal hacker challenge relating to identifying the UART pins on a VOIP phone and using them to gain root access. UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=6220</guid>
+		<description><![CDATA[<p>In this post I share my solution to an internal hacker challenge relating to identifying the UART pins on a VOIP phone and using them to gain root access. UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>In this post I share my solution to an <a href="/blog/hardware-hacking-how-to-train-a-team/" title="internal hacker challenge">internal hacker challenge</a> relating to identifying the UART pins on a VOIP phone and using them to gain root access.<span id="more-6220"></span></p>
 <p>UART (Universal Asynchronous Receiver-Transmitter) is a hardware device that is used for serial communications. It comes in the form of a physical circuit or as a standalone integrated circuit. UART is used to transmit and receive serial data and is very commonly included in the microcontrollers for the purposes of testing.</p>
 <h2>Figuring out the pinout, baud rate and rooting the device</h2>
 <p>UART uses two wires to transmit and receive, which connect to Tx and Rx pins. However, UART is very commonly seen in a group of three pins. The third pin in UART is usually the ground pin.</p>
 <p>Before you start identifying the baud rate, you need to identify the correct pinout. You can use a multi-meter to do that. First thing we need to do is to identify points of interest. UART usually consists of two pins, so we need to identify where on the board UART could possibly be.</p>
-<div id="attachment_6230" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6221"><div class="lb-album"><a href="#image-6221"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-board-300x208.png" alt="Inside of the Yealink SIP-T20P IP Phone" class="size-medium wp-image-6230 aligncenter"><span></span></a></div>              
+<div id="attachment_6230" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6221"><div class="lb-album"><a href="#image-6221"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board-300x208.png" alt="Inside of the Yealink SIP-T20P IP Phone" class="size-medium wp-image-6230 aligncenter"><span></span></a></div>              
 <a href="#imageclose-6221" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6221">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-board.png" alt="image-6221">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-board.png" alt="image-6221">
                    </div></a><p class="wp-caption-text"><strong>Inside of the Yealink SIP-T20P IP Phone</strong></p></div>
 <p>Above is an image of the PCB of a Yealink SIP-T20P IP Phone. We can see that this board contains two sets of pins in the bottom left corner of the board. As we know, UART consists of two pins, so we can safely say that the pins on the left could be what we are looking for:</p>
-<div id="attachment_6232" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6222"><div class="lb-album"><a href="#image-6222"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-con-closeup-300x173.png" alt="Points of interest" class="size-medium wp-image-6232"><span></span></a></div>              
+<div id="attachment_6232" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6222"><div class="lb-album"><a href="#image-6222"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup-300x173.png" alt="Points of interest" class="size-medium wp-image-6232"><span></span></a></div>              
 <a href="#imageclose-6222" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6222">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-con-closeup.png" alt="image-6222">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-con-closeup.png" alt="image-6222">
                    </div></a><p class="wp-caption-text"><strong>Points of interest</strong></p></div>
 <p>Traces are those lines that go from the microcontroller to the pins. The dark green part is the isolation bit and the part in-between the isolation is where the copper trace runs and connect the pins to the microcontroller.</p>
-<div id="attachment_6246" style="width: 264px" class="wp-caption aligncenter"><a name="imageclose-6223"><div class="lb-album"><a href="#image-6223"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-traces.png" alt="UART traces" class="size-full wp-image-6246"><span></span></a></div>              
+<div id="attachment_6246" style="width: 264px" class="wp-caption aligncenter"><a name="imageclose-6223"><div class="lb-album"><a href="#image-6223"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="UART traces" class="size-full wp-image-6246"><span></span></a></div>              
 <a href="#imageclose-6223" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6223">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-traces.png" alt="image-6223">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-traces.png" alt="image-6223">
                    </div></a><p class="wp-caption-text"><strong>UART traces</strong></p></div>
 <p>Now that we know where our UART pins are, the next job is to figure out which pins are Ground, Tx and Rx. There are many ways that this can be done. Firstly, we need to identify the Ground pin. In the image below, we can clearly see that the middle pin and right pin are connected to traces, so we can assume that these are the Tx and Rx pins of UART. The Ground pin can be easily identified as it will not have any traces going towards it. In this case, the Ground pin is the pin on the left, as we can clearly see that there is no trace going towards it &#8211; it is directly connected to the ground plane.</p>
-<div id="attachment_6231" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6224"><div class="lb-album"><a href="#image-6224"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-closeup-300x213.png" alt="UART pins" class="size-medium wp-image-6231"><span></span></a></div>              
+<div id="attachment_6231" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6224"><div class="lb-album"><a href="#image-6224"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup-300x213.png" alt="UART pins" class="size-medium wp-image-6231"><span></span></a></div>              
 <a href="#imageclose-6224" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6224">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/uart-closeup.png" alt="image-6224">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/uart-closeup.png" alt="image-6224">
                    </div></a><p class="wp-caption-text"><strong>UART pins</strong></p></div>
 <p>Once we have identified the Ground pin, we need to identify the Tx and Rx pins. This can be done in many different ways. One of these ways is very easy, and regards basically guessing the pins. There is a 50/50 chance that you will get it right, so if it does not work the first time, you can just change the pinout and it should work.</p>
 <p>Another way of identifying the Tx and Rx pins is to use a specialist tool, such as a JTAGulator. JTGAulator will be able to tell exactly which pin is which.</p>
-<div id="attachment_6229" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6225"><div class="lb-album"><a href="#image-6225"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator-300x194.png" alt="The JTAGulator" class="size-medium wp-image-6229"><span></span></a></div>              
+<div id="attachment_6229" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6225"><div class="lb-album"><a href="#image-6225"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-300x194.png" alt="The JTAGulator" class="size-medium wp-image-6229"><span></span></a></div>              
 <a href="#imageclose-6225" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6225">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator.png" alt="image-6225">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator.png" alt="image-6225">
                    </div></a><p class="wp-caption-text"><strong>The JTAGulator</strong></p></div>
 <p>Above is a image of a JTAGulator. JTAGulator has a set of connectors which can be used to find out the UART pinout, provide UART pass-through, connect JTAG, etc. In order to use it, we need to connect it to a USB port on our laptop to provide power. Once we do that, we use jump wires to connect the JTAGulator to our UART pins. JTAGulator connectors are all labelled starting from GND (Ground) pin, VADJ pin, and CH (Channel) pins, which range from 0 to 7.</p>
-<div id="attachment_6227" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6226"><div class="lb-album"><a href="#image-6226"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator-closeup-300x240.png" alt="Picture showing The JTAGulator testing pins" class="size-medium wp-image-6227"><span></span></a></div>              
+<div id="attachment_6227" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6226"><div class="lb-album"><a href="#image-6226"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup-300x240.png" alt="Picture showing The JTAGulator testing pins" class="size-medium wp-image-6227"><span></span></a></div>              
 <a href="#imageclose-6226" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6226">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator-closeup.png" alt="image-6226">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-closeup.png" alt="image-6226">
                    </div></a><p class="wp-caption-text"><strong>Picture showing The JTAGulator testing pins</strong></p></div>
 <p>In order for the JTAGulator to work, we need to connect the pins correctly, so GND to GND, and Channels 0 and 1 to what we think are the Tx and Rx pins. Once finished, it should look like this:</p>
-<div id="attachment_6228" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6227"><div class="lb-album"><a href="#image-6227"><img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator-connected-300x197.png" alt="The JTagulator connected to the UART pins of the IP Phone" class="size-medium wp-image-6228"><span></span></a></div>              
+<div id="attachment_6228" style="width: 310px" class="wp-caption aligncenter"><a name="imageclose-6227"><div class="lb-album"><a href="#image-6227"><img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected-300x197.png" alt="The JTagulator connected to the UART pins of the IP Phone" class="size-medium wp-image-6228"><span></span></a></div>              
 <a href="#imageclose-6227" class="css3lightbox-close">
 				   <div class="lb-overlay" id="image-6227">
-                   <img src="https://portcullislabs.github.io/wp-content/uploads/2018/01/jtagulator-connected.png" alt="image-6227">
+                   <img src="https://labs.portcullis.co.uk/wp-content/uploads/2018/01/jtagulator-connected.png" alt="image-6227">
                    </div></a><p class="wp-caption-text"><strong>The JTagulator connected to the UART pins of the IP Phone</strong></p></div>
 <p>Once the wires are connected, we need to find the correct baud rate in order to specify the rate at which bits are transmitted to get a human readable output. If baud rate is mismatched, the data can be either misinterpreted or completely missed. There are many different ways to figure out the Baud Rate of different boards. One way is to basically just guess the baud rate. There are several typically-used baud rates, such as 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000 bits per second. Basically, connect the device and try those different baud rates until you get readable output is also a way of figuring out the baud rate.</p>
 <p>Another way of figuring out the baud rate is to use an oscilloscope. In order to do that, we need to connect our oscilloscope to the Tx pin and then set our oscilloscope to trigger a pulse. Once this is done, we then measure the time of the shortest pulse and the reciprocal of that pulse is the baud rate. To provide an example, if our shortest pulse is 100µs, then our baud rate will be 1/(100 * 10^-6) = 10,000. As 10,000 is not a real baud rate, we round it to the closest possible baud rate which is 9,600 and there we have our baud rate.</p>
@@ -254,8 +254,8 @@ uid=0(root) gid=0(root)
 #
 </pre>
 <p>In the <a title="next part" href="/blog/jtag-on-chip-debugging-extracting-passwords-from-memory/">next part</a> of this series, we will cover how another of the Team tackled the JTAG challenge.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/uart-debugging-rooting-an-ip-phone-using-uart/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/">UART Debugging: Rooting an IP Phone using UART</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/uart-debugging-rooting-an-ip-phone-using-uart/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

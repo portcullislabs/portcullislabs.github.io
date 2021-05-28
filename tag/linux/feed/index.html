@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; Linux</title>
-	<atom:link href="https://portcullislabs.github.io/tag/linux/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/tag/linux/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,8 +19,8 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>Exploring Windows Subsystem for Linux</title>
-		<link>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/</link>
-		<comments>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/</link>
+		<comments>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/#comments</comments>
 		<pubDate>Thu, 27 Jul 2017 09:00:04 +0000</pubDate>
 		<dc:creator><![CDATA[TMB]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -29,8 +29,8 @@
 		<category><![CDATA[root]]></category>
 		<category><![CDATA[Windows]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5869</guid>
-		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5869</guid>
+		<description><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new Windows Subsystem for Linux (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from Alex Ionescu), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Whilst there has been quite a lot of analysis of Microsoft&#8217;s new <a title="Windows Subsystem for Linux" href="https://msdn.microsoft.com/en-gb/commandline/wsl/about">Windows Subsystem for Linux</a> (aka WSL or Bash on Ubuntu on Windows) and how it functions (particularly from <a title="Alex Ionescu" href="https://github.com/ionescu007/lxss">Alex Ionescu</a>), most of this has focused on how it affects the Windows security model. Being a keen UNIX focused researcher, I decided to take it for a spin.<span id="more-5869"></span></p>
 <p>The first thing I did once I had it installed was look at how the Windows process tree had changed. Running it results in two new branches to your process tree. The first contains the Windows bash.exe instance which hosts your new terminal:</p>
 <ul>
@@ -87,7 +87,7 @@ Linux DESKTOP-L4857K3 3.4.0+ #1 PREEMPT Thu Aug 1 17:06:05 CST 2013 x86_64 x86_6
 	  bash      2 Partial RELRO     Canary found           NX enabled    No PIE
 </pre>
 <h2>Shared memory</h2>
-<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://portcullislabs.github.io/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
+<p>So what does WSL look like more generally. Well, since I&#8217;ve had some fun with <a title="shared memory" href="https://labs.portcullis.co.uk/whitepapers/memory-squatting-attacks-on-system-v-shared-memory/">shared memory</a>, I wondered how this was implemented. Well, it turns out that it&#8217;s not:</p>
 <pre class="brush: bash; gutter: false; title: ; notranslate">
 root@DESKTOP-L4857K3:~# ipcs
 
@@ -173,14 +173,14 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 <p>Microsoft&#8217;s stock answer is that the Ubuntu instance (or rather the bash.exe instance hosting the terminal and accompanying lxss.sys kernel implementation) is locked down, effectively sandboxed by a combination of Windows DACLs, the concept of <a href="jobs" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684161(v=vs.85).aspx">jobs</a> (touched upon at the start and akin to Linux <a title="cgroups" href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html">cgroups</a>) and syscall mapping that effectively uses lxss.sys to <a title="proxy" href="https://blogs.msdn.microsoft.com/wsl/2016/06/08/wsl-system-calls/">proxy</a> most syscalls onto their corresponding NT kernel implementation.</p>
 <h2>Conclusion</h2>
 <p>The design of WSL seems to be relatively robust if slightly odd, however time will tell, particularly if offensive teams pick up the whiff of a new opportunity. If nothing else, take this article as a reminder that WSL should not be considered a security boundary and that it will remain unmanaged irrespective of how you administer your Windows hosts.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/">Exploring Windows Subsystem for Linux</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/exploring-windows-subsystem-for-linux/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 		<item>
 		<title>UNIX and Linux setUID advice and guidance</title>
-		<link>https://portcullislabs.github.io/blog/unix-and-linux-setuid-advice-and-guidance/</link>
-		<comments>https://portcullislabs.github.io/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/</link>
+		<comments>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/#comments</comments>
 		<pubDate>Fri, 16 Jun 2017 14:41:53 +0000</pubDate>
 		<dc:creator><![CDATA[AFC]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
@@ -193,8 +193,8 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 		<category><![CDATA[root]]></category>
 		<category><![CDATA[Solaris]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5793</guid>
-		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5793</guid>
+		<description><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally. SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>It is a topic that often comes up on client engagements, usually when running structured build reviews of Linux &#8220;gold builds&#8221;, but occasionally when trying to explain in detail how we used a Linux system to pivot internally.</p>
 <p>SetUID and setGID files are inevitably a risk, potentially allowing attackers to elevate privileges to root from a basic user. When shared out on SMB or NFS shares they can spread the risk even further.<span id="more-5793"></span></p>
 <p>One good approach would be:</p>
@@ -378,12 +378,12 @@ root@DESKTOP-L4857K3:/mnt/c/Users/x# ls -la foo
 <h3>Some good references</h3>
 <ul>
 <li><a title="Understand the setuid and setgid permissions to improve security" href="http://www.techrepublic.com/blog/it-security/understand-the-setuid-and-setgid-permissions-to-improve-security/">Understand the setuid and setgid permissions to improve security</a></li>
-<li><a title="Beware of empty paths" href="https://portcullislabs.github.io/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
+<li><a title="Beware of empty paths" href="https://labs.portcullis.co.uk/blog/beware-of-empty-paths/">Beware of empty paths</a></li>
 <li><a title="Exploiting SUID Executables" href="https://www.pentestpartners.com/security-blog/exploiting-suid-executables/">Exploiting SUID Executables</a></li>
 <li><a title="Capabilities" href="https://wiki.archlinux.org/index.php/Capabilities">Capabilities &#8211; ArchWiki</a></li>
 </ul>
-<p>The post <a href="https://portcullislabs.github.io/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/">UNIX and Linux setUID advice and guidance</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/unix-and-linux-setuid-advice-and-guidance/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

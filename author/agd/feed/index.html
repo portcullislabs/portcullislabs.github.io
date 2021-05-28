@@ -10,8 +10,8 @@
 
 <channel>
 	<title>Portcullis Labs &#187; AGD</title>
-	<atom:link href="https://portcullislabs.github.io/author/agd/feed/" rel="self" type="application/rss+xml" />
-	<link>https://portcullislabs.github.io</link>
+	<atom:link href="https://labs.portcullis.co.uk/author/agd/feed/" rel="self" type="application/rss+xml" />
+	<link>https://labs.portcullis.co.uk</link>
 	<description>Research and Development</description>
 	<language>en-US</language>
 		<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -19,16 +19,16 @@
 	<generator>http://wordpress.org/?v=3.8.5</generator>
 	<item>
 		<title>SSL and Export Ciphers: Logjam and FREAK</title>
-		<link>https://portcullislabs.github.io/blog/ssl-and-export-ciphers-logjam-and-freak/</link>
-		<comments>https://portcullislabs.github.io/blog/ssl-and-export-ciphers-logjam-and-freak/#comments</comments>
+		<link>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/</link>
+		<comments>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/#comments</comments>
 		<pubDate>Thu, 28 May 2015 15:35:39 +0000</pubDate>
 		<dc:creator><![CDATA[AGD]]></dc:creator>
 				<category><![CDATA[Blog]]></category>
 		<category><![CDATA[analysis]]></category>
 		<category><![CDATA[SSL]]></category>
 
-		<guid isPermaLink="false">https://portcullislabs.github.io/?p=5162</guid>
-		<description><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed. During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers [&#8230;]</p><p>The post <a href="https://portcullislabs.github.io/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></description>
+		<guid isPermaLink="false">https://labs.portcullis.co.uk/?p=5162</guid>
+		<description><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed. During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers [&#8230;]</p><p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></description>
 				<content:encoded><![CDATA[<p>Recent attacks have shown the risks of leaving legacy TLS encryption modes enabled. In this blog post, the risks of having export-grade cryptography enabled will be addressed.<span id="more-5162"></span></p>
 <p>During the 90s very strict export regulations regarding cryptography were present in the United States of America. Due to this issue, some SSL implementations have deliberately weakened ciphers which would comply with the American export laws. All these ciphers are tagged as EXPORT ciphers or export-grade cryptography, which nowadays is considered obsolete. Solutions exist at the moment to provide higher confidentiality and integrity levels for messages, and these export regulations are no longer present.</p>
 <p>Two attacks on SSL export ciphers will be discussed: Logjam and FREAK.</p>
@@ -54,9 +54,9 @@
 </ul>
 <h2>What should we do?</h2>
 <p>Both attacks exploit the possibility of downgrading a connection initialization to use a legacy key exchange protocol. In order to defend against the Logjam and FREAK attacks, Portcullis recommends to have an up-to-date client and to disable all export-grade ciphers on both clients and servers. In addition to this, it is recommended to transition towards Elliptic Curve Diffie-Hellman as key exchange protocol.</p>
-<p>Our <a title="SSL good practice guide" href="https://portcullislabs.github.io/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that old protocols and ciphers be disabled for some time now, which prevents this attack. You can use the <a title="SSL cipher suite enum" href="https://portcullislabs.github.io/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to test your configuration.</p>
-<p>The post <a href="https://portcullislabs.github.io/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://portcullislabs.github.io">Portcullis Labs</a>.</p>]]></content:encoded>
-			<wfw:commentRss>https://portcullislabs.github.io/blog/ssl-and-export-ciphers-logjam-and-freak/feed/</wfw:commentRss>
+<p>Our <a title="SSL good practice guide" href="https://labs.portcullis.co.uk/whitepapers/ssl-good-practice-guide/">SSL Good Practice Guide</a> has been recommending that old protocols and ciphers be disabled for some time now, which prevents this attack. You can use the <a title="SSL cipher suite enum" href="https://labs.portcullis.co.uk/tools/ssl-cipher-suite-enum/">SSL cipher suite enum</a> tool to test your configuration.</p>
+<p>The post <a href="https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/">SSL and Export Ciphers: Logjam and FREAK</a> appeared first on <a href="https://labs.portcullis.co.uk">Portcullis Labs</a>.</p>]]></content:encoded>
+			<wfw:commentRss>https://labs.portcullis.co.uk/blog/ssl-and-export-ciphers-logjam-and-freak/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>
